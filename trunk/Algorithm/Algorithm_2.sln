@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithm_2", "Algorithm_2\Algorithm_2.vcproj", "{FA31A9CE-41D2-4737-801B-F33354B2D604}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BC0A49B-74FB-43E4-AC54-5FB9D749900C} = {1BC0A49B-74FB-43E4-AC54-5FB9D749900C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Query", "..\..\SeedMiner\Query\Query\Query.vcproj", "{1BC0A49B-74FB-43E4-AC54-5FB9D749900C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA31A9CE-41D2-4737-801B-F33354B2D604}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FA31A9CE-41D2-4737-801B-F33354B2D604}.Debug|Win32.Build.0 = Debug|Win32
+		{FA31A9CE-41D2-4737-801B-F33354B2D604}.Release|Win32.ActiveCfg = Release|Win32
+		{FA31A9CE-41D2-4737-801B-F33354B2D604}.Release|Win32.Build.0 = Release|Win32
+		{1BC0A49B-74FB-43E4-AC54-5FB9D749900C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1BC0A49B-74FB-43E4-AC54-5FB9D749900C}.Debug|Win32.Build.0 = Debug|Win32
+		{1BC0A49B-74FB-43E4-AC54-5FB9D749900C}.Release|Win32.ActiveCfg = Release|Win32
+		{1BC0A49B-74FB-43E4-AC54-5FB9D749900C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
