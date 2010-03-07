@@ -39,6 +39,38 @@ namespace Algorithm{
 		return left_op;
 	}
 
+	map<int,dynamic_bitset<>>  AlgoUtils::GetUniqueBitmaps(EncodedAttributeInfo * _attribute,vector<BitStreamHolder *> & _bitmaps,vector<dynamic_bitset<>> & _unique_patterns,map<int,vector<int>> & _index_bitmap_map)
+	{
+		int attribute_index = _attribute->attributeID();
+		int current_index = (_bitmaps.size() > 0)?(_bitmaps.size()):0;
+		map<int,dynamic_bitset<>> unique_val_map;
+		vector<int> bit_streams_indices;
+		vector<BitStreamInfo *> bit_streams = _attribute->vBitStreams();
+		size_t bit_stream_size = _unique_patterns.size();
+		dynamic_bitset<> temp ;
+		for (size_t index = 0; index < bit_stream_size ; index++)
+		{
+			bit_streams_indices.push_back(current_index);
+			temp = _unique_patterns.at(index);
+			BitStreamHolder * holder = WrapWithHolder(FindPattern(temp,bit_streams),attribute_index,current_index);
+			_bitmaps.push_back(holder);	
+			unique_val_map[current_index] = temp;
+			current_index++;
+		}
+		_index_bitmap_map[attribute_index] = bit_streams_indices;
+return unique_val_map;
+	}
+
+	BitStreamHolder * AlgoUtils::WrapWithHolder(BitStreamInfo *_stream, int _attribute_id, int _bit_map_id)
+	{
+		BitStreamHolder * result = new BitStreamHolder();
+		result->AddAttributeID(_attribute_id);
+		result->AddStreamNo(_bit_map_id);
+		result->Bit_stream(_stream);
+		return result;
+
+	}
+
 	dynamic_bitset<> AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<dynamic_bitset<>> & _container)
 	{
 		size_t pattern_size = _pattern.size();

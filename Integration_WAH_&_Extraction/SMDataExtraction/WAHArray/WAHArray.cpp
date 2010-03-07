@@ -32,7 +32,7 @@ void TestDataConnection();
 int _tmain(int argc, _TCHAR* argv[])
 {
 	TestAlgoUtil test;
-	test.TestPatternFindBitInfoMethod();
+	test.TestAttLevelUniquePatternFinding();
 	return 0;
 }
 
