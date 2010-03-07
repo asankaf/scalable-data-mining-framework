@@ -186,6 +186,10 @@
 				RelativePath=".\TestAlgoUtil.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WAHStructure.cpp"
+				>
+			</File>
 			<Filter
 				Name="TestWAH"
 				>
@@ -241,10 +245,6 @@
 			<Filter
 				Name="WAHStructure"
 				>
-				<File
-					RelativePath=".\WAHStructure.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Algorithm"
