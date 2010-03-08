@@ -13,6 +13,9 @@ private:
 	int min_support;
 	int confidence;
 	int lift;
+	static int first_support_list_id;
+	static int first_support_list[];
+
 
 public:
 	Apriori_Algo();
@@ -22,8 +25,7 @@ public:
 	int get_min_support();
 	int get_confidence();
 	int get_lift();
-	int calc_Antecedent_Support(string antecedent_list[]);
-	int calc_Confidence(string antecedent_list[], string consequent);
+	void Apriori_Algo::set_First_Support_List(string dataID);
 
 };
 
