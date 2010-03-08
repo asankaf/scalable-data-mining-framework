@@ -35,3 +35,26 @@ int Basic_Op::support(string query)
 	}
 	return count;
 }
+
+int Basic_Op::calc_Antecedent_Support(int num_list_ids, string antecedent_list[])
+{
+	Basic_Op bo;
+	string query = bo.build_Query(num_list_ids, antecedent_list, "&");
+
+	int support = bo.support(query);
+
+	return support;
+
+}
+
+int Basic_Op::calc_Confidence(int num_list_ids, string antecedent_list[], string consequent)
+{
+	Basic_Op bo;
+	string pre_query = bo.build_Query(num_list_ids, antecedent_list, "&");
+	string query = pre_query + "&" + consequent;
+
+	int supp_x_and_y = bo.support(query);
+	int supp_x_only = bo.support(pre_query);
+
+	return supp_x_and_y/supp_x_only;
+}
