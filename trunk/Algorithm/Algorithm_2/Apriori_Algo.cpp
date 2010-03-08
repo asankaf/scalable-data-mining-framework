@@ -28,26 +28,9 @@ int Apriori_Algo::get_lift()
 	return lift;
 }
 
-int Apriori_Algo::calc_Antecedent_Support(string antecedent_list[])
+void Apriori_Algo::set_First_Support_List(string dataID)
 {
 	Basic_Op bo;
-	string query = bo.build_Query(antecedent_list->length(), antecedent_list, "&");
-
-	int support = bo.support(query);
-
-	return support;
-
+	first_support_list[first_support_list_id] = bo.support(dataID);
+	first_support_list_id++;
 }
-
-int Apriori_Algo::calc_Confidence(string antecedent_list[], string consequent)
-{
-	Basic_Op bo;
-	string pre_query = bo.build_Query(antecedent_list->length(), antecedent_list, "&");
-	string query = pre_query + "&" + consequent;
-
-	int supp_x_and_y = bo.support(query);
-	int supp_x_only = bo.support(pre_query);
-
-	return supp_x_and_y/supp_x_only;
-}
-//add to class.cpp end_here
