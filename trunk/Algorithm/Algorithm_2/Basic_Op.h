@@ -18,6 +18,8 @@ public:
 
 	string build_Query(int which, string dataIDs[], string operation);
 	int support(string query);
+	int calc_Antecedent_Support(int num_list_ids, string antecedent_list[]);
+	int calc_Confidence(int num_list_ids, string antecedent_list[], string consequent);
 
 
 
