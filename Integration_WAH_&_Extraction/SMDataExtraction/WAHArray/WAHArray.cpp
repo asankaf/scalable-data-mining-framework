@@ -16,6 +16,8 @@
 #include "DBConnection.h"
 #include "testcompressionhandler.h"
 #include "testalgoutil.h"
+#include "testholderoperations.h"
+#include "testapriori.h"
 
 using namespace std;
 using namespace boost;
@@ -26,13 +28,21 @@ using namespace DBConnectionInfo;
 using namespace DBQueryExecutionInfo;
 void randomBitStreamTester();
 void WAHStructureBecnhmarkAND();
+void WAHStructureBecnhmarkOR();
 void TestDataConnection();
 
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestAlgoUtil test;
-	test.TestAttLevelUniquePatternFinding();
+	//TestHolderOperations test;
+	//test.TestUniqueVlauesForDataSource();
+	//test.TestAttLevelUniquePatternFinding();
+	/*TestHolderOperations hl;
+	hl.TestHash();*/
+//test.TestHolderSuite();
+	TestApriori test;
+	test.AprioriTestSuite();
+	
 	return 0;
 }
 
@@ -87,7 +97,33 @@ void TestDataConnection()
 void WAHStructureBecnhmarkAND()
 {
 	TimeTest test;
-	test.RunAndTest(50000,100000,25000);
+	cout << "Initial Start Value : "<<endl;
+	size_t init = 0;
+	size_t end = 0;
+	size_t increment = 0;
+	cin >>init;
+	cout << "Initial End Value : "<<endl;
+	cin >> end;
+	cout << "Increment Value : "<<endl;
+	cin >> increment;
+	test.RunAndTest(init,end,increment);
+	cout <<"Executed Sucessfully" << endl;
+}
+
+void WAHStructureBecnhmarkOR()
+{
+	TimeTest test;
+	cout << "Initial Start Value(OR) : "<<endl;
+	size_t init = 0;
+	size_t end = 0;
+	size_t increment = 0;
+	cin >>init;
+	cout << "Initial End Value : "<<endl;
+	cin >> end;
+	cout << "Increment Value : "<<endl;
+	cin >> increment;
+	test.RunORTest(init,end,increment);
+	cout <<"Executed Sucessfully" << endl;
 }
 
 

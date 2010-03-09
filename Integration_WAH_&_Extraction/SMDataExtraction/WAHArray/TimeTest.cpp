@@ -1,8 +1,6 @@
 #include "StdAfx.h"
 #include "TimeTest.h"
 
-
-
 TimeTest::TimeTest(void)
 {
 }
@@ -87,6 +85,22 @@ void TimeTest::RunAndTest( size_t _start_val,size_t _end_val,size_t _increment )
 	for (int i = _start_val; i <= _end_val ; i += _increment)
 	{
 		vector<vector<int>> result = totalpercentageRun(i,true,error_log);
+		writeResultsToCSV(result,output,i);
+		output.flush();
+		error_log.flush();
+	}
+	error_log.close();	
+	output.close();
+}
+
+void TimeTest::RunORTest(size_t _start_val,size_t _end_val,size_t _increment)
+{
+	ofstream output("OR Test.csv");
+	output << "Percentage , WAHRuntime, BoostRunTime,Length" << endl;
+	ofstream error_log("OR Test Errors.txt");
+	for (int i = _start_val; i <= _end_val ; i += _increment)
+	{
+		vector<vector<int>> result = totalpercentageRun(i,false,error_log);
 		writeResultsToCSV(result,output,i);
 		output.flush();
 		error_log.flush();

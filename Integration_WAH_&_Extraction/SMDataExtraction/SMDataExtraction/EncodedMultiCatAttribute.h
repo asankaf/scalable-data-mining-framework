@@ -16,6 +16,7 @@ class EncodedMultiCatAttribute : public EncodedAttributeInfo
 public:
 	__declspec(dllexport) EncodedMultiCatAttribute(void);
 	__declspec(dllexport) ~EncodedMultiCatAttribute(void);
+	__declspec(dllexport) void setMappedValList(vector<dynamic_bitset<>> & _mapped_vals);
 	__declspec(dllexport) vector<dynamic_bitset<>> mappedValList();
 	__declspec(dllexport) vector<string> uniqueValList();
 	__declspec(dllexport) int* getMappedIntVals();

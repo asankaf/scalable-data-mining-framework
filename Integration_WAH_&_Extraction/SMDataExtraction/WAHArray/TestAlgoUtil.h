@@ -23,5 +23,8 @@ public:
 	void PrintBitStreamHolder(BitStreamHolder * _holder);
 	void PrintBitStreamInfo(BitStreamInfo * _bit_stream);
 	void PrintAttIdIndexMapping(map<int ,vector<int>> & _index_att_value_map);
+	void TestUniqueVlauesForDataSource();
+	WrapDataSource * GetTestWrappedDataSource();
+	void ConvertVectorToMapConvertsion();
 	
 };
