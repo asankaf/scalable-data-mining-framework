@@ -54,6 +54,7 @@ public:
 	__declspec(dllexport) BitStreamInfo::vertical_bit_type Type();
 	__declspec(dllexport) void Type(BitStreamInfo::vertical_bit_type val);
 	__declspec(dllexport) void Print(void);
+	__declspec(dllexport) void Clone(BitStreamInfo * _new_stream);
 	/*
 	static const unsigned long int ZERO_LITERAL = 0;
 	static const unsigned long int ONE_LITERAL = 2147483647;

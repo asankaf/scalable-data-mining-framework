@@ -183,7 +183,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestAlgoUtil.cpp"
+				RelativePath=".\TestApriori.cpp"
 				>
 			</File>
 			<File
@@ -226,10 +226,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\TestCompressionHandler.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\TestWAHArray.cpp"
 					>
 				</File>
@@ -254,6 +250,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Apriori.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AssociateRule.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\BitStreamHolder.cpp"
 					>
 				</File>
@@ -261,6 +265,26 @@
 			<Filter
 				Name="TestAlgo"
 				>
+				<File
+					RelativePath=".\TestAlgoUtil.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CompHandlerTest"
+				>
+				<File
+					RelativePath=".\TestCompressionHandler.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="TestHolder"
+				>
+				<File
+					RelativePath=".\TestHolderOperations.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -273,7 +297,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\TestAlgoUtil.h"
+				RelativePath=".\TestApriori.h"
 				>
 			</File>
 			<Filter
@@ -297,10 +321,6 @@
 				</File>
 				<File
 					RelativePath=".\targetver.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TestCompressionHandler.h"
 					>
 				</File>
 				<File
@@ -328,7 +348,39 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Apriori.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AssociateRule.h"
+					>
+				</File>
+				<File
 					RelativePath=".\BitStreamHolder.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="TestAlgo"
+				>
+				<File
+					RelativePath=".\TestAlgoUtil.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="TestCompHandler"
+				>
+				<File
+					RelativePath=".\TestCompressionHandler.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="TestHolder"
+				>
+				<File
+					RelativePath=".\TestHolderOperations.h"
 					>
 				</File>
 			</Filter>

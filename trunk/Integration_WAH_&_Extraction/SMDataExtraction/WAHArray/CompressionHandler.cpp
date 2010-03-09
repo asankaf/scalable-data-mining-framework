@@ -34,21 +34,23 @@ void CompressionHandler::ConvertAttributeTo( EncodedAttributeInfo * _attribute,B
 }
 BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_stream,BitStreamInfo::vertical_bit_type _end_type )
 {
-	dynamic_bitset<> bit_stream = _bit_stream->Decompress();	
+	//Determine whether the old BitStreamInfo pointers needed to  be deleted
+	dynamic_bitset<> bit_stream = _bit_stream->Decompress();
+	BitStreamInfo * new_val = NULL;
 	delete _bit_stream;
 	switch(_end_type)
 	{
 	case BitStreamInfo::WAH_COMPRESSION:
 		{
 			
-			_bit_stream = new WAHStructure();
-			_bit_stream->Type(BitStreamInfo::WAH_COMPRESSION);
+			new_val = new WAHStructure();
+			new_val->Type(BitStreamInfo::WAH_COMPRESSION);
 			break;
 		}
 	case BitStreamInfo::VERTICAL_STREAM_FORMAT:
 		{
-			_bit_stream = new VBitStream();
-			_bit_stream->Type(BitStreamInfo::VERTICAL_STREAM_FORMAT);
+			new_val = new VBitStream();
+			new_val->Type(BitStreamInfo::VERTICAL_STREAM_FORMAT);
 			break;
 		}
 
@@ -56,6 +58,7 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 		break;
 			}
 	}
-	_bit_stream->CompressWords(bit_stream);
-	return _bit_stream;
+	new_val->CompressWords(bit_stream);
+	_bit_stream->Clone(new_val);
+	return new_val;
 }

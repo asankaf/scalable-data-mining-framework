@@ -18,6 +18,13 @@ void BitStreamInfo::Print()
 	cout <<this->Decompress()<< endl;
 }
 
+void BitStreamInfo::Clone( BitStreamInfo * _new_stream )
+{
+	_new_stream->setBitCount(_bitCount);
+	_new_stream->setBitStreamAllocAttID(this->_bitStreamAllocAttID);
+	_new_stream->setBitStreamAllocAttName(this->_bitStreamAllocAttName);	
+}
+
 void BitStreamInfo::convert(dynamic_bitset<> bitStream){
 	this->_decompressedVBitStream = bitStream;
 }

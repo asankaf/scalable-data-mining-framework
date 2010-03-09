@@ -14,8 +14,10 @@ TestAlgoUtil::~TestAlgoUtil(void)
 
 void TestAlgoUtil::TestAttLevelUniquePatternFinding()
 {
+	//This test failed need to test rigorously
 	DataSourceGenerator dg;
-	EncodedAttributeInfo * attr = dg.CreateAttribute(GetBitSetsForAttribute(),BitStreamInfo::WAH_COMPRESSION);
+	vector<dynamic_bitset<>> bit_info_source = GetBitSetsForAttribute();
+	EncodedAttributeInfo * attr = dg.CreateAttribute(bit_info_source,BitStreamInfo::WAH_COMPRESSION);
 	attr->setAttName("Name");
 	attr->setAttID(12);
 	AlgoUtils utils;
@@ -43,14 +45,44 @@ void TestAlgoUtil::TestAttLevelUniquePatternFinding()
 	unique_patters.push_back(pattern);
 
 	map<int,vector<int>> map_index_values;
-	map<int,dynamic_bitset<>> result_map;
-	result_map = utils.GetUniqueBitmaps(attr,holder,unique_patters,map_index_values);
+	//map<int,dynamic_bitset<>> result_map;
+	vector<unsigned long int> unique_vals;
+	typedef vector<dynamic_bitset<>>::const_iterator bitset_iter;
+	cout<<endl;
+	cout << "Printing Original Bit streams for source : " << endl;
+	for (bitset_iter iter = bit_info_source.begin(); iter != bit_info_source.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	cout<<endl;
+	cout <<"printing unique Patterns " << endl;
 
+	for (bitset_iter iter = unique_patters.begin(); iter != unique_patters.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	dynamic_bitset<> bits =  utils.FindPattern(unique_patters.at(0),bit_info_source);
+	cout <<"Test Result : " << bits<<endl;
+	utils.GetUniqueBitmaps(attr,holder,unique_patters,map_index_values,unique_vals);
+	attr->setAttID(13);
+	utils.GetUniqueBitmaps(attr,holder,unique_patters,map_index_values,unique_vals);
+	cout<<endl;
+	cout <<"Printing ulong vals for indices  "<<endl;
+	typedef vector<unsigned long int>::const_iterator ulong_iter;
+	for (ulong_iter iter = unique_vals.begin(); iter != unique_vals.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	cout<<endl;
 	PrintBitStreamHolderVector(holder);
+	cout<<endl;
+	cout <<"Printing attribute Index mapping :" << endl;
 	PrintAttIdIndexMapping(map_index_values);
 
 
 }
+
+
 
 void TestAlgoUtil::PrintAttIdIndexMapping(map<int ,vector<int>> & _index_att_value_map)
 {
@@ -71,6 +103,7 @@ void TestAlgoUtil::PrintBitStreamHolderVector(vector<BitStreamHolder *> _holder)
 {
 	for (size_t index = 0; index < _holder.size(); index++)
 	{
+		cout << "Index : " << index << endl;
 		PrintBitStreamHolder(_holder.at(index));
 	}
 }
@@ -81,14 +114,14 @@ void TestAlgoUtil::PrintBitStreamHolder(BitStreamHolder * _holder)
 	vector<int> att_info = _holder->Attribute_no();
 	for (size_t index = 0; index < att_info.size(); index++)
 	{
-		cout << att_info.at(index);
+		cout << att_info.at(index)<<" , ";
 	}
 	cout << endl;
 	cout << "Printing BitStream Indices : " << endl;
 	vector<int> bit_stream_info = _holder->Bit_stream_no();
 	for (size_t index = 0; index < bit_stream_info.size(); index++)
 	{
-		cout << bit_stream_info.at(index);
+		cout << bit_stream_info.at(index)<<" , ";
 	}
 	cout << endl;
 
@@ -186,6 +219,155 @@ void TestAlgoUtil::PrintBitSets(vector<BitStreamInfo *> & _bit_sets)
 		}
 		cout << decompressed << endl;	
 	}
+}
+
+void TestAlgoUtil::TestUniqueVlauesForDataSource()
+{
+	DataSourceGenerator dg;
+	vector<dynamic_bitset<>> bit_info_source = GetBitSetsForAttribute();
+	EncodedAttributeInfo * attr = dg.CreateAttribute(bit_info_source,BitStreamInfo::WAH_COMPRESSION);
+	attr->setAttName("Name");
+	attr->setAttID(12);
+	AlgoUtils utils;
+	vector<BitStreamHolder *> holder;
+	vector<dynamic_bitset<> > unique_patters;
+	dynamic_bitset<> pattern(3);
+	pattern[2] = 1;
+	pattern[1] = 0;
+	pattern[0] = 0;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 1;
+	pattern[1] = 0;
+	pattern[0] = 1;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 0;
+	pattern[1] = 1;
+	pattern[0] = 1;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 0;
+	pattern[1] = 1;
+	pattern[0] = 0;
+	unique_patters.push_back(pattern);
+
+	//Creating dynamic bisets for Datasource
+	vector<vector<dynamic_bitset<>>> source_bits;
+	source_bits.push_back(bit_info_source);
+	source_bits.push_back(bit_info_source);
+
+	//Creating Unique values for data source
+	vector<vector<dynamic_bitset<>>> dyn_sets;
+	dyn_sets.push_back(unique_patters);
+	dyn_sets.push_back(unique_patters);
+	
+	//Creating Datasource
+	WrapDataSource * wrapped = dg.CreateDataSource(source_bits,BitStreamInfo::WAH_COMPRESSION,dyn_sets);
+
+
+	map<int,vector<int>> map_index_values;
+	//map<int,dynamic_bitset<>> result_map;
+	vector<unsigned long int> unique_vals;
+	typedef vector<dynamic_bitset<>>::const_iterator bitset_iter;
+	cout<<endl;
+	cout << "Printing Original Bit streams for source : " << endl;
+	for (bitset_iter iter = bit_info_source.begin(); iter != bit_info_source.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	cout<<endl;
+	cout <<"printing unique Patterns " << endl;
+
+	for (bitset_iter iter = unique_patters.begin(); iter != unique_patters.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	dynamic_bitset<> bits =  utils.FindPattern(unique_patters.at(0),bit_info_source);
+	cout <<"Test Result : " << bits<<endl;
+	//utils.GetUniqueBitmaps(wrapped,holder,map_index_values);	
+	utils.GetUniqueBitmaps(wrapped,holder,map_index_values,unique_vals);
+	cout<<endl;
+	cout <<"Printing ulong vals for indices  "<<endl;
+	typedef vector<unsigned long int>::const_iterator ulong_iter;
+	for (ulong_iter iter = unique_vals.begin(); iter != unique_vals.end(); iter++)
+	{
+		cout << *(iter) << endl;
+	}
+	cout<<endl;
+	PrintBitStreamHolderVector(holder);
+	cout<<endl;
+	cout <<"Printing attribute Index mapping :" << endl;
+	PrintAttIdIndexMapping(map_index_values);
+}
+
+void TestAlgoUtil::ConvertVectorToMapConvertsion()
+{
+	AlgoUtils utils;
+	map<int,vector<int>> map_vector;
+	vector<int> vect;
+	vect.push_back(1);
+	vect.push_back(2);
+	vect.push_back(14);
+	vect.push_back(121);
+	vect.push_back(15);
+	map_vector[3] = vect;
+	map<int,int> maps = utils.CreateIndexAttributeMap(map_vector);
+	typedef map<int,int>::const_iterator map_iter;
+	for (map_iter iter = maps.begin(); iter != maps.end();iter++)
+	{
+		cout << "Key : " << iter->first << ", Pair : " << iter->second << endl;
+	}
+}
+
+WrapDataSource * TestAlgoUtil::GetTestWrappedDataSource()
+{
+
+	DataSourceGenerator dg;
+	vector<dynamic_bitset<>> bit_info_source = GetBitSetsForAttribute();
+	EncodedAttributeInfo * attr = dg.CreateAttribute(bit_info_source,BitStreamInfo::WAH_COMPRESSION);
+	attr->setAttName("Name");
+	attr->setAttID(12);
+	AlgoUtils utils;
+	vector<BitStreamHolder *> holder;
+	vector<dynamic_bitset<> > unique_patters;
+	dynamic_bitset<> pattern(3);
+	pattern[2] = 1;
+	pattern[1] = 0;
+	pattern[0] = 0;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 1;
+	pattern[1] = 0;
+	pattern[0] = 1;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 0;
+	pattern[1] = 1;
+	pattern[0] = 1;
+	unique_patters.push_back(pattern);
+
+	pattern[2] = 0;
+	pattern[1] = 1;
+	pattern[0] = 0;
+	unique_patters.push_back(pattern);
+
+	//Creating dynamic bisets for Datasource
+	vector<vector<dynamic_bitset<>>> source_bits;
+	source_bits.push_back(bit_info_source);
+	source_bits.push_back(bit_info_source);
+	source_bits.push_back(bit_info_source);
+
+	//Creating Unique values for data source
+	vector<vector<dynamic_bitset<>>> dyn_sets;
+	dyn_sets.push_back(unique_patters);
+	dyn_sets.push_back(unique_patters);
+	dyn_sets.push_back(unique_patters);
+
+	//Creating Datasource
+	WrapDataSource * wrapped = dg.CreateDataSource(source_bits,BitStreamInfo::WAH_COMPRESSION,dyn_sets);
+
+return wrapped;
 }
 
 void TestAlgoUtil::PrintBitSets(vector<dynamic_bitset<>> & _bit_sets)

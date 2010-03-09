@@ -42,6 +42,11 @@ void EncodedMultiCatAttribute::mapStringDataToCategories(string* _valueList,vect
 
 }
 
+void EncodedMultiCatAttribute::setMappedValList(vector<dynamic_bitset<>> & _mapped_vals)
+{
+	_mappedValList = _mapped_vals;
+}
+
 vector<dynamic_bitset<>> EncodedMultiCatAttribute::mappedValList(){
 	return this->_mappedValList;
 }
