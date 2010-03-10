@@ -36,6 +36,35 @@ void TestApriori::TestUniqueBitMapGeneration(Apriori & algo)
 	
 }
 
+void TestApriori::PrintRules(vector<AssociateRule *> & _rules)
+{
+	typedef vector<AssociateRule *>::const_iterator rule_iter;
+	size_t index = 0;
+	for (rule_iter start = _rules.begin(); start != _rules.end() ; start++)
+	{
+		cout << "Index : "<<index << endl;
+		PrintAssociateRule(*(start));
+	}
+}
+
+void TestApriori::PrintAssociateRule(AssociateRule * rule)
+{
+	TestAlgoUtil test_util;
+	cout << "Starting Rule" << endl;
+	cout <<"Printing Antecedent" << endl;
+	PrintVector(rule->Antecedant());
+	cout << endl;
+	cout <<"Printing Consequent" << endl;
+	PrintVector(rule->Consequent());
+	cout << endl;
+	cout << "Confidence : " << rule->Confidence() << endl;
+	cout << endl;
+	cout << "Support : " << rule->Support()<< endl;
+	cout << "Rule : " << rule->Rule() << endl;
+	cout << endl;
+	cout << "Ending Rule" << endl;
+}
+
 void TestApriori::PrintMap(map<int,int> & _map)
 {
 	typedef map<int,int>::const_iterator map_iter;
@@ -95,6 +124,39 @@ void TestApriori::TestInitialItemGeneration(Apriori & _algo, AlgoUtils & _utils)
 	cout << endl;
 }
 
+void TestApriori::TestRuleGeneration(Apriori & _algo,AlgoUtils & _util)
+{	
+	TestAlgoUtil test_algo_utils;
+	cout << "Printing Candidate Holder " << endl;
+	//test_algo_utils.PrintBitStreamHolder(_algo.Frequent_item_set().at(0));
+	test_algo_utils.PrintBitStreamHolderVector(_algo.Frequent_item_set());
+	cout <<"Finished Printing Holder" << endl;	
+	//_algo.GenerateRulesForHolder(_algo.Frequent_item_set().at(0));
+	_algo.GenerateRules();
+	cout << endl;
+	cout << "Printing Rules : " << endl;
+	PrintRules(_algo.Rules());
+	
+}
+
+void TestApriori::TestTotalExecution(Apriori & _algo, AlgoUtils & _utils)
+{
+	TestAlgoUtil test_algo_utils;
+	cout <<"Starting to run the Algo" << endl;
+	WrapDataSource * wrapped = test_algo_utils.GetTestWrappedDataSource();
+	_algo.RunAlgorithm(wrapped);
+	cout << "Printing Candidate Holder " << endl;
+	//test_algo_utils.PrintBitStreamHolder(_algo.Frequent_item_set().at(0));
+	test_algo_utils.PrintBitStreamHolderVector(_algo.Frequent_item_set());
+	cout <<"Finished Printing Holder" << endl;	
+	//_algo.GenerateRulesForHolder(_algo.Frequent_item_set().at(0));
+	_algo.GenerateRules();
+	cout << endl;
+	cout << "Printing Rules : " << endl;
+	PrintRules(_algo.Rules());
+
+}
+
 void TestApriori::TestAntecedentGeneration()
 {
 	vector<int> original;
@@ -131,13 +193,16 @@ void TestApriori::TestCandidateGeneration(Apriori & _algo,AlgoUtils & _utils)
 
 void TestApriori::AprioriTestSuite()
 {
-	TestAntecedentGeneration();
+	//TestAntecedentGeneration();
 	//Tests the unique bitmap generation part
-// 	Apriori algo;
-// 	AlgoUtils utils;
-// 	TestUniqueBitMapGeneration(algo);
-// 	TestInitialItemGeneration(algo,utils);
+ 	Apriori algo;
+ 	AlgoUtils utils;
+	TestTotalExecution(algo,utils);
+//  	TestUniqueBitMapGeneration(algo);
+//  	TestInitialItemGeneration(algo,utils);
+// 	
 // 	cout << "----------------------------------" << endl;
 // 	cout <<"Starting Item generation : " << endl;
-// 	TestCandidateGeneration(algo,utils);
+//  	TestCandidateGeneration(algo,utils);
+// 	TestRuleGeneration(algo,utils);
 }
