@@ -16,8 +16,8 @@ namespace Algorithm{
 		int Support() const { return m_support; }
 		bool ContainCombination(int _combination);
 		void Support(int val) { m_support = val; }
-		int Confidence() const { return m_confidence; }
-		void Confidence(int val) { m_confidence = val; }
+		float Confidence() const { return m_confidence; }
+		void Confidence(float val) { m_confidence = val; }
 		map<int,int> Index_vector_collection() const { return m_index_vector_collection; }
 		void Index_vector_collection(map<int,int> val) { m_index_vector_collection = val; }
 		vector<BitStreamHolder *> Frequent_item_set() const { return m_frequent_item_set; }
@@ -48,13 +48,20 @@ namespace Algorithm{
 		string GetStringForVector(vector<EncodedAttributeInfo *> & _atrributes,vector<int> & _index_vector);
 		void CreateRuleStrings(WrapDataSource * source);
 		void CreateStringForRule(AssociateRule * _rule , vector<EncodedAttributeInfo *> _atrributes);
-
+		int No_of_rules() const { return m_no_of_rules; }
+		void No_of_rules(int val) { m_no_of_rules = val; }
+		int No_of_items() const { return m_no_of_items; }
+		void No_of_items(int val) { m_no_of_items = val; }
+		bool ContainsRule(int _hash);
 
 	private:
 		int m_support;
-		int m_confidence;
+		float m_confidence;
+		int m_no_of_rules;		
+		int m_no_of_items;		
 		vector<BitStreamHolder *> m_frequent_item_set;	
-		vector<BitStreamHolder *> m_unique_bitmap_holders;	
+		vector<BitStreamHolder *> m_unique_bitmap_holders;
+		vector<int> m_added_rules;
 		map<int,int> m_index_vector_collection;	
 		map<int,int> m_index_attribute_map;	
 		map<int,int> m_bitmap_count_holder;	

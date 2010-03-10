@@ -37,7 +37,7 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 	//Determine whether the old BitStreamInfo pointers needed to  be deleted
 	dynamic_bitset<> bit_stream = _bit_stream->Decompress();
 	BitStreamInfo * new_val = NULL;
-	delete _bit_stream;
+	//delete _bit_stream;
 	switch(_end_type)
 	{
 	case BitStreamInfo::WAH_COMPRESSION:
@@ -60,5 +60,6 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 	}
 	new_val->CompressWords(bit_stream);
 	_bit_stream->Clone(new_val);
+	delete _bit_stream;
 	return new_val;
 }

@@ -28,6 +28,17 @@ WrapDataSource::~WrapDataSource(void)
 {
 }
 
+size_t WrapDataSource::SpaceUtilsation()
+{
+	size_t space = 0;
+	//typedef vector<EncodedAttributeInfo *> ::const_iterator vector_iter;
+	for (size_t index = 0; index < this->_codedAtts.size(); index++)
+	{
+		space += _codedAtts.at(index)->SpaceUtilisation();
+	}
+	return space;
+}
+
 void WrapDataSource::encodeAtrributes(){
 	encodeIntAttributes(this->_queryDataInfo.RetievedIntData());
 	encodeStringAttributes(this->_queryDataInfo.RetrievedStringData());

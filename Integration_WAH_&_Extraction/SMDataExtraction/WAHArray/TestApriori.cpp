@@ -42,7 +42,7 @@ void TestApriori::PrintRules(vector<AssociateRule *> & _rules)
 	size_t index = 0;
 	for (rule_iter start = _rules.begin(); start != _rules.end() ; start++)
 	{
-		cout << "Index : "<<index << endl;
+		cout << "Index : "<<++index << endl;
 		PrintAssociateRule(*(start));
 	}
 }
@@ -50,19 +50,22 @@ void TestApriori::PrintRules(vector<AssociateRule *> & _rules)
 void TestApriori::PrintAssociateRule(AssociateRule * rule)
 {
 	TestAlgoUtil test_util;
-	cout << "Starting Rule" << endl;
-	cout <<"Printing Antecedent" << endl;
-	PrintVector(rule->Antecedant());
-	cout << endl;
-	cout <<"Printing Consequent" << endl;
-	PrintVector(rule->Consequent());
-	cout << endl;
+	//cout << "Starting Rule" << endl;
+	//cout <<"Printing Antecedent" << endl;
+	//PrintVector(rule->Antecedant());
+	//cout << endl;
+	//cout <<"Printing Consequent" << endl;
+	//PrintVector(rule->Consequent());
+	//cout << endl;
 	cout << "Confidence : " << rule->Confidence() << endl;
-	cout << endl;
-	cout << "Support : " << rule->Support()<< endl;
+	//cout << endl;
+	cout << "Support : " << rule->Support() << endl;
+	//cout << endl;
+
+	//cout << "Support : " << rule->Support()<< endl;
 	cout << "Rule : " << rule->Rule() << endl;
 	cout << endl;
-	cout << "Ending Rule" << endl;
+	//cout << "Ending Rule" << endl;
 }
 
 void TestApriori::PrintMap(map<int,int> & _map)

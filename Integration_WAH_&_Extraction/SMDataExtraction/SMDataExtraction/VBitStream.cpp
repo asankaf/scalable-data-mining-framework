@@ -10,6 +10,13 @@ VBitStream::VBitStream(){
 
 }
 
+size_t VBitStream::SpaceUtilisation()
+{
+	size_t space = sizeof(this);
+	space += Decompress().size()/ 8;
+	return space;
+}
+
 VBitStream::~VBitStream(void)
 {
 }
@@ -59,20 +66,29 @@ this->convert(bitMap);
 // 	return this->JUNK_VAL;
 // }
 
-int VBitStream::GetSpaceUtilisation(){
-	return this->JUNK_VAL;
-}
 
 BitStreamInfo* VBitStream::operator ~(){
-	return new VBitStream();
+	BitStreamInfo * v_bit_stream = new VBitStream();
+	dynamic_bitset<> temp_stream = this->getProcessedBitStream();
+	temp_stream.flip();
+	v_bit_stream->convert(temp_stream);
+	return v_bit_stream;
 }
 
-BitStreamInfo* VBitStream::operator &(BitStreamInfo &){
-	return new VBitStream();
+BitStreamInfo* VBitStream::operator &(BitStreamInfo & _structure){
+	VBitStream * v_bit_stream = new VBitStream();
+	dynamic_bitset<> left_op = this->getProcessedBitStream();
+	dynamic_bitset<> right_op = _structure.getProcessedBitStream();
+	v_bit_stream->convert(left_op & right_op);
+	return v_bit_stream;
 }
 
-BitStreamInfo* VBitStream::operator |(BitStreamInfo &){
-	return new VBitStream();
+BitStreamInfo* VBitStream::operator |(BitStreamInfo & _structure){
+	VBitStream * v_bit_stream = new VBitStream();
+	dynamic_bitset<> left_op = this->getProcessedBitStream();
+	dynamic_bitset<> right_op = _structure.getProcessedBitStream();
+	v_bit_stream->convert(left_op | right_op);
+	return v_bit_stream;
 }
 
 unsigned long long VBitStream::Count(){
