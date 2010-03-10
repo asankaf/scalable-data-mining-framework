@@ -23,7 +23,8 @@ namespace CompressedStructure{
 		BitStreamInfo* operator~();
 		virtual BitStreamInfo* operator &(BitStreamInfo &);
 		BitStreamInfo* operator |(BitStreamInfo &);
-		unsigned long long Count();		
+		unsigned long long Count();	
+		size_t SpaceUtilisation();
 		
 		// Overloaded operators
 	

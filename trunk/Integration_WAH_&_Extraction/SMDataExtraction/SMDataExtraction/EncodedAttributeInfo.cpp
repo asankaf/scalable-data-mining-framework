@@ -33,6 +33,17 @@ int EncodedAttributeInfo::NoOfVBitStreams(){
 	return this->_noOfVBitStreams;
 }
 
+size_t EncodedAttributeInfo::SpaceUtilisation()
+{
+	size_t space = 0;
+	//typedef vector<BitStreamInfo *>::const_iterator bit_iter;
+	for (size_t index = 0; index < _vBitStreams.size(); index++)
+	{
+		space += _vBitStreams.at(index)->SpaceUtilisation();
+	}
+	return space;
+}
+
 BitStreamInfo* EncodedAttributeInfo::bitStreamAt(int bitStreamID){
 	return this->_vBitStreams.at(bitStreamID);
 }

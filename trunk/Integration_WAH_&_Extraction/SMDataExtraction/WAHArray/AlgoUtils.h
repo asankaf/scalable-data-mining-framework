@@ -6,8 +6,9 @@
 #include "EncodedAttributeInfo.h"
 #include "EncodedMultiCatAttribute.h"
 #include "WrapDataSource.h"
+#include <iostream>
 
-
+using namespace std;
 namespace Algorithm{
 	class AlgoUtils
 	{

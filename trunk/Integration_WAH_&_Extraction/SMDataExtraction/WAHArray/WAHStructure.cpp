@@ -13,6 +13,13 @@ namespace CompressedStructure{
 	WAHStructure::~WAHStructure(void)
 	{
 	}
+
+	size_t WAHStructure::SpaceUtilisation()
+	{
+		size_t space = sizeof(this);		
+		space += (m_compressed_stream.size() * sizeof(unsigned long int));
+		return space;
+	}
 	void WAHStructure::BuildArray(boost::dynamic_bitset<>& _bit_map)
 	{
 		//count = bitMap.count();
@@ -268,43 +275,43 @@ namespace CompressedStructure{
 		{
 			if (left_operand_end_position == right_operand_end_position)
 			{
-				int leftOperandStartBitValue = GetStartBitValue(left_operand[left_operand_index]);
+				int leftOperandStartBitValue = GetStartBitValue(left_operand.at(left_operand_index));
 				if (leftOperandStartBitValue == LITERAL_WORD)
 				{
 					left_operand_end_position++;
 					left_operand_start_position = left_operand_end_position;
-					int right_operand_start_bit_value = GetStartBitValue(right_operand[right_operand_index]);
+					int right_operand_start_bit_value = GetStartBitValue(right_operand.at(right_operand_index));
 
 					if (right_operand_start_bit_value == LITERAL_WORD)
 					{
 						right_operand_end_position++;
 						right_operand_start_position = right_operand_end_position;
-						SetValueOnCompressedWord(left_operand[left_operand_index++] & right_operand[right_operand_index++],compressed_result);
+						SetValueOnCompressedWord(left_operand.at(left_operand_index++) & right_operand.at(right_operand_index++),compressed_result);
 					}else if (right_operand_start_bit_value == ONE_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ONE_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ONE_GAP_START_FLAG);	
 						right_operand_zero_run = false;
 					}
 					else if (right_operand_start_bit_value == ZERO_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ZERO_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ZERO_GAP_START_FLAG);	
 						right_operand_zero_run = true;
 					}
 
 				}else if (leftOperandStartBitValue == ONE_GAP_WORD)
 				{
-					left_operand_end_position += (left_operand[left_operand_index] - ONE_GAP_START_FLAG);
+					left_operand_end_position += (left_operand.at(left_operand_index) - ONE_GAP_START_FLAG);
 					left_operand_zero_run = false;
-					int rightOperandStartBitValue =  GetStartBitValue(right_operand[right_operand_index]);
+					int rightOperandStartBitValue =  GetStartBitValue(right_operand.at(right_operand_index));
 					if (rightOperandStartBitValue == LITERAL_WORD)
 					{					
 						right_operand_end_position++;										
 					}else if (rightOperandStartBitValue == ONE_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ONE_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ONE_GAP_START_FLAG);	
 						if (right_operand_end_position == left_operand_end_position)
 						{
-							SetValueOnCompressedWord(left_operand[left_operand_index],compressed_result);
+							SetValueOnCompressedWord(left_operand.at(left_operand_index),compressed_result);
 							left_operand_index++;
 							right_operand_index++;
 						}
@@ -312,10 +319,10 @@ namespace CompressedStructure{
 					}
 					else if (rightOperandStartBitValue == ZERO_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ZERO_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ZERO_GAP_START_FLAG);	
 						if (right_operand_end_position == left_operand_end_position)
 						{
-							SetValueOnCompressedWord(right_operand[right_operand_index],compressed_result);
+							SetValueOnCompressedWord(right_operand.at(right_operand_index),compressed_result);
 							left_operand_index++;
 							right_operand_index++;
 						}
@@ -324,18 +331,18 @@ namespace CompressedStructure{
 
 				}else if (leftOperandStartBitValue == ZERO_GAP_WORD)
 				{
-					left_operand_end_position += (left_operand[left_operand_index] - ZERO_GAP_START_FLAG);
+					left_operand_end_position += (left_operand.at(left_operand_index) - ZERO_GAP_START_FLAG);
 					left_operand_zero_run = true;
-					int rightOperandStartBitValue = GetStartBitValue(right_operand[right_operand_index]);
+					int rightOperandStartBitValue = GetStartBitValue(right_operand.at(right_operand_index));
 					if (rightOperandStartBitValue == LITERAL_WORD)
 					{					
 						right_operand_end_position++;										
 					}else if (rightOperandStartBitValue == ONE_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ONE_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ONE_GAP_START_FLAG);	
 						if (right_operand_end_position == left_operand_end_position)
 						{
-							SetValueOnCompressedWord(left_operand[left_operand_index],compressed_result);
+							SetValueOnCompressedWord(left_operand.at(left_operand_index),compressed_result);
 							left_operand_index++;
 							right_operand_index++;
 						}
@@ -343,10 +350,10 @@ namespace CompressedStructure{
 					}
 					else if (rightOperandStartBitValue == ZERO_GAP_WORD)
 					{
-						right_operand_end_position += (right_operand[right_operand_index] - ZERO_GAP_START_FLAG);	
+						right_operand_end_position += (right_operand.at(right_operand_index) - ZERO_GAP_START_FLAG);	
 						if (right_operand_end_position == left_operand_end_position)
 						{
-							SetValueOnCompressedWord(left_operand[left_operand_index],compressed_result);
+							SetValueOnCompressedWord(left_operand.at(left_operand_index),compressed_result);
 							left_operand_index++;
 							right_operand_index++;
 						}
@@ -361,12 +368,12 @@ namespace CompressedStructure{
 
 				if (gap_extension)
 				{
-					int leftStartBit = GetStartBitValue(left_operand[left_operand_index]);
+					int leftStartBit = GetStartBitValue(left_operand.at(left_operand_index));
 					if (leftStartBit == ZERO_GAP_WORD)
 					{
 						unsigned long int extra_blocks = left_operand_end_position - right_operand_end_position;
-						unsigned long int no_of_blocks = left_operand[left_operand_index] - ZERO_GAP_START_FLAG;
-						unsigned long int new_gap = left_operand[left_operand_index] - no_of_blocks + extra_blocks;
+						unsigned long int no_of_blocks = left_operand.at(left_operand_index) - ZERO_GAP_START_FLAG;
+						unsigned long int new_gap = left_operand.at(left_operand_index) - no_of_blocks + extra_blocks;
 						SetValueOnCompressedWord(new_gap,compressed_result);
 						vector<int> result = AlignRightWithLeft(left_operand_end_position,right_operand_index,right_operand_end_position,right_operand,compressed_result,ZERO_GAP,AND,true);
 						right_operand_index = result[0];
@@ -435,11 +442,11 @@ namespace CompressedStructure{
 			{
 				if (gap_extension)
 				{
-					int right_start_bit = GetStartBitValue(right_operand[right_operand_index]);
+					int right_start_bit = GetStartBitValue(right_operand.at(right_operand_index));
 					if (right_start_bit == ZERO_GAP_WORD)
 					{
 						unsigned long int extra_blocks  = right_operand_end_position - left_operand_end_position;
-						unsigned long int no_of_blocks  = right_operand[right_operand_index] - ZERO_GAP_START_FLAG;
+						unsigned long int no_of_blocks  = right_operand.at(right_operand_index) - ZERO_GAP_START_FLAG;
 						unsigned long int new_gap  = ZERO_GAP_START_FLAG + extra_blocks ;
 						SetValueOnCompressedWord(new_gap ,compressed_result);
 						vector<int> result = AlignLeftWithRight(right_operand_end_position,left_operand_index,left_operand_end_position,left_operand,compressed_result,ZERO_GAP,AND,gap_extension);
@@ -473,7 +480,7 @@ namespace CompressedStructure{
 				}else
 				{if (right_operand_zero_run)
 				{
-					SetValueOnCompressedWord(right_operand[right_operand_index],compressed_result);
+					SetValueOnCompressedWord(right_operand.at(right_operand_index),compressed_result);
 					vector<int> result = AlignLeftWithRight(right_operand_end_position,left_operand_index,left_operand_end_position,left_operand,compressed_result,ZERO_GAP,AND,gap_extension);
 					left_operand_index = result[0];
 					left_operand_end_position = result[1];

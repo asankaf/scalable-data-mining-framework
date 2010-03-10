@@ -25,7 +25,7 @@ public:
 	//__declspec(dllexport) virtual int getMainArrayLength() = 0;
 	//__declspec(dllexport) virtual dynamic_bitset<> getCompressedWord() = 0;
 	//__declspec(dllexport) virtual int getValue(boost::dynamic_bitset<> & bitMap,int startIndex,int offset) = 0;
-	__declspec(dllexport) virtual int GetSpaceUtilisation() = 0;
+	
 
 	__declspec(dllexport) virtual BitStreamInfo* operator~() = 0;
 
@@ -55,6 +55,7 @@ public:
 	__declspec(dllexport) void Type(BitStreamInfo::vertical_bit_type val);
 	__declspec(dllexport) void Print(void);
 	__declspec(dllexport) void Clone(BitStreamInfo * _new_stream);
+	__declspec(dllexport) virtual size_t SpaceUtilisation() = 0;
 	/*
 	static const unsigned long int ZERO_LITERAL = 0;
 	static const unsigned long int ONE_LITERAL = 2147483647;

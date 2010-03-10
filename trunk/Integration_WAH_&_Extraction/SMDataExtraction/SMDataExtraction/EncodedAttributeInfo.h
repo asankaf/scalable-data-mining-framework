@@ -26,6 +26,7 @@ public:
 	__declspec(dllexport) void setVBitStreamSize(int newSize);
 	__declspec(dllexport) BitStreamInfo* bitStreamAt(int bitStreamID);
 	__declspec(dllexport) BitStreamInfo* operator()(const int bitStreamID);
+	__declspec(dllexport) size_t SpaceUtilisation();
 	
 	template<typename T>
 	__declspec(dllexport) T decodeTheTuple(int tupleID) = 0;

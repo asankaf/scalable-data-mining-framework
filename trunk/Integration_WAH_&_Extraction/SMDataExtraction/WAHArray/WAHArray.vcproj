@@ -187,6 +187,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestSeedMiner.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WAHArray.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WAHStructure.cpp"
 				>
 			</File>
@@ -231,10 +239,6 @@
 				</File>
 				<File
 					RelativePath=".\TimeTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\WAHArray.cpp"
 					>
 				</File>
 			</Filter>
@@ -298,6 +302,10 @@
 			</File>
 			<File
 				RelativePath=".\TestApriori.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestSeedMiner.h"
 				>
 			</File>
 			<Filter

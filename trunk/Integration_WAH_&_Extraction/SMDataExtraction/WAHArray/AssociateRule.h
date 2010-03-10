@@ -14,8 +14,8 @@ namespace Algorithm{
 		void Consequent(vector<int> val) { m_consequent = val; }
 		int Support() const { return m_support; }
 		void Support(int val) { m_support = val; }
-		int Confidence() const { return m_confidence; }
-		void Confidence(int val) { m_confidence = val; }
+		float Confidence() const { return m_confidence; }
+		void Confidence(float val) { m_confidence = val; }
 		std::string Rule() const { return m_rule; }
 		void Rule(std::string val) { m_rule = val; }
 
@@ -24,6 +24,6 @@ namespace Algorithm{
 		vector<int> m_consequent;	
 		string m_rule;		
 		int m_support;		
-		int m_confidence;		
+		float m_confidence;		
 	};
 }

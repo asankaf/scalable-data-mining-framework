@@ -13,6 +13,7 @@ BitStreamInfo::BitStreamInfo(int bitCount){
 BitStreamInfo::~BitStreamInfo(){
 
 }
+
 void BitStreamInfo::Print()
 {
 	cout <<this->Decompress()<< endl;
