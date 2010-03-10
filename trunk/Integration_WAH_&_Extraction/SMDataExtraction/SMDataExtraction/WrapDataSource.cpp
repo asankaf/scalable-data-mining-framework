@@ -143,7 +143,10 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 			this->_codedAtts.insert(this->_codedAtts.begin(),multiCatAtt);
 		}
 		else this->_codedAtts.insert(this->_codedAtts.begin(),multiCatAtt->attributeID(),multiCatAtt);
-	}
+ 	}
+	vector<EncodedAttributeInfo* >::iterator nonrepetitivePos;
+	nonrepetitivePos = std::unique(this->_codedAtts.begin(),this->_codedAtts.end());
+	this->_codedAtts.erase(nonrepetitivePos,this->_codedAtts.end());
 }
 	catch(std::exception &e){
 		cerr<<"Error in encoding multi category attribute values : "<<e.what()<<endl;
