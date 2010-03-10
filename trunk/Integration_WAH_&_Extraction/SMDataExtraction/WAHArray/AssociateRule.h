@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #pragma once
 using namespace std;
 namespace Algorithm{
@@ -15,10 +16,13 @@ namespace Algorithm{
 		void Support(int val) { m_support = val; }
 		int Confidence() const { return m_confidence; }
 		void Confidence(int val) { m_confidence = val; }
+		std::string Rule() const { return m_rule; }
+		void Rule(std::string val) { m_rule = val; }
 
 	private:
 		vector<int> m_antecedant;		
-		vector<int> m_consequent;		
+		vector<int> m_consequent;	
+		string m_rule;		
 		int m_support;		
 		int m_confidence;		
 	};

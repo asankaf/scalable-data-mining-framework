@@ -40,6 +40,14 @@ namespace Algorithm{
 		void CalculateCountsForUniqueBitmaps();
 		vector<int> GenerateAntedecent(int _index,vector<int> & _frequent_indices);
 		int CalculateHash(vector<int> & _vector);
+		vector<AssociateRule *> Rules() const { return m_rules; }
+		void Rules(vector<AssociateRule *> val) { m_rules = val; }
+		void GenerateRules();
+		void RunAlgorithm(WrapDataSource * source);
+		void GenerateRulesForHolder(BitStreamHolder * _holder);
+		string GetStringForVector(vector<EncodedAttributeInfo *> & _atrributes,vector<int> & _index_vector);
+		void CreateRuleStrings(WrapDataSource * source);
+		void CreateStringForRule(AssociateRule * _rule , vector<EncodedAttributeInfo *> _atrributes);
 
 
 	private:
@@ -53,5 +61,6 @@ namespace Algorithm{
 		vector<unsigned long int> m_unique_values_index_map;		
 		vector<BitStreamHolder *> m_candidate_set;	
 		vector<AssociateRule *> m_rules;
+		
 	};
 }

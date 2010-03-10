@@ -90,10 +90,23 @@ namespace Algorithm{
 		{
 			EncodedAttributeInfo * current_att = *(iter);
 			multi_cat= static_cast<EncodedMultiCatAttribute *>(current_att);
-			GetUniqueBitmaps(current_att,_bitmaps,multi_cat->mappedValList(),_index_bitmap_map,_pattern_index_map);
+			vector<dynamic_bitset<>> unique_vals = GenerateUniqueValues(multi_cat->uniqueValList(),multi_cat->NoOfVBitStreams());
+			GetUniqueBitmaps(current_att,_bitmaps,unique_vals,_index_bitmap_map,_pattern_index_map);
 		}
 	}
 	
+	vector<dynamic_bitset<>> AlgoUtils::GenerateUniqueValues(vector<string> & _string_map,int _no_of_bits)
+	{
+		vector<dynamic_bitset<>> temp_bitset;
+		for (size_t index = 0; index < _string_map.size(); index++)
+		{
+			dynamic_bitset<> temp(_no_of_bits,(unsigned long)index);
+			temp_bitset.push_back(temp);
+		}
+
+		return temp_bitset;
+	}
+
 	void AlgoUtils::CopyFirstToSecond(vector<BitStreamHolder *> & left,vector<BitStreamHolder *> & right)
 	{
 		back_insert_iterator<vector<BitStreamHolder *>> back_iter(right);

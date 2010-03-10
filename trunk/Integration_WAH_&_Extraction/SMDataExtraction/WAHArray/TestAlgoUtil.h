@@ -4,6 +4,7 @@
 #include "boost\dynamic_bitset\dynamic_bitset.hpp"
 #include "DataSourceGenerator.h"
 #include <iostream>
+#include "associaterule.h"
 
 using namespace std;
 using namespace Algorithm ;
@@ -22,6 +23,7 @@ public:
 	void PrintBitStreamHolderVector(vector<BitStreamHolder *> _holder);
 	void PrintBitStreamHolder(BitStreamHolder * _holder);
 	void PrintBitStreamInfo(BitStreamInfo * _bit_stream);
+	void PrintAssociateRule(AssociateRule * rule);
 	void PrintAttIdIndexMapping(map<int ,vector<int>> & _index_att_value_map);
 	void TestUniqueVlauesForDataSource();
 	WrapDataSource * GetTestWrappedDataSource();
