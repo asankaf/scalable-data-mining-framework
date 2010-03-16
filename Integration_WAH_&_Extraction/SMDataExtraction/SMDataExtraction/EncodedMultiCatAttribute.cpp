@@ -20,7 +20,7 @@ int EncodedMultiCatAttribute::noOfUniqueValues(){
 	return this->_noOfUniqueVals;
 }
 
-void EncodedMultiCatAttribute::mapStringDataToCategories(string* _valueList,vector<string> _uniqueValList,int noOfRows){
+void EncodedMultiCatAttribute::mapStringDataToCategories(vector<string> _valueList,vector<string> _uniqueValList,int noOfRows){
 	this->_uniqueValList = _uniqueValList;
 	int maxUniqueIndex = _uniqueValList.size();
 	int temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
@@ -35,7 +35,7 @@ void EncodedMultiCatAttribute::mapStringDataToCategories(string* _valueList,vect
 	for (int i = 0 ; i < noOfRows ; i++)
 	{
 		//int pos = std::find(_uniqueValList.begin(),_uniqueValList.end(),_valueList[i]) - _uniqueValList.begin();
-		int pos = binarySearch(_uniqueValList,_valueList[i],0,(_uniqueValList.size() - 1));
+		int pos = binarySearch(_uniqueValList,_valueList.at(i),0,(_uniqueValList.size() - 1));
 		dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)pos);
 		this->_mappedValList.push_back(bitSet);
 	}

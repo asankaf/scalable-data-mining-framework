@@ -31,7 +31,7 @@ vector<AssociateRule *> TestSeedMiner::TestAlgorithm(WrapDataSource *_wrapped, f
 void TestSeedMiner::TestSM(){
 	DBConnection cCon("SOY","","");
 	cCon.initiateConnectionToDB();
-	char* command = "SELECT  precip,date,class FROM soyabeantest LIMIT 100";
+	char* command = "SELECT  * FROM soyabeantest ";
 	//char* command = "SELECT  precip,date,class FROM soyabeantest LIMIT 100";
 	DBQueryExecution cExec(command);
 	cout << "Loaded Data" << endl;

@@ -27,6 +27,7 @@ public:
 	void encodeStringAttributes(vector<PureStringAttInfo*> stringAtts);
 	__declspec(dllexport) void CodedAtts(vector<EncodedAttributeInfo *> _coded_atts );
 	__declspec(dllexport) size_t SpaceUtilsation();
+	__declspec(dllexport) DBQueryExecution queryExecPointer();
 	
 
 private:

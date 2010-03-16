@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="WAHArray"
-	ProjectGUID="{D9B5D438-1911-4782-9BCD-9990879FCB10}"
-	RootNamespace="WAHArray"
+	Name="Algorithm"
+	ProjectGUID="{F620090B-9EA5-403B-9E7F-8B2161D30968}"
+	RootNamespace="Algorithm"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -41,15 +41,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\MyDocuments\University\L4\Project\GSODBC;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0"
-				AdditionalUsingDirectories=""
+				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -63,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="..\WAHArray\Debug\BitsetGenerator.obj ..\WAHArray\Debug\BitStreamInforTest.obj ..\WAHArray\Debug\CompressionHandler.obj ..\WAHArray\Debug\DataSourceGenerator.obj ..\WAHArray\Debug\TestCompressionHandler.obj ..\WAHArray\Debug\TestWAHArray.obj ..\WAHArray\Debug\TimeTest.obj ..\WAHArray\Debug\WAHStructure.obj"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
 				GenerateDebugInformation="true"
@@ -179,70 +178,70 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CompressionHandler.cpp"
+				RelativePath=".\Algorithm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\WAHArray.cpp"
+				RelativePath=".\stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\WAHArray\TestApriori.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\WAHStructure.cpp"
+				RelativePath="..\WAHArray\TestSeedMiner.cpp"
 				>
 			</File>
 			<Filter
-				Name="TestWAH"
+				Name="Algorithm"
 				>
 				<File
-					RelativePath=".\BitsetGenerator.cpp"
+					RelativePath="..\WAHArray\AlgoUtils.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\BitStreamInforTest.cpp"
+					RelativePath="..\WAHArray\Apriori.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DataSourceGenerator.cpp"
+					RelativePath="..\WAHArray\AssociateRule.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\stdafx.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\TestWAHArray.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TimeTest.cpp"
+					RelativePath="..\WAHArray\BitStreamHolder.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="WAHStructure"
-				>
-			</Filter>
-			<Filter
-				Name="CompHandlerTest"
+				Name="TestAlgo"
 				>
 				<File
-					RelativePath=".\TestCompressionHandler.cpp"
+					RelativePath="..\WAHArray\TestAlgoUtil.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="TestHolder"
+				>
+				<File
+					RelativePath="..\WAHArray\TestHolderOperations.cpp"
 					>
 				</File>
 			</Filter>
@@ -252,51 +251,59 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\WAHArray\CompressionHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath="..\WAHArray\TestApriori.h"
+				>
+			</File>
+			<File
+				RelativePath="..\WAHArray\TestSeedMiner.h"
+				>
+			</File>
 			<Filter
-				Name="TestWAH"
+				Name="Algorithm"
 				>
 				<File
-					RelativePath=".\BitsetGenerator.h"
+					RelativePath="..\WAHArray\AlgoUtils.h"
 					>
 				</File>
 				<File
-					RelativePath=".\BitStreamInforTest.h"
+					RelativePath="..\WAHArray\Apriori.h"
 					>
 				</File>
 				<File
-					RelativePath=".\DataSourceGenerator.h"
+					RelativePath="..\WAHArray\AssociateRule.h"
 					>
 				</File>
 				<File
-					RelativePath=".\stdafx.h"
-					>
-				</File>
-				<File
-					RelativePath=".\targetver.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TestWAHArray.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TimeTest.h"
+					RelativePath="..\WAHArray\BitStreamHolder.h"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="WAHStructure"
+				Name="TestAlgo"
 				>
 				<File
-					RelativePath=".\WAHStructure.h"
+					RelativePath="..\WAHArray\TestAlgoUtil.h"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="TestCompHandler"
+				Name="TestHolder"
 				>
 				<File
-					RelativePath=".\TestCompressionHandler.h"
+					RelativePath="..\WAHArray\TestHolderOperations.h"
 					>
 				</File>
 			</Filter>
