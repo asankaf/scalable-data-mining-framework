@@ -186,10 +186,6 @@
 				RelativePath=".\WAHArray.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\WAHStructure.cpp"
-				>
-			</File>
 			<Filter
 				Name="TestWAH"
 				>
@@ -237,6 +233,10 @@
 			<Filter
 				Name="WAHStructure"
 				>
+				<File
+					RelativePath=".\WAHStructure.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="CompHandlerTest"
@@ -252,6 +252,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\CompressionHandler.h"
+				>
+			</File>
 			<Filter
 				Name="TestWAH"
 				>
