@@ -1,6 +1,10 @@
+#pragma once
 #include "StdAfx.h"
 #include "PureStringAttInfo.h"
 #include <algorithm>
+#include <time.h>
+#include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -17,8 +21,8 @@ void PureStringAttInfo::setValueList(string* values,int noRows){
 	this->setUniqueValueList(noRows);
 }
 
-string* PureStringAttInfo::ValueList(){
-	return this->_valueList;
+vector<string> PureStringAttInfo::ValueList(){
+	return this->_valList;
 }
 
 vector<string> PureStringAttInfo::uniqueValueList(){
@@ -38,4 +42,16 @@ void PureStringAttInfo::setUniqueValueList(int noRows){
 	nonrepetitivePos = std::unique(this->_uniqueValList.begin(),this->_uniqueValList.end());
 	this->_uniqueValList.erase(nonrepetitivePos,this->_uniqueValList.end());
 
+}
+
+void PureStringAttInfo::setValList(vector<string> valList){
+	//this->_valList =this->_uniqueValList = valList;
+		
+	clock_t start,end;
+	start = clock();
+	std::set<string> uniqueSet(valList.begin(),valList.end());
+	this->_uniqueSet = uniqueSet;
+
+	end = clock();
+	cout<<"Time to set unique values : "<<(end - start)<<endl;
 }

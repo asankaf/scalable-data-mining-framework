@@ -2,7 +2,9 @@
 #include "Apriori.h"
 #include <string.h>
 #include <time.h>
+#include <iostream>
 
+using namespace std;
 namespace Algorithm{
 	Apriori::Apriori(void)
 	{
@@ -154,9 +156,12 @@ if (!ContainsRule(rule_hash))
 		for (size_t index = 0; index < _index_vector.size();index++)
 		{
 			int attribute = m_index_attribute_map[_index_vector.at(index)];
-			string attribute_name = _atrributes.at(attribute)->attributeName();
+			
+			//Retrieving from attribute Id is handled this way
+			int attribute_vect_id = (_atrributes.size()-1) -attribute;
+			string attribute_name = _atrributes.at(attribute_vect_id)->attributeName();
 			unsigned long int unique_val = m_unique_values_index_map.at(index);
-			EncodedMultiCatAttribute * multi_cat = static_cast<EncodedMultiCatAttribute *>(_atrributes.at(attribute));
+			EncodedMultiCatAttribute * multi_cat = static_cast<EncodedMultiCatAttribute *>(_atrributes.at(attribute_vect_id));
 			string val = multi_cat->uniqueValList().at(unique_val);
 // 			strcat(result," , ");
 // 			strcat(result,val);
@@ -190,6 +195,7 @@ if (!ContainsRule(rule_hash))
 
 		int factor = 1;
 		int hash = 0;
+		sort(_vector.begin(),_vector.end());
 		for (vector_iter start = _vector.begin(); start != _vector.end(); start++)
 		{
 			hash += (*(start)+1)*factor;

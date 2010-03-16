@@ -1,7 +1,8 @@
 #include "StdAfx.h"
 #include "AlgoUtils.h"
+#include <iostream>
 
-
+using namespace std;
 namespace Algorithm{
 	AlgoUtils::AlgoUtils(void)
 	{
@@ -47,7 +48,7 @@ namespace Algorithm{
 			cout <<e.what()<< endl;
 			//e.
 		}
-
+		cout << "Bit map : "<< left_op->Decompress() << endl;
 		return left_op;
 	}
 //Test for this method failed, need to test rigorously
@@ -65,6 +66,7 @@ namespace Algorithm{
 			bit_streams_indices.push_back(current_index);
 			temp = _unique_patterns.at(index);
 			_pattern_index_map.push_back(temp.to_ulong());
+			cout << "Bit Stream Index : " << current_index << endl;
 			BitStreamHolder * holder = WrapWithHolder(FindPattern(temp,bit_streams),attribute_index,current_index);
 			_bitmaps.push_back(holder);	
 			//unique_val_map[current_index] = temp;

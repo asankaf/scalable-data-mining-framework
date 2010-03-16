@@ -15,17 +15,13 @@
 #include "bitstreaminfortest.h"
 //#include "DBConnection.h"
 #include "testcompressionhandler.h"
-#include "testalgoutil.h"
-#include "testholderoperations.h"
-#include "testapriori.h"
-#include "TestSeedMiner.h"
 
 using namespace std;
 using namespace boost;
 using namespace  boost::detail;
 using namespace CompressedStructure::TestStructure;
 using namespace CompressedStructure;
-using namespace DBConnectionInfo;
+//using namespace DBConnectionInfo;
 using namespace DBQueryExecutionInfo;
 void randomBitStreamTester();
 void WAHStructureBecnhmarkAND();
@@ -34,9 +30,7 @@ void WAHStructureBecnhmarkOR();
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-	TestSeedMiner ts;
-	ts.TestSM();
-	
+		
 	return 0;
 }
 

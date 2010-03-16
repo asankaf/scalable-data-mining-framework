@@ -42,6 +42,10 @@ size_t WrapDataSource::SpaceUtilsation()
 void WrapDataSource::encodeAtrributes(){
 	encodeIntAttributes(this->_queryDataInfo.RetievedIntData());
 	encodeStringAttributes(this->_queryDataInfo.RetrievedStringData());
+
+	vector<EncodedAttributeInfo* >::iterator nonrepetitivePos;
+	nonrepetitivePos = std::unique(this->_codedAtts.begin(),this->_codedAtts.end());
+	this->_codedAtts.erase(nonrepetitivePos,this->_codedAtts.end());
 }
 
 int WrapDataSource::noOfAttributes(){
@@ -62,49 +66,71 @@ void WrapDataSource::encodeIntAttributes(vector<PureIntAttInfo*> intAtts){
 	try{
 	for (; i< intAtts.size() ; i++)
 	{
-			PureIntAttInfo* pureIntAtt = intAtts.at(i);
+		PureIntAttInfo* pureIntAtt = intAtts.at(i);
 		EncodedIntAttribute *encodedIntAtt = new EncodedIntAttribute();
 		encodedIntAtt->setAttName(pureIntAtt->attName);
 		encodedIntAtt->setAttType(ATT_TYPE::SIGNEDINT_VAL);
 		encodedIntAtt->setAttID(pureIntAtt->attID);
 		
 		int upperNum = pureIntAtt->Upper();
-		encodedIntAtt->setNoOfVBitStreams((int)ceil(log10((double)upperNum)/log10(2.0)),this->_noOfRows);
-		long int *values = pureIntAtt->ValueList();
+		encodedIntAtt->setMaxVal(upperNum);
+		encodedIntAtt->setMinVal(pureIntAtt->Lower());
+		int no_v_bitStreams = (int)ceil(log10((double)upperNum)/log10(2.0));
+		encodedIntAtt->setNoOfVBitStreams(no_v_bitStreams,this->_noOfRows);
+		vector<long int> values = pureIntAtt->valList();
 		encodedIntAtt->setTheSignBitMap(values,this->_noOfRows);
 		int j = 0;
 		vector<dynamic_bitset<>> convertedBitSet;
-		int temp = convertedBitSet.size();
-		int no_v_bitStreams = encodedIntAtt->NoOfVBitStreams();
 
 		for (; j < this->_noOfRows ; j++)
 		{
-			dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)abs(values[j]));
+			dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)abs(values.at(j)));
 			convertedBitSet.push_back(bitSet);
 		}
-		encodedIntAtt->setVBitStreamSize(encodedIntAtt->NoOfVBitStreams());
+
+		int temp = convertedBitSet.size();
+		//encodedIntAtt->setVBitStreamSize(no_v_bitStreams);
 
 		time_t start,end;
 		start = clock();
 
-		for(int l = 0 ; l < temp ; l++)
+// 		for(int l = 0 ; l < temp ; l++)
+// 		{
+// 			for (int k = 0 ; k < no_v_bitStreams  ; k++)
+// 			{
+// 					bool val = convertedBitSet.at(l)[k];
+// 					encodedIntAtt->vBitStreams().at(k)->setBitStreamAllocAttID(pureIntAtt->attID);
+// 					encodedIntAtt->vBitStreams().at(k)->setBitStreamAllocAttName(encodedIntAtt->attributeName());
+// 					encodedIntAtt->vBitStreams().at(k)->setBitValue(l,val);
+// 			}
+// 		}
+
+		vector<BitStreamInfo*> vBitStreams;
+		for (int k = 0 ; k < no_v_bitStreams ; k++)
 		{
-			for (int k = 0 ; k < no_v_bitStreams  ; k++)
+			BitStreamInfo* temp_bitStream = new VBitStream();
+			dynamic_bitset<> temp_bitSet(temp);
+			for (int l = 0 ; l < temp ; l++)
 			{
-					bool val = convertedBitSet.at(l)[k];
-					encodedIntAtt->vBitStreams().at(k)->setBitStreamAllocAttID(pureIntAtt->attID);
-					encodedIntAtt->vBitStreams().at(k)->setBitStreamAllocAttName(encodedIntAtt->attributeName());
-					encodedIntAtt->vBitStreams().at(k)->setBitValue(l,val);
+				bool val = convertedBitSet.at(l)[k];
+				temp_bitSet[l] = val;
 			}
+			temp_bitStream->convert(temp_bitSet);
+			temp_bitStream->setBitStreamAllocAttID(pureIntAtt->attID);
+			temp_bitStream->setBitStreamAllocAttName(pureIntAtt->attName);
+
+			vBitStreams.push_back(temp_bitStream);
 		}
+		encodedIntAtt->setVBitStreams(vBitStreams);
+
 		end = clock();
-		cout<<"Time to encode Int data : "<<(end - start) << endl;
+		cout<<endl<<"Time to encode Int data : "<<(end - start) << endl;
 		this->_codedIntAtts.push_back(encodedIntAtt);
 		if (encodedIntAtt->attributeID() == 0)
 		{
 			this->_codedAtts.insert(this->_codedAtts.begin(),encodedIntAtt);
 		}
-		else this->_codedAtts.insert(this->_codedAtts.begin(),encodedIntAtt->attributeID(),encodedIntAtt);
+		else this->_codedAtts.insert(this->_codedAtts.end(),encodedIntAtt->attributeID(),encodedIntAtt);
 	}
 }
 	catch(std::exception &e){
@@ -135,16 +161,22 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 		vector<dynamic_bitset<>> convertedBitSet = multiCatAtt->mappedValList();
 		int temp = convertedBitSet.size();
 		int no_v_streams = multiCatAtt->NoOfVBitStreams();
+		int vBitIndex = 0;
+		
 		for (int j = 0 ; j < temp ; j++)
 		{
+
 			for (int k = 0 ; k < no_v_streams  ; k++)
 			{
 					bool val = convertedBitSet.at(j)[k];
 					multiCatAtt->vBitStreams().at(k)->setBitStreamAllocAttID(stringAtt->attID);
 					multiCatAtt->vBitStreams().at(k)->setBitStreamAllocAttName(stringAtt->attName);
 					multiCatAtt->vBitStreams().at(k)->setBitValue(j,val);
+					
 			}
+			
 		}
+
 		end = clock();
 		cout<<"Time to encode converted data : "<<(end - start) << endl;
 		this->_codedStringAtts.push_back(multiCatAtt);
@@ -153,11 +185,9 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 		{
 			this->_codedAtts.insert(this->_codedAtts.begin(),multiCatAtt);
 		}
-		else this->_codedAtts.insert(this->_codedAtts.begin(),multiCatAtt->attributeID(),multiCatAtt);
+		else this->_codedAtts.insert(this->_codedAtts.end(),multiCatAtt->attributeID(),multiCatAtt);
  	}
-	vector<EncodedAttributeInfo* >::iterator nonrepetitivePos;
-	nonrepetitivePos = std::unique(this->_codedAtts.begin(),this->_codedAtts.end());
-	this->_codedAtts.erase(nonrepetitivePos,this->_codedAtts.end());
+	
 }
 	catch(std::exception &e){
 		cerr<<"Error in encoding multi category attribute values : "<<e.what()<<endl;
@@ -247,3 +277,6 @@ BitStreamInfo* WrapDataSource::operator ()(const int attID, const int BitStreamI
 	return (*(this->_codedAtts[attID]))(BitStreamID);
 }
 
+DBQueryExecution WrapDataSource::queryExecPointer(){
+	return (this->_queryDataInfo);
+}
