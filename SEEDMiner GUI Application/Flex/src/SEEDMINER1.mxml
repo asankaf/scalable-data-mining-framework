@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640">
+	
+	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
+		<mx:ApplicationControlBar x="10" y="10" width="98%" height="97%" name="topbar">
+			<mx:Canvas width="100%" height="100%">
+				<mx:TabNavigator width="100%" height="90" id="toptabs" x="0" y="0" borderColor="#AAB3B3">
+					<mx:Canvas label="DataSources" width="100%" height="100%">
+						<mx:Image x="10" y="7" source="@Embed('1.jpg')"/>
+						<mx:Image x="66" y="7" source="@Embed('2.jpg')"/>
+						<mx:Image x="124" y="7" source="@Embed('3.jpg')"/>
+						<mx:Image x="182" y="7" source="@Embed('4.jpg')"/>
+					</mx:Canvas>				
+					<mx:Canvas label="Filters" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="Associate Rule Minning" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="Classifires" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="Clustering" width="100%" height="100%">
+					</mx:Canvas>
+				</mx:TabNavigator>
+				<mx:Canvas x="0" y="89" width="100%" height="520" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FFFFFF" id="drawingcanvas">
+					<mx:Canvas x="10" y="308" width="380" height="200">
+						<mx:Form x="10" y="10">
+							<mx:FormItem label="x">
+								<mx:HSlider minimum="0" maximum="900" id="xslideval"/>
+							</mx:FormItem>
+							<mx:FormItem label="y">
+								<mx:HSlider minimum="0" maximum="600" id="yslideval"/>
+							</mx:FormItem>
+							<mx:FormItem label="x">
+								<mx:TextInput id="xstart"/>
+							</mx:FormItem>
+							<mx:FormItem label="y">
+								<mx:TextInput id="ystart"/>
+							</mx:FormItem>
+							<mx:Button label="Draw" click="draw(event)"/>
+						</mx:Form>
+					</mx:Canvas>
+				</mx:Canvas>
+			</mx:Canvas>
+		</mx:ApplicationControlBar>
+	</mx:Canvas>
+
+	<mx:Style source="styles.css"/>
+	<mx:Script source="eventsfunctions.as"/>
+</mx:Application>
