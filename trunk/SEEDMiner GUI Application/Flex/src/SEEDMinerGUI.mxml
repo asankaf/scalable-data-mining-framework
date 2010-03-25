@@ -6,10 +6,10 @@
 			<mx:Canvas width="100%" height="100%">
 				<mx:TabNavigator width="100%" height="90" id="toptabs" x="0" y="0" borderColor="#AAB3B3">
 					<mx:Canvas label="DataSources" width="100%" height="100%">
-						<mx:Image x="10" y="7" source="@Embed('1.jpg')"/>
-						<mx:Image x="66" y="7" source="@Embed('2.jpg')"/>
-						<mx:Image x="124" y="7" source="@Embed('3.jpg')"/>
-						<mx:Image x="182" y="7" source="@Embed('4.jpg')"/>
+						<mx:Image x="10" y="7" source="@Embed('1.jpg')" mouseDown="mouseDownHandler(event);" id="CSVDS"/>
+						<mx:Image x="66" y="7" source="@Embed('2.jpg')" mouseDown="mouseDownHandler(event);"/>
+						<mx:Image x="124" y="7" source="@Embed('3.jpg')" mouseDown="mouseDownHandler(event);"/>
+						<mx:Image x="182" y="7" source="@Embed('4.jpg')" mouseDown="mouseDownHandler(event);"/>
 					</mx:Canvas>				
 					<mx:Canvas label="Filters" width="100%" height="100%">
 					</mx:Canvas>
@@ -20,7 +20,7 @@
 					<mx:Canvas label="Clustering" width="100%" height="100%">
 					</mx:Canvas>
 				</mx:TabNavigator>
-				<mx:Canvas x="0" y="89" width="100%" height="520" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FFFFFF" id="drawingcanvas">
+				<mx:Canvas x="0" y="89" width="100%" height="520" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);">
 					<mx:Canvas x="10" y="308" width="380" height="200">
 						<mx:Form x="10" y="10">
 							<mx:FormItem label="x">
@@ -38,6 +38,7 @@
 							<mx:Button label="Draw" click="draw(event)"/>
 						</mx:Form>
 					</mx:Canvas>
+					<mx:Label x="700" y="409" id="lble" width="131" height="41" text="label"/>
 				</mx:Canvas>
 			</mx:Canvas>
 		</mx:ApplicationControlBar>
