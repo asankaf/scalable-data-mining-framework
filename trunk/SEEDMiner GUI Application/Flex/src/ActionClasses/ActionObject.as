@@ -18,6 +18,10 @@ package ActionClasses
 		function get imageY():Number;
 		
 		function set imageY(num:Number):void;
+		
+		function get correctionX():Number;
+		
+		function get correctionY():Number;
 
 	}
 }
