@@ -12,13 +12,15 @@ package ActionClasses
 		private var imageObj:Image;
 		private var imageXposition:Number;
 		private var imageYposition:Number;	
-		public var correctionX:Number;
-		public var correctionY:Number;
+		private var correctionXvalue:Number;
+		private var correctionYvalue:Number;
+		private var arrowDrawing:Boolean=false;
 		
 		public function CSVDataSource()
 		{
 			imageObj = new Image();
 			imageObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
+			imageObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 		}
 
 		public function type():Number
@@ -58,10 +60,20 @@ package ActionClasses
 			imageObj.y=imageYposition;
 		}
 		
+		public function get correctionX():Number
+		{
+			return correctionXvalue;
+		}
+		
+		public function get correctionY():Number
+		{
+			return correctionYvalue;
+		}
+		
 		private function mouseDownHandler(event:MouseEvent):void
 		{
-			correctionX=event.localX;
-			correctionY=event.localY;
+			correctionXvalue=event.localX;
+			correctionYvalue=event.localY;
 			
 		    var dragInitiator:Image=Image(event.currentTarget);
 		    var ds:DragSource = new DragSource();
@@ -71,6 +83,11 @@ package ActionClasses
 		    imageProxy.source = dragInitiator.source;
 		             
 		    DragManager.doDrag(dragInitiator, ds, event, imageProxy, 0, 0, 0.80);
+		}
+		
+		private function mouseClickHandler(event:MouseEvent):void
+		{
+		    arrowDrawing=true;
 		}
 		
 	}

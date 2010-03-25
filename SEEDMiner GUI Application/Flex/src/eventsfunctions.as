@@ -1,6 +1,7 @@
 // ActionScript file
 import ActionClasses.ActionObject;
 import ActionClasses.CSVDataSource;
+import ActionClasses.MySQLDataSource;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -26,9 +27,18 @@ private function mouseDownHandler(event:MouseEvent):void
     ds.addData(dragInitiator, "img");
 
     //TODO add code for other action objects
-    var csvDataSource:ActionObject = new CSVDataSource();
-    csvDataSource.image=dragInitiator;
-    actionObj=csvDataSource;
+    if(dragInitiator.id=="CSV_DataSource")
+    {
+    	var csvDataSource:ActionObject = new CSVDataSource();
+    	csvDataSource.image=dragInitiator;
+    	actionObj=csvDataSource;	
+    }
+    else if(dragInitiator.id=="MySQL_DataSource")
+    {
+    	var mysqlDataSource:ActionObject = new MySQLDataSource();
+    	mysqlDataSource.image=dragInitiator;
+    	actionObj=mysqlDataSource;	
+    }
 
     var imageProxy:Image = new Image();
     imageProxy.source = dragInitiator.source;
@@ -36,7 +46,8 @@ private function mouseDownHandler(event:MouseEvent):void
     DragManager.doDrag(dragInitiator, ds, event, imageProxy, 0, 0, 0.80);
 }
 
-private function dragEnterHandler(event:DragEvent):void {
+private function dragEnterHandler(event:DragEvent):void 
+{
     if (event.dragSource.hasFormat("img"))
     {
         DragManager.acceptDragDrop(Canvas(event.currentTarget));
@@ -47,7 +58,8 @@ private function dragEnterHandler(event:DragEvent):void {
     }
 }
 
-private function dragDropHandler(event:DragEvent):void {
+private function dragDropHandler(event:DragEvent):void 
+{
 	if (event.dragSource.hasFormat("img"))
     {
     	actionObj.imageX=event.localX-correctionX;
@@ -57,16 +69,17 @@ private function dragDropHandler(event:DragEvent):void {
     }
     else if (event.dragSource.hasFormat("actionObj"))
     {
-    	var obj:CSVDataSource = CSVDataSource(event.dragSource.dataForFormat("actionObj"));
+    	var obj:ActionObject = ActionObject(event.dragSource.dataForFormat("actionObj"));
     	obj.image.x=event.localX-obj.correctionX;
     	obj.image.y=event.localY-obj.correctionY;
     }
 }
 
-private function dragOverHandler(event:DragEvent):void {
+private function dragOverHandler(event:DragEvent):void 
+{
 	if (event.dragSource.hasFormat("img"))
     {
-    	DragManager.showFeedback(DragManager.LINK);
+    	DragManager.showFeedback(DragManager.COPY);
     }
     else if (event.dragSource.hasFormat("actionObj"))
     {
@@ -74,21 +87,28 @@ private function dragOverHandler(event:DragEvent):void {
     }
 }
 
-private function myEventHandler(e:Event):void {
+private function mouseMoveHandler(event:MouseEvent):void 
+{
+	//event.currentTarget
+}
+
+private function myEventHandler(e:Event):void 
+{
     Alert.show("The button '" + e.currentTarget.id + "' was clicked.");
 }
 
-private function draw(e:Event):void {
+private function draw(e:Event):void 
+{
 
 	var line:Shape = new Shape();
 	
 	line.graphics.lineStyle(2,0xFF0000, .75);
 	
-	line.graphics.drawRect(0, 0, xslideval.value,yslideval.value);
+	//line.graphics.drawRect(0, 0, xslideval.value,yslideval.value);
 	
 	var mySprite:Sprite = new Sprite();
 	mySprite.graphics.beginFill(0xFFCC00,.2);
-	mySprite.graphics.drawCircle(200, 300, xslideval.value);
+	//mySprite.graphics.drawCircle(200, 300, xslideval.value);
 	
 	drawingcanvas.rawChildren.addChild(line);
 	drawingcanvas.rawChildren.addChild(mySprite);
@@ -96,6 +116,7 @@ private function draw(e:Event):void {
 
 var num:Number=0;
 
-private function testEvent(e:Event):void{
+private function testEvent(e:Event):void
+{
 	lble.text = (num++).toString();
 }
