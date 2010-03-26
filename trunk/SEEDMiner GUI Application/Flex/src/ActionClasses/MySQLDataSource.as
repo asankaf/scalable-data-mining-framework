@@ -15,6 +15,7 @@ package ActionClasses
 		private var correctionXvalue:Number;
 		private var correctionYvalue:Number;
 		private var arrowDrawing:Boolean=false;
+		private var idValue:Number;
 		
 		public function MySQLDataSource()
 		{
@@ -26,6 +27,16 @@ package ActionClasses
 		public function type():Number
 		{
 			return MySQL_DATASOURCE;
+		}
+		
+		public function get id():Number
+		{
+			return idValue;
+		}
+		
+		public function set id(idval:Number):void
+		{
+			idValue=idval;
 		}
 		
 		public function get image():Image
