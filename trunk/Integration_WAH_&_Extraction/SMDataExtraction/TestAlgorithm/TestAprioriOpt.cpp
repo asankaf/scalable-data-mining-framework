@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 #include "TestAprioriOpt.h"
 #include "DataSourceGenerator.h"
+#include "csvconnection.h"
+#include "CompressionHandler.h"
 
-
+using namespace CSVConnectionInfo;
 TestAprioriOpt::TestAprioriOpt(void)
 {
 	
@@ -16,17 +18,20 @@ void TestAprioriOpt::TestSuite()
 	// Testing unique itemset generation
 	
 	// Creating a wrapped data source
-	//WrapDataSource * ws = CreateWrappedDataSource();
-	DBConnection cCon("SOY","","");
-	cCon.initiateConnectionToDB();
-	char* command = "SELECT  * FROM soyabeantest ";
-	//char* command = "SELECT  precip,date,class FROM soyabeantest LIMIT 100";
-	DBQueryExecution cExec(command);
+	
+	CsvConnection cConcsv("C:\\soybeanTest3.csv",',','\n','""');	
+//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	
 	cout << "Loaded Data" << endl;
-	cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr());
+	cout << "No of Records : "<< dat->RowCount() << endl;
+	
 
-	WrapDataSource *ds = new WrapDataSource(cExec,0);	
+	WrapDataSource *ds = new WrapDataSource(*dat,0);
+
 	ds->encodeAtrributes();
+	CompressionHandler comp;
+	//comp.ConvertTo(ds,BitStreamInfo::WAH_COMPRESSION);
 
 	AprioriOpt opt;
 	//TestUniqueItemSetGeneration(ds,opt);

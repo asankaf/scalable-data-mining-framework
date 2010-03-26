@@ -10,11 +10,17 @@ EncodedAttributeInfo::EncodedAttributeInfo(){
 }
 
 EncodedAttributeInfo::~EncodedAttributeInfo(){
-
+	for (int i = 0 ; i < this->NoOfVBitStreams() ; i++)
+	{
+		delete this->_vBStreams[i];
+	}
+	delete this->_vBStreams;
 }
 
 vector<BitStreamInfo*> EncodedAttributeInfo::vBitStreams(){
-	return this->_vBitStreams;
+	vector<BitStreamInfo*> bitVector(this->_vBStreams,this->_vBStreams + this->NoOfVBitStreams());
+	this->_vBitStreams = bitVector;
+	return bitVector;
 }
 
 int EncodedAttributeInfo::attributeID(){
@@ -45,7 +51,7 @@ size_t EncodedAttributeInfo::SpaceUtilisation()
 }
 
 BitStreamInfo* EncodedAttributeInfo::bitStreamAt(int bitStreamID){
-	return this->_vBitStreams.at(bitStreamID);
+	return this->_vBStreams[bitStreamID];
 }
 
 BitStreamInfo* EncodedAttributeInfo::operator ()(const int bitStreamID){
@@ -77,13 +83,11 @@ void EncodedAttributeInfo::setAttType(ATT_TYPE type){
 
 void EncodedAttributeInfo::setNoOfVBitStreams(int novBitsets, int rows){
 	try{
-	this->_noOfVBitStreams = novBitsets;
-	this->_vBitStreams.resize(this->_noOfVBitStreams);
-
-	for (int i = 0 ; i <novBitsets ; i++)
-	{
-			this->_vBitStreams.at(i) = new VBitStream(rows);
-		}
+		this->_noOfVBitStreams = novBitsets;
+// 		for (int i = 0 ; i < rows ; i++)
+// 		{
+// 			this->_vBStreams[i] = new VBitStream(rows);
+// 		}
 	}
 	catch(std::exception &e){
 		cerr<<"Error in creating vertical bit streams for a given # of bit stream"<<endl;
@@ -91,6 +95,10 @@ void EncodedAttributeInfo::setNoOfVBitStreams(int novBitsets, int rows){
 	}
 }
 
-void EncodedAttributeInfo::setVBitStreams(std::vector<BitStreamInfo*> vBitset){
-	this->_vBitStreams = vBitset;
+void EncodedAttributeInfo::setVBitStreams(BitStreamInfo **VBitStreams){
+	this->_vBStreams = VBitStreams;
+}
+
+void EncodedAttributeInfo::setVBitStreams(vector<BitStreamInfo *> VBitStreams){
+	this->_vBitStreams = VBitStreams;
 }

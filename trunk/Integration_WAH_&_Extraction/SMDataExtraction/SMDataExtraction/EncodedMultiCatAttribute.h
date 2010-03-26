@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <set>
+#include <map>
 #include <string>
 #include <math.h>
 #include <algorithm>
@@ -22,12 +24,16 @@ public:
 	__declspec(dllexport) int* getMappedIntVals();
 	__declspec(dllexport) int noOfUniqueValues();
 	__declspec(dllexport) string decodeTheTuple(int tupleID);
-	void mapStringDataToCategories(string* _valueList,vector<string> _uniqueValList,int noOfRows);
+	__declspec(dllexport) dynamic_bitset<>* mapStringDataToCategories(vector<string> _valueList,std::set<string> _uniqueValList,int noOfRows);
 	int binarySearch(vector<string> arr, string value, int left, int right);
+	void setUniqueMap();
 
 private:
 	int* _mappedIntVals;
 	vector<dynamic_bitset<>> _mappedValList;
+	dynamic_bitset<> *_mappedVals;
 	vector<string> _uniqueValList;
+	map<string,int> _uniqueValueMap;
+	map<string,int>::iterator _it;
 	int _noOfUniqueVals;
 };

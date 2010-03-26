@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "CsvConnection.h"
+#include "extractedCsvDTO.h"
 #include "DBConnection.h"
 #include "DBQueryExecution.h"
 #include "WrapDataSource.h"
@@ -13,76 +15,95 @@
 using namespace std;
 using namespace DBConnectionInfo;
 using namespace DBQueryExecutionInfo;
+using namespace CSVConnectionInfo;
+using namespace CsvDataExtraction;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	
+	CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');
+	time_t start_1,end_1;
+	start_1 = clock();
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	end_1 = clock();
+	cout<<"Time to retrieve "<< dat->RowCount() <<" records from CSV file : "<<(end_1 - start_1)<<endl;
+
 	//Testing the Library for initializing and connecting to the database.
-	DBConnection cCon("AdventureWorks","","");
-	if (cCon.initiateConnectionToDB())
-	{
-		cout<<"successfully connected"<<endl;
-	}
+// 	DBConnection cCon("SoyaBeanMySql","","");
+// 	if (cCon.initiateConnectionToDB())
+// 	{
+// 		cout<<"successfully connected"<<endl;
+// 	}
 	
 	//Testing the Library for executing query statements and binding data.
-	const char* statement="select TOP(5) GeographyKey,BusinessType from DimReseller";
+	const char* statement="SELECT * from soyabeanms";
 	DBQueryExecution cExec(statement);
-	if ((cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr())))
-	{
-		cout<<endl<<"Query executed & Fetched successfully"<<endl;
-	}
+	start_1 = clock();
+// 	if ((cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr())))
+// 	{
+// 		cout<<endl<<"Query executed & Fetched successfully"<<endl;
+// 	}
+	end_1 = clock();
+	cout<<"Time to retrieve "<<cExec.RowCount()<< " records via ODBC DSN : "<<(end_1 - start_1)<<endl;
 	
 	//Testing the retrieved Integer data.
-	vector<PureIntAttInfo*> retrievedIntData = cExec.RetievedIntData();
-	int i;
-	int j;
-	for (i=0 ; i<retrievedIntData.size() ; i++)
-	{
-		for (j=0 ; j<cExec.RowCount() ; j++)
-		{
-			cout<<retrievedIntData[i]->ValueList()[j]<<endl;
-		}	
-		cout<<"Max Value of " << retrievedIntData[i]->attName<< " : " << retrievedIntData[i]->Upper()<<endl; 
-		cout<<"Min Value of " << retrievedIntData[i]->attName<< " : " << retrievedIntData[i]->Lower()<<endl;
-
-	}
-	
-	//Testing the retrieved Double data.
-	vector<PureDoubleAttInfo*>  retrievedDoubleData = cExec.RetrievedDoubleData();
-
-	for (i=0 ; i<retrievedDoubleData.size() ; i++)
-	{
-		for (j=0 ; j<cExec.RowCount() ; j++)
-		{
-			cout<<retrievedDoubleData[i]->ValueList()[j]<<endl;
-		}
-		cout<<"Max Value of " << retrievedDoubleData[i]->attName <<" : " << retrievedDoubleData[i]->Upper()<<endl;
-		cout<<"Min Value of " << retrievedDoubleData[i]->attName <<" : " << retrievedDoubleData[i]->Lower()<<endl;
-	}	
+// 	vector<PureIntAttInfo*> retrievedIntData = cExec.RetievedIntData();
+// 	int i;
+// 	int j;
+// 	for (i=0 ; i<retrievedIntData.size() ; i++)
+// 	{
+// 		for (j=0 ; j<cExec.RowCount() ; j++)
+// 		{
+// 			cout<<retrievedIntData[i]->valList()[j]<<endl;
+// 		}	
+// 		cout<<"Max Value of " << retrievedIntData[i]->attName<< " : " << retrievedIntData[i]->Upper()<<endl; 
+// 		cout<<"Min Value of " << retrievedIntData[i]->attName<< " : " << retrievedIntData[i]->Lower()<<endl;
+// 
+// 	}
+// 	
+// 	//Testing the retrieved Double data.
+// 	vector<PureDoubleAttInfo*>  retrievedDoubleData = cExec.RetrievedDoubleData();
+// 
+// 	for (i=0 ; i<retrievedDoubleData.size() ; i++)
+// 	{
+// 		for (j=0 ; j<cExec.RowCount() ; j++)
+// 		{
+// 			cout<<retrievedDoubleData[i]->ValueList()[j]<<endl;
+// 		}
+// 		cout<<"Max Value of " << retrievedDoubleData[i]->attName <<" : " << retrievedDoubleData[i]->Upper()<<endl;
+// 		cout<<"Min Value of " << retrievedDoubleData[i]->attName <<" : " << retrievedDoubleData[i]->Lower()<<endl;
+// 	}	
 
 	//Testing the retrieved String data.
-	vector<PureStringAttInfo*> retrievedStringData = cExec.RetrievedStringData();
+//	vector<PureStringAttInfo*> retrievedStringData = cExec.RetrievedStringData();
 
-	for (i=0 ; i<retrievedStringData.size() ; i++)
-	{
-		for (j=0 ; j<cExec.RowCount() ; j++)
-		{
-			cout<<retrievedStringData[i]->ValueList()[j]<<endl;
-		}
-
-		cout<<endl<<"Testing Unique Data Received"<<endl;
-
-		//Represents the unique string data.
-		vector<string> uniqueData = retrievedStringData[i]->uniqueValueList();
-		for (j=0 ; j<uniqueData.size() ; j++)
-		{
-			cout<<uniqueData[j]<<endl;
-		}
-	}
+// 	for (i=0 ; i<retrievedStringData.size() ; i++)
+// 	{
+// 		for (j=0 ; j<cExec.RowCount() ; j++)
+// 		{
+// 			cout<<retrievedStringData[i]->ValueList().at(j)<<endl;
+// 		}
+// 
+// 		cout<<endl<<"Testing Unique Data Received"<<endl;
+// 
+// 		//Represents the unique string data.
+// 		vector<string> uniqueData = retrievedStringData[i]->uniqueValueList();
+// 		for (j=0 ; j<uniqueData.size() ; j++)
+// 		{
+// 			cout<<uniqueData[j]<<endl;
+// 		}
+// 	}
 
 	DataSources * dss= new DataSources();	
-	WrapDataSource *ds = new WrapDataSource(cExec,0);
+	WrapDataSource *dsCsv = new WrapDataSource(*dat,0);
+	dsCsv->encodeAtrributes();
+	WrapDataSource *ds = new WrapDataSource(cExec,1);
 	dss->insertDataSources(ds);
 	ds->encodeAtrributes();
+	cout<<"Attributes Fetched : "<<ds->noOfAttributes()<<endl;
+	cout<<"Rows Fetched and encoded : " << ds->noOfRows()<<endl;
+	cout<<"No of Unique Data Items : "<<cExec.RetrievedStringData().at(0)->uniqueValueSet().size()<<endl;
+	//cout<<"No of Unique Vals : "<<cExec.RetrievedStringData().at(0)->uniqueValueSet().size()<<endl;
 	//BitStreamInfo* te = (*dss)(0,0,0);
 
 
@@ -119,7 +140,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				cout << vBitStream->getProcessedBitStream()<<endl;
 
 				//Decode a particular tuple upon given a tuple ID.
-				cout<<intAtt->decodeTheTuple(5)<<endl;;
+				cout<<intAtt->decodeTheTuple(4)<<endl;;
 				break;
 			}
 
@@ -150,7 +171,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				cout<<vBitStream->getProcessedBitStream()<<endl;
 
 				//Decode a particular tuple upon given a tuple ID.
-				cout<<multiCatAtt->decodeTheTuple(5)<<endl;;
+				cout<<multiCatAtt->decodeTheTuple(3)<<endl;;
 				break;
 			}
 		}
@@ -181,10 +202,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	
 	//Testing the closing connection method.
-	if (cCon.closeConnectionWithDB())
-	{
-		cout<<endl<<"Connection to the database is terminated successfully."<<endl;
-	}
+// 	if (cCon.closeConnectionWithDB())
+// 	{
+// 		cout<<endl<<"Connection to the database is terminated successfully."<<endl;
+// 	}
 	
 	return 0;
 }

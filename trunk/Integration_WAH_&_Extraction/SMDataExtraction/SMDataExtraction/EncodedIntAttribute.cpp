@@ -36,7 +36,7 @@ int EncodedIntAttribute::decodeTheTuple(int tupleID){
 
 	for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
 	{
-		temp[i] = this->vBitStreams().at(i)->getProcessedBitStream()[tupleID - 1];
+		temp[i] = this->vBitStreams()[i]->getProcessedBitStream()[tupleID - 1];
 	}
 
 	val = temp.to_ulong();
@@ -50,12 +50,12 @@ int EncodedIntAttribute::decodeTheTuple(int tupleID){
 }
 
 
-void EncodedIntAttribute::setTheSignBitMap(long int *values,int valSet){
+void EncodedIntAttribute::setTheSignBitMap(vector<long int> values,int valSet){
 	try{
 	this->_signBitMap.resize(valSet);
 	for (int i = 0 ; i < valSet ; i++)
 	{
-			if(values[i] == abs(values[i])) this->_signBitMap.at(i) = false;
+			if(values[i] == abs(values.at(i))) this->_signBitMap.at(i) = false;
 			else this->_signBitMap.at(i) = true;
 		}
 	}
