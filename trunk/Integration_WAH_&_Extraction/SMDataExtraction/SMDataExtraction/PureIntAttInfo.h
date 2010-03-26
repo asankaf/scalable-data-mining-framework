@@ -1,9 +1,6 @@
 #include "PureAttInfo.h"
-#include <vector>
 
 #pragma once
-
-using namespace std;
 
 class PureIntAttInfo : public PureAttInfo
 {
@@ -15,13 +12,10 @@ public:
 	void setUpper(long int upperLimit);
 	void setLower(long int lowerLimit);	
 	__declspec(dllexport) long int* ValueList();
-	__declspec(dllexport) vector<long int> valList(){return this->_valList;}
 	__declspec(dllexport) void setValueList(long int *values);
-	__declspec(dllexport) void setValList(vector<long int> vals){this->_valList = vals;}
 
 private:
 	long int _upper;
 	long int _lower;
 	long int* _valueList;
-	vector<long int> _valList;
 };

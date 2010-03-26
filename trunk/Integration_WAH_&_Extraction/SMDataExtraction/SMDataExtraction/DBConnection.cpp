@@ -22,14 +22,14 @@ namespace DBConnectionInfo{
 	
 	bool DBConnectionInfo::DBConnection::initiateConnectionToDB(){
 		try{
-// 			if (this->_DB_Connection_String == NULL)
-// 			{
-// 				this->_dbConPtr.connect(this->_DB_Connection_String);		
-// 			}
-// 			else
-// 			{
+			if (this->_DB_Connection_String == NULL)
+			{
+				this->_dbConPtr.connect(this->_DB_Connection_String);		
+			}
+			else
+			{
 				this->_dbConPtr.connect(this->_DSN_Name,this->_DB_UID,this->_DB_PWD);
-			//}
+			}
 			this->_dsnDriverInfo.setDSNDriverName(this->_dbConPtr.getDriver());
 			
 			return true;
@@ -70,8 +70,7 @@ namespace DBConnectionInfo{
 	}
 
 	DBConnectionInfo::DBConnection::~DBConnection(){
-		this->closeConnectionWithDB();
 		//default destructor.
-		std::cout<<"DBConnection destructor calls"<<std::endl;
+		//std::cout<<"DBConnection destructor calls"<<std::endl;
 	}
 }

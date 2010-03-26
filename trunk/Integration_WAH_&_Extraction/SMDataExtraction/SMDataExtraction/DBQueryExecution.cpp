@@ -14,30 +14,22 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <iostream>
-#include <time.h>
-#include <stack>
-#include <list>
 using namespace std;
 
 
 namespace DBQueryExecutionInfo{
 	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(const char* statement){
 		this->_query_stmt = statement;
-		_isRowCountSet = false;
 	}
 
-	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(){ _isRowCountSet = false;}
+	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(){}
 
-	bool DBQueryExecutionInfo::DBQueryExecution::ExecuteQueryAndBindData(CGOdbcConnect &cCon){
-		clock_t start,end;
+	bool DBQueryExecutionInfo::DBQueryExecution::ExecuteQueryAndBindData(CGOdbcConnect cCon){
 		try{
 			try{
-				this->_stmtPtr = cCon.createStatement();
-				start = clock();
-				this->_stmtPtr->execute(this->_query_stmt);
-				this->_stmtPtr->bindAuto();
-				end = clock();
-				cout<<"Time to execute and bind data : "<<(end - start)<<endl;
+			this->_stmtPtr = cCon.createStatement();
+			this->_stmtPtr->execute(this->_query_stmt);
+			this->_stmtPtr->bindAuto();
 			}
 			catch(CGOdbcEx *e){
 				cerr<<"Error in executing the query Specified : Possible error in query parsing"<<endl;
@@ -46,14 +38,19 @@ namespace DBQueryExecutionInfo{
 
 			CGOdbcStmt *pCur= this->_stmtPtr;
 			bool BRC;
-			int colCount = pCur->getColCount();
 
-			for (int it=0 ; it < colCount ; it++)
+			int rowCount = 0;
+			for (BRC = pCur->first(); BRC ; BRC = pCur->next())
+			{
+				rowCount++;
+			}
+			this->_rowCount = rowCount;		
+			
+			for (int it=0 ; it < pCur->getColCount() ; it++)
 			{				
 				BRC=false;
 				int columnType=pCur->getColumn(it)->iSqlType;
 				
-				start = clock();
 				if ((columnType == SQL_BIT) || (columnType == SQL_TINYINT) || (columnType == SQL_SMALLINT) || (columnType == SQL_INTEGER))
 				{
 					PureIntAttInfo *intAtt = new PureIntAttInfo();
@@ -61,41 +58,31 @@ namespace DBQueryExecutionInfo{
 					intAtt->type = Type.SIGNED_INT;
 					intAtt->attName = pCur->getColumn(it)->szName;
 					intAtt->attID = it;
-
+					
 					intAtt->setLower((int)(pow(2.0,31.0) - 1));
 					intAtt->setUpper((int)((pow(2.0,31.0) - 1)) * -1);
-					//long int *values=new long int[this->_rowCount];
-					vector<long int> intValList;
+					long int *values=new long int[this->_rowCount];
+					int temp = 0 ;
 					for (BRC = pCur->first(); BRC ; BRC = pCur->next())
 					{
-						long int tempVal = pCur->getInt(it);
-						intValList.push_back(tempVal);
-						//values[temp] = pCur->getInt(it);
-						if (tempVal > intAtt->Upper())
+						values[temp] = pCur->getInt(it);
+						if (values[temp] > intAtt->Upper())
 						{
-							intAtt->setUpper(tempVal);
+							intAtt->setUpper(values[temp]);
 						}
-						if (tempVal < intAtt->Lower())
+						if (values[temp] < intAtt->Lower())
 						{
-							intAtt->setLower(tempVal);
+							intAtt->setLower(values[temp]);
 						}
-
+						temp += 1;
 					}
-					if (!_isRowCountSet)
-					{
-						this->_rowCount = intValList.size();
-						_isRowCountSet = true;
-					}
-					//intAtt->setValueList(values);
-					intAtt->setValList(intValList);
+					
+					intAtt->setValueList(values);
 					this->_intData.push_back(intAtt);
-					end = clock();
-					cout<<"Time to Retrieve & bind INT Data : "<< (end - start) <<endl;
 				}
-				
+
 				else if ((columnType == SQL_DOUBLE) || (columnType == SQL_FLOAT) || (columnType == SQL_NUMERIC) || (columnType == SQL_REAL) || (columnType == SQL_DECIMAL))
 				{
-					start = clock();
 					PureDoubleAttInfo *doubleAtt=new PureDoubleAttInfo();
 
 					doubleAtt->type = Type.SIGNED_INT;
@@ -105,120 +92,147 @@ namespace DBQueryExecutionInfo{
 					doubleAtt->setLower(pow(2.0,63.0) - 1);
 					doubleAtt->setUpper((pow(2.0,63.0) - 1) * -1);
 
-					//double *values = new double[rowCount];
-					vector<double> doublevals;
+					double *values = new double[rowCount];
+					int temp = 0;
+					bool BRC;
 					for (BRC = pCur->first() ; BRC ; BRC = pCur->next())
 					{
-						double tempVal = pCur->getNumber(it);
-						doublevals.push_back(tempVal);
-						//values[temp] = pCur->getNumber(it);
-
-						if (tempVal > doubleAtt->Upper())
+						values[temp] = pCur->getNumber(it);
+						
+						if (values[temp] > doubleAtt->Upper())
 						{
-							doubleAtt->setUpper(tempVal);
+							doubleAtt->setUpper(values[temp]);
 						}
-						if (tempVal < doubleAtt->Lower())
+						if (values[temp] < doubleAtt->Lower())
 						{
-							doubleAtt->setLower(tempVal);
+							doubleAtt->setLower(values[temp]);
 						}
+						temp += 1;
 					}
 
-					if (!_isRowCountSet)
-					{
-						this->_rowCount = doublevals.size();
-						_isRowCountSet = true;
-					}
-					//doubleAtt->setValueList(values);
-					doubleAtt->setValList(doublevals);
+					doubleAtt->setValueList(values);
 					this->_doubleData.push_back(doubleAtt);
-					end = clock();
-					cout<<"Time to retrieve & bind DOUBLE Data  : "<<(end  - start)<<endl;
 				}
 
 				else if ((columnType == SQL_CHAR) || (columnType == SQL_VARCHAR) || (columnType == SQL_LONGVARCHAR) || (columnType < 0))
 				{
-					start = clock();
 					PureStringAttInfo *stringAtt = new PureStringAttInfo();
 					stringAtt->type = Type.MULTI_CAT;
 					stringAtt->attID = it;
 					stringAtt->attName = pCur->getColumn(it)->szName;
 
-					vector<string> vals;
-
+					string* values = new string[rowCount];
+					int temp = 0;
+					bool BRC;
 					for (BRC = pCur->first() ; BRC ; BRC=pCur->next())
 					{
-						vals.push_back(pCur->getChar(it));
+						values[temp] = pCur->getChar(it);
+						temp += 1;
 					}
-
-					if(!_isRowCountSet){
-						this->_rowCount = vals.size();
-						this->_isRowCountSet = true;
-					}
-
-					stringAtt->setValList(vals);
+					stringAtt->setValueList(values,rowCount);
 					this->_stringData.push_back(stringAtt);
-					
-					end = clock();
-					cout<<"Time to retrieve & bind STRING Data  : "<<(end  - start)<<endl;
 				}
-
-
+				
 				else if ((columnType == SQL_DATE) || (columnType == SQL_DATETIME) || (columnType == SQL_TYPE_DATE) || (columnType == SQL_TIMESTAMP))
 				{
-					start = clock();
 					PureIntAttInfo *intAtt = new PureIntAttInfo();
 					intAtt->type=Type.TYPE_DATE;
 					intAtt->attID = it;
-					intAtt->attName = pCur->getColumn(it)->szName;
 
-					//long int* values = new long int[rowCount];
-					vector<long int> intVals;
+					long int* values = new long int[rowCount];
+					int temp = 0;
+					bool BRC;
 
 					intAtt->setLower((int)(pow(2.0,31.0) - 1));
 					intAtt->setUpper((int)((pow(2.0,31.0) - 1)) * -1);
 
 					for (BRC=pCur->first() ; BRC ; BRC=pCur->next())
 					{
-						const CGOdbcStmt::DATE* date = pCur->getDate(it);
-						int year = date->iYear;
-						int month = date->iMonth;
-						int day = date->iDay;
+						try{
+							char buffer[100];							
 
-						int temp_date_1 = (year * 100) + month;
-						int temp_date_2 = (temp_date_1 * 100) + day;
-						intVals.push_back(temp_date_2);
+							char* year = itoa(pCur->getDate(it)->iYear,buffer,10);
+							char* yrString = (char*)malloc(strlen(year)+1);
+							yrString = strcpy(yrString,year);
+							
+							char* month = itoa(pCur->getDate(it)->iMonth,buffer,10);
+							char* monthString = (char*)malloc(strlen(month) + 1);
+							monthString = strcpy(monthString,month); 
 
-						if (temp_date_2 > intAtt->Upper())
-						{
-							intAtt->setUpper(temp_date_2);
+							char* paddingMonthString = NULL;
+							if (strlen(monthString) < 2)
+							{
+								char* temp = itoa(0,buffer,10);
+								paddingMonthString = (char*)malloc(strlen(temp) + 1);
+								paddingMonthString = strcpy(paddingMonthString,temp);
+							}
+							
+							char* day = itoa(pCur->getDate(it)->iDay,buffer,10);
+							char* dayString = (char*)malloc(strlen(day)+1);
+							dayString = strcpy(dayString,day);
+
+							char* paddingDayString = NULL;
+							if (strlen(dayString) < 2)
+							{
+								char* temp = itoa(0,buffer,10);
+								paddingDayString = (char*)malloc(strlen(temp) + 1);
+								paddingDayString = strcpy(paddingDayString,temp);
+							}
+
+							size_t memSize = 0;
+							memSize += strlen(yrString);
+							if(paddingMonthString != NULL) {
+								memSize += strlen(paddingMonthString);
+							}
+							memSize += strlen(monthString);
+							if(paddingDayString != NULL) {
+								memSize += strlen(paddingDayString);
+							}
+							memSize += strlen(dayString);
+							char* dateString = (char*)malloc(memSize + 1);
+
+							dateString = strcpy(dateString,yrString);
+							if (paddingMonthString != NULL)
+							{
+								dateString = strcat(dateString,paddingMonthString);
+							}							
+							dateString = strcat(dateString,monthString);
+							if (paddingDayString != NULL)
+							{
+								dateString = strcat(dateString,paddingDayString);
+							}
+							dateString = strcat(dateString,dayString);
+							values[temp] = (long int)atol(dateString);
+
+							if (values[temp] > intAtt->Upper())
+							{
+								intAtt->setUpper(values[temp]);
+							}
+							if (values[temp] < intAtt->Lower())
+							{
+								intAtt->setLower(values[temp]);
+							}
+
+							temp += 1;
 						}
-						if (temp_date_2 < intAtt->Lower())
-						{
-							intAtt->setLower(temp_date_2);
+
+						catch(std::exception &ex){
+							//TODO add logging details here.
 						}
-
+						
 					}
-
-					if (!_isRowCountSet)
-					{ 
-						this->_rowCount = intVals.size();
-						_isRowCountSet = true;
-					}
-					intAtt->setValList(intVals);
+					intAtt->setValueList(values);
 					this->_intData.push_back(intAtt);
-
-					end = clock();
-					cout<<"Time to retrieve & bind DATE Data  : "<<(end  - start)<<endl;
 				}
-
 			}
+			
+			
 
+			return true;
 		}
 		catch(std::exception &ex){
-			//TODO add logging details here.
+			return false;
 		}
-
-		return true;
 	}
 
 	CGOdbcStmt* DBQueryExecutionInfo::DBQueryExecution::DBStatementPtr(){
@@ -226,7 +240,7 @@ namespace DBQueryExecutionInfo{
 	}
 
 	DBQueryExecutionInfo::DBQueryExecution::~DBQueryExecution(){
-		cout<<"Destructor calls"<<endl;
+		//cout<<"Destructor calls"<<endl;
 	}
 
 	std::vector<PureIntAttInfo*> DBQueryExecution::RetievedIntData(){

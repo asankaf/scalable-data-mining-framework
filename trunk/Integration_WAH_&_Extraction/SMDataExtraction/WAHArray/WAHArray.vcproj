@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="WAHArray"
+	Name="SMCompression"
 	ProjectGUID="{D9B5D438-1911-4782-9BCD-9990879FCB10}"
 	RootNamespace="WAHArray"
 	Keyword="Win32Proj"
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1"
 			>
 			<Tool
@@ -183,69 +183,37 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dllmain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\WAHArray.cpp"
 				>
 			</File>
-			<Filter
-				Name="TestWAH"
+			<File
+				RelativePath=".\WAHStructure.cpp"
 				>
-				<File
-					RelativePath=".\BitsetGenerator.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\BitStreamInforTest.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\DataSourceGenerator.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\stdafx.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\TestWAHArray.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TimeTest.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="WAHStructure"
-				>
-				<File
-					RelativePath=".\WAHStructure.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="CompHandlerTest"
-				>
-				<File
-					RelativePath=".\TestCompressionHandler.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -256,54 +224,18 @@
 				RelativePath=".\CompressionHandler.h"
 				>
 			</File>
-			<Filter
-				Name="TestWAH"
+			<File
+				RelativePath=".\stdafx.h"
 				>
-				<File
-					RelativePath=".\BitsetGenerator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\BitStreamInforTest.h"
-					>
-				</File>
-				<File
-					RelativePath=".\DataSourceGenerator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\stdafx.h"
-					>
-				</File>
-				<File
-					RelativePath=".\targetver.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TestWAHArray.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TimeTest.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="WAHStructure"
+			</File>
+			<File
+				RelativePath=".\targetver.h"
 				>
-				<File
-					RelativePath=".\WAHStructure.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="TestCompHandler"
+			</File>
+			<File
+				RelativePath=".\WAHStructure.h"
 				>
-				<File
-					RelativePath=".\TestCompressionHandler.h"
-					>
-				</File>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

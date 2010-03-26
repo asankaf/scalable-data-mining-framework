@@ -22,7 +22,7 @@ namespace DBQueryExecutionInfo{
 			__declspec(dllexport) DBQueryExecution(const char* statement);
 			__declspec(dllexport) DBQueryExecution();
 			__declspec(dllexport) ~DBQueryExecution();
-			__declspec(dllexport) bool ExecuteQueryAndBindData(CGOdbcConnect &cCon);
+			__declspec(dllexport) bool ExecuteQueryAndBindData(CGOdbcConnect cCon);
 			__declspec(dllexport) CGOdbcStmt* DBStatementPtr();
 			__declspec(dllexport) std::vector<PureIntAttInfo*> RetievedIntData();
 			__declspec(dllexport) std::vector<PureDoubleAttInfo*> RetrievedDoubleData();
@@ -37,6 +37,5 @@ namespace DBQueryExecutionInfo{
 			std::vector<PureDoubleAttInfo*> _doubleData;
 			std::vector<PureStringAttInfo*> _stringData;
 			int _rowCount;
-			bool _isRowCountSet;
 	};
 }

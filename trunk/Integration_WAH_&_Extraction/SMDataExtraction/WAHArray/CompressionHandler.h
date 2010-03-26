@@ -13,9 +13,9 @@ using namespace CompressedStructure;
 class CompressionHandler
 {
 public:	
-	void ConvertTo(WrapDataSource * _pdata_source, BitStreamInfo::vertical_bit_type _end_type);
-	CompressionHandler(void);
-	~CompressionHandler(void);
+	_declspec(dllexport) void ConvertTo(WrapDataSource * _pdata_source, BitStreamInfo::vertical_bit_type _end_type);
+	_declspec(dllexport) CompressionHandler(void);
+	_declspec(dllexport) ~CompressionHandler(void);
 
 private :	
 	void ConvertAttributeTo(EncodedAttributeInfo * _attribute,BitStreamInfo::vertical_bit_type _end_type);

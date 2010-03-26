@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 
+#ifndef BIT_STREAM_HOLDER_H
+#define BIT_STREAM_HOLDER_H
+
 using namespace boost;
 using namespace std;
 
@@ -72,3 +75,4 @@ private:
 	int _bitStreamAllocAttID;
 	string _bitStreamAllocAttName;
 };
+#endif
