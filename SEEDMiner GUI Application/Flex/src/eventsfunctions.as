@@ -2,6 +2,7 @@
 import ActionClasses.ActionObject;
 import ActionClasses.CSVDataSource;
 import ActionClasses.MySQLDataSource;
+import ActionClasses.Util;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -14,8 +15,18 @@ import mx.managers.DragManager;
 
 
 public var actionObj:ActionObject;
+
 public var correctionX:Number;
 public var correctionY:Number;
+
+public function startUp(event:Event):void
+{
+	var i:int;
+	for (i = 0; i < 50; i++)
+	{
+	    trace(Util.generateId());
+	}	
+}
 
 private function mouseDownHandler(event:MouseEvent):void 
 {
@@ -58,7 +69,7 @@ private function dragEnterHandler(event:DragEvent):void
     }
 }
 
-private function dragDropHandler(event:DragEvent):void 
+private function dragDropHandler(event:DragEvent):void
 {
 	if (event.dragSource.hasFormat("img"))
     {

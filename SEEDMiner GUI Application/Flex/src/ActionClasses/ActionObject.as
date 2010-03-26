@@ -7,6 +7,10 @@ package ActionClasses
 	{
 		function type():Number;
 		
+		function get id():Number;
+		
+		function set id(idval:Number):void;
+		
 		function get image():Image;
 		
 		function set image(img:Image):void;
