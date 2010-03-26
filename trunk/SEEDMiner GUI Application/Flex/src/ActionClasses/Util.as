@@ -7,7 +7,7 @@ package ActionClasses
 			var i:int;
 			var rnum:String="";
 			var rand:int;
-			for (i = 0; i < 15; i++)
+			for (i = 0; i < 7; i++)
 			{
 				rand=Math.ceil((Math.random())*10-1);
 				if(i==0&&rand==0)

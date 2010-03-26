@@ -3,8 +3,10 @@ import ActionClasses.ActionObject;
 import ActionClasses.CSVDataSource;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Util;
+
 import flash.events.Event;
 import flash.events.MouseEvent;
+
 import mx.controls.Alert;
 import mx.controls.Image;
 import mx.core.DragSource;
@@ -12,9 +14,10 @@ import mx.events.DragEvent;
 import mx.managers.DragManager;
 
 
-public var actionObj:ActionObject;
-public var correctionX:Number;
-public var correctionY:Number;
+private var actionObj:ActionObject;
+private var correctionX:Number;
+private var correctionY:Number;
+private var actionObjectsOnCanvas:Array = new Array();
 
 public function startUp(event:Event):void
 {
@@ -73,7 +76,14 @@ private function dragDropHandler(event:DragEvent):void
     	actionObj.imageX=event.localX-correctionX;
     	actionObj.imageY=event.localY-correctionY;
     	drawingcanvas.addChild(actionObj.image);
+    	
+    	//add objects to collection
+    	actionObjectsOnCanvas[actionObj.id.toString()]=actionObj;
+    	//trace(CSVDataSource(actionObjectsOnCanvas[actionObj.id.toString()]).id);
+    	
     	actionObj=null;
+    	
+    	trace(CSVDataSource(actionObjectsOnCanvas[actionObj.id.toString()]).id);
     }
     else if (event.dragSource.hasFormat("actionObj"))
     {
@@ -97,7 +107,8 @@ private function dragOverHandler(event:DragEvent):void
 
 private function mouseMoveHandler(event:MouseEvent):void 
 {
-	//event.currentTarget
+	//if(event.currentTarget
+	//trace("moving mouce"+num++);
 }
 
 private function myEventHandler(e:Event):void 
