@@ -13,7 +13,7 @@ package ActionClasses
 		
 		private var imageObj:Image;
 		private var imageXposition:Number;
-		private var imageYposition:Number;	
+		private var imageYposition:Number;
 		private var correctionXvalue:Number;
 		private var correctionYvalue:Number;
 		private var arrowDrawing:Boolean=false;
@@ -24,9 +24,10 @@ package ActionClasses
 			imageObj = new Image();
 			var idgen:int =Util.generateId();
 			imageObj.id=idgen.toString();
-			this.id=idgen;
-			imageObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
+			this.idValue=idgen;
+			trace(idValue);
 			imageObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
+			imageObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
 		}
 
 		public function type():Number
@@ -86,7 +87,7 @@ package ActionClasses
 			return correctionYvalue;
 		}
 		
-		private function mouseDownHandler(event:MouseEvent):void
+		private function mouseMoveHandler(event:MouseEvent):void
 		{
 			correctionXvalue=event.localX;
 			correctionYvalue=event.localY;
@@ -99,10 +100,12 @@ package ActionClasses
 		    imageProxy.source = dragInitiator.source;
 		             
 		    DragManager.doDrag(dragInitiator, ds, event, imageProxy, 0, 0, 0.80);
+		    
 		}
 		
 		private function mouseClickHandler(event:MouseEvent):void
 		{
+			trace("click");
 		    arrowDrawing=true;
 		}
 		
