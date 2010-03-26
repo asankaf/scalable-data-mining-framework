@@ -3,10 +3,8 @@ import ActionClasses.ActionObject;
 import ActionClasses.CSVDataSource;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Util;
-
 import flash.events.Event;
 import flash.events.MouseEvent;
-
 import mx.controls.Alert;
 import mx.controls.Image;
 import mx.core.DragSource;
@@ -15,7 +13,6 @@ import mx.managers.DragManager;
 
 
 public var actionObj:ActionObject;
-
 public var correctionX:Number;
 public var correctionY:Number;
 
