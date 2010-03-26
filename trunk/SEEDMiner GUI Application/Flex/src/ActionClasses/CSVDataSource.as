@@ -6,79 +6,23 @@ package ActionClasses
 	import mx.core.DragSource;
 	import mx.managers.DragManager;
 	
-	public class CSVDataSource implements ActionObject
+	public class CSVDataSource extends ActionObjectParent
 	{
-		private const CSV_DATASOURCE:Number = 0;
-		private var imageObj:Image;
-		private var imageXposition:Number;
-		private var imageYposition:Number;	
-		private var correctionXvalue:Number;
-		private var correctionYvalue:Number;
-		private var arrowDrawing:Boolean=false;
-		private var idValue:Number;
+		private const CSV_DATASOURCE:Number = 0;	
 		
 		public function CSVDataSource()
 		{
 			imageObj = new Image();
+			var idgen:int =Util.generateId();
+			imageObj.id=idgen.toString();
+			this.id=idgen;
 			imageObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
 			imageObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 		}
 
-		public function type():Number
+		override public function type():Number
 		{
 			return CSV_DATASOURCE;
-		}
-		
-		public function get id():Number
-		{
-			return idValue;
-		}
-		
-		public function set id(idval:Number):void
-		{
-			idValue=idval;
-		}
-		
-		public function get image():Image
-		{
-			return imageObj;
-		}
-		
-		public function set image(img:Image):void
-		{
-			imageObj.source=img.source;
-		}
-		
-		public function get imageX():Number
-		{
-			return imageXposition;
-		}
-		
-		public function set imageX(num:Number):void
-		{
-			imageXposition=num;
-			imageObj.x=imageXposition;
-		}
-		
-		public function get imageY():Number
-		{
-			return imageYposition;
-		}
-		
-		public function set imageY(num:Number):void
-		{
-			imageYposition=num;
-			imageObj.y=imageYposition;
-		}
-		
-		public function get correctionX():Number
-		{
-			return correctionXvalue;
-		}
-		
-		public function get correctionY():Number
-		{
-			return correctionYvalue;
 		}
 		
 		private function mouseDownHandler(event:MouseEvent):void

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640" initialize="startUp(event)">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640">
 	
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
 		<mx:ApplicationControlBar x="10" y="10" width="98%" height="97%" name="topbar">
