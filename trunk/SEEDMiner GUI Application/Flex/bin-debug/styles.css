@@ -1,0 +1,6 @@
+/* CSS file */
+ApplicationControlBar.topbar {
+   fillAlphas: 0.4, 0.6;
+   fillColors: #ffffff, #ccff99;
+   dropShadowColor: #999999;
+}
