@@ -51,6 +51,47 @@ void AprioriOpt::FindUniqueItemSets(WrapDataSource *_instances)
 	}
 }
 
+// vector<AssociateRule *> AprioriOpt::MoreComplexRules(vector<AssociateRule *> rules, int numItemsInSet, int numItemsInConsequence,double minConfidence, FastVector hashtables) {
+// 
+// 	AprioriItemSet newPremise;
+// 	FastVector[] result, moreResults;
+// 	FastVector newConsequences, newPremises = new FastVector(), 
+// 		newConf = new FastVector();
+// 	Hashtable hashtable;
+// 
+// 	if (numItemsInSet > numItemsInConsequence + 1) {
+// 		hashtable =
+// 			(Hashtable)hashtables.elementAt(numItemsInSet - numItemsInConsequence - 2);
+// 		newConsequences = mergeAllItemSets(rules[1], 
+// 			numItemsInConsequence - 1,
+// 			m_totalTransactions);
+// 		Enumeration enu = newConsequences.elements();
+// 		while (enu.hasMoreElements()) {
+// 			AprioriItemSet current = (AprioriItemSet)enu.nextElement();
+// 			current.m_counter = m_counter;
+// 			newPremise = subtract(current);
+// 			newPremise.m_counter = ((Integer)hashtable.get(newPremise)).intValue();
+// 			newPremises.addElement(newPremise);
+// 			newConf.addElement(new Double(confidenceForRule(newPremise, current)));
+// 		}
+// 		result = new FastVector[3];
+// 		result[0] = newPremises;
+// 		result[1] = newConsequences;
+// 		result[2] = newConf;
+// 		pruneRules(result, minConfidence);
+// 		moreResults = moreComplexRules(result,numItemsInSet,numItemsInConsequence+1,
+// 			minConfidence, hashtables);
+// 		if (moreResults != null) 
+// 			for (int i = 0; i < moreResults[0].size(); i++) {
+// 				result[0].addElement(moreResults[0].elementAt(i));
+// 				result[1].addElement(moreResults[1].elementAt(i));
+// 				result[2].addElement(moreResults[2].elementAt(i));
+// 			}
+// 			return result;
+// 	} else
+// 		return null;
+// }
+
 void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 {
 	// 	double[] confidences, supports;
