@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1"
 			>
 			<Tool
@@ -61,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\WAHArray\Debug\BitsetGenerator.obj ..\WAHArray\Debug\BitStreamInforTest.obj ..\WAHArray\Debug\CompressionHandler.obj ..\WAHArray\Debug\DataSourceGenerator.obj ..\WAHArray\Debug\TestCompressionHandler.obj ..\WAHArray\Debug\TestWAHArray.obj ..\WAHArray\Debug\TimeTest.obj ..\WAHArray\Debug\WAHStructure.obj"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
 				GenerateDebugInformation="true"
@@ -170,6 +169,10 @@
 			ReferencedProjectIdentifier="{50979506-563B-4551-BD67-ADE0C594AC71}"
 			RelativePathToProject=".\SMDataExtraction\SMDataExtraction.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{D9B5D438-1911-4782-9BCD-9990879FCB10}"
+			RelativePathToProject=".\WAHArray\WAHArray.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -179,6 +182,34 @@
 			>
 			<File
 				RelativePath=".\Algorithm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AlgoUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Apriori.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AprioriItemset.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AprioriOpt.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AssociateRule.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BitStreamHolder.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\dllmain.cpp"
 				>
 			</File>
 			<File
@@ -201,56 +232,36 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath="..\WAHArray\TestApriori.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\WAHArray\TestSeedMiner.cpp"
-				>
-			</File>
-			<Filter
-				Name="Algorithm"
-				>
-				<File
-					RelativePath="..\WAHArray\AlgoUtils.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\Apriori.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\AssociateRule.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\BitStreamHolder.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="TestAlgo"
-				>
-				<File
-					RelativePath="..\WAHArray\TestAlgoUtil.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="TestHolder"
-				>
-				<File
-					RelativePath="..\WAHArray\TestHolderOperations.cpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\AlgoUtils.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Apriori.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AprioriItemset.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AprioriOpt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AssociateRule.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BitStreamHolder.h"
+				>
+			</File>
 			<File
 				RelativePath=".\stdafx.h"
 				>
@@ -259,50 +270,6 @@
 				RelativePath=".\targetver.h"
 				>
 			</File>
-			<File
-				RelativePath="..\WAHArray\TestApriori.h"
-				>
-			</File>
-			<File
-				RelativePath="..\WAHArray\TestSeedMiner.h"
-				>
-			</File>
-			<Filter
-				Name="Algorithm"
-				>
-				<File
-					RelativePath="..\WAHArray\AlgoUtils.h"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\Apriori.h"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\AssociateRule.h"
-					>
-				</File>
-				<File
-					RelativePath="..\WAHArray\BitStreamHolder.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="TestAlgo"
-				>
-				<File
-					RelativePath="..\WAHArray\TestAlgoUtil.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="TestHolder"
-				>
-				<File
-					RelativePath="..\WAHArray\TestHolderOperations.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

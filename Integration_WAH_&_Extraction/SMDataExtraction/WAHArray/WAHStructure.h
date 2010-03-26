@@ -13,38 +13,38 @@ namespace CompressedStructure{
 	{
 
 	public:
-		WAHStructure(void);	
-		~WAHStructure(void);	
+		_declspec(dllexport) WAHStructure(void);	
+		_declspec(dllexport) ~WAHStructure(void);	
 		
 		//Methods inherited from BitstreamInfo class		
-		void CompressWords(boost::dynamic_bitset<>& _bit_map);		
-		dynamic_bitset<> Decompress();				
-		int GetSpaceUtilisation();
-		BitStreamInfo* operator~();
-		virtual BitStreamInfo* operator &(BitStreamInfo &);
-		BitStreamInfo* operator |(BitStreamInfo &);
-		unsigned long long Count();	
-		size_t SpaceUtilisation();
+		_declspec(dllexport) void CompressWords(boost::dynamic_bitset<>& _bit_map);		
+		_declspec(dllexport) dynamic_bitset<> Decompress();				
+		_declspec(dllexport) int GetSpaceUtilisation();
+		_declspec(dllexport) BitStreamInfo* operator~();
+		_declspec(dllexport) virtual BitStreamInfo* operator &(BitStreamInfo &);
+		_declspec(dllexport) BitStreamInfo* operator |(BitStreamInfo &);
+		_declspec(dllexport) unsigned long long Count();	
+		_declspec(dllexport) size_t SpaceUtilisation();
 		
 		// Overloaded operators
 	
-		WAHStructure * operator & (WAHStructure&);
-		WAHStructure * operator |(WAHStructure & _structure);
+		_declspec(dllexport) WAHStructure * operator & (WAHStructure&);
+		_declspec(dllexport) WAHStructure * operator |(WAHStructure & _structure);
 
 		//Methods not exposed to public interface but used among the structures	
 	
-		void SetCompressedStream(vector<unsigned long int> &_compressed_vector);			
-		void printCompressedStream();
-		vector<unsigned long int>& GetCompressedVector();
-		unsigned long int GetOriginalStreamLength();
+		_declspec(dllexport) void SetCompressedStream(vector<unsigned long int> &_compressed_vector);			
+		_declspec(dllexport) void printCompressedStream();
+		_declspec(dllexport) vector<unsigned long int>& GetCompressedVector();
+		_declspec(dllexport) unsigned long int GetOriginalStreamLength();
 
 		//Public Getters and setters
-		const int ActiveWordSize() const { return m_iActiveWordSize; }
-		void ActiveWordSize(int val) { m_iActiveWordSize = val; }
-		unsigned long int ActiveWord() const { return m_ulActiveWord; }
-		void ActiveWord(unsigned long int val) { m_ulActiveWord = val; }
-		int OriginalStreamSize() const { return m_iOriginalStreamSize; }
-		void OriginalStreamSize(unsigned long int val) { m_iOriginalStreamSize = val; }
+		_declspec(dllexport) const int ActiveWordSize() const { return m_iActiveWordSize; }
+		_declspec(dllexport) void ActiveWordSize(int val) { m_iActiveWordSize = val; }
+		_declspec(dllexport) unsigned long int ActiveWord() const { return m_ulActiveWord; }
+		_declspec(dllexport) void ActiveWord(unsigned long int val) { m_ulActiveWord = val; }
+		_declspec(dllexport) int OriginalStreamSize() const { return m_iOriginalStreamSize; }
+		_declspec(dllexport) void OriginalStreamSize(unsigned long int val) { m_iOriginalStreamSize = val; }
 
 
 		enum operation_type {AND,OR};

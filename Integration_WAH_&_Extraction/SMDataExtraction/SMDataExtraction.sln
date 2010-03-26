@@ -5,9 +5,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMDataExtraction", "SMDataE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSMDataExtraction", "TestSMDataExtraction\TestSMDataExtraction.vcproj", "{244D1DE1-5CF1-4083-8A87-8A65E59D2077}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WAHArray", "WAHArray\WAHArray.vcproj", "{D9B5D438-1911-4782-9BCD-9990879FCB10}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMCompression", "WAHArray\WAHArray.vcproj", "{D9B5D438-1911-4782-9BCD-9990879FCB10}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithm", "Algorithm\Algorithm.vcproj", "{F620090B-9EA5-403B-9E7F-8B2161D30968}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSMCompression", "TestWAH\TestWAH.vcproj", "{046A723D-5CFB-452E-A05A-EC8DEAD96933}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestAlgorithm", "TestAlgorithm\TestAlgorithm.vcproj", "{D604D30C-D929-4E83-8B3D-2570633EA89F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,8 +35,19 @@ Global
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Debug|Win32.Build.0 = Debug|Win32
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Release|Win32.ActiveCfg = Release|Win32
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Release|Win32.Build.0 = Release|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.ActiveCfg = Debug|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.Build.0 = Debug|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.ActiveCfg = Release|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.Build.0 = Release|Win32
+		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Debug|Win32.Build.0 = Debug|Win32
+		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Release|Win32.ActiveCfg = Release|Win32
+		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		AMDCaProjectFile = D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\CodeAnalyst\SMDataExtraction.caw
 	EndGlobalSection
 EndGlobal

@@ -11,7 +11,7 @@ struct Type
 	
 };
 
-__declspec(dllexport) static enum ATT_TYPE{
+static enum ATT_TYPE{
 
 	SIGNEDINT_VAL,
 	DOUBLE_VAL,
