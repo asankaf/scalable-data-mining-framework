@@ -4,7 +4,7 @@ package ActionClasses
 	{	
 		public function MySQLDataSource()
 		{
-			super();
+			super("MySQL DataSource");
 		}
 
 		override public function type():Number
