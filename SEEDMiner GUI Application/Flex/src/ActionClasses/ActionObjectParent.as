@@ -2,7 +2,9 @@ package ActionClasses
 {
 	import flash.events.MouseEvent;
 	
+	import mx.containers.VBox;
 	import mx.controls.Image;
+	import mx.controls.Label;
 	import mx.core.DragSource;
 	import mx.managers.DragManager;
 
@@ -11,23 +13,40 @@ package ActionClasses
 		public static const CSV_DATASOURCE:Number = 0;
 		public static const MySQL_DATASOURCE:Number = 1;
 		
+		private var vboxObj:VBox;
 		private var imageObj:Image;
-		private var imageXposition:Number;
-		private var imageYposition:Number;
+		private var labelObj:Label;
+		private var vboxXposition:Number;
+		private var vboxYposition:Number;
 		private var correctionXvalue:Number;
 		private var correctionYvalue:Number;
 		private var arrowDrawing:Boolean=false;
-		private var idValue:Number;
+		private var idValue:String;
 		
-		public function ActionObjectParent()
+		public function ActionObjectParent(label:String)
 		{
+			vboxObj=new VBox();
 			imageObj = new Image();
-			var idgen:int =Util.generateId();
-			imageObj.id=idgen.toString();
+			labelObj=new Label();
+			//vboxObj.setStyle("borderColor","ffffff")
+			//vboxObj.setStyle("borderStyle","solid")
+			//vboxObj.setStyle("borderThickness","1")
+			labelObj.setStyle("textAlign","center");
+			vboxObj.setStyle("verticalAlign","middle");
+			vboxObj.setStyle("horizontalAlign","center");
+			labelObj.text=label;
+			vboxObj.width=120;
+			vboxObj.height=120;
+			labelObj.height=20;
+			var idgen:String =Util.generateId();
+			vboxObj.id=idgen;
 			this.idValue=idgen;
-			trace(idValue);
-			imageObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
-			imageObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
+			vboxObj.addChild(imageObj);
+			vboxObj.addChild(labelObj);
+			//trace(idgen);
+			vboxObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
+			vboxObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
+			vboxObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
 		}
 
 		public function type():Number
@@ -35,12 +54,12 @@ package ActionClasses
 			return -1;
 		}
 		
-		public function get id():Number
+		public function get id():String
 		{
 			return idValue;
 		}
 		
-		public function set id(idval:Number):void
+		public function set id(idval:String):void
 		{
 			idValue=idval;
 		}
@@ -55,26 +74,41 @@ package ActionClasses
 			imageObj.source=img.source;
 		}
 		
-		public function get imageX():Number
+		public function get vbox():VBox
 		{
-			return imageXposition;
+			return vboxObj;
 		}
 		
-		public function set imageX(num:Number):void
+		public function get label():Label
 		{
-			imageXposition=num;
-			imageObj.x=imageXposition;
+			return labelObj;
 		}
 		
-		public function get imageY():Number
+		public function set labelText(lableTxt:String):void
 		{
-			return imageYposition;
+			labelText=lableTxt;
 		}
 		
-		public function set imageY(num:Number):void
+		public function get vboxX():Number
 		{
-			imageYposition=num;
-			imageObj.y=imageYposition;
+			return vboxXposition;
+		}
+		
+		public function set vboxX(num:Number):void
+		{
+			vboxXposition=num;
+			vboxObj.x=vboxXposition;
+		}
+		
+		public function get vboxY():Number
+		{
+			return vboxYposition;
+		}
+		
+		public function set vboxY(num:Number):void
+		{
+			vboxYposition=num;
+			vboxObj.y=vboxYposition;
 		}
 		
 		public function get correctionX():Number
@@ -89,18 +123,27 @@ package ActionClasses
 		
 		private function mouseMoveHandler(event:MouseEvent):void
 		{
-			correctionXvalue=event.localX;
-			correctionYvalue=event.localY;
+			//correctionXvalue=VBox(event.currentTarget).contentMouseX;
+			//correctionYvalue=VBox(event.currentTarget).contentMouseY;
+			//trace(correctionXvalue);
+			//trace(correctionYvalue);
 			
-		    var dragInitiator:Image=Image(event.currentTarget);
+		    var dragInitiator:VBox=VBox(event.currentTarget);
 		    var ds:DragSource = new DragSource();
 		    ds.addData(this, "actionObj");
 		
 		    var imageProxy:Image = new Image();
-		    imageProxy.source = dragInitiator.source;
-		             
-		    DragManager.doDrag(dragInitiator, ds, event, imageProxy, 0, 0, 0.80);
+		    imageProxy.source = Image(dragInitiator.getChildAt(0)).source;
+
+		    DragManager.doDrag(Image(dragInitiator.getChildAt(0)), ds, event, imageProxy,0,2, 0.80);
 		    
+		}
+		
+		private function mouseDownHandler(event:MouseEvent):void
+		{
+		    trace("down");
+		    correctionXvalue=VBox(event.currentTarget).contentMouseX;
+			correctionYvalue=VBox(event.currentTarget).contentMouseY;
 		}
 		
 		private function mouseClickHandler(event:MouseEvent):void
@@ -108,6 +151,6 @@ package ActionClasses
 			trace("click");
 		    arrowDrawing=true;
 		}
-		
+
 	}
 }

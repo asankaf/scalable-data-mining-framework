@@ -2,7 +2,6 @@
 import ActionClasses.ActionObject;
 import ActionClasses.CSVDataSource;
 import ActionClasses.MySQLDataSource;
-import ActionClasses.Util;
 
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -17,15 +16,10 @@ import mx.managers.DragManager;
 private var actionObj:ActionObject;
 private var correctionX:Number;
 private var correctionY:Number;
-private var actionObjectsOnCanvas:Array = new Array();
+private var actionObjectsOnCanvas:Dictionary = new Dictionary();
 
 public function startUp(event:Event):void
 {
-	var i:int;
-	for (i = 0; i < 50; i++)
-	{
-	    trace(Util.generateId());
-	}	
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
@@ -73,23 +67,27 @@ private function dragDropHandler(event:DragEvent):void
 {
 	if (event.dragSource.hasFormat("img"))
     {
-    	actionObj.imageX=event.localX-correctionX;
-    	actionObj.imageY=event.localY-correctionY;
-    	drawingcanvas.addChild(actionObj.image);
+    	actionObj.vboxX=event.localX-correctionX-((actionObj.vbox.width/2)-(actionObj.image.measuredWidth/2));
+    	//trace(actionObj.vbox.width);
+    	//trace(actionObj.image.measuredWidth);
+    	actionObj.vboxY=event.localY-correctionY-(actionObj.vbox.height-actionObj.image.measuredHeight-actionObj.label.height)/2;
+    	drawingcanvas.addChild(actionObj.vbox);
     	
     	//add objects to collection
-    	actionObjectsOnCanvas[actionObj.id.toString()]=actionObj;
-    	//trace(CSVDataSource(actionObjectsOnCanvas[actionObj.id.toString()]).id);
+    	actionObjectsOnCanvas[actionObj.id]=actionObj;
+    	var ob:ActionObject=ActionObject(actionObjectsOnCanvas[actionObj.id]);
+    	//trace("id:"+ob.id+"type:"+ob.type());
     	
     	actionObj=null;
     	
-    	trace(CSVDataSource(actionObjectsOnCanvas[actionObj.id.toString()]).id);
     }
     else if (event.dragSource.hasFormat("actionObj"))
     {
     	var obj:ActionObject = ActionObject(event.dragSource.dataForFormat("actionObj"));
-    	obj.image.x=event.localX-obj.correctionX;
-    	obj.image.y=event.localY-obj.correctionY;
+    	obj.vboxX=event.localX-obj.correctionX;
+    	//trace(event.localX);
+    	obj.vboxY=event.localY-obj.correctionY;
+    	//trace(event.localY);
     }
 }
 
@@ -137,5 +135,5 @@ var num:Number=0;
 
 private function testEvent(e:Event):void
 {
-	lble.text = (num++).toString();
+	//lble.text = (num++).toString();
 }

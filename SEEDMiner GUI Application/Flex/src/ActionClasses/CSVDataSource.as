@@ -4,7 +4,7 @@ package ActionClasses
 	{	
 		public function CSVDataSource()
 		{
-			super();
+			super("CSV DataSource");
 		}
 
 		override public function type():Number

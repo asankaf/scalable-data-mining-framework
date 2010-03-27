@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640" initialize="startUp(event)">
 	
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
 		<mx:ApplicationControlBar x="10" y="10" width="98%" height="97%" name="topbar">
@@ -19,7 +19,6 @@
 					</mx:Canvas>
 				</mx:TabNavigator>
 				<mx:Canvas x="0" y="89" width="100%" height="520" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)">
-					<mx:Label x="819" y="467" id="lble" width="131" height="41" text="lable"/>
 				</mx:Canvas>
 			</mx:Canvas>
 		</mx:ApplicationControlBar>

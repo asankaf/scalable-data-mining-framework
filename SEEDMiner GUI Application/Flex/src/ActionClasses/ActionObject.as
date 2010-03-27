@@ -1,32 +1,39 @@
 package ActionClasses
 {
+	import mx.containers.VBox;
 	import mx.controls.Image;
-	import ActionClasses.Util;
+	import mx.controls.Label;
 	
 	
 	public interface ActionObject
 	{
 		function type():Number;
 		
-		function get id():Number;
+		function get id():String;
 		
-		function set id(idval:Number):void;
+		function set id(idval:String):void;
 		
 		function get image():Image;
 		
 		function set image(img:Image):void;
 		
-		function get imageX():Number;
+		function get vbox():VBox;
 		
-		function set imageX(num:Number):void;
+		function get label():Label;
 		
-		function get imageY():Number;
+		function set labelText(lableTxt:String):void;
 		
-		function set imageY(num:Number):void;
+		function get vboxX():Number;
+		
+		function set vboxX(num:Number):void;
+		
+		function get vboxY():Number;
+		
+		function set vboxY(num:Number):void;
 		
 		function get correctionX():Number;
 		
 		function get correctionY():Number;
-
+		
 	}
 }
