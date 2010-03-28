@@ -4,6 +4,8 @@ import ActionClasses.ActionObjectParent;
 import ActionClasses.CSVDataSource;
 import ActionClasses.DrawingEvent;
 import ActionClasses.MySQLDataSource;
+import ActionClasses.Path;
+import ActionClasses.Util;
 
 import flash.display.Shape;
 import flash.events.Event;
@@ -94,6 +96,7 @@ private function dragDropHandler(event:DragEvent):void
     	//trace(event.localX);
     	obj.vboxY=event.localY-obj.correctionY;
     	//trace(event.localY);
+    	updateArrows(actionObjectSequence);
     }
 }
 
@@ -134,6 +137,7 @@ private function mouseMoveHandler(event:MouseEvent):void
 		if(tempLine!=null)
 		{
 			drawingcanvas.rawChildren.removeChild(tempLine);
+			tempLine=null;
 		}
 		addToActionObjectSequence(ActionObjectParent.drawingEvent);
 		trace(actionObjectSequence);
@@ -156,8 +160,9 @@ private function drawArrow(source:String,destination:String):void
 	var line:Shape = new Shape();
 	line.graphics.lineStyle(2,0xFF0000, .75);
 	line.graphics.beginFill(0x00FF00);
-	line.graphics.moveTo(ActionObject(actionObjectsOnCanvas[source]).vboxX, ActionObject(actionObjectsOnCanvas[source]).vboxY);
-	line.graphics.lineTo(ActionObject(actionObjectsOnCanvas[destination]).vboxX, ActionObject(actionObjectsOnCanvas[destination]).vboxY);
+	var shotestPath:Path=Util.getShortestPath(ActionObject(actionObjectsOnCanvas[source]),ActionObject(actionObjectsOnCanvas[destination]));
+	line.graphics.moveTo(shotestPath.startX,shotestPath.startY);
+	line.graphics.lineTo(shotestPath.endX,shotestPath.endY);
 	//drawingcanvas.rawChildren.removeChild(tempLine);
 	drawingcanvas.rawChildren.addChild(line);
 }
