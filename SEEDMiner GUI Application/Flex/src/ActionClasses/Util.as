@@ -23,14 +23,22 @@ package ActionClasses
 		
 		public static function getShortestPath(source:ActionObject,destination:ActionObject):Path
 		{			
-			var width:int=source.vbox.width;
+			//var width:int=source.vbox.width;
+			var width:int=source.image.width;
+			trace("image width "+source.image.width);
 			var step:int=width/2;
 			//trace("step "+step);
 			
-			var sourceX:int=source.vboxX;
+			/* var sourceX:int=source.vboxX;
 			var sourceY:int=source.vboxY;
 			var destinationX:int=destination.vboxX;
-			var destinationY:int=destination.vboxY;
+			var destinationY:int=destination.vboxY; */
+			var sourceX:int=source.vboxX+source.image.x;
+			var sourceY:int=source.vboxY+source.image.y;
+			var destinationX:int=destination.vboxX+destination.image.x;
+			var destinationY:int=destination.vboxY+destination.image.y;
+			trace(sourceX);
+			trace(sourceY);
 						
 			var shorestPath:Path;
 			
