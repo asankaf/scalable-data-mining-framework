@@ -13,6 +13,10 @@ package ActionClasses
 		public static const CSV_DATASOURCE:Number = 0;
 		public static const MySQL_DATASOURCE:Number = 1;
 		
+		public static const NO_DRAWING:Number=-1;
+		public static const ARROW_DRAWING:Number=0;
+		public static const ARROW_COMPLETE:Number=1;
+		
 		private var vboxObj:VBox;
 		private var imageObj:Image;
 		private var labelObj:Label;
@@ -20,7 +24,8 @@ package ActionClasses
 		private var vboxYposition:Number;
 		private var correctionXvalue:Number;
 		private var correctionYvalue:Number;
-		private var arrowDrawing:Boolean=false;
+		public static var arrowDrawingStatus:Number=NO_DRAWING;
+		public static var drawingEvent:DrawingEvent;
 		private var idValue:String;
 		
 		public function ActionObjectParent(label:String)
@@ -28,9 +33,9 @@ package ActionClasses
 			vboxObj=new VBox();
 			imageObj = new Image();
 			labelObj=new Label();
-			//vboxObj.setStyle("borderColor","ffffff")
-			//vboxObj.setStyle("borderStyle","solid")
-			//vboxObj.setStyle("borderThickness","1")
+			vboxObj.setStyle("borderColor","ffffff")
+			vboxObj.setStyle("borderStyle","solid")
+			vboxObj.setStyle("borderThickness","1")
 			labelObj.setStyle("textAlign","center");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
@@ -43,7 +48,7 @@ package ActionClasses
 			this.idValue=idgen;
 			vboxObj.addChild(imageObj);
 			vboxObj.addChild(labelObj);
-			//trace(idgen);
+			trace(idgen);
 			vboxObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
@@ -141,15 +146,28 @@ package ActionClasses
 		
 		private function mouseDownHandler(event:MouseEvent):void
 		{
-		    trace("down");
+		    //trace("down");
 		    correctionXvalue=VBox(event.currentTarget).contentMouseX;
 			correctionYvalue=VBox(event.currentTarget).contentMouseY;
 		}
 		
-		private function mouseClickHandler(event:MouseEvent):void
+		private  function mouseClickHandler(event:MouseEvent):void
 		{
-			trace("click");
-		    arrowDrawing=true;
+			//trace("click");
+			if(arrowDrawingStatus==NO_DRAWING)
+			{
+				arrowDrawingStatus=ARROW_DRAWING;
+				drawingEvent=new DrawingEvent()
+				drawingEvent.startId=VBox(event.currentTarget).id;
+				//trace(startId);
+				
+			}
+			else if(arrowDrawingStatus==ARROW_DRAWING)
+			{
+				arrowDrawingStatus=ARROW_COMPLETE;
+				drawingEvent.destinationId=VBox(event.currentTarget).id;
+				//trace(destinationId);
+			}
 		}
 
 	}
