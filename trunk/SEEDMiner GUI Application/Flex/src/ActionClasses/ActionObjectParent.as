@@ -1,7 +1,6 @@
 package ActionClasses
 {
-	import flash.events.MouseEvent;
-	
+	import flash.events.MouseEvent;	
 	import mx.containers.VBox;
 	import mx.controls.Image;
 	import mx.controls.Label;
@@ -33,9 +32,9 @@ package ActionClasses
 			vboxObj=new VBox();
 			imageObj = new Image();
 			labelObj=new Label();
-			vboxObj.setStyle("borderColor","ffffff")
-			vboxObj.setStyle("borderStyle","solid")
-			vboxObj.setStyle("borderThickness","1")
+			//vboxObj.setStyle("borderColor","ffffff")
+			//vboxObj.setStyle("borderStyle","solid")
+			//vboxObj.setStyle("borderThickness","1")
 			labelObj.setStyle("textAlign","center");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
