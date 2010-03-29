@@ -19,7 +19,7 @@ void TestAprioriOpt::TestSuite()
 	
 	// Creating a wrapped data source
 	
-	CsvConnection cConcsv("C:\\soybeanTest3.csv",',','\n','""');	
+	CsvConnection cConcsv("C:\\soybeanTest4.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
 	ExtractedCsvDTO *dat = cConcsv.extractData();
 	
@@ -31,7 +31,7 @@ void TestAprioriOpt::TestSuite()
 
 	ds->encodeAtrributes();
 	CompressionHandler comp;
-	//comp.ConvertTo(ds,BitStreamInfo::WAH_COMPRESSION);
+	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 
 	AprioriOpt opt;
 	//TestUniqueItemSetGeneration(ds,opt);
@@ -69,7 +69,7 @@ void TestAprioriOpt::TestUniqueItemSetGeneration(WrapDataSource * _wrapped, Apri
 void TestAprioriOpt::TestBuildAssociations(WrapDataSource * _wrapped, AprioriOpt & _ap_opt)
 {
 	cout << "Starting to Build Associations " << endl;
-	_ap_opt.Confidence(0.9);
+	_ap_opt.Confidence(0.5);
 	_ap_opt.BuildAssociations(_wrapped);
 	AlgoUtils::PrintRules(_ap_opt.Rules());
 }

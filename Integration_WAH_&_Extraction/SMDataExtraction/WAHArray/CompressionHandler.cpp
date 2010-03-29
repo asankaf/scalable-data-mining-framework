@@ -53,6 +53,12 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 			new_val->Type(BitStreamInfo::VERTICAL_STREAM_FORMAT);
 			break;
 		}
+	case BitStreamInfo::EWAH_COMPRESSION:
+		{
+			new_val = new EWAH();
+			new_val->Type(BitStreamInfo::EWAH_COMPRESSION);
+			break;
+		}
 
 	default:{
 		break;
@@ -60,6 +66,10 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 	}
 	new_val->CompressWords(bit_stream);
 	_bit_stream->Clone(new_val);
-	delete _bit_stream;
+	if (_end_type != BitStreamInfo::EWAH_COMPRESSION)
+	{
+		delete _bit_stream;
+	}
+	
 	return new_val;
 }

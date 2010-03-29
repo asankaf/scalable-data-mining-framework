@@ -4,6 +4,7 @@
 #include "EncodedAttributeInfo.h"
 #include "BitStreamInfo.h"
 #include "WAHStructure.h"
+#include "EWAH.h"
 #include <vector>
 
 
