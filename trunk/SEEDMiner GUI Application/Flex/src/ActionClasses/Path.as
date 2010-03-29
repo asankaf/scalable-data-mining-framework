@@ -17,7 +17,8 @@ package ActionClasses
 		
 		public function length():int
 		{
-			return  Math.sqrt(Math.pow((this.startX-this.endX),2)+Math.pow((this.startY-this.endY),2));
+			return  Math.pow((this.startX-this.endX),2)+Math.pow((this.startY-this.endY),2);
+			//return  (this.startX-this.endX)+(this.startY-this.endY);
 		}
 	}
 }
