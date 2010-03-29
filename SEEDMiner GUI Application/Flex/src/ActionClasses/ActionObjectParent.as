@@ -11,6 +11,7 @@ package ActionClasses
 	{
 		public static const CSV_DATASOURCE:Number = 0;
 		public static const MySQL_DATASOURCE:Number = 1;
+		public static const TEXT_VIEWER:Number = 2;
 		
 		public static const NO_DRAWING:Number=-1;
 		public static const ARROW_DRAWING:Number=0;
@@ -47,7 +48,7 @@ package ActionClasses
 			this.idValue=idgen;
 			vboxObj.addChild(imageObj);
 			vboxObj.addChild(labelObj);
-			trace(idgen);
+			//trace(idgen);
 			vboxObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);

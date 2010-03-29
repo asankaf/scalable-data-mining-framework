@@ -25,7 +25,7 @@ package ActionClasses
 		{			
 			//var width:int=source.vbox.width;
 			var width:int=source.image.width;
-			trace("image width "+source.image.width);
+			//trace("image width "+source.image.width);
 			var step:int=width/2;
 			//trace("step "+step);
 			
@@ -37,10 +37,12 @@ package ActionClasses
 			var sourceY:int=source.vboxY+source.image.y;
 			var destinationX:int=destination.vboxX+destination.image.x;
 			var destinationY:int=destination.vboxY+destination.image.y;
-			trace(sourceX);
-			trace(sourceY);
+			//trace(sourceX);
+			//trace(sourceY);
 						
 			var shorestPath:Path;
+			
+			var count:int =0;
 			
 			for(var i:int=0;i<=2;i++)
 			{
@@ -50,9 +52,9 @@ package ActionClasses
 					{
 						for(var l:int=0;l<=2;l++)
 						{
-							if((i==1&&j==1)||(k==1&&l==1))
+							if((i==1&&j==1)||(k==1&&l==1)||(i==0&&j==2)||(i==2&&j==2)||(i==0&&j==0)||(i==2&&j==0)||(k==0&&l==0)||(k==2&&l==0)||(k==0&&l==2)||(k==2&&l==2))
 							{
-							//	continue;
+								continue;
 							}
 							var currentPath:Path=new Path(sourceX+step*j,sourceY+step*i,destinationX+step*l,destinationY+step*k);
 							if(shorestPath==null)
@@ -61,7 +63,11 @@ package ActionClasses
 							}
 							else if(currentPath.length()<shorestPath.length())
 							{
-								shorestPath=currentPath;
+								//count++;
+								//if(count==2)
+								//{
+									shorestPath=currentPath;
+								//}
 							}
 							//trace(i+" "+j+" "+k+" "+l);
 						}
