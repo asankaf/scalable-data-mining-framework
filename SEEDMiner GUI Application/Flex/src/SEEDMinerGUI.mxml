@@ -4,10 +4,18 @@
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
 		<mx:ApplicationControlBar x="10" y="10" width="98%" height="97%" name="topbar">
 			<mx:Canvas width="100%" height="100%">
-				<mx:TabNavigator width="100%" height="90" id="toptabs" x="0" y="0" borderColor="#AAB3B3">
+				<mx:TabNavigator width="100%" height="127" id="toptabs" x="0" y="0" borderColor="#AAB3B3">
 					<mx:Canvas label="DataSources" width="100%" height="100%">
-						<mx:Image x="10" y="10" source="@Embed('1.png')" mouseDown="mouseDownHandler(event);" id="CSV_DataSource"/>
-						<mx:Image x="66" y="10" source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="MySQL_DataSource"/>
+						<mx:HBox x="10" y="10" width="940" height="74">
+							<mx:VBox horizontalAlign="center">
+								<mx:Image source="@Embed('1.png')" mouseDown="mouseDownHandler(event);" id="CSV_DataSource"/>
+								<mx:Label text="CSV DataSource" width="101"/>
+							</mx:VBox>
+							<mx:VBox horizontalAlign="center">
+								<mx:Image source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="MySQL_DataSource"/>
+								<mx:Label text="MySQL DataSource"/>
+							</mx:VBox>
+						</mx:HBox>
 					</mx:Canvas>				
 					<mx:Canvas label="Filters" width="100%" height="100%">
 					</mx:Canvas>
@@ -18,11 +26,16 @@
 					<mx:Canvas label="Clustering" width="100%" height="100%">
 					</mx:Canvas>
 					<mx:Canvas label="visualization" width="100%" height="100%">
-						<mx:Image x="10" y="10" source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
+						<mx:HBox x="10" y="10" width="940" height="74">
+							<mx:VBox width="79" horizontalAlign="center">
+								<mx:Image source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
+								<mx:Label text="Text Viewer"/>
+							</mx:VBox>
+						</mx:HBox>
 					</mx:Canvas>
 				</mx:TabNavigator>
-				<mx:Canvas x="0" y="89" width="100%" height="520" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)">
-					<mx:Button x="849" y="486" label="Execute Flow"/>
+				<mx:Canvas x="0" y="127" width="100%" height="482" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)">
+					<mx:Button x="849" y="310" label="Execute Flow"/>
 				</mx:Canvas>
 			</mx:Canvas>
 		</mx:ApplicationControlBar>
