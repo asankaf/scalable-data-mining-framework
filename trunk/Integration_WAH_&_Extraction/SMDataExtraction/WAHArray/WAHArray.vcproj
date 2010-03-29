@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\MyDocuments\University\L4\Project\GSODBC;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0"
+				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;D:\MyDocuments\University\L4\Project\GSODBC;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
@@ -63,8 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="..\dll\dll\Debug\fastbit.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
+				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll\dll\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -187,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EWAH.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -222,6 +227,10 @@
 			>
 			<File
 				RelativePath=".\CompressionHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EWAH.h"
 				>
 			</File>
 			<File

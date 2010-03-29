@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\TestWAH&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Algorithm&quot;"
+				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\TestWAH&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Algorithm&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

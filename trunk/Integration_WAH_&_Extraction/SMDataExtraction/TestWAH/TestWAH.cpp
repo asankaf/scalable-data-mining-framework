@@ -6,6 +6,7 @@
 #include "WAHStructure.h"
 #include "BitsetGenerator.h"
 #include "TestWAHArray.h"
+#include "TestEWAH.h"
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -31,7 +32,8 @@ void WAHStructureBecnhmarkOR();
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-WAHStructureBecnhmarkAND();
+TestEWAH test;
+test.TestSuite();
 	return 0;
 }
 

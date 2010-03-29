@@ -18,9 +18,12 @@ EncodedAttributeInfo::~EncodedAttributeInfo(){
 }
 
 vector<BitStreamInfo*> EncodedAttributeInfo::vBitStreams(){
+	if (_vBitStreams.size() == 0)
+	{	
 	vector<BitStreamInfo*> bitVector(this->_vBStreams,this->_vBStreams + this->NoOfVBitStreams());
 	this->_vBitStreams = bitVector;
-	return bitVector;
+	}
+	return _vBitStreams;
 }
 
 int EncodedAttributeInfo::attributeID(){
