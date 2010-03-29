@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+    title="CSV Data Source" x="168" y="86" width="626" height="124">
+
+    <mx:Script>
+        <![CDATA[       
+        import flash.net.FileReference;
+            import mx.managers.PopUpManager;
+            import mx.controls.Text;
+	       
+            // A reference to the TextInput control in which to put the result.
+            public var loginName:Text;
+            var fileRef:FileReference;
+		   
+            // Event handler for the OK button.
+            private function returnName(event:MouseEvent):void 
+            {
+            	trace(location.text);
+            	PopUpManager.removePopUp(this);
+            }
+            
+            function selectHandler(event:Event):void
+			{
+			    trace("select");
+			    //trace("path: "+fileRef.size);
+			}
+
+        ]]>
+    </mx:Script>
+    <mx:Canvas width="568" height="71">
+        <mx:VBox x="10" y="10" height="52" width="542" horizontalAlign="right">
+            <mx:HBox width="537">
+                <mx:Label text="csv file path"/>
+                <mx:TextInput width="456" id="location"/>
+            </mx:HBox>
+            <mx:Button label="Ok" click="returnName(event);"/>
+        </mx:VBox>
+    </mx:Canvas>
+
+</mx:TitleWindow>  

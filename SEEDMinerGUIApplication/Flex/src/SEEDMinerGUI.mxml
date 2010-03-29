@@ -34,8 +34,8 @@
 						</mx:HBox>
 					</mx:Canvas>
 				</mx:TabNavigator>
-				<mx:Canvas x="0" y="127" width="100%" height="482" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)">
-					<mx:Button x="849" y="310" label="Execute Flow"/>
+				<mx:Canvas x="0" y="127" width="100%" height="482" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)" click="mouseClickHandler(event)">
+					<mx:Button x="849" y="448" label="Execute Flow" id="exe"/>
 				</mx:Canvas>
 			</mx:Canvas>
 		</mx:ApplicationControlBar>
