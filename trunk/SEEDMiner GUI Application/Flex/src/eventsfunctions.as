@@ -5,7 +5,9 @@ import ActionClasses.CSVDataSource;
 import ActionClasses.DrawingEvent;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Path;
+import ActionClasses.TextViewer;
 import ActionClasses.Util;
+import com.dncompute.graphics.GraphicsUtil;
 
 import flash.display.Shape;
 import flash.events.Event;
@@ -24,10 +26,13 @@ private var correctionX:Number;
 private var correctionY:Number;
 private var actionObjectsOnCanvas:Dictionary = new Dictionary();
 private var actionObjectSequence:Array = new Array();
-private var tempLine:Shape; 
+private var arrowsOnCanvas:Array = new Array();
+private var tempLine:Shape;
+private var arrowColour:uint=0xa6a6a6;
 
 public function startUp(event:Event):void
 {
+	
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
@@ -51,6 +56,12 @@ private function mouseDownHandler(event:MouseEvent):void
     	var mysqlDataSource:ActionObject = new MySQLDataSource();
     	mysqlDataSource.image=dragInitiator;
     	actionObj=mysqlDataSource;	
+    }
+    else if(dragInitiator.id=="Text_Viewer")
+    {
+    	var textViewer:ActionObject = new TextViewer();
+    	textViewer.image=dragInitiator;
+    	actionObj=textViewer;	
     }
 
     var imageProxy:Image = new Image();
@@ -117,12 +128,19 @@ private function mouseMoveHandler(event:MouseEvent):void
 	if(ActionObjectParent.arrowDrawingStatus==ActionObjectParent.ARROW_DRAWING)
 	{
 		//trace("drawing "+ActionObjectParent.drawingEvent.startId+" to "+event.localX+" , "+event.localY);
-		
+		var shape:Shape = new Shape();
+	
 		var line:Shape = new Shape();
-		line.graphics.lineStyle(2,0xFF0000, .75);
-		line.graphics.beginFill(0x00FF00);
-		line.graphics.moveTo(ActionObject(actionObjectsOnCanvas[ActionObjectParent.drawingEvent.startId]).vboxX, ActionObject(actionObjectsOnCanvas[ActionObjectParent.drawingEvent.startId]).vboxY);
-		line.graphics.lineTo(Canvas(event.currentTarget).contentMouseX, Canvas(event.currentTarget).contentMouseY);
+		line.graphics.lineStyle(2,arrowColour, .8);
+
+		//line.graphics.beginFill(0x00FF00);
+		var actobj:ActionObject=ActionObject(actionObjectsOnCanvas[ActionObjectParent.drawingEvent.startId]);
+		var img:Image=ActionObject(actionObjectsOnCanvas[ActionObjectParent.drawingEvent.startId]).image;
+		var sourceX:int = actobj.vboxX+img.x+img.width;
+		var sourceY:int = actobj.vboxY+img.y+img.height/2;
+		//line.graphics.moveTo(sourceX, sourceY);
+		//line.graphics.lineTo(Canvas(event.currentTarget).contentMouseX, Canvas(event.currentTarget).contentMouseY);
+		GraphicsUtil.drawArrow(line.graphics,new Point(sourceX,sourceY),new Point(Canvas(event.currentTarget).contentMouseX,Canvas(event.currentTarget).contentMouseY));
 		if(tempLine!=null)
 		{
 			drawingcanvas.rawChildren.removeChild(tempLine);
@@ -132,7 +150,7 @@ private function mouseMoveHandler(event:MouseEvent):void
 	}
 	else if(ActionObjectParent.arrowDrawingStatus==ActionObjectParent.ARROW_COMPLETE)
 	{
-		trace("draw complete "+ActionObjectParent.drawingEvent.startId+" to "+ActionObjectParent.drawingEvent.destinationId);
+		//trace("draw complete "+ActionObjectParent.drawingEvent.startId+" to "+ActionObjectParent.drawingEvent.destinationId);
 		
 		if(tempLine!=null)
 		{
@@ -140,7 +158,7 @@ private function mouseMoveHandler(event:MouseEvent):void
 			tempLine=null;
 		}
 		addToActionObjectSequence(ActionObjectParent.drawingEvent);
-		trace(actionObjectSequence);
+		//trace(actionObjectSequence);
 		updateArrows(actionObjectSequence);
 		ActionObjectParent.drawingEvent=null;
 		ActionObjectParent.arrowDrawingStatus=ActionObjectParent.NO_DRAWING;
@@ -149,22 +167,33 @@ private function mouseMoveHandler(event:MouseEvent):void
 
 private function updateArrows(seq:Array):void 
 {
-    for(var i:int=0;i<seq.length-1;i++)
+	//delete old arrows
+	var numberOfArrows:int = arrowsOnCanvas.length;
+	for(var i:int=0;i<numberOfArrows;i++)
+	{
+		//trace("arrows "+arrowsOnCanvas.length+" deleting arrow "+i);
+		drawingcanvas.rawChildren.removeChild(Shape(arrowsOnCanvas.pop()));
+	}
+	//add new arrows
+    for(var j:int=0;j<seq.length-1;j++)
     {
-    	drawArrow(seq[i],seq[i+1]);
+    	drawArrow(seq[j],seq[j+1]);
+    	//trace("adding arrow "+i);
     }
 }
 
 private function drawArrow(source:String,destination:String):void
 {
 	var line:Shape = new Shape();
-	line.graphics.lineStyle(2,0xFF0000, .75);
-	line.graphics.beginFill(0x00FF00);
+	line.graphics.lineStyle(2,arrowColour, 1);
+	//line.graphics.beginFill(0x00FF00);
 	var shotestPath:Path=Util.getShortestPath(ActionObject(actionObjectsOnCanvas[source]),ActionObject(actionObjectsOnCanvas[destination]));
-	line.graphics.moveTo(shotestPath.startX,shotestPath.startY);
-	line.graphics.lineTo(shotestPath.endX,shotestPath.endY);
+	//line.graphics.moveTo(shotestPath.startX,shotestPath.startY);
+	//line.graphics.lineTo(shotestPath.endX,shotestPath.endY);
+	GraphicsUtil.drawArrow(line.graphics,new Point(shotestPath.startX,shotestPath.startY),new Point(shotestPath.endX,shotestPath.endY));
 	//drawingcanvas.rawChildren.removeChild(tempLine);
 	drawingcanvas.rawChildren.addChild(line);
+	arrowsOnCanvas.push(line);
 }
 
 private function addToActionObjectSequence(drawingEvent:DrawingEvent):void 
@@ -194,12 +223,12 @@ private function draw(e:Event):void
 
 	var line:Shape = new Shape();
 	
-	line.graphics.lineStyle(2,0xFF0000, .75);
+	line.graphics.lineStyle(2,arrowColour, .8);
 	
 	//line.graphics.drawRect(0, 0, xslideval.value,yslideval.value);
 	
 	var mySprite:Sprite = new Sprite();
-	mySprite.graphics.beginFill(0xFFCC00,.2);
+	//mySprite.graphics.beginFill(arrowColour,.2);
 	//mySprite.graphics.drawCircle(200, 300, xslideval.value);
 	
 	drawingcanvas.rawChildren.addChild(line);
