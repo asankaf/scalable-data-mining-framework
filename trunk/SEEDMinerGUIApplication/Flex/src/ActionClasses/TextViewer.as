@@ -1,5 +1,7 @@
 package ActionClasses
 {
+	import mx.managers.PopUpManager;
+	
 	public class TextViewer extends ActionObjectParent
 	{
 		public function TextViewer()
