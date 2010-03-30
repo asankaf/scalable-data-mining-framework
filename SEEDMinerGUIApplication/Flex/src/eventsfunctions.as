@@ -20,7 +20,7 @@ import mx.controls.Image;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
-
+import mx.managers.PopUpManager;
 
 private var actionObj:ActionObject;
 private var correctionX:Number;
@@ -35,6 +35,40 @@ private var fillColour:uint=0xdad8d8;
 public function startUp(event:Event):void
 {
 	
+}
+
+private function executeFlow(event:Event):void
+{
+	trace("execute");
+	trace("validate sequence");
+	trace(actionObjectSequence.toString());
+	trace(ActionObject(actionObjectsOnCanvas[actionObjectSequence[0]]).id);
+	for(var i:int=0;i<actionObjectSequence.length;i++)
+	{
+		if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.CSV_DATASOURCE)
+		{
+			trace("csv data source");
+		}
+		else if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.TEXT_VIEWER)
+		{
+			trace("text viewer");
+			var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
+			
+			textPopUp.textViewerTextArea.text=
+			"125,256,6000,256,16,128,199\n" + 
+			"29,8000,32000,32,8,32,253\n" + 
+			"23,16000,32000,64,16,32,381\n" + 
+			"320,256,6000,0,1,6,28\n";
+			//TextViewer(actionObjectsOnCanvas[actionObjectSequence[i]]).textView.textViewerTextArea.text="asdfsdfsadfs";
+			var point1:Point = new Point();
+			point1.x=0;
+            point1.y=0;                
+            //login.x=point1.x-50;
+            //login.y=point1.y+90; 
+            TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
+            TEXTViewPopUp(textPopUp).y=150;
+		}
+	}
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
@@ -96,7 +130,7 @@ private function dragDropHandler(event:DragEvent):void
     	
     	//add objects to collection
     	actionObjectsOnCanvas[actionObj.id]=actionObj;
-    	var ob:ActionObject=ActionObject(actionObjectsOnCanvas[actionObj.id]);
+    	//var ob:ActionObject=ActionObject(actionObjectsOnCanvas[actionObj.id]);
     	//trace("id:"+ob.id+"type:"+ob.type());
     	
     	actionObj=null;

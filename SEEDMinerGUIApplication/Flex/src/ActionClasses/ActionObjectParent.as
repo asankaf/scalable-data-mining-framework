@@ -35,6 +35,7 @@ package ActionClasses
 		public static var drawingEvent:DrawingEvent;
 		private var idValue:String;
 		public static var actionObjectClickStatus:Number=ACTIONOBJECT_NOT_CLICKED;
+		public var config:Object;
 		
 		private function mouseMoveHandler(event:MouseEvent):void
 		{
@@ -76,30 +77,25 @@ package ActionClasses
 			actionObjectClickStatus=ACTIONOBJECT_DOUBLE_CLICKED;
 			arrowDrawingStatus=NO_DRAWING;
 			
-
-            var point1:Point = new Point();
-      
-            // Open the TitleWindow container.
-            // Cast the return value of the createPopUp() method
-            // to SimpleTitleWindowExample, the name of the 
-            // component containing the TitleWindow container.
-
-            var login:ds=ds(PopUpManager.createPopUp( this.vbox, ds , false));
-
-            // Calculate position of TitleWindow in Application's coordinates.
-            // Position it 25 pixels down and to the right of the Button control.
-            
-            point1.x=0;
-            point1.y=0;                
-            point1=this.vbox.localToGlobal(point1);
-            login.x=point1.x-50;
-            login.y=point1.y+90;
-         
-            // Pass a reference to the TextInput control
-            // to the TitleWindow container so that the 
-            // TitleWindow container can return data to the main application.
-            //login.loginName=vbox.label;
-
+			if(this.type()==ActionObjectParent.CSV_DATASOURCE)
+			{ 
+				if(config==null)
+				{
+					config=CSVConfigPopUp(PopUpManager.createPopUp(this.vbox, CSVConfigPopUp , false));
+				}
+				else
+				{
+					PopUpManager.addPopUp(CSVConfigPopUp(config),this.vbox,false);
+				}
+				var point1:Point = new Point();
+				point1.x=0;
+	            point1.y=0;                
+	            point1=this.vbox.localToGlobal(point1);
+	            //login.x=point1.x-50;
+	            //login.y=point1.y+90; 
+	            CSVConfigPopUp(config).x=200;
+	            CSVConfigPopUp(config).y=point1.y+90;
+			}
 		}
 		
 		public function ActionObjectParent(label:String)

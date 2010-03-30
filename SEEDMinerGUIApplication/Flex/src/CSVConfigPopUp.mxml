@@ -6,24 +6,13 @@
         <![CDATA[       
         import flash.net.FileReference;
             import mx.managers.PopUpManager;
-            import mx.controls.Text;
-	       
-            // A reference to the TextInput control in which to put the result.
-            public var loginName:Text;
-            var fileRef:FileReference;
-		   
+	       		   
             // Event handler for the OK button.
-            private function returnName(event:MouseEvent):void 
+            private function ok(event:MouseEvent):void 
             {
             	trace(location.text);
             	PopUpManager.removePopUp(this);
             }
-            
-            function selectHandler(event:Event):void
-			{
-			    trace("select");
-			    //trace("path: "+fileRef.size);
-			}
 
         ]]>
     </mx:Script>
@@ -33,7 +22,7 @@
                 <mx:Label text="csv file path"/>
                 <mx:TextInput width="456" id="location"/>
             </mx:HBox>
-            <mx:Button label="Ok" click="returnName(event);"/>
+            <mx:Button label="Ok" click="ok(event);"/>
         </mx:VBox>
     </mx:Canvas>
 

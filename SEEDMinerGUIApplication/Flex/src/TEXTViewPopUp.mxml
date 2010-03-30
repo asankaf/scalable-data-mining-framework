@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" layout="absolute" width="750" height="428" title="Text Viewer" close="titleWin_close(event);">
+	<mx:Script>
+        <![CDATA[
+        	import mx.core.IFlexDisplayObject;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+
+            private function titleWin_close(evt:CloseEvent):void {
+                PopUpManager.removePopUp(evt.target as IFlexDisplayObject);
+            }
+            
+        ]]>
+    </mx:Script>
+	<mx:Canvas x="10" y="10" width="710" height="368">
+		<mx:TextArea x="10" y="10" width="690" height="348" id="textViewerTextArea"/>
+	</mx:Canvas>
+</mx:TitleWindow>
