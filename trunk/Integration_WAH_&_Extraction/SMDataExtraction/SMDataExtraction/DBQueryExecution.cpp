@@ -134,14 +134,18 @@ namespace DBQueryExecutionInfo{
 					stringAtt->attName = pCur->getColumn(it)->szName;
 
 					vector<string> vals;
+					TempStringObjects* tempVals = new TempStringObjects[this->_rowCount];
 					vals.resize(this->_rowCount);
 					int currRow = 0;
 					for (BRC = pCur->first() ; (BRC && currRow < this->_rowCount) ; BRC=pCur->next())
 					{
 						vals[currRow] = pCur->getChar(it);
+						TempStringObjects strObj(vals[currRow],currRow);
+						tempVals[currRow] = strObj;
 						currRow++;
 					}
 
+					stringAtt->setValObjects(tempVals);
 					stringAtt->setValList(vals);
 					this->_stringData.push_back(stringAtt);
 					

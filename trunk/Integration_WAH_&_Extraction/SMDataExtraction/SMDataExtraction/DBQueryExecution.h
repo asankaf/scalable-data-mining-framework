@@ -29,7 +29,7 @@ namespace DBQueryExecutionInfo{
 			__declspec(dllexport) std::vector<PureStringAttInfo*> RetrievedStringData();
 			__declspec(dllexport) int RowCount();
 			__declspec(dllexport) void setRowCount();
-
+			__declspec(dllexport) const char* queryStmt(){return this->_query_stmt;}
 
 		private:
 			const char *_query_stmt;

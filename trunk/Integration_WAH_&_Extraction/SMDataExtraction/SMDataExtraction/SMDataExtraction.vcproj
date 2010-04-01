@@ -185,11 +185,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LoadSavedDataSources.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PureAttributeInfo.h"
 				>
 			</File>
 			<File
 				RelativePath=".\PureIntAttributeInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SaveDataSources.h"
 				>
 			</File>
 			<File
@@ -201,7 +209,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StringSpecAssignVals.h"
+				>
+			</File>
+			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml.h"
 				>
 			</File>
 			<Filter
@@ -335,7 +355,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LoadSavedDataSources.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PureIntAttributeInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SaveDataSources.cpp"
 				>
 			</File>
 			<File
@@ -357,6 +385,22 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxmlparser.cpp"
+				>
 			</File>
 			<Filter
 				Name="DBFrameworkSource"

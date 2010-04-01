@@ -5,6 +5,8 @@
 #include "VBitStream.h"
 #include <time.h>
 #include <iostream>
+#include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -35,6 +37,7 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 	cout<<"Time to assign the set to a vector : "<<(end - start)<<endl;
 
 	int maxUniqueIndex = _uniqueValList.size();
+	
 	int temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
 	this->setNoOfVBitStreams(temp,noOfRows);
 	this->_noOfUniqueVals = _uniqueValList.size();
@@ -47,6 +50,32 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 		int pos = _it->second;
 		dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)pos);
 		this->_mappedVals[i] = bitSet;
+	}
+	return this->_mappedVals;
+}
+
+dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(TempStringObjects* _tempStrs,int noRows,int NoUniqueVals){
+	vector<TempStringObjects> tempObjs(_tempStrs,_tempStrs + noRows);
+	int tempMax = (int)(ceil(log10((double)NoUniqueVals)/log10(2.0)));
+	this->setNoOfVBitStreams(tempMax,noRows);
+	std::sort(tempObjs.begin(),tempObjs.end());
+	string temp;
+	int tempCount = 0;
+	if (noRows > 0)
+	{
+		temp = tempObjs[0].Val();
+	}
+	for (int i = 0 ; i < tempObjs.size() ; i++)
+	{
+		TempStringObjects obj = tempObjs[i];
+		obj.Index(obj.Index() - i);
+		if (strcmp(obj.Val().c_str(),temp.c_str()) != 0)
+		{
+			tempCount++;
+			temp = obj.Val();
+		}
+		dynamic_bitset<> bitSet(this->NoOfVBitStreams(),(unsigned long)(obj.Index() + tempCount));
+		this->_mappedVals[i] = bitSet;		
 	}
 	return this->_mappedVals;
 }

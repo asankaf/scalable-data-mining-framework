@@ -52,7 +52,7 @@ ExtractedCsvDTO* CSVConnectionInfo::CsvConnection::extractData(){
 		vals.resize(rowCount);
 
 		try{
-			for (int j = 1 ; j < rowCount ; j++)
+			for (int j = 1 ; j <= rowCount ; j++)
 			{
 				vals[j - 1] = rowSets[j][i];	
 				//cout<<"Index "<<j<<" : value : "<<vals.at(j-1)<<endl;

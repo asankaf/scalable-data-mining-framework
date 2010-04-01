@@ -10,6 +10,8 @@
 #include "DecodedTuple.h"
 #include "EncodedAttributeInfo.h"
 #include "DataSources.h"
+#include "SaveDataSources.h"
+#include "LoadSavedDataSources.h"
 #include <iostream>
 
 using namespace std;
@@ -21,28 +23,41 @@ using namespace CsvDataExtraction;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	
-	CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');
-	time_t start_1,end_1;
-	start_1 = clock();
-	ExtractedCsvDTO *dat = cConcsv.extractData();
-	end_1 = clock();
-	cout<<"Time to retrieve "<< dat->RowCount() <<" records from CSV file : "<<(end_1 - start_1)<<endl;
+  	time_t start_1,end_1;
 
-	//Testing the Library for initializing and connecting to the database.
-// 	DBConnection cCon("SoyaBeanMySql","","");
-// 	if (cCon.initiateConnectionToDB())
-// 	{
-// 		cout<<"successfully connected"<<endl;
-// 	}
+	//Code Snippet to load data from a saved encoded file. 
+	//Important : Files should be saved in ../Reports/ folder.
+ 	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
+ 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+	
+	//CsvConnection *connection = new CsvConnection("E:\\University\\Workspaces\\C++Projects\\Integration_WAH_&_Extraction\\SMDataExtraction\\SMDataExtraction\\soybeanTest4.csv",',','/n','""');
+	CsvConnection *connection = new CsvConnection("E:\\soybeanTest4.csv",',','\n','""');
+	ExtractedCsvDTO *exDTO = connection->extractData();
+	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"soyabean");
+	dsSBN->encodeAtrributes();
+	DataSources *SBDss = new DataSources();
+	cout<<"Finished Encoding data"<<endl;
+	SBDss->insertDataSources(dsSBN);
+
+	//Code Snippet to save data to an encoded file. 
+	//Important : Files will be saved in ../Reports/ folder.
+	DataSourceSerialization *dsSerailize = new DataSourceSerialization(SBDss,"soyabean_metadata","soyabean_data");
+ 	dsSerailize->serializeDataSource();
+	
+	DBConnection cCon("censusdata","","");
+	if (cCon.initiateConnectionToDB())
+	{
+		cout<<"successfully connected"<<endl;
+	}
 	
 	//Testing the Library for executing query statements and binding data.
-	const char* statement="SELECT * from soyabeanms";
+	const char* statement="SELECT TOP(5)* from censusdata";
 	DBQueryExecution cExec(statement);
 	start_1 = clock();
-// 	if ((cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr())))
-// 	{
-// 		cout<<endl<<"Query executed & Fetched successfully"<<endl;
-// 	}
+	if ((cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr())))
+	{
+		cout<<endl<<"Query executed & Fetched successfully"<<endl;
+	}
 	end_1 = clock();
 	cout<<"Time to retrieve "<<cExec.RowCount()<< " records via ODBC DSN : "<<(end_1 - start_1)<<endl;
 	
@@ -94,15 +109,22 @@ int _tmain(int argc, _TCHAR* argv[])
 // 		}
 // 	}
 
-	DataSources * dss= new DataSources();	
-	WrapDataSource *dsCsv = new WrapDataSource(*dat,0);
-	dsCsv->encodeAtrributes();
-	WrapDataSource *ds = new WrapDataSource(cExec,1);
+//	DataSources * dss= new DataSources();	
+// 	WrapDataSource *dsCsv = new WrapDataSource(*dat,0);
+// 	dsCsv->encodeAtrributes();
+	WrapDataSource *ds = new WrapDataSource(cExec,"ds_1");
+	DataSources *dss = new DataSources();
 	dss->insertDataSources(ds);
 	ds->encodeAtrributes();
 	cout<<"Attributes Fetched : "<<ds->noOfAttributes()<<endl;
 	cout<<"Rows Fetched and encoded : " << ds->noOfRows()<<endl;
 	cout<<"No of Unique Data Items : "<<cExec.RetrievedStringData().at(0)->uniqueValueSet().size()<<endl;
+	WrapDataSource *ds_1 = (*dss)("ds_1");
+
+	//saving the data retrieved.
+	DataSourceSerialization *sds = new DataSourceSerialization(dss,"censussmall_metadata","censussmall_data");
+	sds->serializeDataSource();
+
 	//cout<<"No of Unique Vals : "<<cExec.RetrievedStringData().at(0)->uniqueValueSet().size()<<endl;
 	//BitStreamInfo* te = (*dss)(0,0,0);
 
@@ -202,10 +224,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	
 	//Testing the closing connection method.
-// 	if (cCon.closeConnectionWithDB())
-// 	{
-// 		cout<<endl<<"Connection to the database is terminated successfully."<<endl;
-// 	}
+	if (cCon.closeConnectionWithDB())
+	{
+		cout<<endl<<"Connection to the database is terminated successfully."<<endl;
+	}
 	
 	return 0;
 }

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 namespace AttributeInfo{
-	PureIntAttributeInfo::PureIntAttributeInfo()
+	AttributeInfo::PureIntAttributeInfo()
 	{
 
 	}

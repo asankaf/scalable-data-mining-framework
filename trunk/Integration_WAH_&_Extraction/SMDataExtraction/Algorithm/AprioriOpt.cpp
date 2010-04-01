@@ -519,6 +519,15 @@ void AprioriOpt::BuildStrings()
 	}
 }
 
+void AprioriOpt::Clear()
+{
+	m_hashTables.clear();
+	//m_instances = NULL;
+	m_largeItemSets.clear();
+	m_numberOfAttributes = 0;
+	m_rules.clear();
+}
+
 vector<AssociateRule *> AprioriOpt::PruneRules( vector<AssociateRule *> & _rules)
 {
 	vector<AssociateRule * > new_rules;
