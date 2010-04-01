@@ -42,6 +42,7 @@ public:
 	_declspec(dllexport) void Confidence(double val) { m_confidence = val; }
 	//vector<AssociateRule *> PruneRules( vector<AssociateRule *> & _rules , vector<double> & _confidence);
 	_declspec(dllexport) vector<AssociateRule *> PruneRules( vector<AssociateRule *> & _rules);
+	_declspec(dllexport) void Clear();
 	_declspec(dllexport) void FindRulesQuickly(vector<AssociateRule *> & _rules);
 	_declspec(dllexport) vector<AssociateRule *> Rules() const { return m_rules; }
 	_declspec(dllexport) void Rules(vector<AssociateRule *> val) { m_rules = val; }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DataSources noOfdataSources="1">
+    <!-- Meta Information in Data Sources -->
+    <DataSource Name="soyabean">
+        <noOfAttributes>2</noOfAttributes>
+        <noOfRows>933283</noOfRows>
+        <DataSourceType>1</DataSourceType>
+        <CodedAttributes>
+            <Attribute ID="0" Name="plant" Type="3">
+                <UniqueValues noOfUniqueVals="2">
+                    <Val ID="0">lt-normal</Val>
+                    <Val ID="1">normal</Val>
+                </UniqueValues>
+            </Attribute>
+            <Attribute ID="1" Name="precip" Type="3">
+                <UniqueValues noOfUniqueVals="3">
+                    <Val ID="0">gt-norm</Val>
+                    <Val ID="1">lt-norm</Val>
+                    <Val ID="2">norm</Val>
+                </UniqueValues>
+            </Attribute>
+        </CodedAttributes>
+    </DataSource>
+</DataSources>

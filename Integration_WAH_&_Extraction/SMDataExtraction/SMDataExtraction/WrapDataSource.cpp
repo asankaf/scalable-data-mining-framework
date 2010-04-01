@@ -13,17 +13,17 @@
 using namespace std;
 using namespace boost;
 
-WrapDataSource::WrapDataSource(DBQueryExecution cExec,int dataSourceID)
+WrapDataSource::WrapDataSource(DBQueryExecution cExec,string dsName)
 {
 	this->_queryDataInfo = cExec;
 	this->_noOfAttributes = cExec.RetievedIntData().size() + cExec.RetrievedDoubleData().size() + cExec.RetrievedStringData().size();
 	this->_noOfRows = cExec.RowCount();
-	this->_dataSourceID = dataSourceID;
+	this->_dsName = dsName;
 	this->_sourceType = DATASOURCE::DATABASE;
 }
 
-WrapDataSource::WrapDataSource(ExtractedCsvDTO csvExec,int datasourceID){
-	this->_dataSourceID = datasourceID;
+WrapDataSource::WrapDataSource(ExtractedCsvDTO csvExec,string dsName){
+	this->_dsName = dsName;
 	this->_noOfAttributes = csvExec.AttributeCount();
 	this->_noOfRows = csvExec.RowCount();
 	this->_csvExtractedDatainfo = csvExec;
@@ -53,6 +53,7 @@ void WrapDataSource::encodeAtrributes(){
 	if(this->_sourceType == DATASOURCE::DATABASE){
 		encodeIntAttributes(this->_queryDataInfo.RetievedIntData());
 		encodeStringAttributes(this->_queryDataInfo.RetrievedStringData());
+		
 	}
 	else if (this->_sourceType == DATASOURCE::CSVFILE)
 	{
@@ -143,7 +144,7 @@ void WrapDataSource::encodeIntAttributes(vector<PureIntAttInfo*> intAtts){
 		}
 		else this->_codedAtts.insert(this->_codedAtts.end(),encodedIntAtt->attributeID(),encodedIntAtt);
 		
-	
+		
 		start = clock();
 		delete []convertdBitArray;
 		end = clock();
@@ -172,6 +173,17 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 			dynamic_bitset<> *convertedBitSet = multiCatAtt->mapStringDataToCategories(stringAtt->ValueList(),stringAtt->uniqueValueSet(),this->_noOfRows);
 			end = clock();
 			cout<<"Time for mapping data to ints : "<<(end - start)<<endl;
+
+// 			start = clock();
+// 			dynamic_bitset<> *convertedBitSet_1 = multiCatAtt->mapStringDataToCategories(stringAtt->ValObjects(),this->_noOfRows,stringAtt->uniqueValueSet().size());
+// 			end = clock();
+// 			cout<<"Time for mapping data to ints using new method : "<<(end - start)<<endl;
+
+// 			for (int j = 0 ; j < this->_noOfRows ; j++)
+// 			{
+// 				cout<<"Using Old Method : "<<convertedBitSet[j]<<" : ";
+// 				cout<<"Using New Method : "<<convertedBitSet_1[j]<<endl;
+// 			}
 
 			int temp = this->_noOfRows;
 			start = clock();

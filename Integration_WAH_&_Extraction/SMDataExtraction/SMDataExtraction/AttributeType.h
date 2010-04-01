@@ -13,11 +13,11 @@ struct Type
 
 __declspec(dllexport) static enum ATT_TYPE{
 
-	SIGNEDINT_VAL,
-	DOUBLE_VAL,
-	DATE_VAL,
-	MULTICAT_VAL,
-	SKIP_VAL
+	SIGNEDINT_VAL = 0,
+	DOUBLE_VAL = 1,
+	DATE_VAL = 2,
+	MULTICAT_VAL = 3,
+	SKIP_VAL = 4
 
 };
 

@@ -3,6 +3,7 @@
 #include "VBitStream.h"
 #include "AttributeType.h"
 #include "EncodedAttributeInfo.h"
+#include "boost/dynamic_bitset.hpp"
 
 using namespace std;
 
@@ -19,6 +20,8 @@ public:
 	__declspec(dllexport) int decodeTheTuple(int tupleID);
 	__declspec(dllexport) int getTheSignOf(int tupleID);
 	__declspec(dllexport) void setTheSignBitMap(vector<long int> values,int valSet);
+	__declspec(dllexport) void setSignBitMap(vector<bool> bitMap){this->_signBitMap = bitMap;}
+	__declspec(dllexport) dynamic_bitset<> signMapAsInt();
 
 private:
 	vector<bool> _signBitMap; //sign bit map 0 for + and 1 for -.
