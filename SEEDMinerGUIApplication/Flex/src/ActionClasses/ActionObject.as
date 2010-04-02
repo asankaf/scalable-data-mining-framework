@@ -34,6 +34,7 @@ package ActionClasses
 		function get correctionX():Number;
 		
 		function get correctionY():Number;
+		
 				
 	}
 }

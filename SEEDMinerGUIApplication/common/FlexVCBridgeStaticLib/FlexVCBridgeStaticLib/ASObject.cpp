@@ -476,6 +476,7 @@ void* CASObject::GetValuePtr() const
 
 CASInstance* CASObject::GetInstance() const
 {
+	//cout<<"test"<<endl;
     if ( m_Type == ASOBJECT_INSTANCE )
     {
         return (CASInstance*)m_pValue;

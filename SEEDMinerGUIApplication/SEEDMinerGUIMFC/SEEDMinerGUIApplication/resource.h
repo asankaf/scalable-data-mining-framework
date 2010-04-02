@@ -1,11 +1,11 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by IntelliCheckersUI.rc
+// Microsoft Visual C++ generated include file.
+// Used by SeedMinerGUI.rc
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
-#define IDD_IntelliCheckersUI_DIALOG              102
+#define IDD_IntelliCheckersUI_DIALOG    102
 #define IDR_MAINFRAME                   128
 #define IDC_SHOCKWAVEFLASH1             1000
 

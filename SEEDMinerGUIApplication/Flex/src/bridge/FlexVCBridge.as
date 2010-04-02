@@ -44,7 +44,7 @@ import mx.graphics.SolidColor;
 import mx.graphics.Stroke;
 import mx.managers.PopUpManager;
 
-	var __callBackFunction:Function;
+	public var __callBackFunction:Function;
 	var __flashPlayerId:int;
 	var __flashPlayerIndex:int;
 	var __alertId:Array;

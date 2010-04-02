@@ -1,6 +1,17 @@
 /* CSS file */
-ApplicationControlBar.topbar {
-   fillAlphas: 0.4, 0.6;
-   fillColors: #ffffff, #ccff99;
-   dropShadowColor: #999999;
+
+.actionIcons
+{	
+	horizontal-align: center;
+	border-color:#CFCFCF;
+	border-style:solid;
+	border-thickness:1;
+	corner-radius:5;
+	background-alpha:.9;
+	background-color:#E2E2E2;
+	color: #5A5A5A;
+	fontSize: 10;
+	dropShadowColor: #B1B1B1;
+	dropShadowEnabled: true;
+	kerning: false;
 }

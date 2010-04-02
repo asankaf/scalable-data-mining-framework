@@ -479,6 +479,10 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
+				RelativePath=".\res\IntelliCheckersUI.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\SeedMinerGUI.ico"
 				>
 			</File>

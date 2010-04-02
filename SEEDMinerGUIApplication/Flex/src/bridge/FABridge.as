@@ -25,6 +25,7 @@ package bridge
 /*
  * imports
  */
+ import mx.controls.Alert;
 import flash.external.ExternalInterface;
 import flash.utils.Timer;
 import flash.events.*;
@@ -562,6 +563,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function resolveRef(objRef:Number):Object
     {
+    	//Alert.show("called");
         try
         {
             return (objRef == -1)? baseObject : localInstanceMap[objRef];
@@ -579,6 +581,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     public function getRef(obj:Object, createIfNecessary:Boolean):Number
     {
+    	//Alert.show("called");
         try
         {
             var ref:Number;
@@ -617,6 +620,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function resolveFunctionID(funcID:Number):Function
     {
+    	//Alert.show("called");
         return localFunctionMap[funcID];
     }
 
@@ -625,6 +629,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     public function getFunctionID(f:Function, createIfNecessary:Boolean):Number
     {
+    	//Alert.show("called");
         var ref:Number;
 
         if (createIfNecessary)
@@ -653,6 +658,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     public function getRemoteFunctionProxy(functionID:Number, createIfNecessary:Boolean):Function
     {
+    	//Alert.show("called");
         try
         {
             if (remoteFunctionCache[functionID] == null)
@@ -715,6 +721,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function checkToThrowLater(obj:Object):Boolean
     {
+    	//Alert.show("called"); called here
     	// Anirudh (2/11/08): Check to see if there is value property for the object and that it is not a primitive
     	if ( !obj.hasOwnProperty("value") )
     		return false;
@@ -759,6 +766,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     public function js_getPropFromAS(objID:Number, propName:String):*
     {
+    	//Alert.show("called");
         incRef(objID);
         try
         {
@@ -798,6 +806,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_setPropertyInAS(objID:Number, propRef:String, value:*):*
     {
+    	//Alert.show("called");
         incRef(objID);
         try {
             var obj:Object = resolveRef(objID);
@@ -829,6 +838,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_getRoot():*
     {
+    	//Alert.show("called"); called here before and after
         try
         {
             //always get the root; this is the same as the get property, only it is the root object
@@ -852,6 +862,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_invokeFunction(funcID:Number, args:Object):*
     {
+    	//Alert.show("called");
         var result:*;
         try
         {
@@ -872,6 +883,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_invokeMethod(objID:Number, methodName:String, args:Object):*
     {
+    	//Alert.show("called");
         incRef(objID);
         try
         {
@@ -938,6 +950,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function checkToExecuteLater(obj:Object, methodName:String):Boolean
     {
+    	//Alert.show("called"); called here before and after
         var methods:String;
         var className:String = getQualifiedClassName(obj);
         var classInfo:XML = describeType(obj);
@@ -991,6 +1004,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_releaseASObjects():void
     {
+    	//Alert.show("called");
         localTypeMap = new Dictionary();
         localInstanceMap = new Dictionary();
         localFunctionMap = new Dictionary();
@@ -1001,6 +1015,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_releaseNamedASObject(objId:int):Boolean
     {  
+    	//Alert.show("called");
         var retVal:Boolean = false;
         if (localInstanceMap[objId] != null)
         {
@@ -1017,6 +1032,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
 
     private function js_create(className:String):*
     {
+    	//Alert.show("called");
         try
         {
             var c:Class = Class(ApplicationDomain.currentDomain.getDefinition(className));
@@ -1040,6 +1056,7 @@ public class FABridge extends EventDispatcher implements IMXMLObject
      */
     private function js_getClassRef(className:String):*
     {
+    	//Alert.show("called");
     	try
     	{
 			var classType : Class = ApplicationDomain.currentDomain.getDefinition(className) as Class;

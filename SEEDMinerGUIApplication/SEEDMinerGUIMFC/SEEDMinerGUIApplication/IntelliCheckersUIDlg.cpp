@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <iostream>
 #include "IntelliCheckersUI.h"
 #include "IntelliCheckersUIDlg.h"
 
@@ -13,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
-
+using namespace std;
 class CAboutDlg : public CDialog
 {
 public:
@@ -118,7 +119,7 @@ BOOL CIntelliCheckersUIDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	id_flash1 = CFlexCtrl::RegisterDefaultCallbacks (&m_Flash,this);
-	m_Flash.SetMovie(CFlexCtrl::GetAbsolutePath("../../../Flex/bin-debug/SEEDMINER1.swf"));
+	m_Flash.SetMovie(CFlexCtrl::GetAbsolutePath("../../../Flex/bin-debug/SEEDMinerGUI.swf"));
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -196,30 +197,23 @@ void CIntelliCheckersUIDlg::OnOK()
 
 void CIntelliCheckersUIDlg::OnFlexInit(int flashIndex)
 {
+	//flash->root.Call("gettxt1").Call("settext", "Grrrrrr");
+	//cout<<"hari"<<endl;
+	
 	if(flashIndex == id_flash1)
-	{
-		//Your initializations here.
-		flash = new CFlexObject(this, id_flash1);
-		//flash->AddEventListener("btn1", "mouseDown");
-		//flash->CallFunction("Grrr", "Modaya");
-		//flash->root.Call("Grrr", "Modayaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		//flash->root.Call()
-
-		
-	}
+		{
+			//Your initializations here.
+			flash = new CFlexObject(this, id_flash1);
+			//flash->AddEventListener("btn1", "mouseDown");
+			//flash->CallFunction("Grrr", "Modaya");
+			//flash->root.Call("Grrr", "Modayaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			//flash->root.Call()
+	
+			
+		}
+	
 	//Create one for each player
 	
-}
-
-
-void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
-{
-	if(controller == "btn1")
-	{
-		flash->root.Call("gettxt1").Call("settext", "Grrrrrr");
-		//flash->SetText("txt1", "Buddi buruwa...");
-	}
-	//AfxMessageBox("Hello World");
 }
 
 void CIntelliCheckersUIDlg::OnFlexEvent(CFlexEvent *evt)
@@ -228,4 +222,36 @@ void CIntelliCheckersUIDlg::OnFlexEvent(CFlexEvent *evt)
 	{
 		flash->Alert("Ok", 0);
 	}
+}
+
+//////////////////////////////////// implement methods below //////////////////////////////////////////
+
+void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
+{
+	string procedure=evt->procedure;
+
+	if (procedure=="csv->text")
+	{
+		string path=evt->procedurePara;
+		string formattedOutPut="";
+
+		//implement the procedure for get data from csv file(path is the location of the file) 
+		//and make a string to out put data in the text viewer 
+		//assign it to "formattedOutPut" here
+
+		flash->root.Call("func", procedure+formattedOutPut);
+	}
+	else if (procedure=="csv->apriory->text")
+	{
+		string path=evt->procedurePara;
+		string formattedOutPut="";
+
+		//implement the procedure for get data from csv file apply apriory algorithm 
+		//and make a string to out put the rules in the text viewer 
+		//assign it to "formattedOutPut" here
+
+		flash->root.Call("func", procedure+formattedOutPut);
+
+	}
+	
 }

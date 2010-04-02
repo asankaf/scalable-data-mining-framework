@@ -18,6 +18,8 @@ public:
 	CString itemId;
 	CString itemType;
 	CString eventType;
+	CString procedure;
+	CString procedurePara;
 
 	int flashIndex;
 
