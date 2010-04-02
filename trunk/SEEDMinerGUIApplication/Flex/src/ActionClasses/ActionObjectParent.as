@@ -15,6 +15,7 @@ package ActionClasses
 		public static const CSV_DATASOURCE:Number = 0;
 		public static const MySQL_DATASOURCE:Number = 1;
 		public static const TEXT_VIEWER:Number = 2;
+		public static const ALGORITHM_APRIORY:Number = 3;
 		
 		public static const NO_DRAWING:Number=-1;
 		public static const ARROW_DRAWING:Number=0;
@@ -73,7 +74,7 @@ package ActionClasses
 		
 		private  function mouseDoubleClickHandler(event:MouseEvent):void
 		{
-			trace("double clicked");
+			//trace("double clicked");
 			actionObjectClickStatus=ACTIONOBJECT_DOUBLE_CLICKED;
 			arrowDrawingStatus=NO_DRAWING;
 			

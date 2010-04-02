@@ -1,6 +1,7 @@
 // ActionScript file
 import ActionClasses.ActionObject;
 import ActionClasses.ActionObjectParent;
+import ActionClasses.AlgorithmApriory;
 import ActionClasses.CSVDataSource;
 import ActionClasses.DrawingEvent;
 import ActionClasses.MySQLDataSource;
@@ -16,11 +17,16 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 
 import mx.containers.Canvas;
+import mx.controls.Alert;
 import mx.controls.Image;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
-import mx.managers.PopUpManager;
+
+//<fab:FABridge id="fabridge" xmlns:fab="bridge.*" bridgeName="bridge1"/>
+//import bridge.FABridge;
+//import bridge.FlexVCBridge;
+include "bridge/FlexVCBridge.as";
 
 private var actionObj:ActionObject;
 private var correctionX:Number;
@@ -31,19 +37,64 @@ private var arrowsOnCanvas:Array = new Array();
 private var tempLine:Shape;
 private var arrowColour:uint=0x919191;
 private var fillColour:uint=0xdad8d8;
+private static var ok:Boolean=false;
+private var procedurePara:String;
 
 public function startUp(event:Event):void
 {
 	
 }
 
+public function func(str:String):void
+{
+	Alert.show(str);
+	
+	//exe.enabled=true;
+}
+
 private function executeFlow(event:Event):void
 {
-	trace("execute");
-	trace("validate sequence");
-	trace(actionObjectSequence.toString());
-	trace(ActionObject(actionObjectsOnCanvas[actionObjectSequence[0]]).id);
-	for(var i:int=0;i<actionObjectSequence.length;i++)
+	exe.enabled=false;
+	//ExternalInterface.call("fnname");
+	 
+	/* var btnX:int = ((event.target as Button).x - 5) / 50;
+	var btnY:int = (550 - ((event.target as Button).y - 5)) / 50; */
+	
+	var ret:Object = new Object();
+	
+	/* ret["clickX"] = btnX;
+	ret["clickY"] = btnY; */
+	ret["flashId"] = __flashPlayerId;
+	ret["flashIndex"] = __flashPlayerIndex;
+	var iid:Array = event.currentTarget.toString().split(".");
+	var itemId:String = iid[iid.length - 1];
+	ret["itemId"] = itemId;
+	ret["itemType"] = "Button";
+	ret["eventType"] = event.type.toString();
+	
+	if(getCurrentProcedure()==null)//validate procedure
+	{
+		exe.enabled=true;
+		return;
+	}
+		
+	ret["procedure"] = getCurrentProcedure();	
+	ret["procedurePara"] = procedurePara;
+
+	
+	__callBackFunction.call(fabridge,ret);
+
+	//Alert.show("After __callBackFunction.call(fabridge,ret);");
+
+
+	 
+	
+	trace(ret["procedure"]);
+	trace(ret["procedurePara"]);
+	//trace("validate sequence");
+	
+	
+	/* for(var i:int=0;i<actionObjectSequence.length;i++)
 	{
 		if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.CSV_DATASOURCE)
 		{
@@ -54,11 +105,8 @@ private function executeFlow(event:Event):void
 			trace("text viewer");
 			var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
 			
-			textPopUp.textViewerTextArea.text=
-			"125,256,6000,256,16,128,199\n" + 
-			"29,8000,32000,32,8,32,253\n" + 
-			"23,16000,32000,64,16,32,381\n" + 
-			"320,256,6000,0,1,6,28\n";
+			textPopUp.textViewerTextArea.text=tt.text.toString();
+	
 			//TextViewer(actionObjectsOnCanvas[actionObjectSequence[i]]).textView.textViewerTextArea.text="asdfsdfsadfs";
 			var point1:Point = new Point();
 			point1.x=0;
@@ -68,7 +116,47 @@ private function executeFlow(event:Event):void
             TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
             TEXTViewPopUp(textPopUp).y=150;
 		}
+	}  */
+	exe.enabled=true;
+}
+
+private function getCurrentProcedure():String
+{
+	var procedure:String="";
+	procedurePara="";
+	for(var i:int=0;i<actionObjectSequence.length;i++)
+	{
+		var Obj:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[i]]);
+		if(Obj.type()==ActionObjectParent.CSV_DATASOURCE)
+		{
+			if(Obj.config==null)
+			{
+				Alert.show("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
+				return null;
+			}
+			else
+			{
+				procedure+="csv";
+				procedurePara=CSVConfigPopUp(Obj.config).location.text.toString();
+			}
+			
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_APRIORY)
+		{
+			procedure+="apriory";
+		}
+		else if(Obj.type()==ActionObjectParent.TEXT_VIEWER)
+		{
+			procedure+="text";
+		}
+		
+		if(i+1!=actionObjectSequence.length)
+		{
+			procedure+="->";
+		}
+		
 	}
+	return procedure;
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
@@ -92,6 +180,12 @@ private function mouseDownHandler(event:MouseEvent):void
     	var mysqlDataSource:ActionObject = new MySQLDataSource();
     	mysqlDataSource.image=dragInitiator;
     	actionObj=mysqlDataSource;	
+    }
+    else if(dragInitiator.id=="ALGORITHM_Apriory")
+    {
+    	var algorithmApriory:AlgorithmApriory = new AlgorithmApriory();
+    	algorithmApriory.image=dragInitiator;
+    	actionObj=algorithmApriory;
     }
     else if(dragInitiator.id=="Text_Viewer")
     {

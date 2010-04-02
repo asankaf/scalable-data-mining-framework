@@ -10,7 +10,7 @@
             // Event handler for the OK button.
             private function ok(event:MouseEvent):void 
             {
-            	trace(location.text);
+            	//trace(location.text);
             	PopUpManager.removePopUp(this);
             }
 

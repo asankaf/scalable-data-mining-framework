@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="1000" height="640" initialize="startUp(event)">
-	
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="100%" height="100%" initialize="startUp(event)">
+	<fab:FABridge id="fabridge" xmlns:fab="bridge.*" bridgeName="bridge1"/>
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
-		<mx:ApplicationControlBar x="10" y="10" width="98%" height="97%" name="topbar">
-			<mx:Canvas width="100%" height="100%">
-				<mx:TabNavigator width="100%" height="127" id="toptabs" x="0" y="0" borderColor="#AAB3B3">
-					<mx:Canvas label="DataSources" width="100%" height="100%">
-						<mx:HBox x="10" y="10" width="940" height="74">
-							<mx:VBox horizontalAlign="center">
-								<mx:Image source="@Embed('1.png')" mouseDown="mouseDownHandler(event);" id="CSV_DataSource"/>
-								<mx:Label text="CSV DataSource" width="101"/>
-							</mx:VBox>
-							<mx:VBox horizontalAlign="center">
-								<mx:Image source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="MySQL_DataSource"/>
-								<mx:Label text="MySQL DataSource"/>
-							</mx:VBox>
-						</mx:HBox>
-					</mx:Canvas>				
-					<mx:Canvas label="Filters" width="100%" height="100%">
-					</mx:Canvas>
-					<mx:Canvas label="Associate Rule Minning" width="100%" height="100%">
-					</mx:Canvas>
-					<mx:Canvas label="Classifires" width="100%" height="100%">
-					</mx:Canvas>
-					<mx:Canvas label="Clustering" width="100%" height="100%">
-					</mx:Canvas>
-					<mx:Canvas label="visualization" width="100%" height="100%">
-						<mx:HBox x="10" y="10" width="940" height="74">
-							<mx:VBox width="79" horizontalAlign="center">
-								<mx:Image source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
-								<mx:Label text="Text Viewer"/>
-							</mx:VBox>
-						</mx:HBox>
-					</mx:Canvas>
-				</mx:TabNavigator>
-				<mx:Canvas x="0" y="127" width="100%" height="482" borderColor="#AAB3B3" borderStyle="solid" backgroundColor="#FEFEFE" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)" click="mouseClickHandler(event)">
-					<mx:Button x="849" y="448" label="Execute Flow" id="exe" click="executeFlow(event);"/>
+		<mx:VBox x="0" y="0" height="100%" width="100%" verticalGap="0" backgroundColor="#FFFFFF">
+			<mx:TabNavigator width="100%" height="127" id="toptabs" borderColor="#EDEDED" backgroundColor="#ECECEC" borderStyle="solid" borderThickness="1" cornerRadius="2" dropShadowColor="#D6D6D6">
+				<mx:Canvas label="DataSources" width="100%" height="100%">
+					<mx:HBox x="10" y="10" width="100%" height="74">
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('1.png')" mouseDown="mouseDownHandler(event);" id="CSV_DataSource"/>
+							<mx:Label text="CSV DataSource"/>
+						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="MySQL_DataSource"/>
+							<mx:Label text="MySQL DataSource"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:Canvas>				
+				<mx:Canvas label="Filters" width="100%" height="100%">
+					<mx:HBox x="10" y="10" width="100%" height="74">
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('DatabaseFilter.png')" mouseDown="mouseDownHandler(event);" id="FILTER_Resample"/>
+							<mx:Label text="Resample" textAlign="center"/>
+						</mx:VBox>
+					</mx:HBox>
 				</mx:Canvas>
+				<mx:Canvas label="Data Mining Algorithms" width="100%" height="100%">
+					<mx:HBox x="10" y="10" width="100%" height="74">
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('apriory.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_Apriory"/>
+							<mx:Label text="Apriory" textAlign="center"/>
+						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_Clasification"/>
+							<mx:Label text="Clasification"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:Canvas>
+				<mx:Canvas label="visualization" width="100%" height="100%">
+					<mx:HBox x="10" y="10" width="100%" height="74">
+						<mx:VBox styleName="actionIcons" width="125" height="73">
+							<mx:Image source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
+							<mx:Label text="Text Viewer"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:Canvas>
+			</mx:TabNavigator>
+			<mx:Canvas width="100%" borderColor="#C8C8C8" borderStyle="solid" backgroundColor="#FAFAFA" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)" click="mouseClickHandler(event)" borderThickness="1" cornerRadius="2" height="100%">
+				<mx:Button label="Execute Flow" id="exe" click="executeFlow(event);" right="10" bottom="10"/>
+				<mx:Text x="206" y="166" text="Text" width="142" height="65" id="tt" visible="false"/>
 			</mx:Canvas>
-		</mx:ApplicationControlBar>
+			<mx:Canvas width="100%" height="35" backgroundColor="#F1F1F1" borderColor="#E0E0E0" borderThickness="2" borderStyle="solid">
+			</mx:Canvas>
+		</mx:VBox>
 	</mx:Canvas>
 
 	<mx:Style source="styles.css"/>

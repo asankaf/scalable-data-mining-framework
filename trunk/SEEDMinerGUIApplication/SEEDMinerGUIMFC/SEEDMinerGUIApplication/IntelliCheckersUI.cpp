@@ -4,12 +4,13 @@
 #include "stdafx.h"
 #include "IntelliCheckersUI.h"
 #include "IntelliCheckersUIDlg.h"
-
+#include <iostream>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////
 // CIntelliCheckersUIApp
@@ -41,6 +42,7 @@ CIntelliCheckersUIApp theApp;
 
 BOOL CIntelliCheckersUIApp::InitInstance()
 {
+	//cout<<"hari"<<endl;
 	AfxEnableControlContainer();
 
 	// Standard initialization

@@ -20,6 +20,8 @@ CFlexEvent::CFlexEvent()
 	itemId ="";
 	itemType = "";
 	eventType = "";
+	procedure = "";
+	procedurePara="";
 }
 
 CFlexEvent::~CFlexEvent()

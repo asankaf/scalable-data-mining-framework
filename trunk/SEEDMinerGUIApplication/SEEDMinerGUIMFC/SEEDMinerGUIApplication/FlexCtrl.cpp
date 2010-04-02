@@ -49,6 +49,9 @@ void CFlexCtrl::EventCallBack(CASObject& obj, CFlexBridge* pBridge){
 	evt->flashIndex = CFlexCtrl::GetIntegerValue(obj.GetObjectMap()["flashIndex"]);
 	int flashID      = CFlexCtrl::GetIntegerValue(obj.GetObjectMap()["flashId"]);
 
+	evt->procedure      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["procedure"]);
+	evt->procedurePara      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["procedurePara"]);
+
 	CFlexObject fobj(CFlexCtrl::objCallBack[flashID],evt->flashIndex);
 
 	bool called = false;
