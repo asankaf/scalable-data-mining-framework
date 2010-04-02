@@ -1,4 +1,4 @@
-//#include "PureAttributeInfo.h"
+#pragma once
 #include <vector>
 
 namespace AttributeInfo{
