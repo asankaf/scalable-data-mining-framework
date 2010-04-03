@@ -235,11 +235,16 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string path=evt->procedurePara;
 		string formattedOutPut="";
 
+		for (int i=0;i<1000000000;i++)
+		{
+
+		}
+
 		//implement the procedure for get data from csv file(path is the location of the file) 
 		//and make a string to out put data in the text viewer 
 		//assign it to "formattedOutPut" here
 
-		flash->root.Call("func", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
@@ -250,7 +255,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//and make a string to out put the rules in the text viewer 
 		//assign it to "formattedOutPut" here
 
-		flash->root.Call("func", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 
 	}
 	
