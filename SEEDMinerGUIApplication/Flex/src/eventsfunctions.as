@@ -39,85 +39,99 @@ private var arrowColour:uint=0x919191;
 private var fillColour:uint=0xdad8d8;
 private static var ok:Boolean=false;
 private var procedurePara:String;
+private var DONE:String="Done";
+private var EXECUTING:String="Executing Flaw";
 
 public function startUp(event:Event):void
 {
 	
 }
 
-public function func(str:String):void
+public function cplusPluseCallBackFunction(str:String):void
 {
-	Alert.show(str);
 	
-	//exe.enabled=true;
+	//if text view
+	var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
+	textPopUp.textViewerTextArea.text=str;
+	var point1:Point = new Point();
+	point1.x=0;
+    point1.y=0;                
+    TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
+    TEXTViewPopUp(textPopUp).y=150;
+	//////////////
+	
+	showStatus(DONE);
 }
 
 private function executeFlow(event:Event):void
 {
-	exe.enabled=false;
-	//ExternalInterface.call("fnname");
-	 
-	/* var btnX:int = ((event.target as Button).x - 5) / 50;
-	var btnY:int = (550 - ((event.target as Button).y - 5)) / 50; */
-	
-	var ret:Object = new Object();
-	
-	/* ret["clickX"] = btnX;
-	ret["clickY"] = btnY; */
-	ret["flashId"] = __flashPlayerId;
-	ret["flashIndex"] = __flashPlayerIndex;
-	var iid:Array = event.currentTarget.toString().split(".");
-	var itemId:String = iid[iid.length - 1];
-	ret["itemId"] = itemId;
-	ret["itemType"] = "Button";
-	ret["eventType"] = event.type.toString();
-	
-	if(getCurrentProcedure()==null)//validate procedure
+	if(1<actionObjectSequence.length)
 	{
-		exe.enabled=true;
-		return;
-	}
+		showStatus(EXECUTING);
+		//ExternalInterface.call("fnname");
+		 
+		/* var btnX:int = ((event.target as Button).x - 5) / 50;
+		var btnY:int = (550 - ((event.target as Button).y - 5)) / 50; */
 		
-	ret["procedure"] = getCurrentProcedure();	
-	ret["procedurePara"] = procedurePara;
-
-	
-	__callBackFunction.call(fabridge,ret);
-
-	//Alert.show("After __callBackFunction.call(fabridge,ret);");
-
-
-	 
-	
-	trace(ret["procedure"]);
-	trace(ret["procedurePara"]);
-	//trace("validate sequence");
-	
-	
-	/* for(var i:int=0;i<actionObjectSequence.length;i++)
-	{
-		if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.CSV_DATASOURCE)
+		var ret:Object = new Object();
+		
+		/* ret["clickX"] = btnX;
+		ret["clickY"] = btnY; */
+		ret["flashId"] = __flashPlayerId;
+		ret["flashIndex"] = __flashPlayerIndex;
+		var iid:Array = event.currentTarget.toString().split(".");
+		var itemId:String = iid[iid.length - 1];
+		ret["itemId"] = itemId;
+		ret["itemType"] = "Button";
+		ret["eventType"] = event.type.toString();
+		
+		if(getCurrentProcedure()==null)//validate procedure
 		{
-			trace("csv data source");
+			showStatus("Done");
+			return;
 		}
-		else if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.TEXT_VIEWER)
-		{
-			trace("text viewer");
-			var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
 			
-			textPopUp.textViewerTextArea.text=tt.text.toString();
+		ret["procedure"] = getCurrentProcedure();	
+		ret["procedurePara"] = procedurePara;
 	
-			//TextViewer(actionObjectsOnCanvas[actionObjectSequence[i]]).textView.textViewerTextArea.text="asdfsdfsadfs";
-			var point1:Point = new Point();
-			point1.x=0;
-            point1.y=0;                
-            //login.x=point1.x-50;
-            //login.y=point1.y+90; 
-            TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
-            TEXTViewPopUp(textPopUp).y=150;
-		}
-	}  */
-	exe.enabled=true;
+		//func("sdaf");
+		__callBackFunction.call(fabridge,ret);
+	
+		//Alert.show("After __callBackFunction.call(fabridge,ret);");
+	
+	
+		 
+		
+		//trace(ret["procedure"]);
+		//trace(ret["procedurePara"]);
+		//trace("validate sequence");
+		
+		
+		/* for(var i:int=0;i<actionObjectSequence.length;i++)
+		{
+			if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.CSV_DATASOURCE)
+			{
+				trace("csv data source");
+			}
+			else if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.TEXT_VIEWER)
+			{
+				trace("text viewer");
+				var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
+				
+				textPopUp.textViewerTextArea.text=tt.text.toString();
+		
+				//TextViewer(actionObjectsOnCanvas[actionObjectSequence[i]]).textView.textViewerTextArea.text="asdfsdfsadfs";
+				var point1:Point = new Point();
+				point1.x=0;
+	            point1.y=0;                
+	            //login.x=point1.x-50;
+	            //login.y=point1.y+90; 
+	            TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
+	            TEXTViewPopUp(textPopUp).y=150;
+			}
+		}  */
+	}
+	
 }
 
 private function getCurrentProcedure():String
@@ -157,6 +171,56 @@ private function getCurrentProcedure():String
 		
 	}
 	return procedure;
+}
+
+private function showStatus(status:String):void 
+{
+	 //progressBar.setProgress(j,100);
+	 if(status!=DONE)
+	 {
+	 	exe.label="Executing";
+	 	exe.enabled=false;
+	 	progressBar.indeterminate=true;
+	 }
+	 else
+	 {
+	 	exe.label="Execute Flow";
+	 	exe.enabled=true;
+	 	progressBar.indeterminate=false;
+	 }
+     progressBar.label= status;
+}
+
+private function clearCanvas(event:MouseEvent):void 
+{
+	var actionObjects:Array = new Array();
+    for (var actionObj:Object in actionObjectsOnCanvas)
+    {
+        actionObjects.push(actionObj);
+    }
+    var numberOfActionObjects:int = actionObjects.length;
+    
+	if(0<numberOfActionObjects)
+	{
+		var numberOfArrows:int = arrowsOnCanvas.length;
+		for(var i:int=0;i<numberOfArrows;i++)
+		{
+			drawingcanvas.rawChildren.removeChild(Shape(arrowsOnCanvas.pop()));
+		}
+		
+		var seq:int = actionObjectSequence.length;
+		for(var k:int=0;k<seq;k++)
+		{
+			actionObjectSequence.pop();
+		}
+		
+		for(var j:int=0;j<numberOfActionObjects;j++)
+		{
+			var id:String=String(actionObjects.pop());
+			drawingcanvas.removeChild(ActionObject(actionObjectsOnCanvas[id]).vbox);
+			delete actionObjectsOnCanvas[id];
+		}
+	}
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
