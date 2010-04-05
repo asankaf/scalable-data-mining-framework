@@ -46,7 +46,7 @@ unsigned long long EWAH::Count()
 void EWAH::CompressWords(boost::dynamic_bitset<> &bitMap)
 {
 	WrappedBitVector vect(bitMap);
-	m_bitvector.copy(vect);
+	m_bitvector.copy(vect);	
 }
 
 dynamic_bitset<> EWAH::Decompress()

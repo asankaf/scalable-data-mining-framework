@@ -1,12 +1,14 @@
 #include "StdAfx.h"
 #include "AprioriOpt.h"
+#include <math.h>
 
 
 
 using namespace Algorithm;
 AprioriOpt::AprioriOpt(void)
 {
-	m_minimumSupport = 0.1;
+	//m_minimumSupport = 0.1;
+	m_minSupport = 0.1;
 	m_upperBoundMinSupport = 1.0;
 	m_lowerBoundMinSupport = 0.1;
 	m_numberOfAttributes = 0;
@@ -94,14 +96,15 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 	vector<AssociateRule *> sortedRuleSet;
 	double necSupport=0;	
 	m_cycles = 0;
-	//Setting the instance used for the Algorithm
-	//m_instances = _instances;
-	//m_numberOfAttributes = _instances->noOfRows();
+	//Calculating unique itemsets for the dataset.
+	//Parameters like number of attributes are set in this function.
+	
+	FindUniqueItemSets(_instances);
 
 	// make sure that the lower bound is equal to at least one instance
 	double lower_bound_min_support_to_use = 
-		(m_lowerBoundMinSupport * (double)m_numberOfAttributes < 1.0)
-		? 1.0 / (double)m_numberOfAttributes 
+		(m_lowerBoundMinSupport * (double)_instances->noOfRows() < 1.0)
+		? 1.0 / (double)(_instances->noOfRows()) 
 		: m_lowerBoundMinSupport;	
 
 
@@ -111,10 +114,14 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 	m_minSupport = (m_minSupport < lower_bound_min_support_to_use) 
 		? lower_bound_min_support_to_use 
 		: m_minSupport;
-	FindUniqueItemSets(_instances);
+	//FindUniqueItemSets(_instances);
 
 	do {			
 		// Find large itemsets and rules
+		m_largeItemSets.clear();
+		m_hashTables.clear();
+		m_hashItemSets.clear();
+		m_rules.clear();
 		FindLargeItemSets();
 
 		//findRulesQuickly();
@@ -186,9 +193,66 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 		(necSupport >= 1)
 		);
 	m_minSupport += m_delta;
+	SortRules();
 	BuildStrings();
 }
 
+void AprioriOpt::SortRules()
+{
+	multimap<float,int> conf_index_map;
+// 	multimap<int,int> sup_index_map;
+// 	pair<int,int> p2;
+	pair<float,int> p;
+
+// 	for (int i = 0 ; i < m_rules.size(); i++)
+// 	{
+// 		p2 = pair<int,int>(m_rules[i]->Consequence_count(),i);
+// 		sup_index_map.insert(p2);
+// 	}
+// 	multimap<int,int>::iterator iter_sup;
+// 	vector<AssociateRule *> rules_sup(m_rules.size());
+// 	size_t sup_no = 0;
+// 	iter_sup = sup_index_map.end();
+// 	iter_sup--;
+// 	for (; iter_sup != (sup_index_map.begin()); iter_sup--,sup_no++)
+// 	{
+// 		rules_sup[sup_no] = m_rules[iter_sup->second];
+// 	}
+// 	rules_sup[sup_no] = m_rules[iter_sup->second];
+// 	m_rules = rules_sup;
+	float sort_val = 0;
+	int exponent = (int)ceil(log10((float)m_instances->noOfRows()));
+	int factor = pow((float)10,exponent);
+
+	for (int i = 0 ; i < m_rules.size(); i++)
+	{
+		sort_val = (float)(m_rules[i]->Confidence() * factor + m_rules[i]->Consequence_count());
+		p = pair<float,int>(sort_val,i);
+		conf_index_map.insert(p);
+	}
+	multimap<float,int>::iterator iter;
+	vector<AssociateRule *> rules(m_numRules);
+	size_t rule_no = 0;
+	iter = conf_index_map.end();
+	iter--;
+	for (; iter != (conf_index_map.begin()) && rule_no < m_numRules; iter--,rule_no++)
+	{
+		rules[rule_no] = m_rules[iter->second];
+	}
+	//
+	if (iter == conf_index_map.begin() && rule_no < m_numRules)
+	{
+		rules[rule_no++] = m_rules[iter->second];
+	}
+	rules.resize(rule_no);
+	m_rules = rules;
+
+}
+
+int AprioriOpt::Compare(const void * arg1, const void * arg2)
+{
+	return (int)(*static_cast<const float *>(arg1) - *static_cast<const float *>(arg2));
+}
 
 void AprioriOpt::FindLargeItemSets(){
 
@@ -202,7 +266,7 @@ void AprioriOpt::FindLargeItemSets(){
 
 	// minimum support
 
-	necSupport = (int)(this->m_minimumSupport * (double)numOfRows+0.5);
+	necSupport = (int)(this->m_minSupport * (double)numOfRows+0.5);
 	necMaxSupport = (int)(this->m_upperBoundMinSupport * (double)numOfRows+0.5);
 
 	kSets = m_uniqueItems;

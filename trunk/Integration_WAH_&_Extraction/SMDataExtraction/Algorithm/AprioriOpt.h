@@ -7,6 +7,7 @@
 #include "BitStreamInfo.h"
 #include "associaterule.h"
 #include <string>
+#include <algorithm>
 using namespace Algorithm;
 class AprioriOpt
 {
@@ -25,10 +26,12 @@ public:
 	_declspec(dllexport) vector<AprioriItemset *> MergeAllItemSets(vector<AprioriItemset *> & _itemSets, int size);
 	_declspec(dllexport) vector<AprioriItemset *> PruneItemSets(vector<AprioriItemset *> & _ksets,hash_map<int,int> & _kMinusOne);
 	_declspec(dllexport) void BuildAssociations(WrapDataSource * _instances);
+	_declspec(dllexport) int Compare(const void * arg1, const void * arg2);
+	_declspec(dllexport) void SortRules();
 	_declspec(dllexport) void UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize);
 	_declspec(dllexport) static void UpDateCounters(vector<AprioriItemset *> & _ksets, vector<AprioriItemset *> & _kMinusSets);
-	_declspec(dllexport) double MinimumSupport() const { return m_minimumSupport; }
-	_declspec(dllexport) void MinimumSupport(double val) { m_minimumSupport = val; }
+// 	_declspec(dllexport) double MinimumSupport() const { return m_minimumSupport; }
+// 	_declspec(dllexport) void MinimumSupport(double val) { m_minimumSupport = val; }
 	_declspec(dllexport) vector<vector<AprioriItemset *>> LargeItemSets() const { return m_largeItemSets; }
 	_declspec(dllexport) void LargeItemSets(vector<vector<AprioriItemset *>> val) { m_largeItemSets = val; }
 	_declspec(dllexport) int Cycles() const { return m_cycles; }
@@ -47,18 +50,20 @@ public:
 	_declspec(dllexport) vector<AssociateRule *> Rules() const { return m_rules; }
 	_declspec(dllexport) void Rules(vector<AssociateRule *> val) { m_rules = val; }
 	_declspec(dllexport) void BuildStrings();
+	_declspec(dllexport) int NumRules() const { return m_numRules; }
+	_declspec(dllexport) void NumRules(int val) { m_numRules = val; }
 
 private:
 	vector<AprioriItemset *> m_uniqueItems;
 	//	hash_map<AprioriItemset *,int,hash_compare<AprioriItemset *,AprioriItemset::itemset_comp>> m_hashTable;
 	vector<hash_map<int,int>> m_hashTables;
 	vector<hash_map<int,AprioriItemset *>> m_hashItemSets;		
-	double m_minimumSupport;
+	//double m_minimumSupport;
 	double m_upperBoundMinSupport;
 	double m_delta;
 	double m_lowerBoundMinSupport;
 	// Number of rules to be derived
-	int m_numRules;
+	int m_numRules;	
 	int m_cycles;
 	double m_minSupport;
 	double m_confidence;		

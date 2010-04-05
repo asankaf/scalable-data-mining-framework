@@ -4,12 +4,14 @@
 
 
 
+
 TestAlgoUtil::TestAlgoUtil(void)
 {
 }
 
 TestAlgoUtil::~TestAlgoUtil(void)
 {
+	
 }
 
 void TestAlgoUtil::TestAttLevelUniquePatternFinding()
