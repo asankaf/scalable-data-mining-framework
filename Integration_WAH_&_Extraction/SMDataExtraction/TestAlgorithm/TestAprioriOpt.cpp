@@ -23,24 +23,23 @@ void TestAprioriOpt::TestSuite()
 cout <<"Start Loading data" << endl;
 	
 cout <<"Finished Creating Data Source" << endl;	
-//	CsvConnection cConcsv("C:\\soybeanTest4.csv",',','\n','""');	
+//soyaTestsort.csv
+CsvConnection cConcsv("C:\\soyaTestsort.csv",',','\n','""');	
+//CsvConnection cConcsv("C:\\soyaTest.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
-//	ExtractedCsvDTO *dat = cConcsv.extractData();
-	
-	cout << "Loaded Data" << endl;
-//	cout << "No of Records : "<< dat->RowCount() << endl;
-	
+ExtractedCsvDTO *dat = cConcsv.extractData();
+WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+ds->encodeAtrributes();
+cout << "Loaded Data" << endl;
+cout << "No of Records : "<< dat->RowCount() << endl;
 
-	//WrapDataSource *ds = new WrapDataSource(*dat,0);
-
-	//ds->encodeAtrributes();
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
-	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	WrapDataSource * ds =  (*dsLoaded)("soyabean");
+// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
+// 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+// 	WrapDataSource * ds =  (*dsLoaded)("soyabean");
 	cout << "Testing without Compression" << endl;
-	
-	
-	//comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	AlgoUtils utils;	
+	CompressionHandler comp;
+	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 
 	AprioriOpt opt;	
 	clock_t begin,end;
@@ -49,21 +48,12 @@ cout <<"Finished Creating Data Source" << endl;
 	end = clock();
 	cout << "Time Spent : " << (end - begin) << endl;
 	cout << "No off cycles : " << opt.Cycles() << endl;
+//	utils.PrintAprioriItemSets(opt.LargeItemSets(),ds);
+	
 	opt.Clear();
 // 	LoadSavedDataSources *lsd2 = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
 // 	DataSources *dsLoaded2 = lsd2->loadSavedEncodedData();	
-// 	WrapDataSource * ds2 =  (*dsLoaded2)("soyabean");
-// 
- 	CompressionHandler comp;
-	//comp.ConvertTo(ds2,BitStreamInfo::EWAH_COMPRESSION);
-	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-	cout << endl;
-	cout << "Testing with compression " << endl;
-	begin = clock();
-	AprioriOpt opt2;
-	TestBuildAssociations(ds,opt2);
-	end = clock();
-	cout << "Time Spent : " << (end - begin) << endl;
+// 	WrapDataSource * ds2 =  (*dsLoaded2)("soyabean"); 	
 }
 
 // WrapDataSource * TestAlgoUtil::LoadData(){
@@ -84,34 +74,35 @@ cout <<"Finished Creating Data Source" << endl;
 
 void TestAprioriOpt::TestUniqueItemSetGeneration(WrapDataSource * _wrapped, AprioriOpt & _ap_opt)
 {
-	cout << "Start Creating unique itemsets" << endl;
+	cout << "Start Creating unique item sets" << endl;
 	_ap_opt.FindUniqueItemSets(_wrapped);
-	cout << "Finished Creating unique itemsets" << endl;
+	cout << "Finished Creating unique item sets" << endl;
 	vector<AprioriItemset *> items = _ap_opt.UniqueItems();
 	AlgoUtils utils;
-	cout << "Start printing Unique Itemset"  << endl;
+	cout << "Start printing Unique Item set"  << endl;
 	utils.PrintAprioriItemSets(_ap_opt.UniqueItems(),_wrapped);
 }
 
 void TestAprioriOpt::TestBuildAssociations(WrapDataSource * _wrapped, AprioriOpt & _ap_opt)
 {
 	cout << "Starting to Build Associations " << endl;
-	_ap_opt.Confidence(0.5);
+	_ap_opt.Confidence(0.9);
+	_ap_opt.NumRules(10);
 	_ap_opt.BuildAssociations(_wrapped);
 	AlgoUtils::PrintRules(_ap_opt.Rules());
 }
 
 void TestAprioriOpt::TestFindFrequentItemSets(AprioriOpt & _ap_opt,WrapDataSource * ws)
 {
-	cout << "Test frequent Itemset" << endl;
-	_ap_opt.MinimumSupport(.8);
+	cout << "Test frequent Item set" << endl;
+	_ap_opt.MinSupport(.8);
 	_ap_opt.FindLargeItemSets();
-	cout << "Printing Large Itemsets " << endl;
+	cout << "Printing Large Item sets " << endl;
 	AlgoUtils utils;
 	vector<vector<AprioriItemset *>> items = _ap_opt.LargeItemSets();
 	for (size_t i = 0; i < items.size() ; i++)
 	{
-		cout << "Printing Itemset : " << i << endl;
+		cout << "Printing Item set : " << i << endl;
 		utils.PrintAprioriItemSets(items.at(i),ws);
 	}
 	
