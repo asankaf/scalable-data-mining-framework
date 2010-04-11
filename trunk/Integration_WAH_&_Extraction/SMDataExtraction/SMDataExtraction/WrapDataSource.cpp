@@ -36,6 +36,20 @@ WrapDataSource::WrapDataSource(void)
 }
 WrapDataSource::~WrapDataSource(void)
 {
+	for (size_t i = 0 ; i < _codedAtts.size() ; i++)
+	{
+		delete _codedAtts[i];
+	}
+
+	for (size_t i = 0 ; i < _codedIntAtts.size() ; i++)
+	{
+		delete _codedIntAtts[i];
+	}
+
+	for (size_t i = 0 ; i < _codedStringAtts.size() ; i++)
+	{
+		delete _codedStringAtts[i];
+	}
 }
 
 size_t WrapDataSource::SpaceUtilsation()

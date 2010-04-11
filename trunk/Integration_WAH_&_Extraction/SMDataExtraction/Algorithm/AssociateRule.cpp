@@ -8,8 +8,9 @@ namespace Algorithm{
 
 	AssociateRule::~AssociateRule(void)
 	{
+		//cout << "Deleting Associate Rules" << endl;
 		delete m_consequence;
-		delete m_premise;
+		delete m_premise;		
 	}
 	double AssociateRule::CalculateConfidence()
 	{

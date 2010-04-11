@@ -16,7 +16,9 @@ EncodedMultiCatAttribute::EncodedMultiCatAttribute(void)
 
 EncodedMultiCatAttribute::~EncodedMultiCatAttribute(void)
 {
-	delete []this->_mappedVals;
+	//delete []this->_mappedVals;
+//	delete this->_mappedVals;
+	//delete [] _mappedIntVals;	
 }
 
 int* EncodedMultiCatAttribute::getMappedIntVals(){

@@ -12,9 +12,15 @@ EncodedAttributeInfo::EncodedAttributeInfo(){
 EncodedAttributeInfo::~EncodedAttributeInfo(){
 	for (int i = 0 ; i < this->NoOfVBitStreams() ; i++)
 	{
-		delete this->_vBStreams[i];
+		//delete []_vBStreams[i];
+		delete _vBStreams[i];
 	}
-	delete this->_vBStreams;
+	delete _vBStreams;
+
+// 	for (size_t i = 0 ; i < _vBitStreams.size(); i++)
+// 	{
+// 		delete _vBitStreams[i];
+// 	}
 }
 
 vector<BitStreamInfo*> EncodedAttributeInfo::vBitStreams(){

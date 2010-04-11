@@ -25,6 +25,7 @@ namespace CompressedStructure{
 		_declspec(dllexport) BitStreamInfo* operator |(BitStreamInfo &);
 		_declspec(dllexport) unsigned long long Count();	
 		_declspec(dllexport) size_t SpaceUtilisation();
+		__declspec(dllexport) BitStreamInfo * Clone();
 		
 		// Overloaded operators
 	

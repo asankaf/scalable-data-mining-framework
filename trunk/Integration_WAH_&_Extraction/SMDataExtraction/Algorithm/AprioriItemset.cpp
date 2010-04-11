@@ -7,6 +7,8 @@ AprioriItemset::AprioriItemset(void)
 
 AprioriItemset::~AprioriItemset(void)
 {
+	delete m_items;
+	delete m_bit_stream;
 }
 int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 {

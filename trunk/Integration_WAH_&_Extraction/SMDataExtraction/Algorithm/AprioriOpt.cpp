@@ -18,6 +18,8 @@ AprioriOpt::AprioriOpt(void)
 
 AprioriOpt::~AprioriOpt(void)
 {
+	cout << "Deleting AprioriOpt" << endl;
+	ClearAll();
 }
 
 void AprioriOpt::FindUniqueItemSets(WrapDataSource *_instances)
@@ -98,7 +100,7 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 	m_cycles = 0;
 	//Calculating unique itemsets for the dataset.
 	//Parameters like number of attributes are set in this function.
-	
+
 	FindUniqueItemSets(_instances);
 
 	// make sure that the lower bound is equal to at least one instance
@@ -117,13 +119,14 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 	//FindUniqueItemSets(_instances);
 
 	do {			
-		// Find large itemsets and rules
-		m_largeItemSets.clear();
+		//Clearing Results generated from previous iterations.
+		ClearlargeItemSets();
 		m_hashTables.clear();
 		m_hashItemSets.clear();
-		m_rules.clear();
-		FindLargeItemSets();
+		ClearRules();
 
+		// Find large itemsets and rules
+		FindLargeItemSets();
 		//findRulesQuickly();
 		FindRulesQuickly(m_rules);
 
@@ -200,26 +203,26 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 void AprioriOpt::SortRules()
 {
 	multimap<float,int> conf_index_map;
-// 	multimap<int,int> sup_index_map;
-// 	pair<int,int> p2;
+	// 	multimap<int,int> sup_index_map;
+	// 	pair<int,int> p2;
 	pair<float,int> p;
 
-// 	for (int i = 0 ; i < m_rules.size(); i++)
-// 	{
-// 		p2 = pair<int,int>(m_rules[i]->Consequence_count(),i);
-// 		sup_index_map.insert(p2);
-// 	}
-// 	multimap<int,int>::iterator iter_sup;
-// 	vector<AssociateRule *> rules_sup(m_rules.size());
-// 	size_t sup_no = 0;
-// 	iter_sup = sup_index_map.end();
-// 	iter_sup--;
-// 	for (; iter_sup != (sup_index_map.begin()); iter_sup--,sup_no++)
-// 	{
-// 		rules_sup[sup_no] = m_rules[iter_sup->second];
-// 	}
-// 	rules_sup[sup_no] = m_rules[iter_sup->second];
-// 	m_rules = rules_sup;
+	// 	for (int i = 0 ; i < m_rules.size(); i++)
+	// 	{
+	// 		p2 = pair<int,int>(m_rules[i]->Consequence_count(),i);
+	// 		sup_index_map.insert(p2);
+	// 	}
+	// 	multimap<int,int>::iterator iter_sup;
+	// 	vector<AssociateRule *> rules_sup(m_rules.size());
+	// 	size_t sup_no = 0;
+	// 	iter_sup = sup_index_map.end();
+	// 	iter_sup--;
+	// 	for (; iter_sup != (sup_index_map.begin()); iter_sup--,sup_no++)
+	// 	{
+	// 		rules_sup[sup_no] = m_rules[iter_sup->second];
+	// 	}
+	// 	rules_sup[sup_no] = m_rules[iter_sup->second];
+	// 	m_rules = rules_sup;
 	float sort_val = 0;
 	int exponent = (int)ceil(log10((float)m_instances->noOfRows()));
 	int factor = pow((float)10,exponent);
@@ -306,12 +309,11 @@ void AprioriOpt::UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize
 
 	int help;
 	int * unique_item_ptr;
+	unique_item_ptr = new int[m_numberOfAttributes];
 	for (size_t i = 0; i < _ksets.size() ; i++)
 	{
 		AprioriItemset * current_item_set = _ksets.at(i);
 		int * current_m_items = current_item_set->Items();
-		unique_item_ptr = new int[m_numberOfAttributes];
-
 
 		for (size_t j = 0;j < m_numberOfAttributes ; j++)
 		{			
@@ -340,6 +342,7 @@ void AprioriOpt::UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize
 			}
 		}
 	}
+	delete unique_item_ptr;
 }
 
 vector<AprioriItemset *> AprioriOpt::PruneItemSets(vector<AprioriItemset *> & _ksets,hash_map<int,int> & _kMinusOne)
@@ -531,6 +534,67 @@ void AprioriOpt::FindRulesQuickly(vector<AssociateRule *> & _rules)
 
 	}
 }
+void AprioriOpt::ClearAll()
+{	
+	ClearlargeItemSets();
+	//ClearHashTable();
+	ClearUniqueItems();		
+	ClearRules();
+}
+
+void AprioriOpt::ClearlargeItemSets()
+{	
+	
+	// First element refers to unique itemset, which is cleaned by a seperate function.
+	size_t i = 1;
+	
+	for (; i < m_largeItemSets.size() ; i++)
+	{
+		for (size_t j = 0 ; j < m_largeItemSets[i].size(); j++)
+		{
+			delete m_largeItemSets[i][j];
+		}
+		m_largeItemSets[i].clear();
+	}
+	m_largeItemSets.clear();
+}
+
+void AprioriOpt::ClearUniqueItems()
+{
+	for (size_t i = 0 ; i < m_uniqueItems.size(); i++)
+	{
+		delete m_uniqueItems[i];	
+	}
+	m_uniqueItems.clear();
+}
+
+void AprioriOpt::ClearHashTable()
+{	
+	// i =0 contains pointers to unique items. So it cannot be deleted
+	for (size_t i = 1 ; i < m_hashItemSets.size(); i++)
+	{
+		hash_map<int,AprioriItemset *> hash_table = m_hashItemSets[i];
+		hash_map<int,AprioriItemset *>::iterator iter;
+		for (iter = hash_table.begin(); iter != hash_table.end() ; iter++)
+		{
+			delete iter->second;
+		}
+		hash_table.clear();
+	}
+	m_hashTables.clear();
+	m_hashItemSets.clear();
+
+
+}
+
+void AprioriOpt::ClearRules()
+{
+	for (size_t i = 0 ; i < m_rules.size() ; i++)
+	{
+		delete m_rules[i];
+	}
+	m_rules.clear();
+}
 
 void AprioriOpt::BuildStrings()
 {
@@ -545,7 +609,7 @@ void AprioriOpt::BuildStrings()
 		rule = m_rules[i];
 		premise_items = rule->Premise();
 		consequence_items = rule->Consequence();
-		
+
 		size_t j = 0;
 		for (; j < m_numberOfAttributes ; j++)
 		{
@@ -577,7 +641,7 @@ void AprioriOpt::BuildStrings()
 		{
 			//Find if this operation is fast
 			consequence.erase((consequence.end()-1));
-		//	consequence += " ("+rule->Consequence_count()+") ";
+			//	consequence += " ("+rule->Consequence_count()+") ";
 		}
 		rule->Rule(premise + " => "+consequence);
 	}

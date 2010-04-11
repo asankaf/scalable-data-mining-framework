@@ -185,31 +185,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AlgoUtils.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Apriori.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AprioriItemset.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AprioriOpt.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AssociateRule.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\BitStreamHolder.cpp"
+				RelativePath=".\C45SplitSet.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\dllmain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Itemset.cpp"
 				>
 			</File>
 			<File
@@ -232,6 +216,70 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<Filter
+				Name="Apriori"
+				>
+				<File
+					RelativePath=".\Apriori.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AprioriItemset.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AprioriOpt.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AssociateRule.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Commons"
+				>
+				<File
+					RelativePath=".\AlgoUtils.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\BitStreamHolder.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="C45"
+				>
+				<File
+					RelativePath=".\C45PruneableClassifierTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\C45Tree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Classifier.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ClassifierSplitModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ClassifierTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Distribution.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ModelSelection.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -239,27 +287,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AlgoUtils.h"
+				RelativePath=".\C45SplitSet.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Apriori.h"
+				RelativePath=".\Distribution.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AprioriItemset.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AprioriOpt.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AssociateRule.h"
-				>
-			</File>
-			<File
-				RelativePath=".\BitStreamHolder.h"
+				RelativePath=".\Itemset.h"
 				>
 			</File>
 			<File
@@ -270,6 +306,66 @@
 				RelativePath=".\targetver.h"
 				>
 			</File>
+			<Filter
+				Name="Commons"
+				>
+				<File
+					RelativePath=".\AlgoUtils.h"
+					>
+				</File>
+				<File
+					RelativePath=".\BitStreamHolder.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Apriori"
+				>
+				<File
+					RelativePath=".\Apriori.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AprioriItemset.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AprioriOpt.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AssociateRule.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="C45"
+				>
+				<File
+					RelativePath=".\C45PruneableClassifierTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\C45Tree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Classifier.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ClassifierSplitModel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ClassifierTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ModelSelection.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

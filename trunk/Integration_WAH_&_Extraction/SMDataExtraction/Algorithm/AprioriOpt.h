@@ -54,10 +54,17 @@ public:
 	_declspec(dllexport) void NumRules(int val) { m_numRules = val; }
 
 private:
+	void ClearlargeItemSets();
+	void ClearUniqueItems();
+	void ClearHashTable();
+	void ClearRules();
+	void ClearAll();
 	vector<AprioriItemset *> m_uniqueItems;
 	//	hash_map<AprioriItemset *,int,hash_compare<AprioriItemset *,AprioriItemset::itemset_comp>> m_hashTable;
 	vector<hash_map<int,int>> m_hashTables;
-	vector<hash_map<int,AprioriItemset *>> m_hashItemSets;		
+	vector<hash_map<int,AprioriItemset *>> m_hashItemSets;
+	vector<vector<AprioriItemset *>> m_largeItemSets;
+	vector<AssociateRule *> m_rules;	
 	//double m_minimumSupport;
 	double m_upperBoundMinSupport;
 	double m_delta;
@@ -67,8 +74,6 @@ private:
 	int m_cycles;
 	double m_minSupport;
 	double m_confidence;		
-	int m_numberOfAttributes;
-	vector<vector<AprioriItemset *>> m_largeItemSets;
-	vector<AssociateRule *> m_rules;	
+	int m_numberOfAttributes;		
 	WrapDataSource * m_instances;		
 };
