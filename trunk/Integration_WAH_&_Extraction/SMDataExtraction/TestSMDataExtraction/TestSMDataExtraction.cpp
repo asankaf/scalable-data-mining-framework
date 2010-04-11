@@ -31,7 +31,7 @@ int _tmain(int argc, _TCHAR* argv[])
 //  	DataSources *dsLoaded = lsd->loadSavedEncodedData();
 	
 	//CsvConnection *connection = new CsvConnection("E:\\University\\Workspaces\\C++Projects\\Integration_WAH_&_Extraction\\SMDataExtraction\\SMDataExtraction\\soybeanTest4.csv",',','/n','""');
-	CsvConnection *connection = new CsvConnection("C:\\soybeanTest-2mill.csv",',','\n','""');
+	CsvConnection *connection = new CsvConnection("C:\\soyaTestlarge.csv",',','\n','""');
 	ExtractedCsvDTO *exDTO = connection->extractData();
 	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"soyabean");
 	dsSBN->encodeAtrributes();
@@ -41,7 +41,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//Code Snippet to save data to an encoded file. 
 	//Important : Files will be saved in ../Reports/ folder.
-	DataSourceSerialization *dsSerailize = new DataSourceSerialization(SBDss,"soyabean_2mil_metadata","soyabean_2mil_data");
+	DataSourceSerialization *dsSerailize = new DataSourceSerialization(SBDss,"soyabean_full_metadata","soyabean_full_data");
  	dsSerailize->serializeDataSource();
 	
 // 	DBConnection cCon("censusdata","","");

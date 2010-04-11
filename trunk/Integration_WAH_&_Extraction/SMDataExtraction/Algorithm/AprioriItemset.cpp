@@ -3,23 +3,36 @@
 
 AprioriItemset::AprioriItemset(void)
 {
+	m_items = NULL;
+	m_bit_stream = NULL;
 }
 
 AprioriItemset::~AprioriItemset(void)
 {
-	delete m_items;
-	delete m_bit_stream;
+	if (m_items != NULL)
+	{
+		delete m_items;
+	}
+	if (m_bit_stream != NULL)
+	{
+		delete m_bit_stream;
+	}
+	
 }
 int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 {
 	long result = 0;
-	int factor = 1;
-	int val = 0;
-	for (size_t i = 0; i< _no_of_attrib; i++)
+// 	int factor = 1;
+// 	int val = 0;
+// 	for (size_t i = 0; i< _no_of_attrib; i++)
+// 	{
+// 		val = _int_arr[i]+1;		
+// 		result +=  val * factor;
+// 		factor *= 10;
+// 	}
+	for (int i = _no_of_attrib-1; i >= 0; i--)
 	{
-		val = _int_arr[i]+1;		
-		result +=  val * factor;
-		factor *= 10;
+		result += (i * _int_arr[i]);
 	}
 
 	return (int)result;

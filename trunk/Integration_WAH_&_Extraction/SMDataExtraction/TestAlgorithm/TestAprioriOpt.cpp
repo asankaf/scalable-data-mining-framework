@@ -26,11 +26,11 @@ void TestAprioriOpt::TestSuite()
 //CsvConnection cConcsv("C:\\soyaTestsort.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
-// ExtractedCsvDTO *dat = cConcsv.extractData();
-// WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-// ds->encodeAtrributes();
-// cout << "Loaded Data" << endl;
-// cout << "No of Records : "<< dat->RowCount() << endl;
+//ExtractedCsvDTO *dat = cConcsv.extractData();
+//WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+//ds->encodeAtrributes();
+//cout << "Loaded Data" << endl;
+//cout << "No of Records : "<< dat->RowCount() << endl;
 //training dataset - 200000_data.xml
 //training dataset-200000_metadata
 //test dataset-10000_metadata.xml
@@ -38,11 +38,11 @@ void TestAprioriOpt::TestSuite()
 clock_t comp_start,comp_end;
 cout << "Starting to load data : " << endl;
 comp_start = clock();
- 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
-//	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
+// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
+	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_full_metadata","soyabean_full_data");
 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-//	WrapDataSource * ds =  (*dsLoaded)("soyabean");
- 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
+	WrapDataSource * ds =  (*dsLoaded)("soyabean");
+// 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
 // 	comp_end = clock();
 // 	cout << "Finished Loading data : " << endl;
 // 	cout << "Time for data loading : " << comp_end - comp_start << endl;
