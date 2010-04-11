@@ -53,6 +53,19 @@ namespace CompressedStructure{
 			m_iMainArray[main_array_index++] = temp.to_ulong();		
 		}
 	}
+
+	BitStreamInfo * WAHStructure::Clone()
+	{
+		WAHStructure * structure = new WAHStructure();
+		structure->m_compressed_stream = m_compressed_stream;	
+		structure->m_iOriginalStreamSize = m_iOriginalStreamSize;
+		structure->m_ulActiveWord = m_ulActiveWord;
+		structure->m_iActiveWordSize = m_iActiveWordSize;			
+		structure->Type(this->Type());
+		BitStreamInfo::Clone(structure);
+
+		return structure;
+	}
 	unsigned long long WAHStructure::Count()
 	{
 		vector<unsigned long int>::iterator value_iterator = m_compressed_stream.begin();

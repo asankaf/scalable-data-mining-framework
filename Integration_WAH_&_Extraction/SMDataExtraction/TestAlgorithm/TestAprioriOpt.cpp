@@ -20,27 +20,40 @@ void TestAprioriOpt::TestSuite()
 	// Testing unique itemset generation
 	
 	// Creating a wrapped data source
-cout <<"Start Loading data" << endl;
-	
-cout <<"Finished Creating Data Source" << endl;	
-//soyaTestsort.csv
-CsvConnection cConcsv("C:\\soyaTestsort.csv",',','\n','""');	
+
+//
+//CsvConnection cConcsv("C:\\soybeanTest-1mill.csv",',','\n','""');	
+//CsvConnection cConcsv("C:\\soyaTestsort.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest.csv",',','\n','""');	
 //CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
-ExtractedCsvDTO *dat = cConcsv.extractData();
-WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-ds->encodeAtrributes();
-cout << "Loaded Data" << endl;
-cout << "No of Records : "<< dat->RowCount() << endl;
+// ExtractedCsvDTO *dat = cConcsv.extractData();
+// WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+// ds->encodeAtrributes();
+// cout << "Loaded Data" << endl;
+// cout << "No of Records : "<< dat->RowCount() << endl;
+//training dataset - 200000_data.xml
+//training dataset-200000_metadata
+//test dataset-10000_metadata.xml
 
-// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
-// 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-// 	WrapDataSource * ds =  (*dsLoaded)("soyabean");
-	cout << "Testing without Compression" << endl;
+clock_t comp_start,comp_end;
+cout << "Starting to load data : " << endl;
+comp_start = clock();
+ 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
+//	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
+	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+//	WrapDataSource * ds =  (*dsLoaded)("soyabean");
+ 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
+// 	comp_end = clock();
+// 	cout << "Finished Loading data : " << endl;
+// 	cout << "Time for data loading : " << comp_end - comp_start << endl;
 	AlgoUtils utils;	
 	CompressionHandler comp;
-	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-
+//	clock_t comp_start,comp_end;
+	comp_start = clock();
+//	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+//	comp.ConvertTo(ds,BitStreamInfo::VERTICAL_STREAM_FORMAT);
+	comp_end = clock();
+	cout << "Compression Time : " << comp_end - comp_start << endl;
 	AprioriOpt opt;	
 	clock_t begin,end;
 	begin = clock();
@@ -48,12 +61,12 @@ cout << "No of Records : "<< dat->RowCount() << endl;
 	end = clock();
 	cout << "Time Spent : " << (end - begin) << endl;
 	cout << "No off cycles : " << opt.Cycles() << endl;
+	vector<AprioriItemset *> set2 =  opt.UniqueItems();
 //	utils.PrintAprioriItemSets(opt.LargeItemSets(),ds);
-	
-	opt.Clear();
-// 	LoadSavedDataSources *lsd2 = new LoadSavedDataSources("soyabean_metadata","soyabean_data");
-// 	DataSources *dsLoaded2 = lsd2->loadSavedEncodedData();	
-// 	WrapDataSource * ds2 =  (*dsLoaded2)("soyabean"); 	
+	//delete cConcsv;
+// 	delete lsd;
+// 	delete dsLoaded;
+	delete ds;
 }
 
 // WrapDataSource * TestAlgoUtil::LoadData(){

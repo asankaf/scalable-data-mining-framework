@@ -24,6 +24,14 @@ BitStreamInfo * EWAH::operator ~()
 	return new_vect;
 }
 
+BitStreamInfo * EWAH::Clone()
+{
+	EWAH * bit_stream = new EWAH(m_bitvector);
+	bit_stream->Type(this->Type());
+	BitStreamInfo::Clone(bit_stream);
+	return bit_stream;
+}
+
 BitStreamInfo * EWAH::operator &(BitStreamInfo & _right_op)
 {	
 	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);

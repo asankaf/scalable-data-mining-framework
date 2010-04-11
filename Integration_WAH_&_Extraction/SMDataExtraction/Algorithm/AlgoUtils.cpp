@@ -16,14 +16,24 @@ namespace Algorithm{
 	{
 		// Replace This with an exception
 		size_t pattern_size = _pattern.size();
+		pattern_size > 0 && pattern_size == _container.size();
 		assert(pattern_size > 0 && pattern_size == _container.size());
 		BitStreamInfo * left_op = NULL;
-		BitStreamInfo * right_op = NULL;	
+		BitStreamInfo * right_op = NULL;
+		BitStreamInfo * left_op_prev = NULL;
+
+		bool left_op_zero = false;
+		bool right_op_zero = false;
 		size_t index = 0;
-		
+		// Flow is seperated according to the size since new BitStreamInfo objects
+		//are created in binary operations
+		if (_pattern.size() != 1)
+		{
 			if (_pattern[index] == 0)
 			{
 				left_op = ~(*(_container.at(index)));
+				left_op_zero = true;
+				left_op_prev = left_op;
 			}else{
 				left_op = _container.at(index);
 			}
@@ -33,13 +43,37 @@ namespace Algorithm{
 				if (_pattern[index] == 0)
 				{
 					right_op = ~(*(_container.at(index)));
+					right_op_zero = true;
 				}else{
 					right_op = _container.at(index);
 				}
 
 				left_op = (*(left_op) & *(right_op));
+				if (left_op_zero)
+				{
+					delete left_op_prev;
+					left_op_zero = false;
+				}
+				if (right_op_zero)
+				{
+					delete right_op;
+					right_op_zero = false;
+				}
 				right_op = NULL;
 			}
+		} 
+		else
+		{
+			if (_pattern[index] == 0)
+			{
+				//New BitStreamInfo object is returned with this unary operator
+				left_op = ~(*(_container.at(index)));								
+			}else{
+				left_op = _container.at(index);
+				//A new BitStreamInfo object is obtained via clone
+				left_op = left_op->Clone();
+			}
+		}
 		
 		//cout << "Bit map : "<< left_op->Decompress() << endl;
 		return left_op;

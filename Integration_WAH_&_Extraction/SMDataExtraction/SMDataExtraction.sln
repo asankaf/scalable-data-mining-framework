@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSMCompression", "TestWA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestAlgorithm", "TestAlgorithm\TestAlgorithm.vcproj", "{D604D30C-D929-4E83-8B3D-2570633EA89F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll", "dll\dll.vcproj", "{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bitvector", "Bitvector\Bitvector.vcproj", "{A547FC85-6CD9-41E7-B825-38F3B5F9F254}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -43,6 +47,14 @@ Global
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Debug|Win32.Build.0 = Debug|Win32
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Release|Win32.ActiveCfg = Release|Win32
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Release|Win32.Build.0 = Release|Win32
+		{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}.Debug|Win32.Build.0 = Debug|Win32
+		{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}.Release|Win32.ActiveCfg = Release|Win32
+		{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}.Release|Win32.Build.0 = Release|Win32
+		{A547FC85-6CD9-41E7-B825-38F3B5F9F254}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A547FC85-6CD9-41E7-B825-38F3B5F9F254}.Debug|Win32.Build.0 = Debug|Win32
+		{A547FC85-6CD9-41E7-B825-38F3B5F9F254}.Release|Win32.ActiveCfg = Release|Win32
+		{A547FC85-6CD9-41E7-B825-38F3B5F9F254}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

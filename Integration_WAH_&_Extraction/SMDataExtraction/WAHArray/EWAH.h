@@ -17,6 +17,8 @@ public:
 	__declspec(dllexport) BitStreamInfo* operator |(BitStreamInfo &);
 	__declspec(dllexport) size_t SpaceUtilisation();
 	__declspec(dllexport) void EWAH::Print();
+	__declspec(dllexport) BitStreamInfo * Clone();
+
 
 private:
 	WrappedBitVector m_bitvector;
