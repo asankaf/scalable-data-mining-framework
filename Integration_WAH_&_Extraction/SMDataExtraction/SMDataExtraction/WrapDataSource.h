@@ -5,9 +5,7 @@
 #include "DecodedTuple.h"
 #include "EncodedAttributeInfo.h"
 #include "extractedCsvDTO.h"
-#include "boost/dynamic_bitset.hpp"
 #include <vector>
-#include "encodeddoubleattribute.h"
 
 using namespace DBQueryExecutionInfo;
 using namespace CsvDataExtraction;
@@ -31,37 +29,28 @@ public:
 	__declspec(dllexport) Tuple* DecodeTheTuple(int tupleID);
 	__declspec(dllexport) EncodedAttributeInfo* operator()(const int attID);
 	__declspec(dllexport) BitStreamInfo* operator()(const int attID,const int bitStreamID);
+	void encodeIntAttributes(vector<PureIntAttInfo*> intAtts);
+	void encodeStringAttributes(vector<PureStringAttInfo*> stringAtts);
+	void encodeCSVStringAttributes(PureStringAttInfo** stringAtts,int arrLength);
 	__declspec(dllexport) void CodedAtts(vector<EncodedAttributeInfo *> _coded_atts );
 	__declspec(dllexport) size_t SpaceUtilsation();
 	__declspec(dllexport) DBQueryExecution queryExecPointer();
 	__declspec(dllexport) int DataSourceID() const { return _dataSourceID; }
 	__declspec(dllexport) void DataSourceID(int val) { _dataSourceID = val; }
-	__declspec(dllexport) DATASOURCE SourceType() const { return _sourceType; }
+	__declspec(dllexport) int SourceType() const { return _sourceType; }
 	__declspec(dllexport) void setSourceType(DATASOURCE _stype){this->_sourceType = _stype;}
 	__declspec(dllexport) string DataSourceName() const {return this->_dsName;}
 	__declspec(dllexport) void setDSName(string _sName){this->_dsName = _sName;}
-	__declspec(dllexport) boost::dynamic_bitset<> ExistanceDatabitMap() const { return _existanceDatabitMap; }
-	__declspec(dllexport) void ExistanceDatabitMap(boost::dynamic_bitset<> val) { _existanceDatabitMap = val; }
-
-	void encodeIntAttributes(vector<PureIntAttInfo*> intAtts);
-	void encodeStringAttributes(vector<PureStringAttInfo*> stringAtts);
-	void encodeDoubleAttributes(vector<PureDoubleAttInfo*> doubleAtts);
-	void encodeCSVStringAttributes(PureStringAttInfo** stringAtts,int arrLength);
-	void encodeCSVAttributes();
-	long getPrecision(vector<PureDoubleAttInfo*> doubleVals);
 
 private:
 	DBQueryExecution _queryDataInfo;
 	ExtractedCsvDTO _csvExtractedDatainfo;
 	vector<EncodedAttributeInfo*> _codedAtts;
 	vector<EncodedIntAttribute*> _codedIntAtts;
-	vector<EncodedDoubleAttribute*> _codedDoubleAtts;
 	vector<EncodedMultiCatAttribute*> _codedStringAtts;
 	int _noOfRows;
 	int _noOfAttributes;
 	int _dataSourceID;
 	DATASOURCE _sourceType;
 	string _dsName;
-	boost::dynamic_bitset<> _existanceDatabitMap;
-	
 };

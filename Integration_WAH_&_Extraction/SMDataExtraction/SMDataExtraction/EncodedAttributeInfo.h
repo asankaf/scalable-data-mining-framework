@@ -12,7 +12,7 @@ using namespace boost;
 class EncodedAttributeInfo{
 public:
 	__declspec(dllexport) EncodedAttributeInfo();
-	__declspec(dllexport) ~EncodedAttributeInfo();
+	__declspec(dllexport) virtual ~EncodedAttributeInfo();
 	__declspec(dllexport) vector<BitStreamInfo*> vBitStreams();
 	__declspec(dllexport) string attributeName();
 	__declspec(dllexport) int attributeID();

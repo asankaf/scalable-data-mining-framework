@@ -249,6 +249,31 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//implement the procedure for get data from csv file apply apriory algorithm 
 		//and make a string to out put the rules in the text viewer 
 		//assign it to "formattedOutPut" here
+		//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+		CsvConnection cConcsv(path,',','\n','""');
+		ExtractedCsvDTO *dat = cConcsv.extractData();
+		WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+		ds->encodeAtrributes();
+
+		//Setting confidence, minimum support  
+		AprioriOpt apriori;
+		apriori.Confidence(0.9);
+		apriori.MinSupport(0.01);
+		apriori.NumRules(20);
+
+		//Starting to run the algorithm
+		apriori.BuildAssociations(ds);
+
+		//Printing results
+		vector<AssociateRule *> rules = apriori.Rules();
+
+		for (size_t i = 0 ; i < rules.size() ; i++)
+		{
+			string rule = rules[i]->Rule();
+			formattedOutPut += rule +"\n";
+		}
+		flash->root.Call("func", procedure+formattedOutPut);
+
 
 		flash->root.Call("func", procedure+formattedOutPut);
 

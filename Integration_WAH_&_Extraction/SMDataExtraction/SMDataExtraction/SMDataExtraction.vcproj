@@ -181,18 +181,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DataPreProcessor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DiscretizeData.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EncodedDoubleAttribute.h"
-				>
-			</File>
-			<File
 				RelativePath=".\extractedCsvDTO.h"
 				>
 			</File>
@@ -201,19 +189,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NullPreProcessor.h"
-				>
-			</File>
-			<File
 				RelativePath=".\PureAttributeInfo.h"
 				>
 			</File>
 			<File
 				RelativePath=".\PureIntAttributeInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RangeSplitter.h"
 				>
 			</File>
 			<File
@@ -353,11 +333,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DataPreProcessor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DiscretizeData.cpp"
+				RelativePath=".\DecodeTuple.cpp"
 				>
 			</File>
 			<File
@@ -383,23 +359,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\EncodedDoubleAttribute.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\LoadSavedDataSources.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NullPreProcessor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\PureIntAttributeInfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RangeSplitter.cpp"
 				>
 			</File>
 			<File
@@ -462,10 +426,6 @@
 				Name="PureDataInfoSource"
 				>
 				<File
-					RelativePath=".\DecodeTuple.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\PureAttInfo.cpp"
 					>
 				</File>
@@ -527,10 +487,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

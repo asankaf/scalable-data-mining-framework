@@ -21,7 +21,3 @@ __declspec(dllexport) static enum ATT_TYPE{
 
 };
 
-struct AttributeProps{
-	string Name;
-	int ID;
-};

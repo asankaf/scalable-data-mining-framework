@@ -146,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\FlexVCBridgeStaticLib\"
+				AdditionalIncludeDirectories="..\Include;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -174,10 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib"
+				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib"
 				OutputFile=".\Debug/IntelliCheckersUI.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/IntelliCheckersUI.pdb"
 				SubSystem="2"
@@ -344,25 +345,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\IntelliCheckersUIDlg.cpp"
+				RelativePath="c:\Documents and Settings\Amila\Desktop\SeedMiner\scalable-data-mining-framework\Integrated UI\SEEDMinerGUIApplication\IntelliCheckersUIDlg.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SeedMinerGUI.rc"
@@ -458,7 +442,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\IntelliCheckersUIDlg.h"
+				RelativePath="c:\Documents and Settings\Amila\Desktop\SeedMiner\scalable-data-mining-framework\Integrated UI\SEEDMinerGUIApplication\IntelliCheckersUIDlg.h"
 				>
 			</File>
 			<File
