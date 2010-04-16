@@ -7,7 +7,16 @@ VBitStream::VBitStream(int bitCount)
 }
 
 VBitStream::VBitStream(){
+	Type(BitStreamInfo::VERTICAL_STREAM_FORMAT);
+}
 
+BitStreamInfo * VBitStream::Clone()
+{
+	VBitStream * bit_stream = new VBitStream();	
+	bit_stream->convert(getProcessedBitStream());
+	bit_stream->Type(this->Type());
+	BitStreamInfo::Clone(bit_stream);
+	return bit_stream;
 }
 
 size_t VBitStream::SpaceUtilisation()

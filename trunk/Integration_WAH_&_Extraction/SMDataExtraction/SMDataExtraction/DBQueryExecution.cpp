@@ -48,7 +48,6 @@ namespace DBQueryExecutionInfo{
 			CGOdbcStmt *pCur= this->_stmtPtr;
 			bool BRC;
 			int colCount = pCur->getColCount();
-			PureAttInfo::existanceBitSet.resize(this->_rowCount);
 
 			for (int it=0 ; it < colCount ; it++)
 			{				
@@ -70,15 +69,7 @@ namespace DBQueryExecutionInfo{
 					intValList.resize(this->_rowCount);
 					int currRow = 0;
 					for (BRC = pCur->first(); (BRC && currRow < this->_rowCount) ; BRC = pCur->next())
-					{						
-						if (pCur->isNull(it))
-						{
-							//PureAttInfo::existanceBitSet[currRow] = false;
-							intValList[currRow] = PureAttInfo::NULLVAL;
-							currRow++;
-							continue;
-						}
-						PureAttInfo::existanceBitSet[currRow] = true;
+					{
 						long int tempVal = pCur->getInt(it);
 						intValList[currRow] = tempVal;
 						if (tempVal > intAtt->Upper())
@@ -99,7 +90,6 @@ namespace DBQueryExecutionInfo{
 				
 				else if ((columnType == SQL_DOUBLE) || (columnType == SQL_FLOAT) || (columnType == SQL_NUMERIC) || (columnType == SQL_REAL) || (columnType == SQL_DECIMAL))
 				{
-					
 					//start = clock();
 					PureDoubleAttInfo *doubleAtt=new PureDoubleAttInfo();
 
@@ -115,14 +105,6 @@ namespace DBQueryExecutionInfo{
 					int currRow = 0;
 					for (BRC = pCur->first() ; (BRC && currRow < this->_rowCount) ; BRC = pCur->next())
 					{
-						if (pCur->isNull(it))
-						{
-							//PureAttInfo::existanceBitSet[currRow] = false;
-							doublevals[currRow] = PureAttInfo::NULLVAL;
-							currRow++;
-							continue;
-						}
-						PureAttInfo::existanceBitSet[currRow] = true;
 						double tempVal = pCur->getNumber(it);
 						doublevals[currRow] = tempVal;
 
@@ -145,7 +127,6 @@ namespace DBQueryExecutionInfo{
 
 				else if ((columnType == SQL_CHAR) || (columnType == SQL_VARCHAR) || (columnType == SQL_LONGVARCHAR) || (columnType < 0))
 				{
-					
 					//start = clock();
 					PureStringAttInfo *stringAtt = new PureStringAttInfo();
 					stringAtt->type = Type.MULTI_CAT;
@@ -153,27 +134,18 @@ namespace DBQueryExecutionInfo{
 					stringAtt->attName = pCur->getColumn(it)->szName;
 
 					vector<string> vals;
-					//TempStringObjects* tempVals = new TempStringObjects[this->_rowCount];
+					TempStringObjects* tempVals = new TempStringObjects[this->_rowCount];
 					vals.resize(this->_rowCount);
 					int currRow = 0;
 					for (BRC = pCur->first() ; (BRC && currRow < this->_rowCount) ; BRC=pCur->next())
 					{
-						string tempStr = pCur->getChar(it);
-						if (pCur->isNull(it) || (strcmp(tempStr.c_str(),"?") == 0))
-						{
-							//PureAttInfo::existanceBitSet[currRow] = false;
-							vals[currRow] = "?";
-							currRow++;
-							continue;
-						}
-						PureAttInfo::existanceBitSet[currRow] = true;
-						vals[currRow] = tempStr;
-						//TempStringObjects strObj(vals[currRow],currRow);
-						//tempVals[currRow] = strObj;
+						vals[currRow] = pCur->getChar(it);
+						TempStringObjects strObj(vals[currRow],currRow);
+						tempVals[currRow] = strObj;
 						currRow++;
 					}
 
-					//stringAtt->setValObjects(tempVals);
+					stringAtt->setValObjects(tempVals);
 					stringAtt->setValList(vals);
 					this->_stringData.push_back(stringAtt);
 					
@@ -184,7 +156,6 @@ namespace DBQueryExecutionInfo{
 
 				else if ((columnType == SQL_DATE) || (columnType == SQL_DATETIME) || (columnType == SQL_TYPE_DATE) || (columnType == SQL_TIMESTAMP))
 				{
-					
 					//start = clock();
 					PureIntAttInfo *intAtt = new PureIntAttInfo();
 					intAtt->type=Type.TYPE_DATE;
@@ -201,14 +172,6 @@ namespace DBQueryExecutionInfo{
 
 					for (BRC=pCur->first() ; (BRC && currRow) ; BRC=pCur->next())
 					{
-						if (pCur->isNull(it))
-						{
-							//PureAttInfo::existanceBitSet[currRow] = false;
-							intVals[currRow] = PureAttInfo::NULLVAL;
-							currRow++;
-							continue;
-						}
-						PureAttInfo::existanceBitSet[currRow] = true;
 						const CGOdbcStmt::DATE* date = pCur->getDate(it);
 						int year = date->iYear;
 						int month = date->iMonth;

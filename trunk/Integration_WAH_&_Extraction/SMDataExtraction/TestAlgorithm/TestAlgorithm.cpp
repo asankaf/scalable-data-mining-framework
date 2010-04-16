@@ -13,7 +13,7 @@ void TestC45Algo();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestAprioriAlgo();
+	
 	return 0;
 }
 

@@ -12,8 +12,8 @@ public:
 	__declspec(dllexport) ~PureDoubleAttInfo();
 	__declspec(dllexport) double Upper();
 	__declspec(dllexport) double Lower();
-	__declspec(dllexport) void setUpper(double upperLimit);
-	__declspec(dllexport) void setLower(double lowerLimit);	
+	void setUpper(double upperLimit);
+	void setLower(double lowerLimit);	
 	__declspec(dllexport) double* ValueList();
 	__declspec(dllexport) void setValueList(double *values);
 	__declspec(dllexport) vector<double> valList(){return this->_valList;}

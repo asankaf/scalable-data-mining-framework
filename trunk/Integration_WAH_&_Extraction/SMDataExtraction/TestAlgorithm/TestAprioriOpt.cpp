@@ -18,6 +18,7 @@ TestAprioriOpt::~TestAprioriOpt(void)
 }
 void TestAprioriOpt::TestSuite()
 {
+	/*
 	// Testing unique itemset generation
 	
 	// Creating a wrapped data source
@@ -68,7 +69,22 @@ comp_start = clock();
 	//delete cConcsv;
 // 	delete lsd;
 // 	delete dsLoaded;
-	delete ds;
+	delete ds;*/
+		//TestAprioriAlgo();
+		CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+	//CsvConnection cConcsv(path.c_str(),',','\n','""');
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+	ds->encodeAtrributes();
+
+	//Setting confidence, minimum support  
+	AprioriOpt apriori;
+	apriori.Confidence(0.9);
+	apriori.MinSupport(0.01);
+	apriori.NumRules(20);
+
+	//Starting to run the algorithm
+	apriori.BuildAssociations(ds);
 }
 
 // WrapDataSource * TestAlgoUtil::LoadData(){

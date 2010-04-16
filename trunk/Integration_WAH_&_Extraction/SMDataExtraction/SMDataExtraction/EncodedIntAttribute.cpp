@@ -41,7 +41,7 @@ int EncodedIntAttribute::decodeTheTuple(int tupleID){
 
 	val = temp.to_ulong();
 		
-	if (this->_signBitMap[tupleID - 1])
+	if (this->_signBitMap.at(tupleID - 1))
 	{
 		val *= -1;
 	}
