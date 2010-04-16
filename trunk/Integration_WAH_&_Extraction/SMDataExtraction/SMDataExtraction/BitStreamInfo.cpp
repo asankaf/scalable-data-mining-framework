@@ -27,7 +27,6 @@ void BitStreamInfo::Clone( BitStreamInfo * _new_stream )
 }
 
 void BitStreamInfo::convert(dynamic_bitset<> bitStream){
-	//_decompressedVBitStream.clear();
 	this->_decompressedVBitStream = bitStream;
 }
 

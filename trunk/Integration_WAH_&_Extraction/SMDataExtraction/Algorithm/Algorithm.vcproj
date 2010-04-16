@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;"
+				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -185,15 +185,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\C45SplitSet.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\dllmain.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Itemset.cpp"
+				RelativePath=".\EntropyBasedSplitCrit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GainRatioSplitCrit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\InfoGainSplitCrit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NoSplit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SplitCriterion.cpp"
 				>
 			</File>
 			<File
@@ -215,6 +227,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Utils.cpp"
+				>
 			</File>
 			<Filter
 				Name="Apriori"
@@ -252,11 +268,19 @@
 				Name="C45"
 				>
 				<File
+					RelativePath=".\C45ModelSelection.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\C45PruneableClassifierTree.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\C45Tree.cpp"
+					RelativePath=".\C45Split.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\C45TreeNominal.cpp"
 					>
 				</File>
 				<File
@@ -276,7 +300,27 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Itemset.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\ModelSelection.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="C45DataSource"
+				>
+				<File
+					RelativePath=".\Atribute.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DataSource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DistinctValue.cpp"
 					>
 				</File>
 			</Filter>
@@ -287,15 +331,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\C45SplitSet.h"
+				RelativePath=".\EntropyBasedSplitCrit.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Distribution.h"
+				RelativePath=".\GainRatioSplitCrit.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Itemset.h"
+				RelativePath=".\InfoGainSplitCrit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Init.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NoSplit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SplitCriterion.h"
 				>
 			</File>
 			<File
@@ -304,6 +360,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utils.h"
 				>
 			</File>
 			<Filter
@@ -342,11 +402,23 @@
 				Name="C45"
 				>
 				<File
+					RelativePath=".\C45ModelSelection.h"
+					>
+				</File>
+				<File
 					RelativePath=".\C45PruneableClassifierTree.h"
 					>
 				</File>
 				<File
-					RelativePath=".\C45Tree.h"
+					RelativePath=".\C45Split.h"
+					>
+				</File>
+				<File
+					RelativePath=".\C45SplitSet.h"
+					>
+				</File>
+				<File
+					RelativePath=".\C45TreeNominal.h"
 					>
 				</File>
 				<File
@@ -362,7 +434,31 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Distribution.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Itemset.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ModelSelection.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="C45DataSource"
+				>
+				<File
+					RelativePath=".\Atribute.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DataSource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DistinctValue.h"
 					>
 				</File>
 			</Filter>

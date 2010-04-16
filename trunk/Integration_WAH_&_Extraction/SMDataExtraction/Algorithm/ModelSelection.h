@@ -1,6 +1,7 @@
 #pragma once
 #include "classifiersplitmodel.h"
-#include "WrapDataSource.h"
+#include "datasource.h"
+#include "BitStreamInfo.h"
 
 class ModelSelection
 {
@@ -13,7 +14,7 @@ public:
 	*
 	* @exception Exception if model can't be selected
 	*/
-	_declspec(dllexport) virtual ClassifierSplitModel selectModel(WrapDataSource * _data) = 0;
+	_declspec(dllexport) virtual ClassifierSplitModel * selectModel(DataSource * _data,BitStreamInfo * _existence_bitmap) = 0;
 
 	/**
 	* Selects a model for the given train data using the given test data

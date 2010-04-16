@@ -10,15 +10,6 @@ VBitStream::VBitStream(){
 
 }
 
-BitStreamInfo * VBitStream::Clone()
-{
-	VBitStream * bit_stream = new VBitStream();	
-	bit_stream->convert(getProcessedBitStream());
-	bit_stream->Type(this->Type());
-	BitStreamInfo::Clone(bit_stream);
-	return bit_stream;
-}
-
 size_t VBitStream::SpaceUtilisation()
 {
 	size_t space = sizeof(this);

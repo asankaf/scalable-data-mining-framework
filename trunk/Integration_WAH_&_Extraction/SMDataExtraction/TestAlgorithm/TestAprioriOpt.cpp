@@ -5,6 +5,7 @@
 #include "CompressionHandler.h"
 #include "DataSources.h"
 #include "LoadSavedDataSources.h"
+#include "DecodedTuple.h"
 
 using namespace CSVConnectionInfo;
 TestAprioriOpt::TestAprioriOpt(void)
@@ -39,9 +40,10 @@ clock_t comp_start,comp_end;
 cout << "Starting to load data : " << endl;
 comp_start = clock();
 // 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_full_metadata","soyabean_full_data");
+	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	WrapDataSource * ds =  (*dsLoaded)("soyabean");
+	//WrapDataSource * ds =  (*dsLoaded)("soyabean");
+	WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");	
 // 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
 // 	comp_end = clock();
 // 	cout << "Finished Loading data : " << endl;
@@ -62,7 +64,7 @@ comp_start = clock();
 	cout << "Time Spent : " << (end - begin) << endl;
 	cout << "No off cycles : " << opt.Cycles() << endl;
 	vector<AprioriItemset *> set2 =  opt.UniqueItems();
-//	utils.PrintAprioriItemSets(opt.LargeItemSets(),ds);
+	utils.PrintRules(opt.Rules());
 	//delete cConcsv;
 // 	delete lsd;
 // 	delete dsLoaded;
@@ -89,11 +91,11 @@ void TestAprioriOpt::TestUniqueItemSetGeneration(WrapDataSource * _wrapped, Apri
 {
 	cout << "Start Creating unique item sets" << endl;
 	_ap_opt.FindUniqueItemSets(_wrapped);
-	cout << "Finished Creating unique item sets" << endl;
-	vector<AprioriItemset *> items = _ap_opt.UniqueItems();
-	AlgoUtils utils;
-	cout << "Start printing Unique Item set"  << endl;
-	utils.PrintAprioriItemSets(_ap_opt.UniqueItems(),_wrapped);
+// 	cout << "Finished Creating unique item sets" << endl;
+// 	vector<AprioriItemset *> items = _ap_opt.UniqueItems();
+// 	AlgoUtils utils;
+// 	cout << "Start printing Unique Item set"  << endl;
+// 	utils.PrintAprioriItemSets(_ap_opt.UniqueItems(),_wrapped);
 }
 
 void TestAprioriOpt::TestBuildAssociations(WrapDataSource * _wrapped, AprioriOpt & _ap_opt)
@@ -143,7 +145,15 @@ cout << "Original Itemsets" << endl;
 utils.PrintAprioriItemSets(_ap_opt.UniqueItems());
 }
 
-
+void TestAprioriOpt::LoadAndPrintCSV()
+{
+	CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+	ds->encodeAtrributes();
+	Tuple * t = ds->DecodeTheTuple(1);
+	//cout << t->decodedStringAtts()[0]<< endl;
+}
 
 WrapDataSource * TestAprioriOpt::CreateWrappedDataSource()
 {

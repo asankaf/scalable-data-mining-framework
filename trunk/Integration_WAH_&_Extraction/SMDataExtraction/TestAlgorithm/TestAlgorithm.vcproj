@@ -206,6 +206,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestC45Nominal.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestHolderOperations.cpp"
 				>
 			</File>
@@ -237,6 +241,10 @@
 			</File>
 			<File
 				RelativePath=".\TestAprioriOpt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestC45Nominal.h"
 				>
 			</File>
 			<File

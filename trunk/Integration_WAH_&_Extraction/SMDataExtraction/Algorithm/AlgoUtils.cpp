@@ -129,6 +129,22 @@ namespace Algorithm{
 //return unique_val_map;
 	}
 
+	vector<BitStreamInfo *> AlgoUtils::FindDistinctValues(EncodedMultiCatAttribute * _attribute)
+	{		
+		// at() is said to be more efficient than iterator. Try to measure this afterwards.		
+		vector<string> unique_vals = _attribute->uniqueValList();
+		int max_number_of_bits = _attribute->NoOfVBitStreams();
+		vector<BitStreamInfo *> result_bitstreams(unique_vals.size());
+		for (size_t index = 0; index < unique_vals.size(); index++)
+		{
+			dynamic_bitset<> temp_pattern(max_number_of_bits,(unsigned long int)index);
+			vector<BitStreamInfo *> temp_bit_info = _attribute->vBitStreams();
+			result_bitstreams[index] = FindPattern(temp_pattern,temp_bit_info);
+			
+		}
+	return result_bitstreams;
+	}
+
 	map<int,int> AlgoUtils::CreateIndexAttributeMap(map<int,vector<int>> & _index_att_map)
 	{
 		map<int,int> result_map;

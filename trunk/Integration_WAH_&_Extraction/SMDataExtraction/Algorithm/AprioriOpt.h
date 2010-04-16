@@ -6,6 +6,7 @@
 #include "algoutils.h"
 #include "BitStreamInfo.h"
 #include "associaterule.h"
+#include "boost/lexical_cast.hpp"
 #include <string>
 #include <algorithm>
 using namespace Algorithm;

@@ -13,6 +13,7 @@ public:
 		bool raiseTree,
 		bool cleanup,
 		bool collapseTree);
+	_declspec(dllexport) void buildClassifier(DataSource * _source, BitStreamInfo * _existence_map);
 
 private:
 	/** True if the tree is to be pruned. */
@@ -29,4 +30,6 @@ private:
 
 	/** Cleanup after the tree has been built. */
 	bool m_cleanup;
+
+
 };

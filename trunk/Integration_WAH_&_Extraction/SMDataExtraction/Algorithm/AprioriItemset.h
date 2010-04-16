@@ -1,4 +1,6 @@
-#pragma once
+//#pragma once
+#ifndef APRIOIRI_ITEMSET_H
+#define APRIOIRI_ITEMSET_H
 #include "BitStreamInfo.h"
 #include <hash_map>
 #include <map>
@@ -42,3 +44,4 @@ private :
 	//Keeps the result bit stream corresponding to the attribute value combination.
 	BitStreamInfo * m_bit_stream;	
 };
+#endif

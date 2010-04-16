@@ -9,6 +9,7 @@ namespace CompressedStructure{
 		m_iMainArray = NULL;
 		m_iOriginalStreamSize = 0;
 		m_ulActiveWord = 0;
+		Type(BitStreamInfo::WAH_COMPRESSION);
 	}
 	WAHStructure::~WAHStructure(void)
 	{
