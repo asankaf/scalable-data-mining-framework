@@ -15,5 +15,6 @@ public:
 	* @param _data set of instances serving as training data		
 	*/
 	_declspec(dllexport) virtual void buildClassifier(WrapDataSource * _data) = 0;
+	//_declspec(dllexport) virtual void buildClassifier(WrapDataSource * _data) = 0;
 
 };

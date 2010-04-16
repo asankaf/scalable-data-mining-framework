@@ -16,9 +16,7 @@ EncodedMultiCatAttribute::EncodedMultiCatAttribute(void)
 
 EncodedMultiCatAttribute::~EncodedMultiCatAttribute(void)
 {
-	//delete []this->_mappedVals;
-//	delete this->_mappedVals;
-	//delete [] _mappedIntVals;	
+	delete []this->_mappedVals;
 }
 
 int* EncodedMultiCatAttribute::getMappedIntVals(){
@@ -39,8 +37,13 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 	cout<<"Time to assign the set to a vector : "<<(end - start)<<endl;
 
 	int maxUniqueIndex = _uniqueValList.size();
-	
-	int temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
+	int temp=0;
+
+	if (maxUniqueIndex == 1)
+	{
+		temp = 1;
+	}
+	else temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
 	this->setNoOfVBitStreams(temp,noOfRows);
 	this->_noOfUniqueVals = _uniqueValList.size();
 

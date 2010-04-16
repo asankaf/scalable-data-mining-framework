@@ -22,8 +22,8 @@ AprioriItemset::~AprioriItemset(void)
 int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 {
 	long result = 0;
-// 	int factor = 1;
-// 	int val = 0;
+	int factor = 1;
+	int val = 0;
 // 	for (size_t i = 0; i< _no_of_attrib; i++)
 // 	{
 // 		val = _int_arr[i]+1;		
@@ -32,7 +32,7 @@ int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 // 	}
 	for (int i = _no_of_attrib-1; i >= 0; i--)
 	{
-		result += (i * _int_arr[i]);
+		result += ((i) * _int_arr[i]);
 	}
 
 	return (int)result;

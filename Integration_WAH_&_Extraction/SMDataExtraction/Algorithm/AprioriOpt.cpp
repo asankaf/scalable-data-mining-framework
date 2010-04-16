@@ -1,9 +1,10 @@
 #include "StdAfx.h"
 #include "AprioriOpt.h"
 #include <math.h>
+#include <iosfwd>
 
 
-
+using namespace std;
 using namespace Algorithm;
 AprioriOpt::AprioriOpt(void)
 {
@@ -477,7 +478,7 @@ vector<AssociateRule *> AprioriOpt::GenerateRules( int numItemsInSet, AprioriIte
 	// Generate all rules with one item in the consequence.
 	int * current_m_items = _itemset->Items();
 	int m_items_length = m_numberOfAttributes;
-	for (int i = 0; i < m_items_length; i++) 
+	for (int i = 0; i < m_items_length; i++) {
 		if (current_m_items[i] != -1) {
 			premise_m_items = new int[m_items_length];
 			consequence_m_items = new int[m_items_length];
@@ -488,7 +489,9 @@ vector<AssociateRule *> AprioriOpt::GenerateRules( int numItemsInSet, AprioriIte
 			rule->Consequence_count(_itemset->Count());
 
 			for (int j = 0; j < m_items_length; j++) 
+			{
 				consequence_m_items[j] = -1;
+			}
 			// Check if there's a separate method for copying arrays. THis is for copying character arrays
 			memcpy(premise_m_items,current_m_items,m_items_length * sizeof(int)); 				
 			premise_m_items[i] = -1;
@@ -499,7 +502,7 @@ vector<AssociateRule *> AprioriOpt::GenerateRules( int numItemsInSet, AprioriIte
 			rule->CalculateConfidence();
 			rules.push_back(rule);						
 		}
-
+	}
 		rules = PruneRules(rules);
 
 		// Generate all the other rules
@@ -620,10 +623,12 @@ void AprioriOpt::BuildStrings()
 				premise += multi_cat->attributeName()+"="+str_vals[premise_items[j]]+" , ";				
 			}
 		}
-		if (j == m_numberOfAttributes)
+		if (j >= m_numberOfAttributes)
 		{
 			//Find if this operation is fast
 			premise.erase((premise.end()-1));
+			premise.erase((premise.end()-1));			
+			premise += "("+boost::lexical_cast<string>(rule->Premise_count())+")";
 			//premise += " ("+(rule->Premise_count())+") ";
 		}
 		j=0;
@@ -641,8 +646,11 @@ void AprioriOpt::BuildStrings()
 		{
 			//Find if this operation is fast
 			consequence.erase((consequence.end()-1));
+			consequence.erase((consequence.end()-1));
+			consequence +="("+boost::lexical_cast<string>(rule->Consequence_count())+")";
 			//	consequence += " ("+rule->Consequence_count()+") ";
 		}
+		consequence += " conf = " + boost::lexical_cast<string>(rule->Confidence());
 		rule->Rule(premise + " => "+consequence);
 	}
 }

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ClassifierTree.h"
 
+
 ClassifierTree::ClassifierTree(void)
 {
 }
@@ -14,44 +15,51 @@ ClassifierTree::~ClassifierTree(void)
 {
 }
 
-void ClassifierTree::buildClassifier(WrapDataSource * data)
+void ClassifierTree::buildClassifier( DataSource * data,BitStreamInfo * _existence_bitmap )
 {
 	//buildTree(data, false);
 }
 
-/**
-* Builds the tree structure.
-*
-* @param data the data for which the tree structure is to be
-* generated.
-* @param keepData is training data to be kept?
-* @throws Exception if something goes wrong
-*/
-void ClassifierTree::buildTree(WrapDataSource * data, boolean keepData)
+ClassifierTree * ClassifierTree::getNewTree(DataSource * _data, BitStreamInfo * _existence_map)
+{
+	ClassifierTree * newTree = new ClassifierTree(m_toSelectModel);
+	newTree->buildTree(_data,_existence_map, false);
+
+	return newTree;
+}
+
+void ClassifierTree::buildTree(DataSource * data, BitStreamInfo * _existence_map,boolean keepData )
 {
 
-// 	Instances [] localInstances;
-// 
-// 	if (keepData) {
-// 		m_train = data;
-// 	}
-// 	m_test = null;
-// 	m_isLeaf = false;
-// 	m_isEmpty = false;
-// 	m_sons = null;
-// 	m_localModel = m_toSelectModel.selectModel(data);
-// 	if (m_localModel.numSubsets() > 1) {
-// 		localInstances = m_localModel.split(data);
-// 		data = null;
-// 		m_sons = new ClassifierTree [m_localModel.numSubsets()];
-// 		for (int i = 0; i < m_sons.length; i++) {
-// 			m_sons[i] = getNewTree(localInstances[i]);
-// 			localInstances[i] = null;
-// 		}
-// 	}else{
-// 		m_isLeaf = true;
-// 		if (Utils.eq(data.sumOfWeights(), 0))
-// 			m_isEmpty = true;
-// 		data = null;
-// 	}
+	vector<BitStreamInfo *> localInstances;
+
+	if (keepData) {
+		m_train = data;
+	}
+	m_test = NULL;
+	m_isLeaf = false;
+	m_isEmpty = false;
+	m_sons = NULL;
+	m_localModel = m_toSelectModel->selectModel(data,_existence_map);
+	m_localModel->Print();
+ 	if (m_localModel->NumSubsets() > 1) {
+		localInstances = m_localModel->Existence_maps();
+		m_sons = new ClassifierTree * [m_localModel->NumSubsets()];
+		m_sonsLength = m_localModel->NumSubsets();
+		for (int i = 0; i < m_sonsLength; i++) 
+		{
+			m_sons[i] = getNewTree(data,localInstances[i]);
+			localInstances[i] = NULL;
+		}
+		m_sons_vect = vector<ClassifierTree *>(m_sons,m_sons+m_sonsLength);
+	}
+	else
+	{
+		m_isLeaf = true;
+		if (Utils::eq((double)_existence_map->Count(), 0))
+		{
+			m_isEmpty = true;
+		}
+		data = NULL;
+	}
 }
