@@ -67,7 +67,7 @@ void C45TreeNominal::buildClassifier(WrapDataSource * instances)
 	ModelSelection  * modSelection;	 	
 	//Sets the source to be used
 	m_source = new DataSource(instances,m_classIndex);
-	delete instances;
+//	delete instances;
 	//m_source->Print();
 	if (m_existence_map == NULL)
 	{

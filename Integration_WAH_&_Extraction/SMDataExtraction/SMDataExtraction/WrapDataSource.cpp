@@ -536,8 +536,9 @@ std::string WrapDataSource::generateCSVStringofDecodedData(int _no_of_rows)
 	string lineBreak = "\n";
 	attVals.replace((attVals.size() -1),lineBreak.size(),lineBreak);
 
+	size_t row_no = _no_of_rows <= this->_noOfRows ?_no_of_rows:this->_noOfRows;
 	//for (int j = 1 ; j <= this->_noOfRows ; j++)
-	for (int j = 1 ; j <= _no_of_rows ; j++)
+	for (int j = 1 ; j <= row_no ; j++)
 	{
 		attVals += decodeTheTupleAsString(j);
 	}
