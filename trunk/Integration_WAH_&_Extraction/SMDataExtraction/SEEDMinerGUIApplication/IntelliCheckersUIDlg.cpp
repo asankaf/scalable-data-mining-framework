@@ -275,6 +275,12 @@ void CIntelliCheckersUIDlg::Aprior(double confidence,double minsuport,int rules)
 	//Starting to run the algorithm
 	m_apriori->BuildAssociations(m_source);
 }
+
+void CIntelliCheckersUIDlg::Classifier()
+{
+	m_classifier = new C45TreeNominal();
+	m_classifier->buildClassifier(m_source);
+}
 string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 {
 	string output = "";
@@ -313,7 +319,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="";
-		path = "C:\\Data\\soyaTest.csv";
+		//path = "C:\\Data\\soyaTest.csv";
 		
 		//implement the procedure for get data from csv file(path is the location of the file) 
 		//and make a string to out put data in the text viewer 
@@ -321,18 +327,22 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		CSV(path,1000);
 		formattedOutPut = Text(WRAPPED_SOURCE,100);
 		DeleteAll();
-		flash->root.Call("func", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="";
-		path = "C:\\Data\\soyaTest.csv";
+		//path = "C:\\Data\\soyaTest.csv";
+		//weather.nominal.csv
+		//path = "C:\\Data\\weather.nominal.csv";
 		CSV(path,1000);
-		Aprior(0.9,0.01,10);
+		Aprior(0.9,0.01,10);		
+		//Classifier();
+		//formattedOutPut = Text(CLASSIFIER_SOURCE,0);
 		formattedOutPut = Text(APRIORI_SOURCE,0);
 		DeleteAll();
-		flash->root.Call("func", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 
 	}
 	

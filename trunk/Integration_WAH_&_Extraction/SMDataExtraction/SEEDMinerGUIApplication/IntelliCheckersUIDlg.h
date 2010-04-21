@@ -31,6 +31,7 @@ private:
 	enum source_type{WRAPPED_SOURCE,APRIORI_SOURCE,CLASSIFIER_SOURCE};
 	void CSV(string path,int noOfRows);
 	void Aprior(double confidence,double minsuport,int rules);
+	void Classifier();
 	string Text(source_type type,int noOfRows);
 	void DeleteAll();
 	void InitAll();
