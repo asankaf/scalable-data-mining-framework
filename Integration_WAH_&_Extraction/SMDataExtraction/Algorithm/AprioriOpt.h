@@ -9,7 +9,7 @@
 //#include "boost/lexical_cast.hpp"
 #include <string>
 #include <algorithm>
-using namespace Algorithm;
+//using namespace Algorithm;
 class AprioriOpt
 {
 

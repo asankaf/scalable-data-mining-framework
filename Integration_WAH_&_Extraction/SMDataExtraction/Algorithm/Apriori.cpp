@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-namespace Algorithm{
+
 	Apriori::Apriori(void)
 	{
 		m_no_of_rules = 1000;
@@ -301,4 +301,3 @@ if (!ContainsRule(rule_hash))
 		//Inefficient memory handling. Need to delete BitStreamInfoObjects, when no longer used.		
 		_utils.CopyFirstToSecond(m_candidate_set,m_frequent_item_set);
 	}	
-}

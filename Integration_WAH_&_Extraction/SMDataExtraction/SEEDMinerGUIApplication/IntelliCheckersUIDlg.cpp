@@ -5,6 +5,9 @@
 #include <iostream>
 #include "IntelliCheckersUI.h"
 #include "IntelliCheckersUIDlg.h"
+#include "WrapDataSource.h"
+#include "aprioriopt.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -67,6 +70,7 @@ CIntelliCheckersUIDlg::CIntelliCheckersUIDlg(CWnd* pParent /*=NULL*/)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+	InitAll();
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -226,6 +230,81 @@ void CIntelliCheckersUIDlg::OnFlexEvent(CFlexEvent *evt)
 
 //////////////////////////////////// implement methods below //////////////////////////////////////////
 
+void CIntelliCheckersUIDlg::InitAll()
+{
+	m_source = NULL;
+	m_apriori = NULL;
+	m_classifier = NULL;
+}
+
+void CIntelliCheckersUIDlg::DeleteAll()
+{
+	if (m_source != NULL)
+	{
+		delete m_source;
+		m_source = NULL;
+	}
+	if (m_apriori != NULL)
+	{
+		delete m_apriori;
+		m_apriori = NULL;
+	}
+	if (m_classifier != NULL)
+	{
+		delete m_classifier;
+		m_classifier = NULL;
+	}
+}
+
+void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
+{
+	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+	CsvConnection cConcsv(path.data(),',','\n','""');
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	m_source = new WrapDataSource(*dat,"0");	
+	m_source->encodeAtrributes();
+}
+void CIntelliCheckersUIDlg::Aprior(double confidence,double minsuport,int rules)
+{
+	//Setting confidence, minimum support  
+	m_apriori = new AprioriOpt();
+	m_apriori->Confidence(confidence);
+	m_apriori->MinSupport(minsuport);
+	m_apriori->NumRules(rules);
+
+	//Starting to run the algorithm
+	m_apriori->BuildAssociations(m_source);
+}
+string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
+{
+	string output = "";
+	switch(type)
+	{
+	case APRIORI_SOURCE:
+		{
+			vector<AssociateRule *> rules = m_apriori->Rules();
+
+			for (size_t i = 0 ; i < rules.size() ; i++)
+			{
+				string rule = rules[i]->Rule();
+				output += rule +"\n";
+			}
+		}
+		break;
+	case CLASSIFIER_SOURCE:
+		{
+			output = m_classifier->toString();
+		}
+		break;
+	case WRAPPED_SOURCE :
+		{
+			output = m_source->generateCSVStringofDecodedData(noOfRows);
+		}
+
+	}
+	return output;
+}
+
 void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
 {
 	string procedure=evt->procedure;
@@ -234,47 +313,25 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="";
-		formattedOutPut = "Hi Its working";
+		path = "C:\\Data\\soyaTest.csv";
+		
 		//implement the procedure for get data from csv file(path is the location of the file) 
 		//and make a string to out put data in the text viewer 
 		//assign it to "formattedOutPut" here
-
+		CSV(path,1000);
+		formattedOutPut = Text(WRAPPED_SOURCE,100);
+		DeleteAll();
 		flash->root.Call("func", procedure+formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="";
-
-		//implement the procedure for get data from csv file apply apriory algorithm 
-		//and make a string to out put the rules in the text viewer 
-		//assign it to "formattedOutPut" here
-		//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
-		CsvConnection cConcsv(path,',','\n','""');
-		ExtractedCsvDTO *dat = cConcsv.extractData();
-		WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-		ds->encodeAtrributes();
-
-		//Setting confidence, minimum support  
-		AprioriOpt apriori;
-		apriori.Confidence(0.9);
-		apriori.MinSupport(0.01);
-		apriori.NumRules(20);
-
-		//Starting to run the algorithm
-		apriori.BuildAssociations(ds);
-
-		//Printing results
-		vector<AssociateRule *> rules = apriori.Rules();
-
-		for (size_t i = 0 ; i < rules.size() ; i++)
-		{
-			string rule = rules[i]->Rule();
-			formattedOutPut += rule +"\n";
-		}
-		flash->root.Call("func", procedure+formattedOutPut);
-
-
+		path = "C:\\Data\\soyaTest.csv";
+		CSV(path,1000);
+		Aprior(0.9,0.01,10);
+		formattedOutPut = Text(APRIORI_SOURCE,0);
+		DeleteAll();
 		flash->root.Call("func", procedure+formattedOutPut);
 
 	}

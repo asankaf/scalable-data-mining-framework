@@ -1,5 +1,6 @@
-#pragma once
-#include "BitStreamHolder.h"
+#ifndef _ALGOUTILS_H
+#define _ALGOUTILS_H
+
 #include "boost\dynamic_bitset\dynamic_bitset.hpp"
 #include <vector>
 #include <map>
@@ -9,9 +10,10 @@
 #include <iostream>
 #include "..\..\..\..\..\mydocuments\visual studio 2008\projects\smdataextraction\algorithm\aprioriitemset.h"
 #include "associaterule.h"
+#include "BitStreamHolder.h"
 
 using namespace std;
-namespace Algorithm{
+
 	class AlgoUtils
 	{
 	public:
@@ -62,4 +64,5 @@ namespace Algorithm{
 		_declspec(dllexport) static void PrintRule(AssociateRule * _rule);
 			//BitStreamHolder * MergeHolder(BitStreamHolder * _holder,vector<BitStreamHolder *> _index_holder_map);
 	};
-}
+
+#endif

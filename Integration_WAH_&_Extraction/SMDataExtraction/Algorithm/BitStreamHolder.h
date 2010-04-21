@@ -1,11 +1,13 @@
-#pragma once
+#ifndef _BITSTREAMHOLDER_H
+#define _BITSTREAMHOLDER_H
+
 #include <vector>
 #include "BitStreamInfo.h"
 #include <iostream>
 #include <algorithm>
 #include <map>
 using namespace std;
-namespace Algorithm{
+
 	class BitStreamHolder
 	{
 	public:
@@ -40,6 +42,4 @@ namespace Algorithm{
 		static const int MULTIPLICATIVE_UNIT = 10;
 		
 	};
-
-
-}
+#endif

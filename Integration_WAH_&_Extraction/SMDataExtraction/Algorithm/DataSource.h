@@ -7,7 +7,7 @@
 #include "algoutils.h"
 #include "AttributeType.h"
 
-using namespace Algorithm;
+
 class DataSource
 {
 public:

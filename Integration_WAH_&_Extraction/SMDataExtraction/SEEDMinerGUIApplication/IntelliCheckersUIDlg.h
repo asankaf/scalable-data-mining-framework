@@ -2,7 +2,11 @@
 //
 //{{AFX_INCLUDES()
 #include "shockwaveflash.h"
-
+#include "csvconnection.h"
+#include "extractedCsvDTO.h"
+#include "WrapDataSource.h"
+#include "aprioriopt.h"
+#include "C45TreeNominal.h"
 //}}AFX_INCLUDES
 
 #if !defined(AFX_IntelliCheckersUIDLG_H__14D37E6D_A305_4612_A543_6DDA6BCCC9F0__INCLUDED_)
@@ -11,6 +15,9 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+using namespace CsvDataExtraction;
+using namespace CSVConnectionInfo;
 /////////////////////////////////////////////////////////////////////////////
 // CIntelliCheckersUIDlg dialog
 
@@ -18,6 +25,15 @@ class CIntelliCheckersUIDlg : public CDialog, public CFlexCallBack
 {
 private:
 // Construction
+	WrapDataSource * m_source;
+	AprioriOpt * m_apriori;
+	C45TreeNominal * m_classifier;
+	enum source_type{WRAPPED_SOURCE,APRIORI_SOURCE,CLASSIFIER_SOURCE};
+	void CSV(string path,int noOfRows);
+	void Aprior(double confidence,double minsuport,int rules);
+	string Text(source_type type,int noOfRows);
+	void DeleteAll();
+	void InitAll();
 public:
 	
 	CIntelliCheckersUIDlg(CWnd* pParent = NULL);	// standard constructor

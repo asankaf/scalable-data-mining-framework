@@ -7,7 +7,7 @@
 // #include "DBQueryExecution.h"
 #include "WrapDataSource.h"
 
-using namespace Algorithm;
+//using namespace Algorithm;
 using namespace DBConnectionInfo;
 class TestAprioriOpt
 {
