@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdhead.h"
+#include "PureAttInfo.h"
 #include "PureIntAttInfo.h"
 #include "PureDoubleAttInfo.h"
 #include "PureStringAttInfo.h"

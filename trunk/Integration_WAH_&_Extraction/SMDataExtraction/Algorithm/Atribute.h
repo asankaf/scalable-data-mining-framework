@@ -25,9 +25,16 @@ public:
 
 	void Print();
 
-	std::string String() const { return m_string; }
+	std::string name() const { return m_name; }
 
-	void String(std::string val) { m_string = val; }
+	void name(std::string val) { m_name = val; }
+
+	/**
+	* Returns a value of a nominal or string attribute.  Returns an
+	* empty string if the attribute is neither a string nor a nominal
+	* attribute.
+	*/
+	string value(int valIndex);
 
 private :
 	/* No of unique bitmaps */
@@ -39,5 +46,6 @@ private :
 	/*weight of each attribute */
 	double m_weight;	
 
-	string m_string;	
+	/*Name of the attribute */
+	string m_name;	
 }; 

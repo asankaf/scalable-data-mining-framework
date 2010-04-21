@@ -5,20 +5,29 @@ NoSplit::NoSplit(void)
 {
 }
 
+string NoSplit::leftSide(DataSource * data)
+{
+	return "";
+}
+
+string NoSplit::rightSide(int index,DataSource * data)
+{
+	return "";
+}
+
 NoSplit::~NoSplit(void)
 {
-	Distribution * dist = Dist();
-	if (dist != NULL)
+	if (m_distribution == NULL)
 	{
-		delete dist;
-		Dist(NULL);
+		delete m_distribution;
+		m_distribution = NULL;
 	}
 }
 
 NoSplit::NoSplit(Distribution * _dist)
 {
-	Dist(new Distribution(_dist));
-	NumSubsets(1);
+	m_distribution = new Distribution(_dist);
+	m_numSubsets = 1;	
 }
 
 void NoSplit::buildClassifier(DataSource * _source, BitStreamInfo * _existence)

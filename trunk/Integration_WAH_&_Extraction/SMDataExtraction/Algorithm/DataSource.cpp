@@ -27,6 +27,11 @@ DataSource::~DataSource(void)
 	}
 }
 
+Attribute * DataSource::classAttribute()
+{
+	return attribute(m_classIndex);
+}
+
 Attribute * DataSource::attribute(int _index)
 {
 	return m_attributes[_index];
@@ -38,12 +43,15 @@ void DataSource::buildDataSource(WrapDataSource *_source)
 	vector<EncodedAttributeInfo *> original_atts = _source->codedAttributes();
 	vector<Attribute *> attributes(original_atts.size());
 	initialiseWeights(attributes.size());
-	m_type = _source->codedAttributes()[0]->bitStreamAt(0)->Type();
+	
+	//m_type = original_atts[0]->bitStreamAt(0)->Type();
+	BitStreamInfo * _info = original_atts[0]->vBitStreams()[0];
+	m_type = _info->Type();
 	for (size_t i = 0 ; i < attributes.size(); i++)
 	{
 		assert(original_atts[i]->attributeType() == MULTICAT_VAL);
 		attributes[i] = new Attribute(m_weights[i],getDistinctValues(original_atts[i]));
-		attributes[i]->String(original_atts[i]->attributeName());
+		attributes[i]->name(original_atts[i]->attributeName());
 	}
 	m_attributes = attributes;
 

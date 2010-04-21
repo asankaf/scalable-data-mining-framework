@@ -2,6 +2,7 @@
 #include "SaveDataSources.h"
 #include "tinyxml.h"
 #include <time.h>
+#include <sstream>
 
 using namespace std;
 
@@ -37,7 +38,7 @@ bool DataSourceSerialization::serializeDataSource(){
 		dsNode->LinkEndChild(noRows);
 
 		TiXmlElement *dsType = new TiXmlElement("DataSourceType");
-		dsType->LinkEndChild(new TiXmlText(itoa(ds->SourceType(),new char[1024],10)));
+		dsType->LinkEndChild(new TiXmlText(itoa((int)ds->SourceType(),new char[1024],10)));
 		dsNode->LinkEndChild(dsType);
 		// 
 		// 	TiXmlElement *qryData = new TiXmlElement("QueryDataInfo");
@@ -94,6 +95,42 @@ bool DataSourceSerialization::serializeDataSource(){
 					uniVals->LinkEndChild(val);
 				}
 				att->LinkEndChild(uniVals);
+
+				codedAtts->LinkEndChild(att);
+			}
+			else if (ds->codedAttributes()[i]->attributeType() == ATT_TYPE::DOUBLE_VAL)
+			{
+				EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(ds->codedAttributes()[i]);
+				TiXmlElement *att=new TiXmlElement("Attribute");
+				att->SetAttribute("ID",doubleAtt->attributeID());
+				att->SetAttribute("Name",doubleAtt->attributeName().c_str());
+				att->SetAttribute("Type",(int)doubleAtt->attributeType());
+
+				TiXmlElement *noVBitStreams = new TiXmlElement("noOfVBitStreams");
+				noVBitStreams->LinkEndChild(new TiXmlText(itoa(doubleAtt->NoOfVBitStreams(),new char[1024],10)));
+				att->LinkEndChild(noVBitStreams);
+
+				std::ostringstream oss;
+				oss<<doubleAtt->maxAttVal();
+				string maxv = oss.str();
+				TiXmlElement *maxVal = new TiXmlElement("maxval");
+				maxVal->LinkEndChild(new TiXmlText(maxv.c_str()));
+				att->LinkEndChild(maxVal);
+
+				std::ostringstream oss_1;
+				oss_1<<doubleAtt->minAttVal();
+				string minv = oss_1.str();
+				TiXmlElement *minVal = new TiXmlElement("minval");
+				minVal->LinkEndChild(new TiXmlText(minv.c_str()));
+				att->LinkEndChild(minVal);
+
+				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
+				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(doubleAtt->SignBitMap()).to_ulong(),new char[1024],10)));
+				att->LinkEndChild(signMap);
+				
+				TiXmlElement *precision = new TiXmlElement("PrecisionVal");
+				precision->LinkEndChild(new TiXmlText(ltoa(doubleAtt->Precision(),new char[1024],10)));
+				att->LinkEndChild(precision);
 
 				codedAtts->LinkEndChild(att);
 			}

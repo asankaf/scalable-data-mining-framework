@@ -11,11 +11,11 @@ public:
 	~DistinctValue(void);
 	BitStreamInfo * Value() const { return m_value; }
 	void Value(BitStreamInfo * val) { m_value = val; }
-	std::string String() const { return m_string; }
-	void String(std::string val) { m_string = val; }
+	std::string name() const { return m_stringVal; }
+	void name(std::string val) { m_stringVal = val; }
 	void Print();
 	
 private:
 	BitStreamInfo * m_value;
-	string m_string;
+	string m_stringVal;
 };

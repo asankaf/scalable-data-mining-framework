@@ -4,7 +4,9 @@
 #include "gainratiosplitcrit.h"
 #include "datasource.h"
 #include "BitStreamInfo.h"
+#include <xstring>
 
+using namespace std;
 class C45Split :
 	public ClassifierSplitModel
 {
@@ -17,8 +19,12 @@ public:
 
 	void buildClassifier(DataSource * _source, BitStreamInfo * _existence);
 
+	/**
+	* Prints left side of condition..
+	*/
+	string leftSide(DataSource * data);
+
 	/** Public getters and setters*/
-	
 
 	double infoGain() const { return m_infoGain; }
 
@@ -28,6 +34,12 @@ public:
 
 	void gainRatio(double val) { m_gainRatio = val; }
 
+	/**
+	* Prints left side of condition satisfied by instances in subset index.
+	*/
+	string rightSide(int index,DataSource * data);
+
+	
 private:
 	/** Desired number of branches. */
 	int m_complexityIndex;  

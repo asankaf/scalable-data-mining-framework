@@ -29,6 +29,7 @@ public:
 	__declspec(dllexport) dynamic_bitset<>* mapStringDataToCategories(vector<string> _valueList,std::set<string> _uniqueValList,int noOfRows);
 	__declspec(dllexport) dynamic_bitset<>* mapStringDataToCategories(TempStringObjects* _tempStrs,int NoRows,int NoUniqueVals);
 	int binarySearch(vector<string> arr, string value, int left, int right);
+	void Init();
 	void setUniqueMap();
 
 private:

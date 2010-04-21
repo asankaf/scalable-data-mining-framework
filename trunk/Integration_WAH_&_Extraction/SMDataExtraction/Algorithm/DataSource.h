@@ -20,6 +20,11 @@ public:
 
 	Attribute * attribute(int _index);
 
+	/**
+	* Returns the class attribute.	
+	*/
+	Attribute * classAttribute();
+
 	/* Getters and setters for private members*/
 	int numInstances() const { return m_row_count; }
 

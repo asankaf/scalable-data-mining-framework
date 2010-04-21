@@ -8,7 +8,7 @@ EWAH::EWAH(void)
 
 EWAH::~EWAH(void)
 {
-	m_bitvector.clear();
+//	m_bitvector.clear();
 }
 
 EWAH::EWAH(WrappedBitVector & _vect)
