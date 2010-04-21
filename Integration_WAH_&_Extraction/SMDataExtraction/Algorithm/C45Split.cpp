@@ -11,8 +11,17 @@ C45Split::~C45Split(void)
 	//Deleting existence maps
 	for (size_t i = 0 ; i < m_existence_maps.size() ; i++)
 	{
-		delete m_existence_maps[i];
+		if (m_existence_maps[i] != NULL)
+		{
+			delete m_existence_maps[i];
+		}		
 	}
+	m_existence_maps.clear();
+}
+
+string C45Split::leftSide(DataSource * data)
+{
+	return data->attribute(m_attIndex)->name();
 }
 
 C45Split::C45Split(int attIndex,int minNoObj, double sumOfWeights,bool useMDLcorrection)
@@ -80,4 +89,13 @@ void C45Split::createExistenceMaps(DataSource * _source, BitStreamInfo * _existe
 		existence_maps[i] = *(_existence_map) & *(distincts[i]->Value());
 	}
 	m_existence_maps = existence_maps;
+}
+
+string C45Split::rightSide(int index,DataSource * data)
+{
+	string text;
+	
+		text.append(" = "+
+		data->attribute(m_attIndex)->value(index));		
+	return text;
 }

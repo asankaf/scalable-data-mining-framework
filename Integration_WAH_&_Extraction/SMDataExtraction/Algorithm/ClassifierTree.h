@@ -3,7 +3,8 @@
 #include "WrapDataSource.h"
 #include "BitStreamInfo.h"
 #include "datasource.h"
-
+#include <xstring>
+using namespace std;
 class ClassifierTree
 {
 public:
@@ -16,22 +17,49 @@ public:
 	
 	/**
 	* Method for building a classifier tree.
-	*	
 	*/
 	_declspec(dllexport) virtual void buildTree(DataSource * data, BitStreamInfo * _existence_map,boolean keepData);
 	
+
+	/**
+	* Method for building a classifier tree.
+	*/
 	_declspec(dllexport) virtual void buildClassifier(DataSource * data,BitStreamInfo * _existence_bitmap);
+
+
+	/**
+	* Prints tree structure.
+	*/
+	string toString();
 	
 	int SonsLength() const { return m_sonsLength; }
-	
+
+	/**
+	* Returns number of nodes in tree structure.	
+	*/
+	int numNodes();
+
+	/**
+	* Help method for printing tree structure.
+	*/
+	void dumpTree(int depth, string & text);
+
+
 	void SonsLength(int val) { m_sonsLength = val; }
 
 	/**
 	* Returns a newly created tree.	
 	*/
-	ClassifierTree * getNewTree(DataSource * _data, BitStreamInfo * _existence_map);
+	virtual ClassifierTree * getNewTree(DataSource * _data, BitStreamInfo * _existence_map);
+
+	/**
+	* Returns number of leaves in tree structure.
+	*/
+	int numLeaves();
+
+	void init();
 	
-private:
+protected:
 	/** The model selection method. */  
 	ModelSelection * m_toSelectModel;     
 
@@ -62,5 +90,6 @@ private:
 	Distribution * m_test;     
 
 	/** The id for the node. */
-	int m_id;	
+	int m_id;
+
 };

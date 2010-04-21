@@ -20,6 +20,8 @@ public:
 	*/
 	_declspec(dllexport) virtual void buildClassifier(WrapDataSource * _data);
 
+	_declspec(dllexport) string toString();
+
 	/** Public Getters and Setters*/
 	BitStreamInfo * Existence_map() const { return m_existence_map; }
 

@@ -59,11 +59,42 @@ public:
 	*/
 	double perBag(int bagIndex);
 	
-		/**
+	/**
 	* Returns number of (possibly fractional) instances of given class in 
 	* given bag.
 	*/
 	double perClassPerBag(int bagIndex, int classIndex);
+
+	/**
+	* Returns perBag(index)-numCorrect(index).
+	*/
+	double numIncorrect(int index);
+
+	/**
+	* Returns perClassPerBag(index,maxClass(index)).
+	*/
+	double numCorrect(int index);
+
+	/**
+	* Returns class with highest frequency for given bag.
+	*/
+	int maxClass(int index);
+
+	/**
+	* Returns perClass(maxClass()).
+	*/
+	double numCorrect();
+
+	/**
+	* Returns total-numCorrect().
+	*/
+	double numIncorrect();
+
+	/**
+	* Returns index of bag containing maximum number of instances.
+	*/
+	int maxBag();
+
 		
 private:
 

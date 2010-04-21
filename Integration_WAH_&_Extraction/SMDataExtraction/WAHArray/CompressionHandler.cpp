@@ -68,10 +68,10 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 	_bit_stream->Clone(new_val);
 //	new_val->Decompress();
 //	new_val->Print();
-	if (_end_type != BitStreamInfo::EWAH_COMPRESSION)
-	{
-		delete _bit_stream;
-	}
+// 	if (_end_type != BitStreamInfo::EWAH_COMPRESSION)
+// 	{
+// 		delete _bit_stream;
+// 	}
 	
 	return new_val;
 }

@@ -1,5 +1,9 @@
 #pragma once
 #include <math.h>
+#include "boost/lexical_cast.hpp"
+#include <xstring>
+
+using namespace std;
 class Utils
 {
 public:
@@ -37,6 +41,26 @@ public:
 	* Tests if a is greater or equal to b.	
 	*/
 	static bool grOrEq(double a,double b);
+
+	/**
+	* Rounds a double to the given number of decimal places.	
+	*/
+	static double roundDouble(double value,int afterDecimalPoint);
+
+	/**
+	* Converts an integer to a string	
+	*/
+	static string toStringVal(int val);
+
+	/**
+	* Converts a double value to a string	
+	*/
+	static string toStringVal(double val);
+
+	/**
+	* Gives a string having a the given number of precissions	
+	*/
+	static string toStringVal(double val,int precission);
 };
 // const double Utils::log2 = log10((double)2);
 // const double Utils::SMALL = 1e-6;

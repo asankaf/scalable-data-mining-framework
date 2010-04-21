@@ -19,7 +19,7 @@ void Attribute::Print()
 {
 	cout <<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
 	cout << "Printing Attribute :"<< endl;
-	cout <<"Attr Name : " << m_string << endl;
+	cout <<"Attr Name : " << m_name << endl;
 	cout << "Unique Value : " << m_uniqueValNo << endl;
 	for (size_t i = 0 ; i < m_uniqueValues.size() ; i++)
 	{
@@ -27,6 +27,11 @@ void Attribute::Print()
 		m_uniqueValues[i]->Print();
 	}
 	cout <<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
+}
+
+string Attribute::value(int valIndex)
+{	
+	return m_uniqueValues[valIndex]->name();
 }
 
 Attribute::~Attribute(void)

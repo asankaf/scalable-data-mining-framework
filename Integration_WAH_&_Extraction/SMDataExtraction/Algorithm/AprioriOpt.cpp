@@ -2,6 +2,7 @@
 #include "AprioriOpt.h"
 #include <math.h>
 #include <iosfwd>
+#include "utils.h"
 
 
 using namespace std;
@@ -628,8 +629,7 @@ void AprioriOpt::BuildStrings()
 			//Find if this operation is fast
 			premise.erase((premise.end()-1));
 			premise.erase((premise.end()-1));			
-			premise += "("+boost::lexical_cast<string>(rule->Premise_count())+")";
-			//premise += " ("+(rule->Premise_count())+") ";
+			premise += "("+Utils::toStringVal(rule->Premise_count())+")";			
 		}
 		j=0;
 		string consequence = "";
@@ -647,10 +647,10 @@ void AprioriOpt::BuildStrings()
 			//Find if this operation is fast
 			consequence.erase((consequence.end()-1));
 			consequence.erase((consequence.end()-1));
-			consequence +="("+boost::lexical_cast<string>(rule->Consequence_count())+")";
+			consequence +="("+Utils::toStringVal(rule->Consequence_count())+")";
 			//	consequence += " ("+rule->Consequence_count()+") ";
 		}
-		consequence += " conf = " + boost::lexical_cast<string>(rule->Confidence());
+		consequence += " conf = " + Utils::toStringVal(rule->Confidence());
 		rule->Rule(premise + " => "+consequence);
 	}
 }

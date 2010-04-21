@@ -173,11 +173,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Commons.h"
+				>
+			</File>
+			<File
 				RelativePath=".\csv_parser.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\CsvConnection.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DataPreProcessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DiscretizeData.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EncodedAttributeInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EncodedDoubleAttribute.h"
 				>
 			</File>
 			<File
@@ -189,11 +209,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NullPreProcessor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PureAttributeInfo.h"
 				>
 			</File>
 			<File
 				RelativePath=".\PureIntAttributeInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RangeSplitter.h"
 				>
 			</File>
 			<File
@@ -280,10 +308,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\EncodedAttributeInfo.h"
-					>
-				</File>
-				<File
 					RelativePath=".\EncodedIntAttribute.h"
 					>
 				</File>
@@ -325,6 +349,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Commons.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\csv_parser.cpp"
 				>
 			</File>
@@ -333,7 +361,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DataPreProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DecodeTuple.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DiscretizeData.cpp"
 				>
 			</File>
 			<File
@@ -359,11 +395,23 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\EncodedDoubleAttribute.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LoadSavedDataSources.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\NullPreProcessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PureIntAttributeInfo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RangeSplitter.cpp"
 				>
 			</File>
 			<File

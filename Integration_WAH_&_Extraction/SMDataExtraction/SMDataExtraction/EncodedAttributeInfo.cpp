@@ -2,6 +2,7 @@
 #include "EncodedAttributeInfo.h"
 #include "BitStreamInfo.h"
 #include <iostream>
+#include "commons.h"
 
 using namespace std;
 
@@ -10,26 +11,11 @@ EncodedAttributeInfo::EncodedAttributeInfo(){
 }
 
 EncodedAttributeInfo::~EncodedAttributeInfo(){
-	for (int i = 0 ; i < this->NoOfVBitStreams() ; i++)
-	{
-		//delete []_vBStreams[i];
-		delete _vBStreams[i];
-	}
-	delete _vBStreams;
-
-// 	for (size_t i = 0 ; i < _vBitStreams.size(); i++)
-// 	{
-// 		delete _vBitStreams[i];
-// 	}
+	Commons::DeleteVector(_vBitStreams.begin(),_vBitStreams.end());
 }
 
 vector<BitStreamInfo*> EncodedAttributeInfo::vBitStreams(){
-	if (_vBitStreams.size() == 0)
-	{	
-	vector<BitStreamInfo*> bitVector(this->_vBStreams,this->_vBStreams + this->NoOfVBitStreams());
-	this->_vBitStreams = bitVector;
-	}
-	return _vBitStreams;
+	return this->_vBitStreams;
 }
 
 int EncodedAttributeInfo::attributeID(){
@@ -60,7 +46,7 @@ size_t EncodedAttributeInfo::SpaceUtilisation()
 }
 
 BitStreamInfo* EncodedAttributeInfo::bitStreamAt(int bitStreamID){
-	return this->_vBStreams[bitStreamID];
+	return this->_vBitStreams[bitStreamID];
 }
 
 BitStreamInfo* EncodedAttributeInfo::operator ()(const int bitStreamID){

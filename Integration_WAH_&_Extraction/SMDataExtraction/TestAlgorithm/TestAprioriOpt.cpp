@@ -18,73 +18,76 @@ TestAprioriOpt::~TestAprioriOpt(void)
 }
 void TestAprioriOpt::TestSuite()
 {
-	/*
-	// Testing unique itemset generation
+		// Testing unique itemset generation
+		
+		// Creating a wrapped data source
 	
-	// Creating a wrapped data source
-
-//
-//CsvConnection cConcsv("C:\\soybeanTest-1mill.csv",',','\n','""');	
-//CsvConnection cConcsv("C:\\soyaTestsort.csv",',','\n','""');	
-//CsvConnection cConcsv("C:\\soyaTest.csv",',','\n','""');	
-//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
-//ExtractedCsvDTO *dat = cConcsv.extractData();
-//WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-//ds->encodeAtrributes();
-//cout << "Loaded Data" << endl;
-//cout << "No of Records : "<< dat->RowCount() << endl;
-//training dataset - 200000_data.xml
-//training dataset-200000_metadata
-//test dataset-10000_metadata.xml
-
-clock_t comp_start,comp_end;
-cout << "Starting to load data : " << endl;
-comp_start = clock();
-// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
-	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	//WrapDataSource * ds =  (*dsLoaded)("soyabean");
-	WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");	
-// 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
-// 	comp_end = clock();
-// 	cout << "Finished Loading data : " << endl;
-// 	cout << "Time for data loading : " << comp_end - comp_start << endl;
-	AlgoUtils utils;	
-	CompressionHandler comp;
-//	clock_t comp_start,comp_end;
+	//
+	//CsvConnection cConcsv("C:\\soybeanTest-1mill.csv",',','\n','""');	
+	//CsvConnection cConcsv("C:\\Data\\soyaTestsort.csv",',','\n','""');	
+	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+	//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
+	/*
+		ExtractedCsvDTO *dat = cConcsv.extractData();
+				WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+				ds->encodeAtrributes();*/
+		
+	//cout << "Loaded Data" << endl;
+	//cout << "No of Records : "<< dat->RowCount() << endl;
+	//training dataset - 200000_data.xml
+	//training dataset-200000_metadata
+	//test dataset-10000_metadata.xml
+	
+	clock_t comp_start,comp_end;
+	cout << "Starting to load data : " << endl;
 	comp_start = clock();
-//	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-//	comp.ConvertTo(ds,BitStreamInfo::VERTICAL_STREAM_FORMAT);
-	comp_end = clock();
-	cout << "Compression Time : " << comp_end - comp_start << endl;
-	AprioriOpt opt;	
-	clock_t begin,end;
-	begin = clock();
-	TestBuildAssociations(ds,opt);
-	end = clock();
-	cout << "Time Spent : " << (end - begin) << endl;
-	cout << "No off cycles : " << opt.Cycles() << endl;
-	vector<AprioriItemset *> set2 =  opt.UniqueItems();
-	utils.PrintRules(opt.Rules());
-	//delete cConcsv;
-// 	delete lsd;
-// 	delete dsLoaded;
-	delete ds;*/
+	// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
+		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
+		DataSources *dsLoaded = lsd->loadSavedEncodedData();
+		//WrapDataSource * ds =  (*dsLoaded)("soyabean");
+		WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");	
+	// 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
+	// 	comp_end = clock();
+	// 	cout << "Finished Loading data : " << endl;
+	// 	cout << "Time for data loading : " << comp_end - comp_start << endl;
+		AlgoUtils utils;	
+		CompressionHandler comp;
+	//	clock_t comp_start,comp_end;
+		comp_start = clock();
+	//	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	//	comp.ConvertTo(ds,BitStreamInfo::VERTICAL_STREAM_FORMAT);
+		comp_end = clock();
+		cout << "Compression Time : " << comp_end - comp_start << endl;
+		AprioriOpt opt;	
+		clock_t begin,end;
+		begin = clock();
+		TestBuildAssociations(ds,opt);
+		end = clock();
+		cout << "Time Spent : " << (end - begin) << endl;
+		cout << "No off cycles : " << opt.Cycles() << endl;
+		vector<AprioriItemset *> set2 =  opt.UniqueItems();
+		utils.PrintRules(opt.Rules());
+		//delete cConcsv;
+	// 	delete lsd;
+	// 	delete dsLoaded;
+		delete ds;
 		//TestAprioriAlgo();
-		CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
-	//CsvConnection cConcsv(path.c_str(),',','\n','""');
-	ExtractedCsvDTO *dat = cConcsv.extractData();
-	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-	ds->encodeAtrributes();
-
-	//Setting confidence, minimum support  
-	AprioriOpt apriori;
-	apriori.Confidence(0.9);
-	apriori.MinSupport(0.01);
-	apriori.NumRules(20);
-
-	//Starting to run the algorithm
-	apriori.BuildAssociations(ds);
+/*
+			CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+		//CsvConnection cConcsv(path.c_str(),',','\n','""');
+		ExtractedCsvDTO *dat = cConcsv.extractData();
+		WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+		ds->encodeAtrributes();
+	
+		//Setting confidence, minimum support  
+		AprioriOpt apriori;
+		apriori.Confidence(0.9);
+		apriori.MinSupport(0.01);
+		apriori.NumRules(20);
+	
+		//Starting to run the algorithm
+		apriori.BuildAssociations(ds);*/
+	
 }
 
 // WrapDataSource * TestAlgoUtil::LoadData(){
@@ -163,11 +166,15 @@ utils.PrintAprioriItemSets(_ap_opt.UniqueItems());
 
 void TestAprioriOpt::LoadAndPrintCSV()
 {
-	CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
-	ExtractedCsvDTO *dat = cConcsv.extractData();
-	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-	ds->encodeAtrributes();
-	Tuple * t = ds->DecodeTheTuple(1);
+	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_0.25mil_metadata","soyabean_0.25mil_data");
+		DataSources *dsLoaded = lsd->loadSavedEncodedData();
+		WrapDataSource * ds =  (*dsLoaded)("soyabean");
+
+// 	CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+// 	ExtractedCsvDTO *dat = cConcsv.extractData();
+//	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+//	ds->encodeAtrributes();
+	cout <<ds->generateCSVStringofDecodedData() << endl;
 	//cout << t->decodedStringAtts()[0]<< endl;
 }
 

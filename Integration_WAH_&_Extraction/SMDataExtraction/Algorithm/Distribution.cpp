@@ -118,6 +118,34 @@ void Distribution::Print()
 	cout << endl;
 }
 
+double Distribution::numCorrect()
+{
+	return m_perClass[maxClass()];
+}
+
+int Distribution::maxBag()
+{
+	double max;
+	int maxIndex;
+	int i;
+
+	max = 0;
+	maxIndex = -1;
+	for (i=0;i<m_perBagLength;i++)
+		if (Utils::grOrEq(m_perBag[i],max))
+		{
+			max = m_perBag[i];
+			maxIndex = i;
+		}
+		return maxIndex;
+}
+
+double Distribution::numIncorrect()
+{
+
+	return totaL-numCorrect();
+}
+
 Distribution::Distribution(DataSource * source, BitStreamInfo * _existence_map)
 {
 	m_perClassPerBag = new double * [1];
@@ -156,6 +184,35 @@ double Distribution::perClass(int classIndex)
 double Distribution::perClassPerBag(int bagIndex, int classIndex)
 {
 	return m_perClassPerBag[bagIndex][classIndex];
+}
+
+double Distribution::numIncorrect(int index)
+{
+	return m_perBag[index]- numCorrect(index);
+}
+
+int Distribution::maxClass(int index)
+{
+	double maxCount = 0;
+	int maxIndex = 0;
+	int i;
+
+	if (Utils::gr(m_perBag[index],0))
+	{
+		for (i=0;i<m_perClassLength;i++)
+			if (Utils::gr(m_perClassPerBag[index][i],maxCount))
+			{
+				maxCount = m_perClassPerBag[index][i];
+				maxIndex = i;
+			}
+			return maxIndex;
+	}else
+		return maxClass();
+}
+
+double Distribution::numCorrect(int index)
+{
+	return m_perClassPerBag[index][maxClass(index)];
 }
 
 int Distribution::maxClass()
@@ -211,6 +268,7 @@ void Distribution::add(int bagIndex,DataSource * instance, BitStreamInfo * _exis
 		m_perClassPerBag[bagIndex][classIndex] = m_perClassPerBag[bagIndex][classIndex] +count_val * weight;
 		m_perBag[bagIndex] = m_perBag[bagIndex]+ count_val * weight;
 		m_perClass[classIndex] = m_perClass[classIndex]+count_val * weight;
+		delete new_value;
 	}		
 
 	totaL = totaL + _existence_map->Count() * weight;
