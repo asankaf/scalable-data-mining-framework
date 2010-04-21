@@ -2,7 +2,7 @@
 #include "BitStreamHolder.h"
 #include "testalgoutil.h"
 #include <vector>
-using namespace Algorithm;
+//using namespace Algorithm;
 class TestHolderOperations
 {
 public:

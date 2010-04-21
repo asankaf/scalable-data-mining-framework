@@ -6,7 +6,7 @@
 #include "WrapDataSource.h"
 #include "algoutils.h"
 #include "associaterule.h"
-namespace Algorithm{
+
 	class Apriori
 	{
 	public:
@@ -70,4 +70,3 @@ namespace Algorithm{
 		vector<AssociateRule *> m_rules;
 		
 	};
-}

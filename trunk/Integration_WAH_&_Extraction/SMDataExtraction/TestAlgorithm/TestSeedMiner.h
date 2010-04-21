@@ -7,7 +7,7 @@
 
 using namespace DBConnectionInfo;
 using namespace DBQueryExecutionInfo;
-using namespace Algorithm;
+//using namespace Algorithm;
 class TestSeedMiner
 {
 public:

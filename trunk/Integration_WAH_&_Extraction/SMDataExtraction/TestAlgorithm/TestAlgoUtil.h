@@ -7,7 +7,7 @@
 #include "associaterule.h"
 
 using namespace std;
-using namespace Algorithm ;
+//using namespace Algorithm ;
 using namespace CompressedStructure::TestStructure;
 class TestAlgoUtil
 {

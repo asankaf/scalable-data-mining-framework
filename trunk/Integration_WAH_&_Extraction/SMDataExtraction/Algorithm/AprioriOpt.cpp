@@ -6,7 +6,7 @@
 
 
 using namespace std;
-using namespace Algorithm;
+
 AprioriOpt::AprioriOpt(void)
 {
 	//m_minimumSupport = 0.1;

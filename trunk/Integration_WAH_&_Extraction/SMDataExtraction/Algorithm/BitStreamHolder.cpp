@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "BitStreamHolder.h"
 
-namespace Algorithm{
+
 	BitStreamHolder::BitStreamHolder(void)
 	{
 		m_count = -1;
@@ -150,4 +150,3 @@ namespace Algorithm{
 	{
 		return Contains(_stream_no,m_bit_stream_no);
 	}
-}

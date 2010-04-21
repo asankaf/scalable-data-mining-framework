@@ -6,7 +6,7 @@
 #include "Apriori.h"
 #include "associaterule.h"
 
-using namespace Algorithm;
+//using namespace Algorithm;
 class TestApriori
 {
 public:

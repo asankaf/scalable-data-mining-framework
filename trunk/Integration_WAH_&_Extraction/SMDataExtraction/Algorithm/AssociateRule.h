@@ -1,9 +1,11 @@
+#ifndef _ASSOCIATERULE_H
+#define _ASSOCIATERULE_H
+
 #include <vector>
 #include <string>
 #include <iostream>
-#pragma once
 using namespace std;
-namespace Algorithm{
+
 	class AssociateRule
 	{
 	public:
@@ -43,4 +45,5 @@ namespace Algorithm{
 		int m_premise_count;		
 		int m_consequence_count;		
 	};
-}
+
+#endif

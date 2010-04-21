@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace std;
-namespace Algorithm{
+
 	AlgoUtils::AlgoUtils(void)
 	{
 	}
@@ -329,4 +329,3 @@ namespace Algorithm{
 
 		return left_op;
 	}
-}
