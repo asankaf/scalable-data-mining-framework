@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;"
+				AdditionalIncludeDirectories="..\Include;..\SMDataExtraction;&quot;$(BOOST_HOME)&quot;;..\WAHArray;..\dll"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;"
+				AdditionalLibraryDirectories="..\lib;..\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

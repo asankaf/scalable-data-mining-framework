@@ -49,6 +49,7 @@ BitStreamInfo* EncodedAttributeInfo::bitStreamAt(int bitStreamID){
 	return this->_vBitStreams[bitStreamID];
 }
 
+
 BitStreamInfo* EncodedAttributeInfo::operator ()(const int bitStreamID){
 	try{
 	return this->bitStreamAt(bitStreamID);

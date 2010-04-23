@@ -26,9 +26,7 @@ using namespace CsvDataExtraction;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	
-  	time_t start_1,end_1;
-
-	
+  	time_t start_1,end_1;	
 
 	//Code Snippet to load data from a saved encoded file. 
 	//Important : Files should be saved in ../Reports/ folder.
@@ -36,51 +34,51 @@ int _tmain(int argc, _TCHAR* argv[])
  	//DataSources *dsLoaded = lsd->loadSavedEncodedData();
 	
 	//CsvConnection *connection = new CsvConnection("C:\\Users\\Sumith\\Desktop\\soybeanTest.csv",',','\n');
-// 	CsvConnection *connection = new CsvConnection("E:\\University\\Level 4\\CS4200 - Data Mining\\Data Mining\\DataFiles\\dataSets\\sample.csv",',','\n','""');
-// 	vector<int> order;
-// 	order.push_back(0);
-// 	for (int i=0 ; i < 3 ; i++)
-// 	{
-// 		order.push_back(2);
-// 	}
-// 	for (int i = 0 ; i < 20 ; i++)
-// 	{
-// 		order.push_back(0);
-// 	}
-// 	for (int i = 0 ; i < 7 ;i++)
-// 	{
-// 		order.push_back(1);
-// 	}
-// 	order.push_back(0);	
-// 	order.push_back(0);	
-// 	for (int i = 0 ; i < 8 ;i++)
-// 	{
-// 		order.push_back(1);
-// 	}
-// 	order.push_back(2);
+	CsvConnection *connection = new CsvConnection("E:\\University\\Level 4\\CS4200 - Data Mining\\Data Mining\\DataFiles\\dataSets\\sample.csv",',','\n','""');
+	vector<int> order;
+	order.push_back(0);
+	for (int i=0 ; i < 3 ; i++)
+	{
+		order.push_back(2);
+	}
+	for (int i = 0 ; i < 20 ; i++)
+	{
+		order.push_back(0);
+	}
+	for (int i = 0 ; i < 7 ;i++)
+	{
+		order.push_back(1);
+	}
+	order.push_back(0);	
+	order.push_back(0);	
+	for (int i = 0 ; i < 8 ;i++)
+	{
+		order.push_back(1);
+	}
+	order.push_back(2);
 
-// 	for (int i=0 ; i <36 ;i++){
-// 		order.push_back(2);
-// 	}
-// 	order.push_back(0);
-// 	order.push_back(2);
-// 	order.push_back(1);
-// 	order.push_back(0);
-// 	order.push_back(0);
-// 	order.push_back(1);
-// 	order.push_back(2);
+	for (int i=0 ; i <36 ;i++){
+		order.push_back(2);
+	}
+	order.push_back(0);
+	order.push_back(2);
+	order.push_back(1);
+	order.push_back(0);
+	order.push_back(0);
+	order.push_back(1);
+	order.push_back(2);
 
-// 	ExtractedCsvDTO *exDTO = connection->extractData();
-// 	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"soyabeansmall_100000");
-// 	dsSBN->encodeAtrributes();
-// 	DataSources *SBDss = new DataSources();
-// 	cout<<"Finished Encoding data"<<endl;
-// 	SBDss->insertDataSources(dsSBN);
-// 
-// 	//Code Snippet to save data to an encoded file. 
-// 	//Important : Files will be saved in ../Reports/ folder.
-// 	DataSourceSerialization *dsSerailize = new DataSourceSerialization(SBDss,"soyabeansmall_200000_metadata","soyabeansmall_200000_data");
-//  	dsSerailize->serializeDataSource();
+	ExtractedCsvDTO *exDTO = connection->extractData();
+	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"soyabeansmall_100000");
+	dsSBN->encodeAtrributes();
+	DataSources *SBDss = new DataSources();
+	cout<<"Finished Encoding data"<<endl;
+	SBDss->insertDataSources(dsSBN);
+
+	//Code Snippet to save data to an encoded file. 
+	//Important : Files will be saved in ../Reports/ folder.
+	DataSourceSerialization *dsSerailize = new DataSourceSerialization(SBDss,"soyabeansmall_200000_metadata","soyabeansmall_200000_data");
+ 	dsSerailize->serializeDataSource();
 
 	
 	

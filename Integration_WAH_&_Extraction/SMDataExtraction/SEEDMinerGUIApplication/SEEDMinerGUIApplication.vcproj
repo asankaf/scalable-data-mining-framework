@@ -146,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Include;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm"
+				AdditionalIncludeDirectories="..\Include;&quot;$(BOOST_HOME)&quot;;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

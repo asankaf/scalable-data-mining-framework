@@ -7,16 +7,19 @@
 #include <iostream>
 #include "testc45nominal.h"
 #include "utils.h"
+#include "testcomputations.h"
 using namespace std;
 
 void TestAprioriAlgo();
 void TestC45Algo();
+void TestAlgoComp();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//TestC45Algo();
-	TestAprioriAlgo();
+	//TestAprioriAlgo();
 	//cout << Utils::roundDouble((double)2.4343434,3)<< endl;
+	TestAlgoComp();
 	return 0;
 }
 
@@ -31,4 +34,10 @@ void TestC45Algo()
 {
 	TestC45Nominal test_c45;
 	test_c45.TestSuite();
+}
+
+void TestAlgoComp()
+{
+	TestComputations comp;
+	comp.TestSuite();
 }

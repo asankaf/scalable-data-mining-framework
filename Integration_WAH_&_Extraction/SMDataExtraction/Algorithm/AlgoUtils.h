@@ -8,7 +8,8 @@
 #include "EncodedMultiCatAttribute.h"
 #include "WrapDataSource.h"
 #include <iostream>
-#include "..\..\..\..\..\mydocuments\visual studio 2008\projects\smdataextraction\algorithm\aprioriitemset.h"
+#include <math.h>
+#include "aprioriitemset.h"
 #include "associaterule.h"
 #include "BitStreamHolder.h"
 
@@ -38,6 +39,30 @@ using namespace std;
 		
 		/**Creates a BitStreamHolder with the given parameters*/
 		_declspec(dllexport) static BitStreamHolder * WrapWithHolder(BitStreamInfo * _stream,int _attribute_id,int _bit_map_id);
+
+		/**Computes the sum of a numeric attribute*/
+		_declspec(dllexport) static double USum(EncodedAttributeInfo * attribute);		
+
+		/**Computes the sum square of a numeric attribute*/
+		_declspec(dllexport) static double SumSquare(EncodedAttributeInfo * attribute);		
+
+		/**Returns the bitmap of results greater than the  given value*/
+		_declspec(dllexport) static BitStreamInfo * UGreaterThan(EncodedAttributeInfo * attribute, unsigned long value,int rows);		
+
+		/**Returns the bitmap of results greater than or equal to the  given value*/
+		_declspec(dllexport) static BitStreamInfo * UGreaterThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows);
+
+		/**Returns the bitmap of results less than or equal to the  given value*/
+		_declspec(dllexport) static BitStreamInfo * ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows);
+
+		/**Returns the bitmap of results less than the  given value*/
+		_declspec(dllexport) static BitStreamInfo * ULessThan(EncodedAttributeInfo * attribute, unsigned long value,int rows);
+
+		/**Returns the bitmap of results equal to the  given value*/
+		_declspec(dllexport) static BitStreamInfo * UEq(EncodedAttributeInfo * attribute, unsigned long value);
+
+		/**Generates a BitstreamInfo as same the type of attribute */
+		_declspec(dllexport) static BitStreamInfo * BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream);		
 		
 		_declspec(dllexport) static map<int,int> CreateIndexAttributeMap(map<int,vector<int>> & _index_att_map);
 		
@@ -63,6 +88,15 @@ using namespace std;
 
 		_declspec(dllexport) static void PrintRule(AssociateRule * _rule);
 			//BitStreamHolder * MergeHolder(BitStreamHolder * _holder,vector<BitStreamHolder *> _index_holder_map);
+
+	private :
+		static double SumOfInt(EncodedAttributeInfo * attribute);
+
+		/**Handles the sum square obtaining function for int values*/
+		static double SumSquareOfInt(EncodedAttributeInfo * attribute);
+
+		/**Finds value greater than the given value (the given value should be unsigned)*/
+		static BitStreamInfo * UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows);
 	};
 
 #endif

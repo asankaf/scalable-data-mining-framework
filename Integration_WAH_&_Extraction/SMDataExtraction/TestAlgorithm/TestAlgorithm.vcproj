@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\TestWAH&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\WAHArray&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Algorithm&quot;"
+				AdditionalIncludeDirectories="..\dll;$(BOOST_HOME);..\SMDataExtraction;..\Include;..\TestWAH;..\WAHArray;..\Algorithm"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="..\TestWAH\Debug\BitsetGenerator.obj ..\TestWAH\Debug\BitStreamInforTest.obj ..\TestWAH\Debug\DataSourceGenerator.obj ..\TestWAH\Debug\stdafx.obj ..\TestWAH\Debug\TestCompressionHandler.obj ..\TestWAH\Debug\TestWAHArray.obj ..\TestWAH\Debug\TimeTest.obj"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
+				AdditionalLibraryDirectories="..\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -210,6 +210,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestComputations.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestHolderOperations.cpp"
 				>
 			</File>
@@ -245,6 +249,10 @@
 			</File>
 			<File
 				RelativePath=".\TestC45Nominal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestComputations.h"
 				>
 			</File>
 			<File
