@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;;D:\MyDocuments\University\L4\Project\GSODBC;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\SMDataExtraction&quot;;D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0"
+				AdditionalIncludeDirectories="..\Include;..\dll;..\SMDataExtraction;&quot;$(BOOST_HOME)&quot;"
 				AdditionalUsingDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
@@ -65,7 +65,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="..\dll\dll\Debug\fastbit.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll\dll\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Debug&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
+				AdditionalLibraryDirectories="..\dll\dll\Debug;..\Debug;..\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

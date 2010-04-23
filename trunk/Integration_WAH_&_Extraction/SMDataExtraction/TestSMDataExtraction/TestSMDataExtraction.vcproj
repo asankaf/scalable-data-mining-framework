@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;../Include/;../SMDataExtraction/"
+				AdditionalIncludeDirectories="&quot;$(BOOST_HOME)&quot;;../Include/;../SMDataExtraction/"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

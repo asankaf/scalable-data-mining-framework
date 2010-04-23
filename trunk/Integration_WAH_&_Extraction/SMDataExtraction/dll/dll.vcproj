@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\MyDocuments\University\L4\Project\Boost\boost_1_33_0;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\dll&quot;;&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\Include&quot;"
+				AdditionalIncludeDirectories="&quot;$(BOOST_HOME)&quot;;..\dll;..\Include"
 				PreprocessorDefinitions="WITHOUT_FASTBIT_CONFIG_H;WIN32;WINVER=0x0501;_DEBUG;_WINDOWS;DLL_EXPORT;CXX_USE_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -71,7 +71,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="pthreadVC2.lib psapi.lib"
 				OutputFile="dll/Debug/fastbit.dll"
-				AdditionalLibraryDirectories="&quot;D:\MyDocuments\Visual Studio 2008\Projects\SMDataExtraction\lib&quot;"
+				AdditionalLibraryDirectories="..\lib"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				ProgramDatabaseFile="dll/Debug/fastbit.pdb"

@@ -1,7 +1,11 @@
 #include "StdAfx.h"
 #include "AlgoUtils.h"
 #include <iostream>
+#include "AttributeType.h"
+#include "WAHStructure.h"
+#include "ewah.h"
 
+using namespace CompressedStructure;
 using namespace std;
 
 	AlgoUtils::AlgoUtils(void)
@@ -95,7 +99,161 @@ using namespace std;
 		cout << "Rule String : " << _rule->Rule() << endl;
 		cout << endl;
 	}
+	BitStreamInfo * AlgoUtils::UGreaterThan( EncodedAttributeInfo * attribute, unsigned long value,int rows )
+	{
+		BitStreamInfo * info = NULL;	
+		switch(attribute->attributeType())
+		{
+		case SIGNEDINT_VAL:
+			{
+				info = UGreaterThanInt(attribute,value,rows);
+				break;
+			}
+		case DOUBLE_VAL:
+			{
+				EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+				long precission = double_att->Precision();
+					
+				info = UGreaterThanInt(attribute,value * precission , rows);
+				break;
+			}
+		case DATE_VAL:
+			{
+				assert(false);
+				
+			}
+		case MULTICAT_VAL:
+			{
+				assert(false);
+				
+			}
+		}
+		return info;
+	  }
 
+	   BitStreamInfo * AlgoUtils::BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream)
+	   {
+
+		   BitStreamInfo::vertical_bit_type type = attribute->bitStreamAt(0)->Type();		   
+			BitStreamInfo * new_stream = NULL;
+		   switch(type)
+		   {
+		   case BitStreamInfo::VERTICAL_STREAM_FORMAT :
+			   {
+				new_stream = new VBitStream();	   
+			   }
+			   break;
+		   case BitStreamInfo::WAH_COMPRESSION:
+			   {
+				   new_stream = new WAHStructure();
+			   }
+			   break;
+		   case BitStreamInfo::EWAH_COMPRESSION:
+			   {
+				   new_stream = new EWAH();
+			   }
+			   break;
+		   }
+		   new_stream->CompressWords(_bit_stream);
+		   return new_stream;
+	   }
+
+	   BitStreamInfo * AlgoUtils::UEq( EncodedAttributeInfo * attribute, unsigned long value )
+	   {
+		   switch(attribute->attributeType())
+		   {
+		   case SIGNEDINT_VAL:
+			   {
+				   dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
+				   return FindPattern(pattern_val,attribute->vBitStreams());
+			   }
+			   break;
+
+		   case DOUBLE_VAL:
+			   {
+				   EncodedDoubleAttribute * double_att = static_cast<EncodedDoubleAttribute *>(attribute);
+				   value = value * double_att->Precision();
+				   dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
+				   return FindPattern(pattern_val,attribute->vBitStreams());
+			   }
+		   }
+		   
+	   }
+
+	   BitStreamInfo * AlgoUtils::UGreaterThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows)
+	   {
+		   BitStreamInfo * result = NULL;
+		   switch(attribute->attributeType())
+		   {
+		   case SIGNEDINT_VAL:
+			   {
+					BitStreamInfo * greater_than = UGreaterThan(attribute,value,rows);
+					BitStreamInfo * equal = UEq(attribute,value);	
+					result = *(greater_than) | *(equal);					
+			   }
+			   break;
+		   case DOUBLE_VAL:
+			   {
+				   value *= static_cast<EncodedDoubleAttribute *>(attribute)->Precision();
+				   BitStreamInfo * greater_than = UGreaterThan(attribute,value,rows);
+				   BitStreamInfo * equal = UEq(attribute,value);	
+				   result = *(greater_than) | *(equal);					
+			   }
+		   }
+			return result;
+	   }
+
+	   BitStreamInfo * AlgoUtils::ULessThan(EncodedAttributeInfo * attribute, unsigned long value,int rows)	
+	   {
+		   BitStreamInfo * less_or_eq = UGreaterThanOrEq(attribute,value,rows);
+		   BitStreamInfo * prev = less_or_eq;
+		   less_or_eq = ~(*(less_or_eq));
+		   delete prev;
+		   return less_or_eq;
+	   }
+
+	   BitStreamInfo * AlgoUtils::ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows)
+	   {
+		   BitStreamInfo * info = UGreaterThan(attribute,value,rows);
+		   BitStreamInfo * prev_info = info;
+		   info = ~(*(info));
+		   delete prev_info;
+		   return info;
+	   }
+
+	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows)
+	   {
+		   dynamic_bitset<> bit_set(noOfRows);
+		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
+		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
+
+		   size_t k=0;
+		   while (value_pattern[k] == 1 && k < bit_set.size())
+			   k=k+1;
+
+		   if (k < value_pattern.size())
+			   bit_stream = attribute->bitStreamAt(k)->Clone();
+
+		   BitStreamInfo * prev_val = NULL;
+
+		   for (size_t i=k+1; i < value_pattern.size(); i++)
+		   {
+			   prev_val = bit_stream;
+			   if (value_pattern[i] == 1)
+			   {
+				   bit_stream = *(bit_stream) & *(attribute->bitStreamAt(i));
+			   }
+			   else 
+			   {
+				   bit_stream = *(bit_stream) | *(attribute->bitStreamAt(i));
+			   }
+			   delete prev_val;
+		   }
+		   return bit_stream;
+	 
+	   }
+
+	  
 	void AlgoUtils::PrintAprioriItemSets(vector<vector<AprioriItemset *>> & _items, WrapDataSource * ws)
 	{
 		for (size_t i = 0; i < _items.size() ; i++)
@@ -143,6 +301,103 @@ using namespace std;
 			
 		}
 	return result_bitstreams;
+	}
+
+	double AlgoUtils::USum(EncodedAttributeInfo * attribute)
+	{
+		switch(attribute->attributeType())
+		{
+		case SIGNEDINT_VAL:
+		{
+		return SumOfInt(attribute);
+		break;
+		}
+		case DOUBLE_VAL:
+		{
+			EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+			double double_val = SumOfInt(attribute)/double_att->Precision();
+
+			return double_val;
+			break;
+		}
+		case DATE_VAL:
+		{
+			assert(false);
+			return 0;
+		}
+		case MULTICAT_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		}
+		
+	}
+
+	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute)
+	{
+		switch(attribute->attributeType())
+		{
+		case SIGNEDINT_VAL:
+			{
+				return SumSquareOfInt(attribute);
+				break;
+			}
+		case DOUBLE_VAL:
+			{
+				EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+				long precission = double_att->Precision();
+				precission *= precission;
+				double double_val = SumSquareOfInt(attribute)/precission;
+
+				return double_val;
+				break;
+			}
+		case DATE_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		case MULTICAT_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		}
+	}
+
+	double AlgoUtils::SumSquareOfInt(EncodedAttributeInfo * attribute)
+	{
+		//for j =num_bits-1 downto 0
+		//k=j*2
+		double sum = 0;
+		int k = 0;
+		int l = 0;
+		for (int j =  attribute->NoOfVBitStreams() -1; j >=0 ; j--)
+		{
+			k = j*2;
+			sum += pow((double)2,k) * attribute->bitStreamAt(j)->Count();
+			l = j-1;
+			while (l >= 0)
+			{
+				BitStreamInfo * result = *(attribute->bitStreamAt(j)) &  *(attribute->bitStreamAt(l));
+				sum += pow((double)2,k) * result->Count();
+				delete result;
+				l=l-1;
+				k=k-1;
+			}
+		}
+			return sum;
+	}
+
+	double AlgoUtils::SumOfInt(EncodedAttributeInfo * attribute)
+	{
+		double val = 0;
+		for (int i = 0 ; i < attribute->NoOfVBitStreams(); i++)
+		{
+			val = val + attribute->bitStreamAt(i)->Count() * pow((double)2,i);
+		}
+		return val;
 	}
 
 	map<int,int> AlgoUtils::CreateIndexAttributeMap(map<int,vector<int>> & _index_att_map)
