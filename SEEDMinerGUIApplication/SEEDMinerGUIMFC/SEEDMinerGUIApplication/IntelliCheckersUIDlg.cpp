@@ -235,7 +235,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string path=evt->procedurePara;
 		string formattedOutPut="";
 
-		for (int i=0;i<1000000000;i++)
+		for (int i=0;i<100;i++)
 		{
 
 		}
