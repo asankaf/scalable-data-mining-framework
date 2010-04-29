@@ -3,6 +3,7 @@ import ActionClasses.ActionObject;
 import ActionClasses.ActionObjectParent;
 import ActionClasses.AlgorithmApriory;
 import ActionClasses.CSVDataSource;
+import ActionClasses.ClassificationDom;
 import ActionClasses.DrawingEvent;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Path;
@@ -44,7 +45,9 @@ private var EXECUTING:String="Executing Flaw";
 
 public function startUp(event:Event):void
 {
-	
+	//var dom:ClassificationDom=new ClassificationDom("outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)");
+	var dom:ClassificationDom=new ClassificationDom("petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)");
+    
 }
 
 public function cplusPluseCallBackFunction(str:String):void
@@ -94,42 +97,10 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		//func("sdaf");
 		__callBackFunction.call(fabridge,ret);
+		
+		//cplusPluseCallBackFunction("out put");
 	
-		//Alert.show("After __callBackFunction.call(fabridge,ret);");
-	
-	
-		 
-		
-		//trace(ret["procedure"]);
-		//trace(ret["procedurePara"]);
-		//trace("validate sequence");
-		
-		
-		/* for(var i:int=0;i<actionObjectSequence.length;i++)
-		{
-			if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.CSV_DATASOURCE)
-			{
-				trace("csv data source");
-			}
-			else if(ActionObject(actionObjectsOnCanvas[actionObjectSequence[i]]).type()==ActionObjectParent.TEXT_VIEWER)
-			{
-				trace("text viewer");
-				var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
-				
-				textPopUp.textViewerTextArea.text=tt.text.toString();
-		
-				//TextViewer(actionObjectsOnCanvas[actionObjectSequence[i]]).textView.textViewerTextArea.text="asdfsdfsadfs";
-				var point1:Point = new Point();
-				point1.x=0;
-	            point1.y=0;                
-	            //login.x=point1.x-50;
-	            //login.y=point1.y+90; 
-	            TEXTViewPopUp(textPopUp).x=canvasmain.width/2-textPopUp.width/2;
-	            TEXTViewPopUp(textPopUp).y=150;
-			}
-		}  */
 	}
 	
 }
