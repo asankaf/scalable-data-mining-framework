@@ -2,9 +2,9 @@ package ActionClasses
 {
 	public class NodeParent
 	{
-		public static var ROOT:int=0;
-		public static var LINK:int=0;
-		public static var CHILD:int=0;
-		public static var LEAF:int=0;
+		public static var ROOT:String="ROOT";
+		public static var LINK:String="LINK";
+		public static var CHILD:String="CHILD";
+		public static var LEAF:String="LEAF";
 	}
 }

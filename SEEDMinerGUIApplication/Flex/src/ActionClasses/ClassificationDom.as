@@ -2,7 +2,7 @@ package ActionClasses
 {
 	public class ClassificationDom
 	{
-		var root:DomNode;
+		public var root:DomNode;
 		public function ClassificationDom(treeString:String)
 		{
 			
@@ -20,7 +20,7 @@ package ActionClasses
         	for ( var i:int = 0; i < nodeString.length; i++ ) {
         		
         		var currentString:String=nodeString[i];
-          		trace(currentString);
+          		//trace(currentString);
           		
           		if(currentString.charAt(0)!="|")
           		{
@@ -33,7 +33,7 @@ package ActionClasses
           			}
           			else
           			{
-          				var child:DomNode=createChild(currentString,root);;         				
+          				var child:DomNode=createLinkNormal(currentString,root);;         				
 						currentNode=child;
           			}
           		}
@@ -134,7 +134,7 @@ package ActionClasses
 
           		}
         	}
-        	traverse(root);
+        	//traverse(root);
 		}
 		
 		
@@ -143,8 +143,8 @@ package ActionClasses
 		
 		
 		public function traverse(root:DomNode):void
-		{
-			trace(root);
+		{	
+			trace(root+" "+root.type);
 			for(var i:int = 0; i < root.child.length; i++ )
 			{
 				traverse(root.child[i]);
