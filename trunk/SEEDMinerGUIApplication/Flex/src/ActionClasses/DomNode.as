@@ -5,8 +5,8 @@ package ActionClasses
 		var name:String;
 		var child:Array;
 		var parent:DomNode;
-		var type:int;
-		public function DomNode(name:String,type:int)
+		var type:String;
+		public function DomNode(name:String,type:String)
 		{
 			this.name=name;
 			this.type=type;

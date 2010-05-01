@@ -5,6 +5,7 @@ import ActionClasses.AlgorithmApriory;
 import ActionClasses.CSVDataSource;
 import ActionClasses.ClassificationDom;
 import ActionClasses.DrawingEvent;
+import ActionClasses.GenerateGraphicalTree;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Path;
 import ActionClasses.TextViewer;
@@ -45,8 +46,12 @@ private var EXECUTING:String="Executing Flaw";
 
 public function startUp(event:Event):void
 {
-	//var dom:ClassificationDom=new ClassificationDom("outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)");
-	var dom:ClassificationDom=new ClassificationDom("petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)");
+	var dom:ClassificationDom=new ClassificationDom("outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)");
+	//var dom:ClassificationDom=new ClassificationDom("petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)");
+	
+    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
+    
+    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);
     
 }
 
@@ -97,9 +102,9 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		__callBackFunction.call(fabridge,ret);
+		//__callBackFunction.call(fabridge,ret);
 		
-		//cplusPluseCallBackFunction("out put");
+		cplusPluseCallBackFunction("out put");
 	
 	}
 	
