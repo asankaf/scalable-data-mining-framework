@@ -72,6 +72,6 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 // 	{
 // 		delete _bit_stream;
 // 	}
-	
+	delete _bit_stream;
 	return new_val;
 }

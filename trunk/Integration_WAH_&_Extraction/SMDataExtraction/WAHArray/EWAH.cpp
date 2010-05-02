@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "EWAH.h"
+#include <iostream>
+using namespace std;
 
 EWAH::EWAH(void)
 {
@@ -9,6 +11,8 @@ EWAH::EWAH(void)
 EWAH::~EWAH(void)
 {
 //	m_bitvector.clear();
+//	cout << "Inside EWAH destructor " << endl;
+	m_bitvector.~WrappedBitVector();
 }
 
 EWAH::EWAH(WrappedBitVector & _vect)
@@ -34,9 +38,17 @@ BitStreamInfo * EWAH::Clone()
 
 BitStreamInfo * EWAH::operator &(BitStreamInfo & _right_op)
 {	
+	/*
 	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
-	WrappedBitVector * result_vect = m_bitvector & right_op->m_bitvector;	
-	return new EWAH(*(result_vect));;
+		WrappedBitVector * result_vect = m_bitvector & right_op->m_bitvector;	
+		right_op = new EWAH(*(result_vect));
+		delete result_vect;
+		//result_vect->~WrappedBitVector();
+		*/
+	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
+	EWAH * result_vect = new EWAH(m_bitvector);
+	result_vect->m_bitvector &= right_op->m_bitvector;		
+	return result_vect;
 }
 
 BitStreamInfo * EWAH::operator |(BitStreamInfo & _right_op)
@@ -55,6 +67,8 @@ void EWAH::CompressWords(boost::dynamic_bitset<> &bitMap)
 {
 	WrappedBitVector vect(bitMap);
 	m_bitvector.copy(vect);	
+	vect.~WrappedBitVector();
+	
 }
 
 dynamic_bitset<> EWAH::Decompress()

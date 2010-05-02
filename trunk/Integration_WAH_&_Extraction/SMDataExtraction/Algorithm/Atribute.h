@@ -19,6 +19,10 @@ public:
 
 	void numValues(int val) { m_uniqueValNo = val; }
 
+	BitStreamInfo * bitStreamAt(size_t position);
+
+	DistinctValue * distinctValueAt(size_t post);
+
 	vector<DistinctValue *> UniqueValues() const { return m_uniqueValues; }
 
 	void UniqueValues(vector<DistinctValue *> & val) { m_uniqueValues = val; }

@@ -83,6 +83,15 @@ using namespace std;
 		return left_op;
 	}
 
+	double AlgoUtils::ANDCount(BitStreamInfo * left_op, BitStreamInfo * right_op)
+	{
+		double result = 0;
+		BitStreamInfo * inf = *(left_op) & *(right_op);
+		result = inf->Count();
+		delete inf;
+			return result;
+	}
+
 	void AlgoUtils::PrintRules(vector<AssociateRule *> & _rules)
 	{
 		for (size_t i = 0; i < _rules.size(); i++)
@@ -303,6 +312,7 @@ using namespace std;
 	return result_bitstreams;
 	}
 
+	
 	double AlgoUtils::USum(EncodedAttributeInfo * attribute)
 	{
 		switch(attribute->attributeType())

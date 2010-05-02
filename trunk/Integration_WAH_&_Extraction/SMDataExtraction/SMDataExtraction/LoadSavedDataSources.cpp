@@ -7,13 +7,22 @@ LoadSavedDataSources::LoadSavedDataSources(string metaDataFile,string dataFile)
 {
 	this->_fileName = dataFile;
 	this->_metaFile = metaDataFile;
+	this->_rowLimit = 0;
+}
+
+LoadSavedDataSources::LoadSavedDataSources(string metaDataFile,string dataFile,long limit)
+{
+	this->_fileName = dataFile;
+	this->_metaFile = metaDataFile;
+	this->_rowLimit = limit;
 }
 
 LoadSavedDataSources::~LoadSavedDataSources(void)
-{
+{	
+	
 }
 
-DataSources* LoadSavedDataSources::loadSavedEncodedData(){
+DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */){
 	DataSources *dss = new DataSources();
 	string metaDataFile = "../Reports/" + this->_metaFile + ".xml";
 	string encodedDataFile = "../Reports/" + this->_fileName + ".xml";
@@ -34,6 +43,16 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(){
 			int noAtts = atoi(dsElement->GetText());
 			dsElement = dsElement->NextSiblingElement("noOfRows");
 			int noRows = atoi(dsElement->GetText());
+			vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributes(dsName,noRows,limit);
+			if (limit)
+			{
+				if (this->_rowLimit > noRows)
+				{
+					this->_rowLimit = noRows;
+				}
+				noRows = this->_rowLimit;
+			}
+			
 			dsElement = dsElement->NextSiblingElement("DataSourceType");
 			WrapDataSource::DATASOURCE sourceType = getDataSourceType(atoi(dsElement->GetText()));
 			WrapDataSource *ds = new WrapDataSource();
@@ -43,7 +62,7 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(){
 			ds->setSourceType(sourceType);
 			dsElement = dsElement->NextSiblingElement("CodedAttributes");
 			TiXmlElement *attElement = dsElement->FirstChildElement("Attribute");
-			vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributes(dsName,noRows);
+		//	vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributes(dsName,noRows);
 			int counter = 0;
 			while (attElement && (counter <= noAtts))
 			{
@@ -164,7 +183,7 @@ ATT_TYPE LoadSavedDataSources::getAttType(int attType){
 	}
 }
 
-vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string dsName,int rowCount){
+vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string dsName,int rowCount,bool limit){
 	TiXmlDocument doc_1(this->_fileName.c_str());
 	doc_1.LoadFile();
 	TiXmlHandle handler(&doc_1);
@@ -200,14 +219,21 @@ vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string d
 								bitStr->setBitCount(rowCount);
 								bitStr->setBitStreamAllocAttID(attID);
 								bitStr->setBitStreamAllocAttName(attName);
-								string bitStream = vbs->GetText();
+								string bitStream;
+								if (limit)
+								{
+									bitStream = vbs->GetText();
+									long offset = rowCount - this->_rowLimit;
+									bitStream = bitStream.substr(offset,this->_rowLimit);
+								}
+								else bitStream = vbs->GetText();
 								dynamic_bitset<> temp(bitStream);
 								bitStr->convert(temp);
 								bitStreams[k] = bitStr;
 								vbs = vbs->NextSiblingElement("vbitstream");
 							}
-							vector<BitStreamInfo*> v_bitStreams(bitStreams , bitStreams + noVStreams);
-							intAtt->setVBitStreams(v_bitStreams);
+							vector<BitStreamInfo*> tempVB(bitStreams , bitStreams + noVStreams);
+							intAtt->setVBitStreams(tempVB);
 							attr = intAtt;
 							codedAtts.push_back(attr);
 							break;
@@ -228,14 +254,21 @@ vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string d
 								bitStr->setBitCount(rowCount);
 								bitStr->setBitStreamAllocAttID(attID);
 								bitStr->setBitStreamAllocAttName(attName);
-								string bitStream = vbs->GetText();
+								string bitStream;
+								if (limit)
+								{
+									bitStream = vbs->GetText();
+									long offset = rowCount - this->_rowLimit;
+									bitStream = bitStream.substr(offset,this->_rowLimit);
+								}
+								else bitStream = vbs->GetText();
 								dynamic_bitset<> temp(bitStream);
 								bitStr->convert(temp);
 								bitStreams[k] = bitStr;
 								vbs = vbs->NextSiblingElement("vbitstream");
 							}
-							vector<BitStreamInfo*> v_bitStreams(bitStreams , bitStreams + noVStreams);
-							doubleAtt->setVBitStreams(v_bitStreams);
+							vector<BitStreamInfo*> tempVB(bitStreams , bitStreams + noVStreams);
+							doubleAtt->setVBitStreams(tempVB);
 							attr = doubleAtt;
 							codedAtts.push_back(attr);
 							break;
@@ -256,14 +289,21 @@ vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string d
 								bitStr->setBitCount(rowCount);
 								bitStr->setBitStreamAllocAttID(attID);
 								bitStr->setBitStreamAllocAttName(attName);
-								string bitStream = vbs->GetText();
+								string bitStream;
+								if (limit)
+								{
+									bitStream = vbs->GetText();
+									long offset = rowCount - this->_rowLimit;
+									bitStream = bitStream.substr(offset,this->_rowLimit);
+								}
+								else bitStream = vbs->GetText();
 								dynamic_bitset<> temp(bitStream);
 								bitStr->convert(temp);
 								bitStreams[k] = bitStr;
 								vbs = vbs->NextSiblingElement("vbitstream");
 							}
-							vector<BitStreamInfo*> v_bitStreams(bitStreams , bitStreams + noVStreams);
-							catAtt->setVBitStreams(v_bitStreams);
+							vector<BitStreamInfo*> tempVB(bitStreams , bitStreams + noVStreams);
+							catAtt->setVBitStreams(tempVB);
 							attr = catAtt;
 							codedAtts.push_back(attr);
 							break;

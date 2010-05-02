@@ -34,9 +34,9 @@ public:
 
 	void numAttributes(int val) { m_no_of_attributes = val; }
 
-	int NumClasses() const { return m_numClasses; }
+	int numClasses() const { return m_numClasses; }
 
-	void NumClasses(int val) { m_numClasses = val; }
+	void numClasses(int val) { m_numClasses = val; }
 
 	int ClassIndex() const { return m_classIndex; }
 

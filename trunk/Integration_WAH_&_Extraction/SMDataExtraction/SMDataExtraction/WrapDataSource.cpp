@@ -54,8 +54,9 @@ WrapDataSource::~WrapDataSource(void)
 	this->_codedDoubleAtts.clear();
 	this->_codedStringAtts.clear();
 	this->_codedStringAtts.clear();
+	Commons::DeleteVector(_codedAtts.begin(),_codedAtts.end());
 	this->_codedAtts.clear();
-	//Commons::DeleteVector(_codedAtts.begin(),_codedAtts.end());
+	
 }
 
 void WrapDataSource::Init()

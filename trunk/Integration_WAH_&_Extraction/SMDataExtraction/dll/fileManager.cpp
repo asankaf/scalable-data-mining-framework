@@ -414,6 +414,7 @@ void ibis::fileManager::removeCleaner(const ibis::fileManager::cleaner* cl) {
 /// The instance function of the fileManager singleton.
 ibis::fileManager& ibis::fileManager::instance() {
     static ibis::fileManager theManager;
+//	ibis::fileManager theManager;
     return theManager;
 } // ibis::fileManager::instance
 
@@ -1574,9 +1575,12 @@ ibis::fileManager::storage::storage(size_t n)
 	<< "fileManager::storage::storage(" << n << ") ...";
     if (n < 8) n = 8; // at least 8 bytes
     if (n+ibis::fileManager::totalBytes() > ibis::fileManager::maxBytes) {
-	ibis::util::mutexLock lck(&ibis::fileManager::instance().mutex,
-				  "fileManager::storage::ctor");
-	int ierr = ibis::fileManager::instance().unload(n);
+	/*
+				  ibis::util::mutexLock lck(&ibis::fileManager::instance().mutex,
+				  				  "fileManager::storage::ctor");*/
+				  
+	//int ierr = ibis::fileManager::instance().unload(n);
+		int ierr  = 0;
 	if (ierr < 0) {
 	    LOGGER(ibis::gVerbose >= 0)
 		<< "Warning -- fileManager::storage::ctor unable to find "
@@ -1790,9 +1794,14 @@ void ibis::fileManager::storage::enlarge(size_t nelm) {
     if (oldsize == 0) { // empty storage
 	if (nelm+ibis::fileManager::totalBytes() >
 	    ibis::fileManager::maxBytes) {
-	    ibis::util::mutexLock lck(&ibis::fileManager::instance().mutex,
-				      evt.c_str());
-	    int ierr = ibis::fileManager::instance().unload(nelm);
+	    
+				     /*
+				      				       ibis::util::mutexLock lck(&ibis::fileManager::instance().mutex,
+				      				      				      				      evt.c_str());*/
+				      				      
+				      
+	   // int ierr = ibis::fileManager::instance().unload(nelm);
+					  int ierr = 0;
 	    if (ierr < 0) {
 		LOGGER(ibis::gVerbose >= 0)
 		    << "Warning -- " << evt << " is unable to find "
@@ -1868,7 +1877,7 @@ void ibis::fileManager::storage::clear() {
 	    << static_cast<void*>(m_begin);
 	if (name)
 	    oss << ", " << name;
-	oss << ")";
+	oss << ")"; 
 	evt += oss.str();
 	LOGGER(ibis::gVerbose > 10)
 	    << evt << " ...";

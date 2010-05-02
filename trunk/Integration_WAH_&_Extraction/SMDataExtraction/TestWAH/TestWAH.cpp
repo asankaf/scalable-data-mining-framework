@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <vld.h>
 #include <iostream>
 #include "WAHStructure.h"
 #include "BitsetGenerator.h"
@@ -15,8 +16,11 @@
 #include "VBitStream.h"
 #include "BitStreamInfo.h"
 #include "bitstreaminfortest.h"
+//#include "TestMemLeaks.h"
 //#include "DBConnection.h"
 #include "testcompressionhandler.h"
+#include "testmemleaks.h"
+
 
 using namespace std;
 using namespace boost;
@@ -28,15 +32,22 @@ using namespace DBQueryExecutionInfo;
 void randomBitStreamTester();
 void WAHStructureBecnhmarkAND();
 void WAHStructureBecnhmarkOR();
-
+void MemoryLeakTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-TestEWAH test;
-test.TestSuite();
+MemoryLeakTest();
 	return 0;
 }
 
+
+void MemoryLeakTest()
+{
+	
+		TestMemLeaks leaks;
+		leaks.TestSuite();
+	
+}
 
 void WAHStructureBecnhmarkAND()
 {

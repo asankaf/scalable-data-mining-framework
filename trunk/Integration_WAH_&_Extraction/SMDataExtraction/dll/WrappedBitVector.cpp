@@ -6,8 +6,17 @@ WrappedBitVector::WrappedBitVector(void)
 
 WrappedBitVector::~WrappedBitVector(void)
 {
-	m_bitvector.clear();
+	//m_bitvector.clear();
 	//delete m_bitvector;
+	//bitvector temp;
+	//m_bitvector.swap(temp);
+	m_bitvector.~bitvector();
+	//temp.~bitvector();
+}
+
+void WrappedBitVector::operator &=(WrappedBitVector & _vect)
+{
+	m_bitvector &= _vect.m_bitvector;
 }
 
 WrappedBitVector::WrappedBitVector(const WrappedBitVector &bv)
@@ -15,6 +24,7 @@ WrappedBitVector::WrappedBitVector(const WrappedBitVector &bv)
 	//m_bitvector = bitvector temp(bv.m_bitvector);
 	bitvector temp(bv.m_bitvector);
 	m_bitvector.copy(temp);
+	temp.~bitvector();
 }
 
 WrappedBitVector::WrappedBitVector(const ibis::bitvector &bv)
@@ -29,12 +39,30 @@ ostream & WrappedBitVector::print(ostream & _stream)
 
 WrappedBitVector::WrappedBitVector(dynamic_bitset<> & _bitset)
 {
-	bitvector temp;	
-	for (size_t i = 0; i < _bitset.size() ; i++)
-	{
-		temp +=  _bitset[i];
-	}
-	m_bitvector.copy(temp);
+		/*array_t<ibis::bitvector::word_t> tt(3);
+								tt[0] = 10;
+								tt[1] = 5;
+								tt[2] = 3;*/				
+			
+			bitvector temp;			
+			
+						for (size_t i = 0; i < _bitset.size() ; i++)
+												{
+													temp +=  _bitset[i];
+												}	
+						
+			
+		
+			/*
+	temp.decompress();
+		temp.write(tt);
+		for (size_t i = 0 ; i < tt.size() ; i++)
+		{
+			cout << tt[i] << " ";
+		}*/
+	
+	//cout << endl;
+	m_bitvector.copy(temp);	
 }
 
 void WrappedBitVector::decompress()
@@ -151,7 +179,9 @@ void WrappedBitVector::clear()
 WrappedBitVector * WrappedBitVector::operator &(WrappedBitVector &_right)
 {
 	bitvector * result_vect = m_bitvector & _right.m_bitvector;
+	//result_vect->operator +=
 	WrappedBitVector * result = new WrappedBitVector(*(result_vect));
+	result_vect->~bitvector();
 	return result;
 }
 

@@ -15,6 +15,17 @@ Attribute::Attribute(double _weight, std::vector<DistinctValue*> &_values)
 	m_uniqueValNo = _values.size();
 }
 
+
+DistinctValue * Attribute::distinctValueAt(size_t post)
+{
+	return m_uniqueValues[post];
+}
+
+BitStreamInfo * Attribute::bitStreamAt(size_t position)
+{
+	return this->m_uniqueValues[position]->Value();
+}
+
 void Attribute::Print()
 {
 	cout <<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;

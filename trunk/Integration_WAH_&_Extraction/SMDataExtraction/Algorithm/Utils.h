@@ -61,6 +61,21 @@ public:
 	* Gives a string having a the given number of precissions	
 	*/
 	static string toStringVal(double val,int precission);
+
+	/**
+	* Rounds a double and converts it into a formatted decimal-justified String.
+	* Trailing 0's are replaced with spaces.
+	*/
+	static string doubleToString(double value, int width,int afterDecimalPoint);
+
+	/**
+	* Rounds a double and converts it into String.
+	*/
+	static string doubleToString(double value, int afterDecimalPoint);
+
+	/** Computes the sum of the elements of an array of doubles.*/
+	static double sum(double* doubles,size_t length);
+
 };
 // const double Utils::log2 = log10((double)2);
 // const double Utils::SMALL = 1e-6;

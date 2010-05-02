@@ -595,8 +595,10 @@ namespace ibis {
 	class ioLock {
 	public:
 	    ioLock() {
-		if (0 != pthread_mutex_lock(&mutex))
-		    throw "ioLock failed to obtain a lock";
+		/*
+		    if (0 != pthread_mutex_lock(&mutex))
+		    		    throw "ioLock failed to obtain a lock";*/
+		    
 	    }
 	    ~ioLock() {
 		(void) pthread_mutex_unlock(&mutex);
@@ -643,9 +645,12 @@ namespace ibis {
 	class quietLock {
 	public:
 	    quietLock(pthread_mutex_t *lk) : lock(lk) {
-		if (0 != pthread_mutex_lock(lock))
-		    throw "quietLock failed to obtain a mutex lock";
-	    }
+		/*
+	    if (0 != pthread_mutex_lock(lock))
+	    		    throw "quietLock failed to obtain a mutex lock";
+					*/
+	    	    }
+	    
 	    ~quietLock() {
 		(void) pthread_mutex_unlock(lock);
 	    }
