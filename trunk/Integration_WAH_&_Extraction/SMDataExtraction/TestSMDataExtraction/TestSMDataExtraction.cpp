@@ -37,21 +37,25 @@ int _tmain(int argc, _TCHAR* argv[])
 	//intval2mill.csv
 	//CsvConnection *connection = new CsvConnection("C:\\Data\\doubval.csv",',','\n');
 	
-	CsvConnection *connection = new CsvConnection("C:\\Data\\soybeanTest-2mill.csv",',','\n');
+	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');
+	CsvConnection *connection = new CsvConnection("C:\\Data\\weather.nominal.csv",',','\n','""');
 	/*
 	vector<int> order;
 		order.push_back(0);	*/
 	
 	//ExtractedCsvDTO *exDTO = connection->readCSV();
 	ExtractedCsvDTO *exDTO = connection->extractData();
-	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"soyatestlarge");
+	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"weather.nominal");
 	dsSBN->encodeAtrributes();
 	//vector<EncodedAttributeInfo*> vals = dsSBN->codedAttributes();
-	DataSources *SBDss = new DataSources();
+	delete dsSBN;
+	/*
+DataSources *SBDss = new DataSources();
 	cout<<"Finished Encoding data"<<endl;
 	SBDss->insertDataSources(dsSBN);
 	DataSourceSerialization *dss =  new DataSourceSerialization(SBDss,"soyatestlarge_1000000_metadata","soyatestlarge_1000000_data");
 	dss->serializeDataSource();
+*/
 
 
 	

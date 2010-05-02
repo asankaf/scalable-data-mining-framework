@@ -174,11 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib"
+				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib ..\debug\SMCompression.lib"
 				OutputFile=".\Debug/IntelliCheckersUI.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\lib"
+				AdditionalLibraryDirectories="..\lib;..\Debug"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/IntelliCheckersUI.pdb"
 				SubSystem="2"

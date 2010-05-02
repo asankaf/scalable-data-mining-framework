@@ -5,8 +5,7 @@
 #include <iostream>
 #include "IntelliCheckersUI.h"
 #include "IntelliCheckersUIDlg.h"
-#include "WrapDataSource.h"
-#include "aprioriopt.h"
+
 
 
 #ifdef _DEBUG
@@ -235,6 +234,7 @@ void CIntelliCheckersUIDlg::InitAll()
 	m_source = NULL;
 	m_apriori = NULL;
 	m_classifier = NULL;
+	m_bayesian = NULL;
 }
 
 void CIntelliCheckersUIDlg::DeleteAll()
@@ -254,26 +254,56 @@ void CIntelliCheckersUIDlg::DeleteAll()
 		delete m_classifier;
 		m_classifier = NULL;
 	}
+	if (m_bayesian != NULL)
+	{
+		delete m_bayesian;
+		m_bayesian = NULL;
+	}
+}
+
+void CIntelliCheckersUIDlg::SavedDataLoader(string _meta_file_name,string _data_file_name,string _data_source_name,int _noOfRows)
+{
+	LoadSavedDataSources lsd(_meta_file_name,_data_file_name,_noOfRows);	
+	DataSources *dsLoaded = lsd.loadSavedEncodedData(true);
+	m_source =  (*dsLoaded)(_data_source_name);
+	delete dsLoaded;
+}
+
+void CIntelliCheckersUIDlg::Bayesian( int _class )
+{
+m_bayesian = new NaiveBayes();
+m_bayesian->buildClassifier(m_source,_class);
 }
 
 void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
 {
-	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
 	CsvConnection cConcsv(path.data(),',','\n','""');
 	ExtractedCsvDTO *dat = cConcsv.extractData();
 	m_source = new WrapDataSource(*dat,"0");	
 	m_source->encodeAtrributes();
 }
-void CIntelliCheckersUIDlg::Aprior(double confidence,double minsuport,int rules)
+void CIntelliCheckersUIDlg::Aprior( double _confidence,double _min_suport,int _rules )
 {
 	//Setting confidence, minimum support  
 	m_apriori = new AprioriOpt();
-	m_apriori->Confidence(confidence);
-	m_apriori->MinSupport(minsuport);
-	m_apriori->NumRules(rules);
+	m_apriori->Confidence(_confidence);
+	m_apriori->MinSupport(_min_suport);
+	m_apriori->NumRules(_rules);
 
 	//Starting to run the algorithm
 	m_apriori->BuildAssociations(m_source);
+}
+
+void CIntelliCheckersUIDlg::NullEliminator()
+{
+	NullPreProcessor eliminator(m_source);
+	eliminator.elimiateNullValues();
+	m_source = eliminator.NullEliminatedDatasource();
+}
+
+void CIntelliCheckersUIDlg::Convert(BitStreamInfo::vertical_bit_type _type)
+{
+	CompressionHandler::ConvertTo(m_source,_type);
 }
 
 void CIntelliCheckersUIDlg::Classifier()
@@ -283,30 +313,50 @@ void CIntelliCheckersUIDlg::Classifier()
 }
 string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 {
-	string output = "";
+	string output = "Invalid Data Source Selected";
 	switch(type)
 	{
 	case APRIORI_SOURCE:
 		{
-			vector<AssociateRule *> rules = m_apriori->Rules();
-
-			for (size_t i = 0 ; i < rules.size() ; i++)
+			if (m_apriori != NULL)
 			{
-				string rule = rules[i]->Rule();
-				output += rule +"\n";
-			}
-		}
+				vector<AssociateRule *> rules = m_apriori->Rules();
+
+				for (size_t i = 0 ; i < rules.size() ; i++)
+				{
+					string rule = rules[i]->Rule();
+					output += rule +"\n";
+				}
+			} 		}
 		break;
 	case CLASSIFIER_SOURCE:
 		{
-			output = m_classifier->toString();
+			if (m_classifier != NULL)
+			{
+				output = m_classifier->toString();
+			}
+
 		}
 		break;
 	case WRAPPED_SOURCE :
 		{
-			output = m_source->generateCSVStringofDecodedData(noOfRows);
-		}
+			if (m_source != NULL)
+			{
+				output = m_source->generateCSVStringofDecodedData(noOfRows);
+			}
 
+
+		}
+		break;
+	case BAYESIAN_SOURCE:
+		{
+			if (m_bayesian != NULL)
+			{
+				output = m_bayesian->toString();
+			}
+
+		}
+		break;
 	}
 	return output;
 }
@@ -324,7 +374,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//implement the procedure for get data from csv file(path is the location of the file) 
 		//and make a string to out put data in the text viewer 
 		//assign it to "formattedOutPut" here
-		CSV(path,1000);
+		CSV(path,1000);		
+		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
+		//NullEliminator();
 		formattedOutPut = Text(WRAPPED_SOURCE,100);
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
@@ -332,15 +384,15 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	else if (procedure=="csv->apriory->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";
-		//path = "C:\\Data\\soyaTest.csv";
-		//weather.nominal.csv
-		//path = "C:\\Data\\weather.nominal.csv";
+		string formattedOutPut="";		
 		CSV(path,1000);
+		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
 		Aprior(0.9,0.01,10);		
+		//Bayesian(m_source->codedAttributes().size()-1);
 		//Classifier();
 		//formattedOutPut = Text(CLASSIFIER_SOURCE,0);
 		formattedOutPut = Text(APRIORI_SOURCE,0);
+		//formattedOutPut = Text(BAYESIAN_SOURCE,0);
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 
