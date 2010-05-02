@@ -37,9 +37,14 @@ using namespace std;
 		/**Finds the corresponding bitmaps of distinct values and return as a vector*/
 		_declspec(dllexport) static vector<BitStreamInfo *> FindDistinctValues(EncodedMultiCatAttribute * _attribute);
 		
+		/**Performs the AND operation and return the count*/
+		_declspec(dllexport) static double ANDCount(BitStreamInfo * left_op, BitStreamInfo * right_op);
+
 		/**Creates a BitStreamHolder with the given parameters*/
 		_declspec(dllexport) static BitStreamHolder * WrapWithHolder(BitStreamInfo * _stream,int _attribute_id,int _bit_map_id);
 
+
+		
 		/**Computes the sum of a numeric attribute*/
 		_declspec(dllexport) static double USum(EncodedAttributeInfo * attribute);		
 

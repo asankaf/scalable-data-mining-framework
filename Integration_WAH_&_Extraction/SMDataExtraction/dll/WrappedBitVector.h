@@ -17,6 +17,7 @@ public:
 	_declspec(dllexport) WrappedBitVector(const bitvector &bv);
 	_declspec(dllexport) WrappedBitVector(dynamic_bitset<> & _bitset);
 	_declspec(dllexport) ~WrappedBitVector(void);
+	_declspec(dllexport) void operator &=(WrappedBitVector & _vect);
 	_declspec(dllexport) void adjustSize(unsigned long nv, unsigned long nt);
 	_declspec(dllexport) void set(int val, unsigned long n);
 	_declspec(dllexport) void setBit(const unsigned long i, int val);

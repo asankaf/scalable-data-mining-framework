@@ -25,7 +25,7 @@ void TestC45Nominal::TestSuite()
 // 	ExtractedCsvDTO *dat = cConcsv.extractData();
 // 	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
 //soyabean_0.25mil_metadata.xml
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_100000_metadata","soyabeansmall_100000_data");
+	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
 //	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_0.5mil_metadata","soyabean_0.5mil_data");
 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
 	WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");
@@ -39,7 +39,7 @@ void TestC45Nominal::TestSuite()
 	
 	C45TreeNominal tree;
 	CompressionHandler comp;
-//	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 	tree.buildClassifier(ds);
 	
 }

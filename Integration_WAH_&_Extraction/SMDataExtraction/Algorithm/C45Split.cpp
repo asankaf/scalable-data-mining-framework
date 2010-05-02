@@ -61,7 +61,7 @@ void C45Split::handleEnumeratedAttribute(DataSource * trainInstances, BitStreamI
 
 	// Check if number of classes means all the classes in the original source or
 	// the number of classes which have a count greater than 0;
-	m_distribution = new Distribution(m_complexityIndex,trainInstances->NumClasses());
+	m_distribution = new Distribution(m_complexityIndex,trainInstances->numClasses());
 
 	createExistenceMaps(trainInstances,_existence_map);
 	// Only Instances with known values are relevant.

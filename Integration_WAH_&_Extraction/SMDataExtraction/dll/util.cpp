@@ -1555,7 +1555,7 @@ void ibis::util::getLocalTime(char *str) {
     time_t sec = time(0); // current time in seconds
 #if defined(_MSC_VER) && defined(_WIN32)
     ibis::util::quietLock lock(&ibis_util_timeLock);
-    strcpy(str, asctime(localtime(&sec)));
+  //  strcpy(str, asctime(localtime(&sec)));
     str[24] = 0;
 #else
     struct tm stm;

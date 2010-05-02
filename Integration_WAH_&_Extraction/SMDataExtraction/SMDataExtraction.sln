@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMCompression", "WAHArray\W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithm", "Algorithm\Algorithm.vcproj", "{F620090B-9EA5-403B-9E7F-8B2161D30968}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSMCompression", "TestWAH\TestWAH.vcproj", "{046A723D-5CFB-452E-A05A-EC8DEAD96933}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestAlgorithm", "TestAlgorithm\TestAlgorithm.vcproj", "{D604D30C-D929-4E83-8B3D-2570633EA89F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll", "dll\dll.vcproj", "{1BF44EB1-E02B-4F85-BC0F-33AAC503BA13}"
@@ -20,6 +18,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlexVCBridgeStaticLib", "FlexVCBridgeStaticLib\FlexVCBridgeStaticLib.vcproj", "{51CFA071-AE41-44EF-B94C-8AD67A02A50D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SeedMinerGUI", "SEEDMinerGUIApplication\SEEDMinerGUIApplication.vcproj", "{BEB96C13-8383-4921-97B2-1DDEB06727D8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSMCompression", "TestWAH\TestWAH.vcproj", "{046A723D-5CFB-452E-A05A-EC8DEAD96933}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,6 @@ Global
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Debug|Win32.Build.0 = Debug|Win32
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Release|Win32.ActiveCfg = Release|Win32
 		{F620090B-9EA5-403B-9E7F-8B2161D30968}.Release|Win32.Build.0 = Release|Win32
-		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.ActiveCfg = Debug|Win32
-		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.Build.0 = Debug|Win32
-		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.ActiveCfg = Release|Win32
-		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.Build.0 = Release|Win32
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Debug|Win32.Build.0 = Debug|Win32
 		{D604D30C-D929-4E83-8B3D-2570633EA89F}.Release|Win32.ActiveCfg = Release|Win32
@@ -67,6 +63,10 @@ Global
 		{BEB96C13-8383-4921-97B2-1DDEB06727D8}.Debug|Win32.Build.0 = Debug|Win32
 		{BEB96C13-8383-4921-97B2-1DDEB06727D8}.Release|Win32.ActiveCfg = Release|Win32
 		{BEB96C13-8383-4921-97B2-1DDEB06727D8}.Release|Win32.Build.0 = Release|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.ActiveCfg = Debug|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Debug|Win32.Build.0 = Debug|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.ActiveCfg = Release|Win32
+		{046A723D-5CFB-452E-A05A-EC8DEAD96933}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

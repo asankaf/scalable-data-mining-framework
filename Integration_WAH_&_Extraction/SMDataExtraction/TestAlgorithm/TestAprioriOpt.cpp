@@ -25,12 +25,14 @@ void TestAprioriOpt::TestSuite()
 	//
 	//CsvConnection cConcsv("C:\\soybeanTest-1mill.csv",',','\n','""');	
 	//CsvConnection cConcsv("C:\\Data\\soyaTestsort.csv",',','\n','""');	
-	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
-	//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
 	/*
-		ExtractedCsvDTO *dat = cConcsv.extractData();
-				WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-				ds->encodeAtrributes();*/
+				CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+					//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
+					
+						ExtractedCsvDTO *dat = cConcsv.extractData();
+								WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+								ds->encodeAtrributes();*/
+				
 		
 	//cout << "Loaded Data" << endl;
 	//cout << "No of Records : "<< dat->RowCount() << endl;
@@ -41,20 +43,19 @@ void TestAprioriOpt::TestSuite()
 	clock_t comp_start,comp_end;
 	cout << "Starting to load data : " << endl;
 	comp_start = clock();
-	// 	LoadSavedDataSources *lsd = new LoadSavedDataSources("test dataset-10000_metadata","test dataset-10000_data");
-		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
-		DataSources *dsLoaded = lsd->loadSavedEncodedData();
-		//WrapDataSource * ds =  (*dsLoaded)("soyabean");
-		WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");	
-	// 	WrapDataSource * ds =  (*dsLoaded)("test_Data_Large");
-	// 	comp_end = clock();
-	// 	cout << "Finished Loading data : " << endl;
-	// 	cout << "Time for data loading : " << comp_end - comp_start << endl;
+	
+	
+		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyaTestlarge_500000_metadata","soyaTestlarge_500000_data");
+			DataSources *dsLoaded = lsd->loadSavedEncodedData();
+				WrapDataSource * ds =  (*dsLoaded)("soyaTestlarge");	
+		
+	
 		AlgoUtils utils;	
+		cout << "Finished Loading Data "<< endl;
 		CompressionHandler comp;
 	//	clock_t comp_start,comp_end;
 		comp_start = clock();
-	//	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+		comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 	//	comp.ConvertTo(ds,BitStreamInfo::VERTICAL_STREAM_FORMAT);
 		comp_end = clock();
 		cout << "Compression Time : " << comp_end - comp_start << endl;
@@ -70,7 +71,7 @@ void TestAprioriOpt::TestSuite()
 		//delete cConcsv;
 	// 	delete lsd;
 	// 	delete dsLoaded;
-		delete ds;
+	//	delete ds;
 		//TestAprioriAlgo();
 /*
 			CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	

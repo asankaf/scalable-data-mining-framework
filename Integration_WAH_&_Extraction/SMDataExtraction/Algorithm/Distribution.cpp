@@ -153,13 +153,13 @@ Distribution::Distribution(DataSource * source, BitStreamInfo * _existence_map)
 	m_perBagLength = 1;
 	m_perBag[0] = 0;
 	totaL = 0;
-	m_perClassLength = source->NumClasses();
+	m_perClassLength = source->numClasses();
 	m_perClass = new double[m_perClassLength];
 // 	for (size_t i = 0 ; i < m_perClassLength ; i++)
 // 	{
 // 		m_perClass[i] = 0;
 // 	}
-	m_perClassPerBag[0] = new double[source->NumClasses()];
+	m_perClassPerBag[0] = new double[source->numClasses()];
 // 	for (size_t i = 0 ; i < m_perBagLength ; i++)
 // 	{
 // 		for (size_t j = 0 ; j < m_perClassLength ; j++)

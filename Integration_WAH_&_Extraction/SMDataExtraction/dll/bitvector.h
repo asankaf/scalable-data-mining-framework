@@ -1143,7 +1143,9 @@ inline void ibis::bitvector::turnOnRawBit(const word_t ind) {
 } // ibis::bitvector::turnOnRawBit
 
 inline void ibis::bitvector::clear() {
-    nbits = 0; nset = 0; active.reset(); m_vec.clear();
+    nbits = 0; nset = 0; active.reset(); 
+	m_vec.clear();
+	//m_vec.~array_t();
     LOGGER(ibis::gVerbose > 9)
 	<< "bitvector (" << static_cast<void*>(this)
 	<< ") clear the content of bitvector with m_vec at "

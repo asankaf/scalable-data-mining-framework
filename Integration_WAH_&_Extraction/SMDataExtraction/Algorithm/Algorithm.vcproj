@@ -324,6 +324,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="NaiveBayes"
+				>
+				<File
+					RelativePath=".\NaiveBayes.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -344,6 +352,10 @@
 			</File>
 			<File
 				RelativePath=".\Init.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NaiveBayes.h"
 				>
 			</File>
 			<File
@@ -461,6 +473,10 @@
 					RelativePath=".\DistinctValue.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="NaiveBayes"
+				>
 			</Filter>
 		</Filter>
 		<Filter

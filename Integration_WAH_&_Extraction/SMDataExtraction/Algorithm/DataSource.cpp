@@ -14,6 +14,9 @@ DataSource::DataSource(WrapDataSource * _wrapped,int _class_index)
 	if (_class_index >= _wrapped->noOfAttributes() || _class_index < 0)
 	{
 		this->m_classIndex = _wrapped->noOfAttributes() -1;
+	}else
+	{
+		m_classIndex = _class_index;
 	}
 	m_no_of_attributes = m_attributes.size();
 	this->m_numClasses = m_attributes[m_classIndex]->UniqueValues().size();

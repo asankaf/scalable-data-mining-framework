@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="..\TestWAH\Debug\BitsetGenerator.obj ..\TestWAH\Debug\BitStreamInforTest.obj ..\TestWAH\Debug\DataSourceGenerator.obj ..\TestWAH\Debug\stdafx.obj ..\TestWAH\Debug\TestCompressionHandler.obj ..\TestWAH\Debug\TestWAHArray.obj ..\TestWAH\Debug\TimeTest.obj"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\lib"
+				AdditionalLibraryDirectories="..\lib;..\dll\dll\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -218,6 +218,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TestNaiveBayes.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TestSeedMiner.cpp"
 				>
 			</File>
@@ -257,6 +261,10 @@
 			</File>
 			<File
 				RelativePath=".\TestHolderOperations.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestNaiveBayes.h"
 				>
 			</File>
 			<File

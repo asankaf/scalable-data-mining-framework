@@ -102,7 +102,7 @@ ExtractedCsvDTO* CSVConnectionInfo::CsvConnection::readCSV(vector<int> readOrder
 	vector<long> nullRowIDs;
 	unsigned long orderSize = readOrder.size();
 	//	get line from file
-	while(!this->_inputfile->eof() && rowCount < 200000){
+	while(!this->_inputfile->eof()){
 		if (!isnamesset)
 		{
 			//first Line of the Data File is considered as Names of the attributes.

@@ -155,10 +155,10 @@ public:
 	buffer<T>& operator=(const buffer<T>&);
     }; // buffer
 
-protected:
+public:
     fileManager();  // get its input parameter from ibis::gParameters()
     ~fileManager(); // it exists forever
-
+protected:
     void recordFile(roFile*); // record a new storage
 
     // parameters for controlling the resource usage
