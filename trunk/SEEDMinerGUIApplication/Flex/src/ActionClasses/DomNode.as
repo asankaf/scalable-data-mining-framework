@@ -6,6 +6,10 @@ package ActionClasses
 		var child:Array;
 		var parent:DomNode;
 		var type:String;
+		
+		var x:int=0;
+		var y:int=0;
+		
 		public function DomNode(name:String,type:String)
 		{
 			this.name=name;

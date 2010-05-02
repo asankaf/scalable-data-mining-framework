@@ -1,5 +1,6 @@
 package ActionClasses
 {
+	import ActionClasses.VisualTreeElements.LeafElement;
 	import ActionClasses.VisualTreeElements.RootElement;
 	
 	import mx.containers.Canvas;
@@ -12,54 +13,94 @@ package ActionClasses
 		var maxChildrenInALevel:int=0;
 		var childrenInLevel:Array;
 		var tempLevel:int=0;
-		var levelDistance:int=50;
+		var levelDistance:int=100;
+		var nodeDistance:int=150;
 		
 		public function GenerateGraphicalTree(dom:ClassificationDom,treePopUp:TreeViewPopUp)
 		{
 			treePopUpCanvas=treePopUp.drawingCanvas;
+			treePopUpCanvas.width=1000;
+			treePopUpCanvas.height=800;
 			
+			dom.root.x=300;
+			dom.root.y=50;
+			calculateNodeCoordinates(dom.root);
 			
-			tempLevel=0;
-			calculateTreeLevels(dom.root);
-			treePopUpCanvas.height=treeLevels*levelDistance+30;
+			//tempLevel=0;
+			//calculateTreeLevels(dom.root);
+			//treePopUpCanvas.height=treeLevels*levelDistance+30;
 
 			
-			tempLevel=0;
-			childrenInLevel=new Array(treeLevels+1);
-			initializeArray(childrenInLevel);
-			calculateChildrenInALevel(dom.root);
-			maxChildrenInALevel=childrenInLevel.sort(Array.DESCENDING)[0];
-			treePopUpCanvas.width=maxChildrenInALevel*150;
+			//tempLevel=0;
+			//childrenInLevel=new Array(treeLevels+1);
+			//initializeArray(childrenInLevel);
+			//calculateChildrenInALevel(dom.root);
+			//maxChildrenInALevel=childrenInLevel.sort(Array.DESCENDING)[0];
+			//treePopUpCanvas.width=maxChildrenInALevel*150;
 			
-			middle=treePopUpCanvas.width/2;	
+			//middle=treePopUpCanvas.width/2;	
 			
 			tempLevel=0;
 			traverseAndDraw(dom.root);
 
 		}
 		
+		public function calculateNodeCoordinates(root:DomNode):void
+		{
+
+			if(root.type!=NodeParent.LINK)
+			{
+				trace(root);
+				trace(root.x+" "+root.y);
+				var start:int=root.x-((root.child.length-1)/2)*nodeDistance
+				//trace(start);
+				for(var j:int=0;j<root.child.length;j++)
+				{
+					var childLink:DomNode=DomNode(root.child[j]);
+					var childNode:DomNode=childLink.child[0];
+					childNode.y=root.y+1*levelDistance;				
+					childNode.x=start+j*nodeDistance;
+				}
+			} 
+			
+			for(var i:int=0;i<root.child.length;i++)
+			{
+				var child:DomNode=root.child[i];
+				calculateNodeCoordinates(child);
+			}
+			
+			
+		}
+		
 		public function traverseAndDraw(root:DomNode):void
 		{
-			tempLevel++;
-			drawNode(root,tempLevel-1);
-			
+			if(root.type!=NodeParent.LINK)
+			{
+				drawNode(root);
+			}
+
 			for(var i:int=0;i<root.child.length;i++)
 			{
 				var child:DomNode=root.child[i];
 				traverseAndDraw(child);
 			}
-			
-			tempLevel--;
 		}
 		
-		public function drawNode(root:DomNode,level:int):void
+		public function drawNode(root:DomNode):void
 		{
 			if(root.type==NodeParent.ROOT||root.type==NodeParent.CHILD)
 			{
-				var node:RootElement=new RootElement(root.name);
-				node.x=calculateX(root,node);
-				node.y=calculateY(level);
-				treePopUpCanvas.rawChildren.addChild(node);
+				var nodeRoot:RootElement=new RootElement(root.name);
+				nodeRoot.x=root.x;
+				nodeRoot.y=root.y;
+				treePopUpCanvas.rawChildren.addChild(nodeRoot);
+			}
+			else if(root.type==NodeParent.LEAF)
+			{
+				var nodeLeaf:LeafElement=new LeafElement(root.name);
+				nodeLeaf.x=root.x;
+				nodeLeaf.y=root.y;
+				treePopUpCanvas.rawChildren.addChild(nodeLeaf);
 			}
 		}
 		
