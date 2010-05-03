@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<DataSources noOfdataSources="1">
+    <!-- Meta Information in Data Sources -->
+    <DataSource Name="intVal_100000">
+        <noOfAttributes>1</noOfAttributes>
+        <noOfRows>100615</noOfRows>
+        <DataSourceType>1</DataSourceType>
+        <CodedAttributes>
+            <Attribute ID="0" Name="0" Type="0">
+                <noOfVBitStreams>2</noOfVBitStreams>
+                <maxval>4</maxval>
+                <minval>0</minval>
+                <SignMapVal>0</SignMapVal>
+            </Attribute>            
+        </CodedAttributes>
+    </DataSource>
+</DataSources>
