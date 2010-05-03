@@ -25,9 +25,9 @@ void MemleaksTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//TestC45Algo();
-	TestAprioriAlgo();
+	//TestAprioriAlgo();
 	//cout << Utils::roundDouble((double)2.4343434,3)<< endl;
-	//TestAlgoComp();
+	TestAlgoComp();
 	
 	/*
 	vector<int> vv;

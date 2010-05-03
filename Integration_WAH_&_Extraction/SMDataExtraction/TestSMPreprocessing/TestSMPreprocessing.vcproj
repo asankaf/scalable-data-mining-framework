@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="SMPreprocessing"
-	ProjectGUID="{69B4491B-7E09-4C6A-BE5C-40E23C417B04}"
-	RootNamespace="SMPreprocessing"
+	Name="TestSMPreprocessing"
+	ProjectGUID="{7295FD9A-532A-4F79-992C-B2C3447E1B2E}"
+	RootNamespace="TestSMPreprocessing"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,12 +41,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SMDataExtraction;..\Algorithm;..\Include;&quot;$(BOOST_HOME)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SMPREPROCESSING_EXPORTS"
+				AdditionalIncludeDirectories="..\SMDataExtraction;..\Algorithm;..\Include;&quot;$(BOOST_HOME)&quot;;..\SMPreprocessing"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -62,9 +62,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\lib"
+				AdditionalLibraryDirectories="..\lib;..\Debug"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -93,7 +93,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -116,10 +116,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SMPREPROCESSING_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -136,7 +136,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -166,16 +166,20 @@
 	</Configurations>
 	<References>
 		<ProjectReference
-			ReferencedProjectIdentifier="{50979506-563B-4551-BD67-ADE0C594AC71}"
-			RelativePathToProject=".\SMDataExtraction\SMDataExtraction.vcproj"
+			ReferencedProjectIdentifier="{F620090B-9EA5-403B-9E7F-8B2161D30968}"
+			RelativePathToProject=".\Algorithm\Algorithm.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{D9B5D438-1911-4782-9BCD-9990879FCB10}"
 			RelativePathToProject=".\WAHArray\WAHArray.vcproj"
 		/>
 		<ProjectReference
-			ReferencedProjectIdentifier="{F620090B-9EA5-403B-9E7F-8B2161D30968}"
-			RelativePathToProject=".\Algorithm\Algorithm.vcproj"
+			ReferencedProjectIdentifier="{50979506-563B-4551-BD67-ADE0C594AC71}"
+			RelativePathToProject=".\SMDataExtraction\SMDataExtraction.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{69B4491B-7E09-4C6A-BE5C-40E23C417B04}"
+			RelativePathToProject=".\SMPreprocessing\SMPreprocessing.vcproj"
 		/>
 	</References>
 	<Files>
@@ -185,66 +189,16 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DataPreProcessor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DiscretizeData.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dllmain.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-						CompileAsManaged="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-						CompileAsManaged="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\NullPreProcessor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RangeSplitter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SMPreprocessing.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\TestRangeSplitter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TestSMPreprocessing.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -253,27 +207,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\DataPreProcessor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DiscretizeData.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NullPreProcessor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RangeSplitter.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TestRangeSplitter.h"
 				>
 			</File>
 		</Filter>

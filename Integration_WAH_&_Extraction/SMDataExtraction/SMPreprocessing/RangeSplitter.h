@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include "EncodedMultiCatAttribute.h"
+#include "BitStreamInfo.h"
+#include "AlgoUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //Implementation of the Range Splitter of the Numerical Attributes
@@ -28,6 +30,9 @@ public:
 	__declspec(dllexport) vector<double> RangeVals() const { return _rangeVals; }
 	__declspec(dllexport) void RangeVals(vector<double> val) { _rangeVals = val; }
 	__declspec(dllexport) ~RangeSplitter(void);
+
+	/**Example illustrating how range queries are used for range splitting*/
+	__declspec(dllexport) vector<BitStreamInfo *> Splitter(EncodedAttributeInfo * _attribute,int _rows);
 
 	boost::dynamic_bitset<> convertInt(int val,int no_v_bitstreams);
 	vector<string> prepareUniqueValList(bool isDoubleAtt=false,long precision = 0);

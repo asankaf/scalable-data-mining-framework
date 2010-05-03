@@ -52,7 +52,7 @@ using namespace std;
 		_declspec(dllexport) static double SumSquare(EncodedAttributeInfo * attribute);		
 
 		/**Returns the bitmap of results greater than the  given value*/
-		_declspec(dllexport) static BitStreamInfo * UGreaterThan(EncodedAttributeInfo * attribute, unsigned long value,int rows);		
+		_declspec(dllexport) static BitStreamInfo * UGreaterThan(EncodedAttributeInfo * attribute, double value,int rows);		
 
 		/**Returns the bitmap of results greater than or equal to the  given value*/
 		_declspec(dllexport) static BitStreamInfo * UGreaterThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows);
@@ -61,10 +61,10 @@ using namespace std;
 		_declspec(dllexport) static BitStreamInfo * ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows);
 
 		/**Returns the bitmap of results less than the  given value*/
-		_declspec(dllexport) static BitStreamInfo * ULessThan(EncodedAttributeInfo * attribute, unsigned long value,int rows);
+		_declspec(dllexport) static BitStreamInfo * ULessThan(EncodedAttributeInfo * attribute, double value,int rows);
 
 		/**Returns the bitmap of results equal to the  given value*/
-		_declspec(dllexport) static BitStreamInfo * UEq(EncodedAttributeInfo * attribute, unsigned long value);
+		_declspec(dllexport) static BitStreamInfo * UEq(EncodedAttributeInfo * attribute, double value, int rows);
 
 		/**Generates a BitstreamInfo as same the type of attribute */
 		_declspec(dllexport) static BitStreamInfo * BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream);		
@@ -102,6 +102,16 @@ using namespace std;
 
 		/**Finds value greater than the given value (the given value should be unsigned)*/
 		static BitStreamInfo * UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows);
+
+		/**Finds value greater than the given value (the given value should be unsigned)*/
+		static BitStreamInfo * UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long _max_value);
+
+		/**Finds value less than the given value (the given value should be unsigned)
+		@param attribute Numeric Attribute
+		@param input_value upper limit of the range
+		@param noOfRows No of rows in the attribute
+		*/
+		static BitStreamInfo * ULessThanInt(EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long max_value);
 	};
 
 #endif

@@ -162,3 +162,36 @@ boost::dynamic_bitset<> RangeSplitter::convertInt(int val,int no_v_bitstreams){
 	boost::dynamic_bitset<> bitConverted(no_v_bitstreams,valAssign);
 	return bitConverted;
 }
+vector<BitStreamInfo *> RangeSplitter::Splitter(EncodedAttributeInfo * _attribute,int _rows)
+{
+	//Suppose we are splitting to following three ranges [0,1],(1,2],(2,3]
+	vector<double> vect(3);
+	vect[0] = 0;
+	vect[1] = 1;	
+	vect[2] = 2;
+
+	vector<BitStreamInfo *> unique_vals(3);
+	BitStreamInfo * temp = NULL;
+
+	//Use UGreaterThan as much as possible. It is the most efficient, and is the base for all others.
+	unique_vals[2] = AlgoUtils::UGreaterThan(_attribute,vect[2],_rows);
+
+	//Negation operator (~) creates a new BitStreamInfo object, which has to be deleted afterwards.
+	//Result gives all values <= 2
+	temp = ~(*unique_vals[2]);
+
+	//Gives values > 1 && values <= 2
+	unique_vals[1] = *(AlgoUtils::UGreaterThan(_attribute,vect[1],_rows)) & *(temp);
+
+	delete temp;
+
+	//temp = ~(*unique_vals[1]);
+
+	//Gives values <= 1
+	unique_vals[0] = (AlgoUtils::ULessThanOrEq(_attribute,vect[1],_rows));
+
+	//delete temp;
+	return unique_vals;
+		
+}
+

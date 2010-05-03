@@ -16,8 +16,14 @@ public:
 	void IntAttributeSum();
 	void DoubleAttributeSum();
 	void TestRangeQueryInt( WrapDataSource * source );
+	int VectorGreaterThan(vector<double> & _vect,int _lower_bound);
+	int VectorGreaterThanOrEq(vector<double> & _vect,int _lower_bound);
+	int VectorLessThanOrEq(vector<double> & _vect,int _upper_bound);
+	void TestRangeQueryAccuracy(WrapDataSource * _source);
+	void RangeQueryAccuracy();
 	void CreateDoubleArray(vector<double> & vect,EncodedAttributeInfo * attr);
 	WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename);
+	int VectorLessThan(vector<double> & _vect,int _upper_bound);
 	double VectorSum(vector<int> & vect);
 	double VectorSum(vector<double> & vect);
 	void CreateIntArray(vector<int> & vect,EncodedAttributeInfo * attr);
