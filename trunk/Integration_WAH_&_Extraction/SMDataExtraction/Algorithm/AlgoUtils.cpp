@@ -108,22 +108,24 @@ using namespace std;
 		cout << "Rule String : " << _rule->Rule() << endl;
 		cout << endl;
 	}
-	BitStreamInfo * AlgoUtils::UGreaterThan( EncodedAttributeInfo * attribute, unsigned long value,int rows )
+
+	BitStreamInfo * AlgoUtils::UGreaterThan( EncodedAttributeInfo * attribute, double value,int rows )
 	{
 		BitStreamInfo * info = NULL;	
 		switch(attribute->attributeType())
 		{
 		case SIGNEDINT_VAL:
 			{
-				info = UGreaterThanInt(attribute,value,rows);
+				unsigned long max_val = static_cast<EncodedIntAttribute *>(attribute)->maxAttVal();
+				info = UGreaterThanInt(attribute,(unsigned long long)value,rows,max_val);
 				break;
 			}
 		case DOUBLE_VAL:
 			{
 				EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
 				long precission = double_att->Precision();
-					
-				info = UGreaterThanInt(attribute,value * precission , rows);
+				unsigned long long max_value = (unsigned long long)double_att->maxAttVal() * precission;
+				info = UGreaterThanInt(attribute,value * precission , rows,max_value);
 				break;
 			}
 		case DATE_VAL:
@@ -167,12 +169,19 @@ using namespace std;
 		   return new_stream;
 	   }
 
-	   BitStreamInfo * AlgoUtils::UEq( EncodedAttributeInfo * attribute, unsigned long value )
+	   BitStreamInfo * AlgoUtils::UEq( EncodedAttributeInfo * attribute, double value, int rows )
 	   {
 		   switch(attribute->attributeType())
 		   {
 		   case SIGNEDINT_VAL:
 			   {
+				unsigned long max_value = static_cast<EncodedIntAttribute *>(attribute)->maxAttVal();
+				   if (value > max_value)
+				   {
+						dynamic_bitset<> result_map(rows);
+					   BitStreamInfo * result = BitStreamGenerator(attribute,result_map);
+					   return result;
+				   }
 				   dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
 				   return FindPattern(pattern_val,attribute->vBitStreams());
 			   }
@@ -180,7 +189,16 @@ using namespace std;
 
 		   case DOUBLE_VAL:
 			   {
-				   EncodedDoubleAttribute * double_att = static_cast<EncodedDoubleAttribute *>(attribute);
+
+				   EncodedDoubleAttribute * double_att = static_cast<EncodedDoubleAttribute *>(attribute);				   
+				   unsigned long long max_value = static_cast<EncodedDoubleAttribute *>(attribute)->maxAttVal();
+
+				   if ((unsigned long long)value > max_value)
+				   {
+					   dynamic_bitset<> result_map(rows);
+					   BitStreamInfo * result = BitStreamGenerator(attribute,result_map);
+					   return result;
+				   }
 				   value = value * double_att->Precision();
 				   dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
 				   return FindPattern(pattern_val,attribute->vBitStreams());
@@ -197,7 +215,7 @@ using namespace std;
 		   case SIGNEDINT_VAL:
 			   {
 					BitStreamInfo * greater_than = UGreaterThan(attribute,value,rows);
-					BitStreamInfo * equal = UEq(attribute,value);	
+					BitStreamInfo * equal = UEq(attribute,value,rows);	
 					result = *(greater_than) | *(equal);					
 			   }
 			   break;
@@ -205,20 +223,54 @@ using namespace std;
 			   {
 				   value *= static_cast<EncodedDoubleAttribute *>(attribute)->Precision();
 				   BitStreamInfo * greater_than = UGreaterThan(attribute,value,rows);
-				   BitStreamInfo * equal = UEq(attribute,value);	
+				   BitStreamInfo * equal = UEq(attribute,value,rows);	
 				   result = *(greater_than) | *(equal);					
 			   }
 		   }
 			return result;
 	   }
 
-	   BitStreamInfo * AlgoUtils::ULessThan(EncodedAttributeInfo * attribute, unsigned long value,int rows)	
+	   BitStreamInfo * AlgoUtils::ULessThan( EncodedAttributeInfo * attribute, double value,int rows )
 	   {
+		   
 		   BitStreamInfo * less_or_eq = UGreaterThanOrEq(attribute,value,rows);
 		   BitStreamInfo * prev = less_or_eq;
 		   less_or_eq = ~(*(less_or_eq));
 		   delete prev;
 		   return less_or_eq;
+		   
+
+		 /*
+		     BitStreamInfo * info = NULL;	
+		   		   switch(attribute->attributeType())
+		   		   {
+		   		   case SIGNEDINT_VAL:
+		   			   {
+		   				   unsigned long max_value = static_cast<EncodedIntAttribute *>(attribute)->maxAttVal();
+		   				   info = ULessThanInt(attribute,(unsigned long long)value,rows,max_value);
+		   				   break;
+		   			   }
+		   		   case DOUBLE_VAL:
+		   			   {
+		   				   EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+		   				   long precission = double_att->Precision();
+		   					unsigned long long max_value = double_att->maxAttVal() * precission;
+		   				   info = ULessThanInt(attribute,(unsigned long long)(value * precission) , rows,max_value);
+		   				   break;
+		   			   }
+		   		   case DATE_VAL:
+		   			   {
+		   				   assert(false);
+		   
+		   			   }
+		   		   case MULTICAT_VAL:
+		   			   {
+		   				   assert(false);
+		   
+		   			   }
+		   		   }
+		   		   return info;*/
+		   
 	   }
 
 	   BitStreamInfo * AlgoUtils::ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows)
@@ -235,7 +287,7 @@ using namespace std;
 		   dynamic_bitset<> bit_set(noOfRows);
 		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
 		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
-
+			
 		   size_t k=0;
 		   while (value_pattern[k] == 1 && k < bit_set.size())
 			   k=k+1;
@@ -258,8 +310,89 @@ using namespace std;
 			   }
 			   delete prev_val;
 		   }
+
+
 		   return bit_stream;
 	 
+	   }
+
+	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long _max_value)
+	   {
+		   dynamic_bitset<> bit_set(noOfRows);
+		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
+		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
+		   BitStreamInfo * prev_val = NULL;
+			
+		   if (input_value > _max_value)
+			{
+				return bit_stream;
+			}
+
+		   size_t k=0;
+		   while (value_pattern[k] == 1 && k < bit_set.size())
+			   k=k+1;
+
+		   if (k < value_pattern.size())
+			   bit_stream = attribute->bitStreamAt(k)->Clone();
+
+		   
+
+		   for (size_t i=k+1; i < value_pattern.size(); i++)
+		   {
+			   prev_val = bit_stream;
+			   if (value_pattern[i] == 1)
+			   {
+				   bit_stream = *(bit_stream) & *(attribute->bitStreamAt(i));
+			   }
+			   else 
+			   {
+				   bit_stream = *(bit_stream) | *(attribute->bitStreamAt(i));
+			   }
+			   delete prev_val;
+		   }
+
+
+		   return bit_stream;
+
+	   }
+
+	   BitStreamInfo * AlgoUtils::ULessThanInt( EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long max_value )
+	   {
+		   dynamic_bitset<> bit_set(noOfRows);
+		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
+		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
+
+		   BitStreamInfo * prev_val = NULL;
+
+		   if (input_value > max_value)
+		   {
+			   prev_val = bit_stream;
+			   bit_stream = ~(*bit_stream);
+			   delete prev_val;
+			   return bit_stream;
+		   }
+
+		   size_t k=value_pattern.size() -1 ;
+		   while (value_pattern[k] == 0 && k > -1)
+		   {
+			   k--;
+			   prev_val = bit_stream;
+			   bit_stream = *(bit_stream) |  *(attribute->bitStreamAt(k));
+			   delete prev_val;
+		   }
+		   if (k > -1 && value_pattern[k] == 1)
+		   {
+			   prev_val = bit_stream;
+			   bit_stream = *(bit_stream) |  *(attribute->bitStreamAt(k));
+			   delete prev_val;
+			   prev_val = bit_stream;
+			   bit_stream = ~(*(bit_stream));
+			   delete prev_val;
+		   }
+
+
+		   return bit_stream;
+
 	   }
 
 	  

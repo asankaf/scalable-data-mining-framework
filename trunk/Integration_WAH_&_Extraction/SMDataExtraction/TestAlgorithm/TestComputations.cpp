@@ -6,6 +6,7 @@
 #include "boost\dynamic_bitset\dynamic_bitset.hpp"
 #include "CompressionHandler.h"
 #include "commons.h"
+#include <limits>
 
 
 using namespace std;
@@ -19,7 +20,8 @@ TestComputations::~TestComputations(void)
 
 void TestComputations::TestSuite()
 {
-IntAttributeSum();
+	RangeQueryAccuracy();
+//IntAttributeSum();
 //IntAttributeSumSquare();
 //IntAttributeRangeQuery();
 //DoubleAttributeSum();
@@ -120,43 +122,108 @@ void TestComputations::TestRangeQueryInt( WrapDataSource * source )
 		cout << "Value : "<< (int)dd << endl;
 		cout << "Time : " << end - start << endl;
 
-	}
-	cout << "Compressed : " << endl;
-	CompressionHandler::ConvertTo(source,BitStreamInfo::EWAH_COMPRESSION);
-	inf = (*source)(0);
+	}	
+}
 
-	for (size_t i = 0 ; i < 5 ;i++)
-	{
+void TestComputations::TestRangeQueryAccuracy(WrapDataSource * _source)
+{
+	EncodedAttributeInfo * inf = (*_source)(0);
+	int value = 0;
 
-		start = clock();	
-		dd = AlgoUtils::UGreaterThan(inf,1500,source->noOfRows())->Count();
-		end = clock();
-		cout << "Value : "<< (int)dd << endl;
-		cout << "Time : " << end - start << endl;
-
-	}
+	//Negation of the  GreaterThanOrEq is less than
 	/*
-	end = clock();
-	start = clock();
-		dd = AlgoUtils::UGreaterThanOrEq(inf,5506,source->noOfRows())->Count();
-		end = clock();
-		cout << "Value : "<< (int)dd << endl;
-		cout << "Time : " << end - start << endl;
+	BitStreamInfo * less_or_eq = AlgoUtils::UGreaterThanOrEq(inf,value,_source->noOfRows());
+		BitStreamInfo * prev = less_or_eq;
+		less_or_eq = ~(*(less_or_eq));
+		delete prev;
+	
+		// Getting the dynamic bitset
+		dynamic_bitset<> less_than_theory = less_or_eq->Decompress();*/
 	
 
-	start = clock();
-	dd = AlgoUtils::ULessThan(inf,5506,source->noOfRows())->Count();
-	end = clock();
-	cout << "Value : "<< (int)dd << endl;
-	cout << "Time : " << end - start << endl;
-
-	start = clock();
-	dd = AlgoUtils::ULessThanOrEq(inf,5506,source->noOfRows())->Count();
-	end = clock();
-	cout << "Value : "<< (int)dd << endl;
-	cout << "Time : " << end - start << endl;
+	//Obtaining less than directly
+	//BitStreamInfo * less_or_eq = AlgoUtils::UGreaterThan(inf,value,_source->noOfRows());
+	//BitStreamInfo * less_or_eq = AlgoUtils::UGreaterThanOrEq(inf,value,_source->noOfRows());
+	//BitStreamInfo * less_or_eq = AlgoUtils::ULessThan(inf,value,_source->noOfRows());
+	BitStreamInfo * less_or_eq = AlgoUtils::ULessThanOrEq(inf,value,_source->noOfRows());
+	dynamic_bitset<> less_than_direct = less_or_eq->Decompress();
+	cout << "Algo Count : " << less_than_direct.count() << endl;
+	/*
+	if (less_than_direct == less_than_theory)
+		{
+			cout << "New Method is correct" << endl;
+			cout << "Count : " << less_than_direct.count() << endl;
+		}
+		else
+		{
+			cout << "Inequal :" << endl;
+			cout << "Theory : " << less_than_theory.count() << endl;
+			cout << "New Method : " << less_than_direct.count() << endl;
+		}
+		*/
 	
-*/
+	//Checking Accuracy by constructing a vector
+	vector<double> vect(_source->noOfRows());	
+	CreateDoubleArray(vect,inf);
+		
+
+	
+	//cout << "Actual Count : " << VectorGreaterThan(vect,value) << endl;
+	//cout << "Actual Count : " << VectorGreaterThanOrEq(vect,value) << endl;	
+	//cout << "Actual Count : " << VectorLessThan(vect,value) << endl;
+	cout << "Actual Count : " << VectorLessThanOrEq(vect,value) << endl;
+}
+
+int TestComputations::VectorLessThanOrEq(vector<double> & _vect,int _upper_bound)
+{
+	int count = 0 ;
+	for (size_t i = 0 ; i < _vect.size() ; i++)
+	{
+		if (_vect[i] <= _upper_bound)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+int TestComputations::VectorLessThan(vector<double> & _vect,int _upper_bound)
+{
+	int count = 0 ;
+	for (size_t i = 0 ; i < _vect.size() ; i++)
+	{
+		if (_vect[i] < _upper_bound)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+int TestComputations::VectorGreaterThan(vector<double> & _vect,int _lower_bound)
+{
+	int count = 0 ;
+	for (size_t i = 0 ; i < _vect.size() ; i++)
+	{
+		if (_vect[i] > _lower_bound)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+int TestComputations::VectorGreaterThanOrEq(vector<double> & _vect,int _lower_bound)
+{
+	int count = 0 ;
+	for (size_t i = 0 ; i < _vect.size() ; i++)
+	{
+		if (_vect[i] >= _lower_bound)
+		{
+			count++;
+		}
+	}
+	return count;
 }
 
 void TestComputations::TestAttributeSum( WrapDataSource * source )
@@ -412,6 +479,11 @@ void TestComputations::IntAttributeSum()
 {//intVal_100000
 //TestAttributeSum(CreateDataSource("4mill_randvalues_data","4mill_randvalues_metadata","randvalues"));
 	TestAttributeSum(CreateDataSource("intVal_single_data","intVal_single_metadata","intVal_100000"));
+}
+
+void TestComputations::RangeQueryAccuracy()
+{
+TestRangeQueryAccuracy(CreateDataSource("intVal_single_data","intVal_single_metadata","intVal_100000"));
 }
 
 void TestComputations::IntAttributeSumSquare()
