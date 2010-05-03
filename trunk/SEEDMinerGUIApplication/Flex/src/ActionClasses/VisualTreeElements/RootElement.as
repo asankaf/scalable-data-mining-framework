@@ -9,19 +9,22 @@ package ActionClasses.VisualTreeElements
 		{
 			super();
 			
-			this.setStyle("backgroundColor","#C4D8FA");
+			this.setStyle("backgroundColor","#EFF8FF");
 			this.setStyle("verticalAlign","middle");
 			this.setStyle("horizontalAlign","center");
-			this.setStyle("borderColor","#2B5191");
+			this.setStyle("borderColor","#C4D7FF");
 			this.setStyle("borderStyle","solid");
+			this.setStyle("dropShadowColor","#DADADA");
+			this.setStyle("dropShadowEnabled","true");
 			this.setStyle("borderThickness","1");
-			this.setStyle("cornerRadius","4");
+			this.setStyle("cornerRadius","8");
 			
 			var labelObj:Label=new Label();
 			labelObj.text=lable;
 			labelObj.setStyle("fontSize",13);
-			this.width=labelObj.text.length*17;
-			this.height=25;
+			labelObj.setStyle("color","#2080CB");
+			this.width=labelObj.text.length*Element.nodeTextCharacterWidth;
+			this.height=Element.rootElementHeight;
 			this.addChild(labelObj);
 		}
 

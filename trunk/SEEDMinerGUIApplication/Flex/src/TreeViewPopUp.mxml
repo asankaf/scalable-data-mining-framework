@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" layout="absolute" width="750" height="425" title="Tree Viewer" close="titleWin_close(event);">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" layout="absolute" width="914" height="505" title="Tree Viewer" close="titleWin_close(event);">
 	<mx:Script>
         <![CDATA[
         	import mx.core.IFlexDisplayObject;
@@ -12,7 +12,7 @@
             
         ]]>
     </mx:Script>
-	<mx:Canvas id="drawingCanvas" x="0" y="0" backgroundColor="#F2E0E0" horizontalScrollPolicy="auto">
+	<mx:Canvas id="drawingCanvas" x="0" y="0" backgroundColor="#FFFFFF" horizontalScrollPolicy="auto" >
 	</mx:Canvas>
 	
 </mx:TitleWindow>

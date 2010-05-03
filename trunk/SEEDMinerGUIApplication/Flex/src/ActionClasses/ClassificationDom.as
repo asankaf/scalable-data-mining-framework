@@ -206,17 +206,17 @@ package ActionClasses
 			var child:DomNode;
 			if(0<currentString.indexOf('<=',0))
 			{
-				child=new DomNode(currentString.split('<=')[1].split(':')[0],NodeParent.LINK);
+				child=new DomNode("<= "+currentString.split('<=')[1].split(':')[0],NodeParent.LINK);
 				root.child.push(child);
 			}
 			else if(0<currentString.indexOf('>',0))
 			{
-				child=new DomNode(currentString.split('>')[1].split(':')[0],NodeParent.LINK)
+				child=new DomNode("> "+currentString.split('>')[1].split(':')[0],NodeParent.LINK)
 				root.child.push(child);
 			}
 			else
 			{
-				child=new DomNode(currentString.split('=')[1].split(':')[0],NodeParent.LINK)
+				child=new DomNode("= "+currentString.split('=')[1].split(':')[0],NodeParent.LINK)
 				root.child.push(child);
 			}
 			return child;
@@ -227,17 +227,17 @@ package ActionClasses
 			var child:DomNode;
 			if(0<extractedCurrentString.indexOf('<=',0))
 			{
-				child=new DomNode(extractedCurrentString.split('<=')[1],NodeParent.LINK);
+				child=new DomNode("<= "+extractedCurrentString.split('<=')[1],NodeParent.LINK);
 				currentNode.child.push(child);
 			}
 			else if(0<extractedCurrentString.indexOf('>',0))
 			{
-				child=new DomNode(extractedCurrentString.split('>')[1],NodeParent.LINK)
+				child=new DomNode("> "+extractedCurrentString.split('>')[1],NodeParent.LINK)
 				currentNode.child.push(child);
 			}
 			else
 			{
-				child=new DomNode(extractedCurrentString.split('=')[1],NodeParent.LINK)
+				child=new DomNode("= "+extractedCurrentString.split('=')[1],NodeParent.LINK)
 				currentNode.child.push(child);
 			}
 			return child;
