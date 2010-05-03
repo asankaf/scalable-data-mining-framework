@@ -17,14 +17,18 @@ package ActionClasses
 		var levelDistance:int=100;
 		var nodeDistance:int=150;
 		
+		var treeWidth:int=0;
+		var treeHeight:int=0;
+		var mostNegativeValue:int=0;
+		var mostPositiveValue:int=0;
+		
 		public function GenerateGraphicalTree(dom:ClassificationDom,treePopUp:TreeViewPopUp)
 		{
 			treePopUpCanvas=treePopUp.drawingCanvas;
-			treePopUpCanvas.width=750;
-			treePopUpCanvas.height=425;
 			
-			dom.root.x=300;
-			dom.root.y=50;
+			
+			dom.root.x=0;
+			dom.root.y=0;
 			calculateNodeCoordinates(dom.root);
 			
 			//tempLevel=0;
@@ -40,10 +44,44 @@ package ActionClasses
 			//treePopUpCanvas.width=maxChildrenInALevel*150;
 			
 			//middle=treePopUpCanvas.width/2;	
+				
+			calculateTreeWidthAndHeightAndMostNegativeValue(dom.root);
 			
-			tempLevel=0;
+			treeWidth=-mostNegativeValue+mostPositiveValue;
+			calculateTreeLevels(dom.root);
+			treeHeight=treeLevels*levelDistance;
+			trace(treeHeight);
+			
+			treePopUpCanvas.width=treeWidth+300;
+			treePopUpCanvas.height=(treeHeight-1)+100;
+			
+			var shiftX:int=-mostNegativeValue+150;
+			var shiftY:int=50;
+			
+			dom.root.x=shiftX;
+			dom.root.y=shiftY;
+			
+			calculateNodeCoordinates(dom.root);
+			
 			traverseAndDraw(dom.root);
+		}
+				
+		public function calculateTreeWidthAndHeightAndMostNegativeValue(root:DomNode):void
+		{
+			if(root.x<mostNegativeValue)
+			{
+				mostNegativeValue=root.x;
+			}
+			if(mostPositiveValue<root.x)
+			{
+				mostPositiveValue=root.x;
+			}
 
+			for(var i:int=0;i<root.child.length;i++)
+			{
+				var child:DomNode=root.child[i];
+				calculateTreeWidthAndHeightAndMostNegativeValue(child);
+			}
 		}
 		
 		public function calculateNodeCoordinates(root:DomNode):void
@@ -111,7 +149,7 @@ package ActionClasses
 			}
 			else if(root.type==NodeParent.LINK)
 			{
-				trace(root.name);
+				//trace(root.name);
 				var nodeLink:LinkElement=new LinkElement(root.name,root.start,root.end);
 				treePopUpCanvas.rawChildren.addChild(nodeLink.line);
 				treePopUpCanvas.rawChildren.addChild(nodeLink.lable);
