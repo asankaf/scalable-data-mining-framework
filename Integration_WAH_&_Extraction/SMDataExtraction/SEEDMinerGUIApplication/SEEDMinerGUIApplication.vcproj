@@ -146,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Include;&quot;$(BOOST_HOME)&quot;;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm"
+				AdditionalIncludeDirectories="..\Include;&quot;$(BOOST_HOME)&quot;;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm;..\SMPreprocessing"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -174,7 +174,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib ..\debug\SMCompression.lib"
+				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib ..\debug\SMCompression.lib ..\debug\SMPreprocessing.lib"
 				OutputFile=".\Debug/IntelliCheckersUI.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

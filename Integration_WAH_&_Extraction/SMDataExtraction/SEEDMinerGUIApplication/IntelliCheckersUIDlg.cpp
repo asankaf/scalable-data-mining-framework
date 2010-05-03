@@ -376,7 +376,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//assign it to "formattedOutPut" here
 		CSV(path,1000);		
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
-		//NullEliminator();
+		NullEliminator();
 		formattedOutPut = Text(WRAPPED_SOURCE,100);
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
