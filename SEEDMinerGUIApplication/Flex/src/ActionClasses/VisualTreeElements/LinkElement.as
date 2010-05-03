@@ -32,6 +32,10 @@ package ActionClasses.VisualTreeElements
 			{
 				correctionX+=Element.rootElementHeight;
 			}
+			if(0==correctionX)
+			{
+				correctionX+=5;
+			}
 			var lableX:int=start.x+correctionX;
 			var lableY:int=start.y+correctionY;
 

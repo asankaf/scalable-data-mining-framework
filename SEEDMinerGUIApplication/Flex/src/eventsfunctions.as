@@ -46,16 +46,16 @@ private var EXECUTING:String="Executing Flaw";
 
 public function startUp(event:Event):void
 {
-	var dom:ClassificationDom=new ClassificationDom("outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)");
-	//var dom:ClassificationDom=new ClassificationDom("petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)");
+	//var dom:ClassificationDom=new ClassificationDom("outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)");
+	var dom:ClassificationDom=new ClassificationDom("petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)");
 	
-    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
+    /*var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
     var point1:Point = new Point();
 	point1.x=0;
     point1.y=0;                
     treePopUp.x=canvasmain.width/2-treePopUp.width/2;
     treePopUp.y=150;
-    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);
+    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);*/
     
 }
 
