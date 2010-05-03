@@ -1,6 +1,7 @@
 package ActionClasses
 {
 	import ActionClasses.VisualTreeElements.LeafElement;
+	import ActionClasses.VisualTreeElements.LinkElement;
 	import ActionClasses.VisualTreeElements.RootElement;
 	
 	import mx.containers.Canvas;
@@ -19,8 +20,8 @@ package ActionClasses
 		public function GenerateGraphicalTree(dom:ClassificationDom,treePopUp:TreeViewPopUp)
 		{
 			treePopUpCanvas=treePopUp.drawingCanvas;
-			treePopUpCanvas.width=1000;
-			treePopUpCanvas.height=800;
+			treePopUpCanvas.width=750;
+			treePopUpCanvas.height=425;
 			
 			dom.root.x=300;
 			dom.root.y=50;
@@ -50,16 +51,21 @@ package ActionClasses
 
 			if(root.type!=NodeParent.LINK)
 			{
-				trace(root);
-				trace(root.x+" "+root.y);
 				var start:int=root.x-((root.child.length-1)/2)*nodeDistance
 				//trace(start);
 				for(var j:int=0;j<root.child.length;j++)
 				{
 					var childLink:DomNode=DomNode(root.child[j]);
+					//link sart
+					childLink.start.x=root.x;
+					childLink.start.y=root.y+25;
+					//children
 					var childNode:DomNode=childLink.child[0];
 					childNode.y=root.y+1*levelDistance;				
 					childNode.x=start+j*nodeDistance;
+					//link end
+					childLink.end.x=childNode.x;
+					childLink.end.y=childNode.y;
 				}
 			} 
 			
@@ -74,10 +80,11 @@ package ActionClasses
 		
 		public function traverseAndDraw(root:DomNode):void
 		{
-			if(root.type!=NodeParent.LINK)
-			{
+			//if(root.type!=NodeParent.LINK)
+			//{
 				drawNode(root);
-			}
+				
+			//}
 
 			for(var i:int=0;i<root.child.length;i++)
 			{
@@ -91,16 +98,23 @@ package ActionClasses
 			if(root.type==NodeParent.ROOT||root.type==NodeParent.CHILD)
 			{
 				var nodeRoot:RootElement=new RootElement(root.name);
-				nodeRoot.x=root.x;
+				nodeRoot.x=root.x-nodeRoot.width/2;
 				nodeRoot.y=root.y;
 				treePopUpCanvas.rawChildren.addChild(nodeRoot);
 			}
 			else if(root.type==NodeParent.LEAF)
 			{
 				var nodeLeaf:LeafElement=new LeafElement(root.name);
-				nodeLeaf.x=root.x;
+				nodeLeaf.x=root.x-nodeLeaf.width/2;
 				nodeLeaf.y=root.y;
 				treePopUpCanvas.rawChildren.addChild(nodeLeaf);
+			}
+			else if(root.type==NodeParent.LINK)
+			{
+				trace(root.name);
+				var nodeLink:LinkElement=new LinkElement(root.name,root.start,root.end);
+				treePopUpCanvas.rawChildren.addChild(nodeLink.line);
+				treePopUpCanvas.rawChildren.addChild(nodeLink.lable);
 			}
 		}
 		
