@@ -10,7 +10,9 @@ public:
 	__declspec(dllexport) EncodedDoubleAttribute(void);
 	__declspec(dllexport) ~EncodedDoubleAttribute(void);
 	__declspec(dllexport) vector<bool> SignBitMap() const { return _signBitMap; }
+	__declspec(dllexport) dynamic_bitset<> signBitSet() const {return _signBitSet;}
 	__declspec(dllexport) void SignBitMap(vector<bool> val) { _signBitMap = val; }
+	__declspec(dllexport) void setSignBitSet(dynamic_bitset<> bitSet){this->_signBitSet = bitSet;}
 	__declspec(dllexport) double maxAttVal(){return this->_maxVal;}
 	__declspec(dllexport) double minAttVal(){return this->_minVal;}
 	__declspec(dllexport) void setMaxVal(double val){this->_maxVal = val;}
@@ -24,7 +26,8 @@ public:
 
 private:
 	long precision;
-	vector<bool> _signBitMap; //sign bit map 0 for + and 1 for -.	
+	vector<bool> _signBitMap; //sign bit map 0 for + and 1 for -.
+	dynamic_bitset<> _signBitSet;
 	double _maxVal;
 	double _minVal;
 };
