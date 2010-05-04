@@ -42,6 +42,10 @@
 							<mx:Image source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
 							<mx:Label text="Text Viewer"/>
 						</mx:VBox>
+						<mx:VBox styleName="actionIcons" width="125" height="73">
+							<mx:Image source="@Embed('tree.png')" mouseDown="mouseDownHandler(event);" id="Tree_Viewer"/>
+							<mx:Label text="Tree Viewer"/>
+						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
 			</mx:TabNavigator>
