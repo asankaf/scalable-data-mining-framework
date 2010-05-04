@@ -228,7 +228,7 @@ ExtractedCsvDTO* CSVConnectionInfo::CsvConnection::readCSV(vector<int> readOrder
 	PureAttInfo::existanceBitSet.flip();
 	for (int i = 0 ; i < nullRowIDs.size() ; i++)
 	{
-		PureAttInfo::existanceBitSet[i] = false;
+		PureAttInfo::existanceBitSet[nullRowIDs[i]] = false;
 	}
 	end = clock();
 	cout<<"Time to read the CSV Data : "<<(end - start)<<endl;
