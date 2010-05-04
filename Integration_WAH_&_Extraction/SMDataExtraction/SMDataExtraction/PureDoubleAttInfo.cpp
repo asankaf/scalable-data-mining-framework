@@ -3,10 +3,18 @@
 
 PureDoubleAttInfo::PureDoubleAttInfo(void)
 {
+	Init();
 }
 
 PureDoubleAttInfo::~PureDoubleAttInfo(void)
 {
+	this->_valList.clear();
+	vector<double> temp;
+	_valList.swap(temp);
+	if (_valueList != NULL)
+	{
+		delete _valueList;
+	}
 }
 
 double PureDoubleAttInfo::Lower(){

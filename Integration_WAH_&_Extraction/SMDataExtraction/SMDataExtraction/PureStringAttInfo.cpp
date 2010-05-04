@@ -10,10 +10,20 @@ using namespace std;
 
 PureStringAttInfo::PureStringAttInfo(void)
 {
+	Init();
 }
 
 PureStringAttInfo::~PureStringAttInfo(void)
 {
+	delete _valueList;
+	_uniqueSet.clear();
+	_uniqueValList.clear();
+	_valList.clear();
+	vector<string> temp;
+	_valList.swap(temp);
+	_uniqueValList.swap(temp);
+	std::set<string> tempSet;
+	tempSet.swap(_uniqueSet);
 }
 
 void PureStringAttInfo::setValueList(string* values,int noRows){

@@ -2,6 +2,7 @@
 
 #include "PureAttInfo.h"
 #include <vector>
+#include "Commons.h"
 
 using namespace std;
 
@@ -19,6 +20,10 @@ public:
 	__declspec(dllexport) vector<double> valList(){return this->_valList;}
 	__declspec(dllexport) void setValList(vector<double> vals){this->_valList = vals;}
 
+	void Init(){
+		Commons::InitVector(_valList.begin(),_valList.end());
+		_valueList = NULL;
+	}
 private:
 	double _upper;
 	double _lower;
