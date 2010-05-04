@@ -2,6 +2,7 @@
 #include "NullPreProcessor.h"
 #include "boost/dynamic_bitset.hpp"
 #include <algorithm>
+#include "EncodedDoubleAttribute.h"
 
 
 void NullPreProcessor::elimiateNullValues(){
@@ -17,7 +18,7 @@ void NullPreProcessor::elimiateNullValues(){
 	newDS->setDSName(m_original_datasource->DataSourceName());
 	newDS->DataSourceID(m_original_datasource->DataSourceID());
 	newDS->setSourceType(m_original_datasource->SourceType());
-	newDS->noOfRows(m_original_datasource->noOfRows());
+	newDS->noOfRows((m_original_datasource->noOfRows()) - nullbitIDs.size());
 	newDS->noOfAttributes(m_original_datasource->noOfAttributes());
 	newDS->ExistanceDatabitMap(m_original_datasource->ExistanceDatabitMap());
 	vector<EncodedAttributeInfo*> newAtts;
@@ -40,6 +41,22 @@ void NullPreProcessor::elimiateNullValues(){
 					modifiedAtt->setSignBitMap(intAtt->SignBitMap());
 					modifiedAtt->setVBitStreams(nullEliminatedBitstreams(currBitStreams,nullbitIDs));
 					modifiedAtt->setNoOfVBitStreams(intAtt->NoOfVBitStreams(),0);
+					newAtts[i] = modifiedAtt;
+					break;
+				}
+			case 1:
+				{
+					EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*> (att);
+					EncodedDoubleAttribute* modifiedAtt = new EncodedDoubleAttribute();
+					modifiedAtt->setAttName(doubleAtt->attributeName());
+					modifiedAtt->setAttID(doubleAtt->attributeID());
+					modifiedAtt->setAttType(doubleAtt->attributeType());
+					modifiedAtt->setMaxVal(doubleAtt->maxAttVal());
+					modifiedAtt->setMinVal(doubleAtt->minAttVal());
+					modifiedAtt->SignBitMap(doubleAtt->SignBitMap());
+					modifiedAtt->Precision(doubleAtt->Precision());
+					modifiedAtt->setVBitStreams(nullEliminatedBitstreams(currBitStreams,nullbitIDs));
+					modifiedAtt->setNoOfVBitStreams(doubleAtt->NoOfVBitStreams(),0);
 					newAtts[i] = modifiedAtt;
 					break;
 				}
