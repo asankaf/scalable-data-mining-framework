@@ -77,18 +77,21 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 						intAtt->setMaxVal(atol(attEl->GetText()));
 						attEl = attElement->FirstChildElement("minval");
 						intAtt->setMinVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("SignMapVal");
-						vector<bool> signMap;
-						if (atol(attEl->GetText()) == 0)
-						{						
-							signMap.resize(noRows);
-						}
-						//Set sign Bit Map for negative vals.
-						else
-						{
-							signMap.resize(noRows);
-						}
-						intAtt->setSignBitMap(signMap);
+						attEl = attElement->FirstChildElement("SignBitSet");
+// 						vector<bool> signMap;
+// 						if (atol(attEl->GetText()) == 0)
+// 						{						
+// 							signMap.resize(noRows);
+// 						}
+// 						//Set sign Bit Map for negative vals.
+// 						else
+// 						{
+// 							signMap.resize(noRows);
+// 						}
+// 						intAtt->setSignBitMap(signMap);
+
+						dynamic_bitset<> signSet((string)attEl->GetText());
+						intAtt->setSignBitSet(signSet);
 						EncodedAttributeInfo* atts = intAtt;
 						codedAtts[counter] = atts;
 						break;
@@ -100,18 +103,21 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 						doubleAtt->setMaxVal(atol(attEl->GetText()));
 						attEl = attElement->FirstChildElement("minval");
 						doubleAtt->setMinVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("SignMapVal");
-						vector<bool> signMap;
-						if (atol(attEl->GetText()) == 0)
-						{						
-							signMap.resize(noRows);
-						}
-						//Set sign Bit Map for negative vals.
-						else
-						{
-							signMap.resize(noRows);
-						}
-						doubleAtt->SignBitMap(signMap);
+						attEl = attElement->FirstChildElement("SignBitSet");
+// 						vector<bool> signMap;
+// 						if (atol(attEl->GetText()) == 0)
+// 						{						
+// 							signMap.resize(noRows);
+// 						}
+// 						//Set sign Bit Map for negative vals.
+// 						else
+// 						{
+// 							signMap.resize(noRows);
+// 						}
+// 						doubleAtt->SignBitMap(signMap);
+
+						dynamic_bitset<> signSet((string)attEl->GetText());
+						doubleAtt->setSignBitSet(signSet);
 						attEl = attElement->FirstChildElement("PrecisionVal");
 						doubleAtt->Precision(atol(attEl->GetText()));
 						EncodedAttributeInfo* atts = doubleAtt;

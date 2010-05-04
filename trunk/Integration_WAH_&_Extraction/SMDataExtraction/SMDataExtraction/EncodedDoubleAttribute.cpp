@@ -20,7 +20,7 @@ double EncodedDoubleAttribute::decodeTheTuple(int tupleID,bool asAnInteger){
 
 	val = temp.to_ulong();
 
-	if (this->_signBitMap.at(tupleID - 1))
+	if (this->_signBitSet[tupleID - 1] == 1)
 	{
 		val *= -1;
 	}
@@ -29,7 +29,8 @@ double EncodedDoubleAttribute::decodeTheTuple(int tupleID,bool asAnInteger){
 	{
 		return val;
 	}
-	else return (double)(val/this->precision);
+	double d_val = ((double)val) / this->precision;
+	return d_val;
 }
 
 int EncodedDoubleAttribute::getTheSignOf(int tupleID){
@@ -45,10 +46,11 @@ int EncodedDoubleAttribute::getTheSignOf(int tupleID){
 void EncodedDoubleAttribute::setTheSignBitMap(vector<double> values,int valSet){
 	try{
 		this->_signBitMap.resize(valSet);
+		this->_signBitSet.resize(valSet);
 		for (int i = 0 ; i < valSet ; i++)
 		{
 			if(values[i] == abs(values[i])) this->_signBitMap[i] = false;
-			else this->_signBitMap[i] = true;
+			else {this->_signBitMap[i] = true; this->_signBitSet[i] = true;}
 		}
 	}
 	catch(std::exception &e){

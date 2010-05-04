@@ -13,6 +13,7 @@ public:
 	__declspec(dllexport) EncodedIntAttribute(void);
 	__declspec(dllexport) ~EncodedIntAttribute(void);
  	__declspec(dllexport) vector<bool> SignBitMap();
+	__declspec(dllexport) dynamic_bitset<> SignBitSet(){return this->_signBitSet;}
 	__declspec(dllexport) long maxAttVal(){return this->_maxVal;}
 	__declspec(dllexport) long minAttVal(){return this->_minVal;}
 	__declspec(dllexport) void setMaxVal(long val){this->_maxVal = val;}
@@ -21,10 +22,12 @@ public:
 	__declspec(dllexport) int getTheSignOf(int tupleID);
 	__declspec(dllexport) void setTheSignBitMap(vector<long int> values,int valSet);
 	__declspec(dllexport) void setSignBitMap(vector<bool> bitMap){this->_signBitMap = bitMap;}
-	__declspec(dllexport) dynamic_bitset<> signMapAsInt();
+	__declspec(dllexport) void setSignBitSet(dynamic_bitset<> bitSet){this->_signBitSet = bitSet;}
+	__declspec(dllexport) dynamic_bitset<> signMapAsBitSet();
 
 private:
 	vector<bool> _signBitMap; //sign bit map 0 for + and 1 for -.
+	dynamic_bitset<> _signBitSet;
 	long _maxVal;
 	long _minVal;
 };

@@ -4,11 +4,12 @@
 #include <string>
 #include "PureIntAttInfo.h"
 #include "PureDoubleAttInfo.h"
+#include "Commons.h"
 
 namespace CsvDataExtraction{
 	class ExtractedCsvDTO{
 	public:
-		__declspec(dllexport) ExtractedCsvDTO(){this->_attCount = 0 ; this->_rowCount = 0;}
+		__declspec(dllexport) ExtractedCsvDTO(){Init();this->_attCount = 0 ; this->_rowCount = 0;this->_stringData = NULL;}
 		__declspec(dllexport) PureStringAttInfo** StringData() { return _stringData; }
 		__declspec(dllexport) void StringData(PureStringAttInfo** val) { _stringData = val; }
 		vector<int> Order() const { return order; }
@@ -23,6 +24,31 @@ namespace CsvDataExtraction{
 		__declspec(dllexport) void DoubleData(std::vector<PureDoubleAttInfo*> val) { _doubleData = val; }
 		__declspec(dllexport) std::vector<PureStringAttInfo*> MultiCatData() const { return _multiCatData; }
 		__declspec(dllexport) void MultiCatData(std::vector<PureStringAttInfo*> val) { _multiCatData = val; }
+
+		__declspec(dllexport) ~ExtractedCsvDTO(){
+			Commons::DeleteVector(this->_intData.begin(),this->_intData.end());
+			Commons::DeleteVector(this->_doubleData.begin(),this->_doubleData.end());
+			Commons::DeleteVector(this->_multiCatData.begin(),this->_multiCatData.end());
+
+			if (this->_stringData != NULL)
+			{
+				for (int i=0 ; i<this->_attCount ; i++)
+				{				
+					if (this->_stringData[i] != NULL)
+					{
+						delete this->_stringData[i];
+					}
+				}
+				delete _stringData;
+			}
+
+		}
+
+		void Init(){
+			Commons::InitVector(this->_intData.begin(),this->_intData.end());
+			Commons::InitVector(this->_doubleData.begin(),this->_doubleData.end());
+			Commons::InitVector(this->_multiCatData.begin(),this->_multiCatData.end());
+		}
 
 		
 	private:
