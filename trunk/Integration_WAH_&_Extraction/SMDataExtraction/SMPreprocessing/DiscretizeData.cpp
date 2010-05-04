@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "DiscretizeData.h"
+#include "AttributeType.h"
 
 DiscretizeData::DiscretizeData(void)
 {
@@ -7,16 +8,17 @@ DiscretizeData::DiscretizeData(void)
 
 DiscretizeData::~DiscretizeData(void)
 {
+	delete this->_ctsDs;
 }
 
-EncodedIntAttribute* DiscretizeData::DiscretizeCtsAttribute()
+EncodedIntAttribute* DiscretizeData::DiscretizeCtsAttribute(EncodedDoubleAttribute* _ctsAtt)
 {
-	EncodedDoubleAttribute* doubleAtt = this->_ctsAtt;
+	EncodedDoubleAttribute* doubleAtt = _ctsAtt;
 	EncodedIntAttribute* intAtt = new EncodedIntAttribute();
-	intAtt->setSignBitMap(doubleAtt->SignBitMap());
+	intAtt->setSignBitSet(doubleAtt->signBitSet());
 	intAtt->setAttID(doubleAtt->attributeID());
 	intAtt->setAttName(doubleAtt->attributeName());
-	intAtt->setAttType(doubleAtt->attributeType());
+	intAtt->setAttType(ATT_TYPE::SIGNEDINT_VAL);
 
 	long int maxVal = (long int)doubleAtt->maxAttVal();
 	long int minVal = (long int)doubleAtt->minAttVal();
@@ -45,6 +47,7 @@ EncodedIntAttribute* DiscretizeData::DiscretizeCtsAttribute()
 		dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)abs(vals[j]));
 		convertdBitArray[j] = bitSet;
 	}		
+	delete vals;
 	
 	BitStreamInfo **bitStreams = new BitStreamInfo*[no_v_bitStreams];
 	for (int k = 0 ; k < no_v_bitStreams ; k++)
@@ -61,7 +64,59 @@ EncodedIntAttribute* DiscretizeData::DiscretizeCtsAttribute()
 		temp_bitStream->setBitStreamAllocAttName(doubleAtt->attributeName());
 		bitStreams[k] = temp_bitStream;
 	}
-	intAtt->setVBitStreams(bitStreams);
+	vector<BitStreamInfo*> bitStream(bitStreams,bitStreams+no_v_bitStreams);
+	intAtt->setVBitStreams(bitStream);
 
 	return intAtt;
+}
+void DiscretizeData::DiscretizeAllCtsAttributes()
+{
+	vector<EncodedAttributeInfo*> encodedAtts;
+	vector<EncodedIntAttribute*> encodedDisctretedIntAtts;
+	encodedAtts.resize(this->_ctsDs->noOfAttributes());
+	
+	for (int i = 0 ; i < this->_ctsDs->noOfAttributes() ; i++)
+	{
+		EncodedAttributeInfo* att = this->_ctsDs->codedAttributes()[i];
+		int attType = (int)att->attributeType();
+		if (attType == 1)
+		{
+			EncodedIntAttribute* convertedIntAtt = DiscretizeCtsAttribute(static_cast<EncodedDoubleAttribute*>(att));
+			delete att;
+			encodedAtts[i] = convertedIntAtt;
+			encodedDisctretedIntAtts.push_back(convertedIntAtt);
+		}
+		else encodedAtts[i] = att;
+	}
+	this->_ctsDs->CodedAtts(encodedAtts);
+	this->_ctsDs->discretizeCtsAtts(encodedDisctretedIntAtts);	
+}
+
+void DiscretizeData::DiscretizeSelectedCtsAtts( vector<int> zeroBasedAttIDs )
+{
+	vector<EncodedAttributeInfo*> encodedAtts;
+	vector<EncodedIntAttribute*> encodedDisctretedIntAtts;
+	encodedAtts.resize(this->_ctsDs->noOfAttributes());
+
+	std::sort(zeroBasedAttIDs.begin(),zeroBasedAttIDs.end());
+	int selectAttCounter = 0;
+	for (int i = 0 ; i < this->_ctsDs->noOfAttributes() ; i++)
+	{
+		EncodedAttributeInfo* att = this->_ctsDs->codedAttributes()[i];
+		if (selectAttCounter < zeroBasedAttIDs.size() && i == zeroBasedAttIDs[selectAttCounter])
+		{
+			int attType = (int)att->attributeType();
+			if (attType == 1)
+			{
+				EncodedIntAttribute* convertedIntAtt = DiscretizeCtsAttribute(static_cast<EncodedDoubleAttribute*>(att));
+				delete att;
+				encodedAtts[i] = convertedIntAtt;
+				encodedDisctretedIntAtts.push_back(convertedIntAtt);
+			}
+			selectAttCounter++;
+		}		
+		else encodedAtts[i] = att;
+	}
+	this->_ctsDs->CodedAtts(encodedAtts);
+	this->_ctsDs->discretizeCtsAtts(encodedDisctretedIntAtts);	
 }
