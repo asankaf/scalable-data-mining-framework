@@ -17,16 +17,24 @@
 #include <time.h>
 #include <stack>
 #include <list>
+#include "Commons.h"
 using namespace std;
 
 
 namespace DBQueryExecutionInfo{
 	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(const char* statement){
+		Init();
 		this->_query_stmt = statement;
 		_isRowCountSet = false;
 	}
 
-	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(){ _isRowCountSet = false;}
+	DBQueryExecutionInfo::DBQueryExecution::DBQueryExecution(){ Init();_isRowCountSet = false;}
+
+	void DBQueryExecution::Init(){
+		Commons::InitVector(this->_intData.begin(),this->_intData.end());
+		Commons::InitVector(this->_doubleData.begin(),this->_doubleData.end());
+		Commons::InitVector(this->_stringData.begin(),this->_stringData.end());
+	}
 
 	bool DBQueryExecutionInfo::DBQueryExecution::ExecuteQueryAndBindData(CGOdbcConnect &cCon){
 		clock_t start,end;
@@ -253,6 +261,9 @@ namespace DBQueryExecutionInfo{
 	}
 
 	DBQueryExecutionInfo::DBQueryExecution::~DBQueryExecution(){
+		Commons::DeleteVector(this->_intData.begin(),this->_intData.end());
+		Commons::DeleteVector(this->_doubleData.begin(),this->_doubleData.end());
+		Commons::DeleteVector(this->_stringData.begin(),this->_stringData.end());
 		cout<<"Destructor calls"<<endl;
 	}
 
