@@ -16,8 +16,8 @@ class WrapDataSource
 {
 public:
 	__declspec(dllexport) enum DATASOURCE{DATABASE,CSVFILE,XMLFILE};
-	__declspec(dllexport) WrapDataSource(DBQueryExecution cExec,string dsName);
-	__declspec(dllexport) WrapDataSource(ExtractedCsvDTO csvExec,string dsName);
+	__declspec(dllexport) WrapDataSource(DBQueryExecution *cExec,string dsName);
+	__declspec(dllexport) WrapDataSource(ExtractedCsvDTO *csvExec,string dsName);
 	__declspec(dllexport) WrapDataSource(void);
 	__declspec(dllexport) ~WrapDataSource(void);
 	__declspec(dllexport) int noOfRows();
@@ -33,7 +33,7 @@ public:
 	__declspec(dllexport) BitStreamInfo* operator()(const int attID,const int bitStreamID);
 	__declspec(dllexport) void CodedAtts(vector<EncodedAttributeInfo *> _coded_atts );
 	__declspec(dllexport) size_t SpaceUtilsation();
-	__declspec(dllexport) DBQueryExecution queryExecPointer();
+	__declspec(dllexport) DBQueryExecution* queryExecPointer();
 	__declspec(dllexport) int DataSourceID() const { return _dataSourceID; }
 	__declspec(dllexport) void DataSourceID(int val) { _dataSourceID = val; }
 	__declspec(dllexport) DATASOURCE SourceType() const { return _sourceType; }
@@ -52,15 +52,21 @@ public:
 	void encodeCSVStringAttributes(PureStringAttInfo** stringAtts,int arrLength);
 	void encodeCSVAttributes();
 	long getPrecision(vector<PureDoubleAttInfo*> doubleVals);
-	
+	void discretizeCtsAtts(vector<EncodedIntAttribute*> intAtts){
+		this->_codedDoubleAtts.clear();
+		for (int i = 0 ; i < intAtts.size() ; i++)
+		{
+			this->_codedIntAtts.push_back(intAtts[i]);
+		}
+	}
 
 private:
 
 	/**Initializes the vectors to NULL*/
 	void WrapDataSource::Init();
 
-	DBQueryExecution _queryDataInfo;
-	ExtractedCsvDTO _csvExtractedDatainfo;
+	DBQueryExecution *_queryDataInfo;
+	ExtractedCsvDTO *_csvExtractedDatainfo;
 	vector<EncodedAttributeInfo*> _codedAtts;
 	vector<EncodedIntAttribute*> _codedIntAtts;
 	vector<EncodedDoubleAttribute*> _codedDoubleAtts;

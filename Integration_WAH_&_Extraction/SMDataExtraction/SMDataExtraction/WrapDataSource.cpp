@@ -16,27 +16,29 @@
 using namespace std;
 using namespace boost;
 
-WrapDataSource::WrapDataSource(DBQueryExecution cExec,string dsName)
+WrapDataSource::WrapDataSource(DBQueryExecution *cExec,string dsName)
 {
 	Init();
 	this->_queryDataInfo = cExec;
-	this->_noOfAttributes = cExec.RetievedIntData().size() + cExec.RetrievedDoubleData().size() + cExec.RetrievedStringData().size();
-	this->_noOfRows = cExec.RowCount();
+	this->_noOfAttributes = cExec->RetievedIntData().size() + cExec->RetrievedDoubleData().size() + cExec->RetrievedStringData().size();
+	this->_noOfRows = cExec->RowCount();
 	this->_dsName = dsName;
 	this->_sourceType = DATASOURCE::DATABASE;
 	this->_existanceDatabitMap = PureAttInfo::existanceBitSet;
 	PureAttInfo::existanceBitSet.clear();
+	this->_csvExtractedDatainfo = NULL;
 }
 
-WrapDataSource::WrapDataSource(ExtractedCsvDTO csvExec,string dsName){
+WrapDataSource::WrapDataSource(ExtractedCsvDTO *csvExec,string dsName){
 	Init();
 	this->_dsName = dsName;
-	this->_noOfAttributes = csvExec.AttributeCount();
-	this->_noOfRows = csvExec.RowCount();
+	this->_noOfAttributes = csvExec->AttributeCount();
+	this->_noOfRows = csvExec->RowCount();
 	this->_csvExtractedDatainfo = csvExec;
 	this->_sourceType = DATASOURCE::CSVFILE;
 	this->_existanceDatabitMap = PureAttInfo::existanceBitSet;
 	PureAttInfo::existanceBitSet.clear();
+	this->_queryDataInfo = NULL;
 }
 
 WrapDataSource::WrapDataSource(void)
@@ -56,7 +58,14 @@ WrapDataSource::~WrapDataSource(void)
 	this->_codedStringAtts.clear();
 //	Commons::DeleteVector(_codedAtts.begin(),_codedAtts.end());
 	this->_codedAtts.clear();
-	
+	if (this->_queryDataInfo != NULL)
+	{
+		delete this->_queryDataInfo;
+	}
+	if (this->_csvExtractedDatainfo != NULL)
+	{
+		delete this->_csvExtractedDatainfo;
+	}
 }
 
 void WrapDataSource::Init()
@@ -81,16 +90,19 @@ size_t WrapDataSource::SpaceUtilsation()
 void WrapDataSource::encodeAtrributes(){
 	this->_codedAtts.resize(this->_noOfAttributes);
 	if(this->_sourceType == DATASOURCE::DATABASE){
-		encodeIntAttributes(this->_queryDataInfo.RetievedIntData());
-		encodeStringAttributes(this->_queryDataInfo.RetrievedStringData());
-		encodeDoubleAttributes(this->_queryDataInfo.RetrievedDoubleData());
+		encodeIntAttributes(this->_queryDataInfo->RetievedIntData());
+		encodeStringAttributes(this->_queryDataInfo->RetrievedStringData());
+		encodeDoubleAttributes(this->_queryDataInfo->RetrievedDoubleData());
 	}
 	else if (this->_sourceType == DATASOURCE::CSVFILE)
 	{
-		encodeIntAttributes(this->_csvExtractedDatainfo.IntData());
-		encodeStringAttributes(this->_csvExtractedDatainfo.MultiCatData());
-		encodeDoubleAttributes(this->_csvExtractedDatainfo.DoubleData());
-		encodeCSVStringAttributes(this->_csvExtractedDatainfo.StringData(),this->_csvExtractedDatainfo.AttributeCount());
+		encodeIntAttributes(this->_csvExtractedDatainfo->IntData());
+		encodeStringAttributes(this->_csvExtractedDatainfo->MultiCatData());
+		encodeDoubleAttributes(this->_csvExtractedDatainfo->DoubleData());
+		if (this->_csvExtractedDatainfo->StringData() != NULL)
+		{
+			encodeCSVStringAttributes(this->_csvExtractedDatainfo->StringData(),this->_csvExtractedDatainfo->AttributeCount());
+		}
 	}
 }
 
@@ -468,7 +480,7 @@ BitStreamInfo* WrapDataSource::operator ()(const int attID, const int BitStreamI
 	return (*(this->_codedAtts[attID]))(BitStreamID);
 }
 
-DBQueryExecution WrapDataSource::queryExecPointer(){
+DBQueryExecution* WrapDataSource::queryExecPointer(){
 	return (this->_queryDataInfo);
 }
 
@@ -507,7 +519,8 @@ std::string WrapDataSource::decodeTheTupleAsString( int tupleID )
 			{
 				EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(this->_codedAtts[i]);
 				std::ostringstream ss;
-				ss << doubleAtt->decodeTheTuple(tupleID);
+				double val = doubleAtt->decodeTheTuple(tupleID);
+				ss << val;
 				tuple += ss.str();
 				tuple += ",";
 				break;
