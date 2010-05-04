@@ -70,9 +70,15 @@ bool DataSourceSerialization::serializeDataSource(){
 				minVal->LinkEndChild(new TiXmlText(ltoa(intAtt->minAttVal(),new char[1024],10)));
 				att->LinkEndChild(minVal);
 
-				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
-				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(intAtt->SignBitMap()).to_ulong(),new char[1024],10)));
-				att->LinkEndChild(signMap);
+// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
+// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(intAtt->SignBitMap()).to_ulong(),new char[1024],10)));
+// 				att->LinkEndChild(signMap);
+
+				TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
+				string s;
+				to_string(intAtt->SignBitSet(),s);
+				signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
+				att->LinkEndChild(signBitSet);
 
 				codedAtts->LinkEndChild(att);
 
@@ -124,9 +130,15 @@ bool DataSourceSerialization::serializeDataSource(){
 				minVal->LinkEndChild(new TiXmlText(minv.c_str()));
 				att->LinkEndChild(minVal);
 
-				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
-				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(doubleAtt->SignBitMap()).to_ulong(),new char[1024],10)));
-				att->LinkEndChild(signMap);
+// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
+// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(doubleAtt->SignBitMap()).to_ulong(),new char[1024],10)));
+// 				att->LinkEndChild(signMap);
+
+				TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
+				string s;
+				to_string(doubleAtt->signBitSet(),s);
+				signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
+				att->LinkEndChild(signBitSet);
 				
 				TiXmlElement *precision = new TiXmlElement("PrecisionVal");
 				precision->LinkEndChild(new TiXmlText(ltoa(doubleAtt->Precision(),new char[1024],10)));
