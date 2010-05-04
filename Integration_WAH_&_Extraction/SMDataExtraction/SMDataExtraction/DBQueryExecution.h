@@ -33,6 +33,7 @@ namespace DBQueryExecutionInfo{
 			__declspec(dllexport) const char* queryStmt(){return this->_query_stmt;}
 
 		private:
+			void Init();
 			const char *_query_stmt;
 			CGOdbcStmt *_stmtPtr;
 			std::vector<PureIntAttInfo*> _intData;
