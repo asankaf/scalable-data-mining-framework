@@ -1,5 +1,6 @@
 #include "PureAttInfo.h"
 #include <vector>
+#include "Commons.h"
 
 #pragma once
 
@@ -19,6 +20,10 @@ public:
 	__declspec(dllexport) void setValueList(long int *values);
 	__declspec(dllexport) void setValList(vector<long int> vals){this->_valList = vals;}
 
+	void Init(){
+		Commons::InitVector(_valList.begin(),_valList.end());
+		_valueList = NULL;
+	}
 private:
 	long int _upper;
 	long int _lower;

@@ -6,14 +6,15 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "Commons.h"
 
 using namespace std;
 
 class PureStringAttInfo : public PureAttInfo
 {
 public:
-	PureStringAttInfo(void);
-	~PureStringAttInfo(void);
+	__declspec(dllexport) PureStringAttInfo(void);
+	__declspec(dllexport) ~PureStringAttInfo(void);
 
 	__declspec(dllexport) vector<string> ValueList();
 	__declspec(dllexport) TempStringObjects* ValObjects(){return this->_valObjects;}
@@ -24,6 +25,13 @@ public:
 	__declspec(dllexport) std::set<string> uniqueValueSet(){return this->_uniqueSet;}
 	__declspec(dllexport) void setUniqueValSet(std::set<string> _uniqueSet){this->_uniqueSet = _uniqueSet;}
 	void setUniqueValueList(int noRows);
+
+	void Init(){
+		_valueList = NULL;
+		//Commons::InitVector(_valList.begin(),_valList.end());
+		//Commons::InitVector(_uniqueValList.begin(),_uniqueValList.end());
+		//Commons::InitVector(_uniqueSet.begin(),_uniqueSet.end());
+	}
 
 private:
 	string* _valueList;

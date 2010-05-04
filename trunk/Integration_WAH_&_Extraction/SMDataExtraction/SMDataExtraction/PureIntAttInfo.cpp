@@ -3,10 +3,15 @@
 
 PureIntAttInfo::PureIntAttInfo(void)
 {
+	Init();
 }
 
 PureIntAttInfo::~PureIntAttInfo(void)
 {
+	_valList.clear();
+	vector<long int> temp;
+	_valList.swap(temp);
+	delete _valueList;
 }
 
 long int PureIntAttInfo::Upper(){
