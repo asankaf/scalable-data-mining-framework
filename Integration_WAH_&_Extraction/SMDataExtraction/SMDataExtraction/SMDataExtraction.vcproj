@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BOOST_HOME)&quot;;..\Include"
+				AdditionalIncludeDirectories="..\Include;E:\boost_1_33_0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SMDATAEXTRACTION_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
