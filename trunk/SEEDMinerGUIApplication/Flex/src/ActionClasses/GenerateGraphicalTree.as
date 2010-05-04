@@ -1,5 +1,6 @@
 package ActionClasses
 {
+	import ActionClasses.VisualTreeElements.Element;
 	import ActionClasses.VisualTreeElements.LeafElement;
 	import ActionClasses.VisualTreeElements.LinkElement;
 	import ActionClasses.VisualTreeElements.RootElement;
@@ -15,7 +16,7 @@ package ActionClasses
 		var childrenInLevel:Array;
 		var tempLevel:int=0;
 		var levelDistance:int=100;
-		var nodeDistance:int=150;
+		var nodeDistance:int=Element.nodeDistance;
 		
 		var treeWidth:int=0;
 		var treeHeight:int=0;
@@ -52,10 +53,29 @@ package ActionClasses
 			treeHeight=treeLevels*levelDistance;
 			trace(treeHeight);
 			
-			treePopUpCanvas.width=treeWidth+300;
-			treePopUpCanvas.height=(treeHeight-1)+100;
+			if(treePopUp.width<treeWidth)
+			{
+				treePopUpCanvas.width=treeWidth+100;		
+			}
+			else 
+			{
+				treePopUpCanvas.width=treePopUp.width-200;		
+			}
+			if(treePopUp.height<treeWidth)
+			{
+				treePopUpCanvas.height=(treeHeight-1)*Element.nodeDistance+50;
+			}
+			else 
+			{
+				treePopUpCanvas.height=treePopUp.height-200;
+			}		
 			
-			var shiftX:int=-mostNegativeValue+150;
+			var add:int=treePopUp.width/2-(-mostNegativeValue+mostPositiveValue)/2;
+			if(add<0)
+			{
+				add=-add;
+			}
+			var shiftX:int=-mostNegativeValue+add;
 			var shiftY:int=50;
 			
 			dom.root.x=shiftX;

@@ -23,7 +23,7 @@ package ActionClasses.VisualTreeElements
 			labelObj.text=lable;
 			labelObj.setStyle("fontSize",13);
 			labelObj.setStyle("color","#787878");
-			this.width=labelObj.text.length*Element.nodeTextCharacterWidth;
+			this.width=Element.estimateStringPixelLength(labelObj.text);
 			this.height=Element.rootElementHeight;
 			this.addChild(labelObj);
 		}

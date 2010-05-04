@@ -16,6 +16,9 @@ package ActionClasses
 		public static const MySQL_DATASOURCE:Number = 1;
 		public static const TEXT_VIEWER:Number = 2;
 		public static const ALGORITHM_APRIORY:Number = 3;
+		public static const TREE_VIEWER:Number = 4;
+		public static const ALGORITHM_CLASSIFICATION:Number = 5;
+		public static const FILTER_RESAMPLE:Number = 6;
 		
 		public static const NO_DRAWING:Number=-1;
 		public static const ARROW_DRAWING:Number=0;

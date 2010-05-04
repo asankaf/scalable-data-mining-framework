@@ -7,10 +7,12 @@ package ActionClasses
 		{
 			
 			var currentNode:DomNode;
+			var tempCurrentNode:DomNode;
 			var currentLevel:int=1;
 			var stack:Array=new Array();
 			var originalString:Array=treeString.split(" ");
 			var nospacesString:String=originalString.join("");
+			
 			var nodeString:Array = nospacesString.split( '\n' );
 			
 			var rootString:String =nodeString[0];
@@ -50,6 +52,7 @@ package ActionClasses
 						
 						currentNode.child.push(_root);
 						currentNode=_root;
+						tempCurrentNode=currentNode;
 						
           				if(0<extractedCurrentString.indexOf(":",0))
 	          			{
@@ -60,9 +63,9 @@ package ActionClasses
 	          			else
 	          			{
 	          				var child:DomNode=createLinkNormal(extractedCurrentString,currentNode);
-	          			}
-	          			
-	          			stack.push(new StackObject(nextLevel,currentNode));
+	          				currentNode=child;
+	          			}	
+	          			stack.push(new StackObject(nextLevel,tempCurrentNode));
           			}
           			
           			else
@@ -73,6 +76,8 @@ package ActionClasses
           				
           				if(stackTop==nextLevel)
           				{
+          					tempCurrentNode=currentNode;
+          					
           					if(0<extractedCurrentString.indexOf(":",0))
 		          			{
 		          				var child:DomNode=createLinkWithColon(extractedCurrentString,currentNode);
@@ -80,8 +85,10 @@ package ActionClasses
 		          			}
 		          			else
 		          			{
-		          				var child:DomNode=createLinkNormal(extractedCurrentString,currentNode);
+		          				var child:DomNode=createLinkNormal(extractedCurrentString,currentNode);	          				
+	          					currentNode=child;
 		          			}
+		          			stack.push(new StackObject(nextLevel,tempCurrentNode));
           				}
           				
           				else if(stackTop<nextLevel)
@@ -91,6 +98,7 @@ package ActionClasses
 								
 							currentNode.child.push(_root);
 							currentNode=_root;
+							tempCurrentNode=currentNode;
 							
 	          				if(0<extractedCurrentString.indexOf(":",0))
 		          			{
@@ -100,14 +108,15 @@ package ActionClasses
 		          			else
 		          			{
 		          				var child:DomNode=createLinkNormal(extractedCurrentString,currentNode);
+		          				currentNode=child;
 		          			}
-		          			stack.push(new StackObject(nextLevel,currentNode));
+		          			stack.push(new StackObject(nextLevel,tempCurrentNode));
           				}
           				
           				else if(nextLevel<stackTop)
           				{	
           					var stackObj:StackObject;
-	          				for(var j:int=0;j<stack.length;j++)
+	          				while(stack.length!=0)
 	          				{
 	          					stackObj=StackObject(stack.pop());
 	          					var stackTop:int=stackObj.level;
@@ -119,6 +128,7 @@ package ActionClasses
 	          				}
 
 							currentNode=stackObj.node;
+							tempCurrentNode=currentNode;
 							
 	          				if(0<extractedCurrentString.indexOf(":",0))
 		          			{
@@ -128,13 +138,15 @@ package ActionClasses
 		          			else
 		          			{
 		          				var child:DomNode=createLinkNormal(extractedCurrentString,currentNode);
+		          				currentNode=child;
 		          			}
+		          			stack.push(new StackObject(nextLevel,tempCurrentNode));
           				}
           			}
 
           		}
         	}
-        	//traverse(root);
+        	traverse(root);
 		}
 		
 		
@@ -144,7 +156,8 @@ package ActionClasses
 		
 		public function traverse(root:DomNode):void
 		{	
-			trace(root+" "+root.type);
+			trace("node: "+root+" "+root.type);
+			trace("chilren: "+root.child);
 			for(var i:int = 0; i < root.child.length; i++ )
 			{
 				traverse(root.child[i]);
