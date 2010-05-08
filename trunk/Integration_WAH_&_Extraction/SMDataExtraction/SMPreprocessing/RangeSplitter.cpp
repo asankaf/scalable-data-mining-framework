@@ -11,6 +11,7 @@ RangeSplitter::RangeSplitter(void)
 
 RangeSplitter::~RangeSplitter(void)
 {
+	this->_rangeVals.clear();
 }
 
 EncodedMultiCatAttribute* RangeSplitter::SplitRangesInNumericAtts(){
@@ -34,7 +35,7 @@ EncodedMultiCatAttribute* RangeSplitter::SplitRangesInNumericAtts(){
 				this->_rangeVals.push_back(intAtt->maxAttVal());
 			}
 			multiAtt->setUniqueValList(prepareUniqueValList());
-			
+
 			dynamic_bitset<> *convertdBitArray = new dynamic_bitset<>[this->_rowCount];
 			int temp = 0;
 			if (this->_maxValAssigned == 1)
@@ -51,7 +52,7 @@ EncodedMultiCatAttribute* RangeSplitter::SplitRangesInNumericAtts(){
 				convertdBitArray[i - 1] = convertInt(currVal,temp);
 			}
 
-			
+
 			BitStreamInfo **bitStreams = new BitStreamInfo*[temp];
 			for (int k = 0 ; k < temp ; k++)
 			{
@@ -167,7 +168,7 @@ vector<BitStreamInfo *> RangeSplitter::Splitter(EncodedAttributeInfo * _attribut
 	//Suppose we are splitting to following three ranges [0,1],(1,2],(2,3]
 	vector<double> vect(3);
 	vect[0] = 0;
-	vect[1] = 1;	
+	vect[1] = 1;
 	vect[2] = 2;
 
 	vector<BitStreamInfo *> unique_vals(3);
@@ -192,6 +193,156 @@ vector<BitStreamInfo *> RangeSplitter::Splitter(EncodedAttributeInfo * _attribut
 
 	//delete temp;
 	return unique_vals;
-		
+
 }
 
+EncodedMultiCatAttribute* RangeSplitter::SplitRanges()
+{
+	EncodedMultiCatAttribute* multiAtt = new EncodedMultiCatAttribute();
+	int attType = (int)this->_attribute->attributeType();
+	switch(attType)
+	{
+	case 0:
+		{
+			EncodedIntAttribute* intAtt = static_cast<EncodedIntAttribute*>(this->_attribute);
+			if (intAtt->minAttVal() < this->_rangeVals[0])
+			{
+				this->_rangeVals[0] = intAtt->minAttVal();
+			}
+			if (intAtt->maxAttVal() > this->_rangeVals[this->_rangeVals.size() - 1])
+			{
+				this->_rangeVals[this->_rangeVals.size() - 1] = intAtt->maxAttVal();
+			}
+			if (this->_rangeVals.size() == 1)
+			{
+				this->_rangeVals.push_back(intAtt->maxAttVal());
+			}
+			multiAtt->setUniqueValList(prepareUniqueValList());
+			break;
+		}
+	case 1:
+		{
+			EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(this->_attribute);
+
+			if (doubleAtt->minAttVal() < this->_rangeVals[0])
+			{
+				this->_rangeVals[0] = doubleAtt->minAttVal();
+			}
+			if (doubleAtt->maxAttVal() > this->_rangeVals[this->_rangeVals.size() - 1])
+			{
+				this->_rangeVals[this->_rangeVals.size() - 1] = doubleAtt->maxAttVal();
+			}
+			if (this->_rangeVals.size() == 1)
+			{
+				this->_rangeVals.push_back(doubleAtt->maxAttVal());
+			}
+			multiAtt->setUniqueValList(prepareUniqueValList(true,doubleAtt->Precision()));
+			break;
+		}
+	default:
+		return multiAtt;
+	}
+
+	/************************************************************************/
+	/* Unique Bit Map Creation.                                                                     */
+	/************************************************************************/
+	int no_unique_vals = this->_rangeVals.size() - 1;
+	vector<BitStreamInfo*> uniqueBitStreams(no_unique_vals);
+	BitStreamInfo* temp = AlgoUtils::UGreaterThan(this->_attribute,this->_rangeVals[1],this->_rowCount);
+	//cout<< temp->getProcessedBitStream()<<endl;
+
+	for (int i=1 ; i < no_unique_vals - 1 ; i++)
+	{
+		BitStreamInfo *next_temp = AlgoUtils::UGreaterThan(this->_attribute,this->_rangeVals[i + 1],this->_rowCount);
+		//cout << (~(*next_temp))->getProcessedBitStream()<<endl;
+		uniqueBitStreams[i] = *temp & (*(~(*next_temp)));
+		temp = next_temp;
+	}
+
+	uniqueBitStreams[no_unique_vals - 1] = temp;
+	
+// 	for (int i = 1 ; i < no_unique_vals ; i++)
+// 	{
+// 		cout<<uniqueBitStreams[i]->getProcessedBitStream()<<endl;
+// 	}
+
+	int no_v_bitstreams = (int)(ceil(log10((double)no_unique_vals)/log10(2.0)));
+	if (pow(2.0,(double)no_v_bitstreams) == (double)no_unique_vals)
+	{
+		no_v_bitstreams++;
+	}
+	string unique_val_order;
+	for (int i = 1 ; i < no_unique_vals ; i++)
+	{
+		dynamic_bitset<> temp(no_v_bitstreams,(unsigned long)i);
+		string s;
+		to_string(temp,s);
+		unique_val_order.append(s.c_str());
+	}
+	vector<BitStreamInfo*> v_bitStreams(no_v_bitstreams);
+	for (int i = 0 ; i < no_v_bitstreams ; i++)
+	{
+		BitStreamInfo *bitStream = new VBitStream();
+		dynamic_bitset<> bitSet(this->_rowCount);
+		bitStream->convert(bitSet);
+		v_bitStreams[i] = bitStream;
+	}
+	int counter = 1;
+	int vBitStreams_switcher = 0;
+	for (int j = 0 ; j < unique_val_order.size() ; j++)
+	{
+		vBitStreams_switcher = j % no_v_bitstreams;
+		if((j != 0) && (vBitStreams_switcher == 0)) counter++;
+		if(unique_val_order[j] == '0') continue;
+		else
+		{			
+			v_bitStreams[no_v_bitstreams - vBitStreams_switcher - 1]=(*uniqueBitStreams[counter]) | (*v_bitStreams[no_v_bitstreams - vBitStreams_switcher - 1]);
+			//v_bitStreams[vBitStreams_switcher]->convert((uniqueBitStreams[counter]->getProcessedBitStream()) | (v_bitStreams[vBitStreams_switcher]->getProcessedBitStream()));
+			//cout << v_bitStreams[vBitStreams_switcher]->getProcessedBitStream()<<endl;
+		}
+	}
+
+	for (int k = 0 ; k < no_v_bitstreams ; k++)
+	{
+		v_bitStreams[k]->setBitStreamAllocAttID(this->_attribute->attributeID());
+		v_bitStreams[k]->setBitStreamAllocAttName(this->_attribute->attributeName());
+	}
+
+	multiAtt->setNoOfVBitStreams(no_v_bitstreams,this->_rowCount);
+	multiAtt->setAttID(this->_attribute->attributeID());
+	multiAtt->setAttName(this->_attribute->attributeName());
+	multiAtt->setAttType(this->_attribute->attributeType());
+	multiAtt->setVBitStreams(v_bitStreams);
+	return multiAtt;
+}
+
+EncodedMultiCatAttribute* RangeSplitter::SplitIntoEqualRanges( int no_of_ranges )
+{
+	int attType = (int)this->_attribute->attributeType();	
+	double MinVal;
+	double difference;
+	switch(attType){
+		case 0:
+			{
+				EncodedIntAttribute* intAtt = static_cast<EncodedIntAttribute*>(this->_attribute);
+				difference = (long)ceil((double)intAtt->maxAttVal()/(no_of_ranges + 1));
+				MinVal = intAtt->minAttVal();
+				break;
+			}
+		case 1:
+			{
+				EncodedDoubleAttribute* douAtt = static_cast<EncodedDoubleAttribute*>(this->_attribute);
+				difference = (double)(douAtt->maxAttVal()/(no_of_ranges + 1));
+				MinVal = douAtt->minAttVal();
+				break;
+			}
+	}
+	vector<double> ranges(no_of_ranges + 1);
+	for (int i = 0 ; i <= no_of_ranges ; i++)
+	{
+		ranges[i] = MinVal + difference;
+		MinVal = ranges[i];
+	}
+	this->_rangeVals = ranges;
+	return SplitRanges();
+}
