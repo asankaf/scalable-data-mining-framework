@@ -138,7 +138,14 @@ void WrapDataSource::encodeIntAttributes(vector<PureIntAttInfo*> intAtts){
 		{
 			no_v_bitStreams = 1;
 		}
-		else no_v_bitStreams = (int)ceil(log10((double)upperNum)/log10(2.0));
+		else 
+		{
+			no_v_bitStreams = (int)ceil(log10((double)upperNum)/log10(2.0));
+			if (pow(2.0,(double)no_v_bitStreams) == (double)upperNum)
+			{
+				no_v_bitStreams++;
+			}
+		}
 		encodedIntAtt->setNoOfVBitStreams(no_v_bitStreams,this->_noOfRows);
 		vector<long int> values = pureIntAtt->valList();
 		encodedIntAtt->setTheSignBitMap(values,this->_noOfRows);
@@ -309,7 +316,14 @@ void WrapDataSource::encodeDoubleAttributes(vector<PureDoubleAttInfo*> doubleAtt
 			{
 				no_v_bitstreams = 1;
 			}
-			else no_v_bitstreams = (int)ceil(log10((double)maxLongValConverted)/log10(2.0));
+			else 
+			{
+				no_v_bitstreams = (int)ceil(log10((double)maxLongValConverted)/log10(2.0));
+				if (pow(2.0,(double)no_v_bitstreams) == (double)maxLongValConverted)
+				{
+					no_v_bitstreams++;
+				}
+			}
 			encodedDoubleAtt->setNoOfVBitStreams(no_v_bitstreams,this->_noOfRows);
 
 			vector<double> vals = pureDoubleAtt->valList();
