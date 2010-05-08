@@ -78,6 +78,7 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 						attEl = attElement->FirstChildElement("minval");
 						intAtt->setMinVal(atol(attEl->GetText()));
 						attEl = attElement->FirstChildElement("SignBitSet");
+						//attEl = attElement->FirstChildElement("SignMapVal");
 // 						vector<bool> signMap;
 // 						if (atol(attEl->GetText()) == 0)
 // 						{						
@@ -104,6 +105,7 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 						attEl = attElement->FirstChildElement("minval");
 						doubleAtt->setMinVal(atol(attEl->GetText()));
 						attEl = attElement->FirstChildElement("SignBitSet");
+						//attEl = attElement->FirstChildElement("SignMapVal");
 // 						vector<bool> signMap;
 // 						if (atol(attEl->GetText()) == 0)
 // 						{						

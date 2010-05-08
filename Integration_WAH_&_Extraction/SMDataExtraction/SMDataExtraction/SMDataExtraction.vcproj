@@ -177,42 +177,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\csv_parser.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CsvConnection.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EncodedAttributeInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EncodedDoubleAttribute.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extractedCsvDTO.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LoadSavedDataSources.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PureAttributeInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PureIntAttributeInfo.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SaveDataSources.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -221,19 +185,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\StringSpecAssignVals.h"
-				>
-			</File>
-			<File
 				RelativePath=".\targetver.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tinystr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tinyxml.h"
 				>
 			</File>
 			<Filter
@@ -257,6 +209,10 @@
 				</File>
 				<File
 					RelativePath=".\PureStringAttInfo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\StringSpecAssignVals.h"
 					>
 				</File>
 			</Filter>
@@ -292,6 +248,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EncodedAttributeInfo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\EncodedDoubleAttribute.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EncodedIntAttribute.h"
 					>
 				</File>
@@ -320,6 +284,42 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="CSVConnectionInfo"
+				>
+				<File
+					RelativePath=".\csv_parser.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CsvConnection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\extractedCsvDTO.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Save&amp;LoadEncodedData"
+				>
+				<File
+					RelativePath=".\LoadSavedDataSources.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SaveDataSources.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tinystr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\tinyxml.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -334,18 +334,6 @@
 			>
 			<File
 				RelativePath=".\Commons.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\csv_parser.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CsvConnection.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DecodeTuple.cpp"
 				>
 			</File>
 			<File
@@ -371,22 +359,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\EncodedDoubleAttribute.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\LoadSavedDataSources.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PureIntAttributeInfo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SaveDataSources.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -405,22 +377,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\tinystr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tinyxml.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tinyxmlerror.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tinyxmlparser.cpp"
-				>
 			</File>
 			<Filter
 				Name="DBFrameworkSource"
@@ -441,6 +397,10 @@
 			<Filter
 				Name="PureDataInfoSource"
 				>
+				<File
+					RelativePath=".\DecodeTuple.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\PureAttInfo.cpp"
 					>
@@ -474,6 +434,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EncodedDoubleAttribute.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\EncodedIntAttribute.cpp"
 					>
 				</File>
@@ -499,6 +463,46 @@
 				>
 				<File
 					RelativePath=".\SMException.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="CSVConnectionInfo"
+				>
+				<File
+					RelativePath=".\csv_parser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CsvConnection.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Save&amp;LoadEncodedData"
+				>
+				<File
+					RelativePath=".\LoadSavedDataSources.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SaveDataSources.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tinystr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tinyxml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tinyxmlerror.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\tinyxmlparser.cpp"
 					>
 				</File>
 			</Filter>
