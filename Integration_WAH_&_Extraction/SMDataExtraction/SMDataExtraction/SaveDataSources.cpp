@@ -37,6 +37,12 @@ bool DataSourceSerialization::serializeDataSource(){
 		noRows->LinkEndChild(new TiXmlText(itoa(ds->noOfRows(),new char[1024],10)));
 		dsNode->LinkEndChild(noRows);
 
+		TiXmlElement *existanceBitMap = new TiXmlElement("existanceBitMap");
+		string mapString;
+		to_string(ds->ExistanceDatabitMap(),mapString);
+		existanceBitMap->LinkEndChild(new TiXmlText(mapString.c_str()));
+		dsNode->LinkEndChild(existanceBitMap);
+
 		TiXmlElement *dsType = new TiXmlElement("DataSourceType");
 		dsType->LinkEndChild(new TiXmlText(itoa((int)ds->SourceType(),new char[1024],10)));
 		dsNode->LinkEndChild(dsType);
