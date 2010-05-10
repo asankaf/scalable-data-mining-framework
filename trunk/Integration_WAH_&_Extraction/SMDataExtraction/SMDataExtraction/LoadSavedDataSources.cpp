@@ -43,6 +43,13 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 			int noAtts = atoi(dsElement->GetText());
 			dsElement = dsElement->NextSiblingElement("noOfRows");
 			int noRows = atoi(dsElement->GetText());
+			//Following two lines will load the existance bitmap from the saved file.
+			//For older versions of saved data files, this won't be working.
+			//So for old data file loading, just comment the following two lines.
+			//And also make sure to comment the place where the existance_map is added to wrapdatasource object.
+			string existanceMap = dsElement->NextSiblingElement("existanceBitMap")->GetText();
+			dynamic_bitset<> existance_map(existanceMap);
+
 			vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributes(dsName,noRows,limit);
 			if (limit)
 			{
@@ -60,6 +67,8 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 			ds->noOfAttributes(noAtts);
 			ds->noOfRows(noRows);
 			ds->setSourceType(sourceType);
+			//comment this for loading old saved files. 
+			ds->ExistanceDatabitMap(existance_map);
 			dsElement = dsElement->NextSiblingElement("CodedAttributes");
 			TiXmlElement *attElement = dsElement->FirstChildElement("Attribute");
 		//	vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributes(dsName,noRows);
