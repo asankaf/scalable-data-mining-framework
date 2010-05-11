@@ -12,7 +12,7 @@
             
         ]]>
     </mx:Script>
-	<mx:Canvas x="10" y="10" width="710" height="368" horizontalScrollPolicy="auto">
-		<mx:TextArea x="10" y="10" height="348" id="textViewerTextArea" text="" editable="false" width="690" fontAntiAliasType="advanced" fontSize="11"/>
+	<mx:Canvas id="drawingCanvas" x="10" y="10" width="710" height="368" horizontalScrollPolicy="auto">
+		<mx:TextArea x="10" y="10" id="textViewerTextArea" text="" editable="false"  fontAntiAliasType="advanced" fontSize="11" height="348"/>
 	</mx:Canvas>
 </mx:TitleWindow>

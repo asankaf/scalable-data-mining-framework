@@ -51,7 +51,7 @@ package ActionClasses
 			treeWidth=-mostNegativeValue+mostPositiveValue;
 			calculateTreeLevels(dom.root);
 			treeHeight=treeLevels*levelDistance;
-			trace(treeHeight);
+			//trace(treeHeight);
 			
 			if(treePopUp.width<treeWidth)
 			{
@@ -59,7 +59,7 @@ package ActionClasses
 			}
 			else 
 			{
-				treePopUpCanvas.width=treePopUp.width-200;		
+				treePopUpCanvas.width=treePopUp.width-150;		
 			}
 			if(treePopUp.height<treeWidth)
 			{
@@ -67,7 +67,7 @@ package ActionClasses
 			}
 			else 
 			{
-				treePopUpCanvas.height=treePopUp.height-200;
+				treePopUpCanvas.height=treePopUp.height-40;
 			}		
 			
 			var add:int=treePopUp.width/2-(-mostNegativeValue+mostPositiveValue)/2;
@@ -76,7 +76,7 @@ package ActionClasses
 				add=-add;
 			}
 			var shiftX:int=-mostNegativeValue+add;
-			var shiftY:int=50;
+			var shiftY:int=10;
 			
 			dom.root.x=shiftX;
 			dom.root.y=shiftY;

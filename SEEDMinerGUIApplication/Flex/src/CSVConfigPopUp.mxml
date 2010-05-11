@@ -20,7 +20,7 @@
         <mx:VBox x="10" y="10" height="52" width="542" horizontalAlign="right">
             <mx:HBox width="537">
                 <mx:Label text="csv file path"/>
-                <mx:TextInput width="456" id="location"/>
+                <mx:TextInput width="456" id="location" creationComplete="focusManager.setFocus(location)"/>
             </mx:HBox>
             <mx:Button label="Ok" click="ok(event);"/>
         </mx:VBox>
