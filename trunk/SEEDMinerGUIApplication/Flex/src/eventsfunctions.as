@@ -13,6 +13,7 @@ import ActionClasses.Path;
 import ActionClasses.TextViewer;
 import ActionClasses.TreeViewer;
 import ActionClasses.Util;
+import ActionClasses.VisualTreeElements.Element;
 
 import com.dncompute.graphics.ArrowStyle;
 import com.dncompute.graphics.GraphicsUtil;
@@ -59,13 +60,16 @@ public function cplusPluseCallBackFunction(str:String):void
 	
 	if(view=="textViewer")
 	{
+		var data:String=strings[1];
 		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
-		textPopUp.textViewerTextArea.text=str;
+		var startindex:int=String(data).search("\n");
+		textPopUp.textViewerTextArea.width=Element.estimateStringPixelLength(data.slice(0,startindex));
+		textPopUp.textViewerTextArea.text=data;
 		var point1:Point = new Point();
 		point1.x=0;
 	    point1.y=0;                
 	    textPopUp.x=canvasmain.width/2-textPopUp.width/2;
-	    textPopUp.y=150;
+	    textPopUp.y=canvasmain.height/2-textPopUp.height/2;
 	}
 	
 	else if(view=="treeViewer")
@@ -88,8 +92,8 @@ public function cplusPluseCallBackFunction(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	//if(1<actionObjectSequence.length)
-	//{
+	if(1<actionObjectSequence.length)
+	{
 		showStatus(EXECUTING);
 		//ExternalInterface.call("fnname");
 		 
@@ -117,13 +121,13 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		//__callBackFunction.call(fabridge,ret);
-		var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
+		__callBackFunction.call(fabridge,ret);
+		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)";
-		cplusPluseCallBackFunction(str);
+		//cplusPluseCallBackFunction(str);
 	
-	//}
+	}
 	
 }
 
