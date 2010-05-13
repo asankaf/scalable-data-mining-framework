@@ -14,6 +14,8 @@ import ActionClasses.TextViewer;
 import ActionClasses.TreeViewer;
 import ActionClasses.Util;
 import ActionClasses.VisualTreeElements.Element;
+import ActionClasses.WAHCompression;
+import ActionClasses.WAHCompression2;
 
 import com.dncompute.graphics.ArrowStyle;
 import com.dncompute.graphics.GraphicsUtil;
@@ -25,6 +27,7 @@ import flash.events.MouseEvent;
 import mx.containers.Canvas;
 import mx.controls.Alert;
 import mx.controls.Image;
+import mx.controls.Label;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
@@ -50,7 +53,7 @@ private var EXECUTING:String="Executing Flaw";
 
 public function startUp(event:Event):void
 {
-
+	
 }
 
 public function cplusPluseCallBackFunction(str:String):void
@@ -279,6 +282,18 @@ private function mouseDownHandler(event:MouseEvent):void
     	var filterResample:ActionObject = new FilterResample();
     	filterResample.image=dragInitiator;
     	actionObj=filterResample;	
+    }
+    else if(dragInitiator.id=="WAH_Compression")
+    {
+    	var wahcompression:ActionObject = new WAHCompression();
+    	wahcompression.image=dragInitiator;
+    	actionObj=wahcompression;	
+    }
+    else if(dragInitiator.id=="WAH_Compression2")
+    {
+    	var wahcompression2:ActionObject = new WAHCompression2();
+    	wahcompression2.image=dragInitiator;
+    	actionObj=wahcompression2;	
     }
 
     var imageProxy:Image = new Image();
