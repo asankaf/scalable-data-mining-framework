@@ -1,6 +1,8 @@
 #include "TestNaiveBayes.h"
 #include "BitStreamInfo.h"
 #include "CompressionHandler.h"
+#include "classifiertestsource.h"
+#include "naivebayesmod.h"
 
 
 TestNaiveBayes::TestNaiveBayes(void)
@@ -13,10 +15,13 @@ TestNaiveBayes::~TestNaiveBayes(void)
 
 void TestNaiveBayes::TestSuite()
 {
-	//TestClassifier(CreateDataSource("C:\\Data\\soybeanTest.csv"));
-	//TestClassifier(CreateDataSource("C:\\Data\\weather.nominal.csv"));
+	//TestClassifier(CreateDataSource("C:\\Data\\test dataset-10000.csv"));
+	//TestClassifier(CreateDataSource("C:\\Data\\iris.csv"));
+	//TestClassifier(CreateDataSource("C:\\Data\\soyaTestsort.csv"));
+	TestClassifier(CreateDataSource("C:\\Data\\weather.nominal.csv"));
+	//test dataset-10000.csv
 	//randInts
-	TestClassifier(CreateDataSource("randInts_data","randInts_metadata","randInts"));
+	//TestClassifier(CreateDataSource("randInts_data","randInts_metadata","randInts"));
 	//TestClassifier(CreateDataSource("soyaTestlarge_300000_data","soyaTestlarge_300000_metadata","soyaTestlarge"));
 	//TestClassifier(CreateDataSource("C:\\Data\\soybeanTest3.csv"));
 	//soyaTestlarge_300000_metadata.xml
@@ -60,7 +65,7 @@ WrapDataSource * TestNaiveBayes::CreateDataSource(string csv_path)
 	//"C:\\Data\\weather.nominal.csv"
 	CsvConnection cConcsv(csv_path.data(),',','\n','""');		
 	ExtractedCsvDTO *dat = cConcsv.extractData();
-	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+	WrapDataSource *ds = new WrapDataSource(dat,"0");	
 	ds->encodeAtrributes();
 	return ds;
 }
@@ -68,7 +73,8 @@ WrapDataSource * TestNaiveBayes::CreateDataSource(string csv_path)
 void TestNaiveBayes::TestClassifier(WrapDataSource * ds)
 {
 	CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-	NaiveBayes bayes;
+	//NaiveBayes bayes;
+	NaiveBayesMod bayes;
 	clock_t start,end;
 	cout <<"Started to build classifier : " << endl;
 	start = clock();
@@ -76,6 +82,9 @@ void TestNaiveBayes::TestClassifier(WrapDataSource * ds)
 	end = clock();
 	cout << bayes.toString() << endl;
 	cout << "Time Spent : " << end - start << endl;
+	ClassifierTestSource * test_source = new ClassifierTestSource(ds,ds->codedAttributes().size()-1);
+	bayes.ClassifyInstances(test_source);
+	test_source->BuildConfusionMatrix();
 	delete ds;
 }
 

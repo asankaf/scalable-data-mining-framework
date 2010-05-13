@@ -340,7 +340,7 @@ WrapDataSource * TestComputations::CreateDataSource(string csv_path)
 	//"C:\\Data\\weather.nominal.csv"
 	CsvConnection cConcsv(csv_path.data(),',','\n','""');		
 	ExtractedCsvDTO *dat = cConcsv.extractData();
-	WrapDataSource *ds = new WrapDataSource(*dat,"0");	
+	WrapDataSource *ds = new WrapDataSource(dat,"0");	
 	ds->encodeAtrributes();
 	return ds;
 }

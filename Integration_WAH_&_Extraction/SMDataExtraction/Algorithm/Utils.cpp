@@ -182,3 +182,41 @@ string Utils::toStringVal(double val, int precission)
 	// This method is said to be inefficient
 	return toStringVal(roundDouble(val,precission));
 }
+
+
+void Utils::Normalize(double * doubles,size_t _length)
+{
+	double sum = 0;
+	for (int i = 0; i < _length; i++) {
+		sum += doubles[i];
+	}
+	Normalize(doubles, sum,_length);
+}
+
+int Utils::MaxIndex(double * _doubles,size_t _length)
+{
+
+	double maximum = 0;
+	int maxIndex = 0;
+
+	for (int i = 0; i < _length; i++) {
+		if ((i == 0) || (_doubles[i] > maximum)) {
+			maxIndex = i;
+			maximum = _doubles[i];
+		}
+	}
+
+	return maxIndex;
+}
+
+void Utils::Normalize(double * doubles, double sum,size_t _length)
+{
+
+	if (sum == 0)
+	{
+		return;
+	}
+	for (int i = 0; i < _length; i++) {
+		doubles[i] /= sum;
+	}
+}

@@ -279,7 +279,7 @@ void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
 {
 	CsvConnection cConcsv(path.data(),',','\n','""');
 	ExtractedCsvDTO *dat = cConcsv.extractData();
-	m_source = new WrapDataSource(*dat,"0");	
+	m_source = new WrapDataSource(dat,"0");	
 	m_source->encodeAtrributes();
 }
 void CIntelliCheckersUIDlg::Aprior( double _confidence,double _min_suport,int _rules )
@@ -333,6 +333,15 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 		{
 			if (m_classifier != NULL)
 			{
+				output = m_classifier->toGraph();
+			}
+
+		}
+		break;
+	case CLASSIFIER_TEXT_SOURCE:
+		{
+			if (m_classifier != NULL)
+			{
 				output = m_classifier->toString();
 			}
 
@@ -376,10 +385,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//assign it to "formattedOutPut" here
 		CSV(path,1000);		
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
-		NullEliminator();
+		//NullEliminator();
 		formattedOutPut = Text(WRAPPED_SOURCE,100);
 		DeleteAll();
-		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
@@ -394,7 +403,30 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		formattedOutPut = Text(APRIORI_SOURCE,0);
 		//formattedOutPut = Text(BAYESIAN_SOURCE,0);
 		DeleteAll();
-		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+	}else if (procedure == "csv->classification->tree")
+	{
+		string path=evt->procedurePara;
+		string formattedOutPut="";		
+		CSV(path,1000);
+		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
+		Classifier();
+		formattedOutPut = Text(CLASSIFIER_SOURCE,0);		
+		DeleteAll();
+						
+		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+
+	}
+	else if (procedure == "csv->classification->text")
+	{
+		string path=evt->procedurePara;
+		string formattedOutPut="";		
+		CSV(path,1000);
+		Classifier();
+		formattedOutPut = Text(CLASSIFIER_TEXT_SOURCE,0);		
+		DeleteAll();
+		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 
 	}
 	

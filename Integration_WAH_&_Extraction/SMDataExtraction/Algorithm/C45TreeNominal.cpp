@@ -51,15 +51,24 @@ void C45TreeNominal::CreateExistenceBitMap()
 	m_existence_map->CompressWords(temp);
 }
 
+string C45TreeNominal::toGraph()
+{
+	return m_root->toGraph();
+}
+
 string C45TreeNominal::toString()
 {
 	if (m_root == NULL) {
 		return "No classifier built";
 	}
-	if (m_unpruned)
+	if (m_unpruned){
 		return "C45 unpruned tree\n------------------\n" + m_root->toString();
-	else
+		return m_root->toString();
+	}
+	else{
 		return "J48 pruned tree\n------------------\n" + m_root->toString();
+		return m_root->toString();
+	}
 }
 
 void C45TreeNominal::buildClassifier(WrapDataSource * instances)
