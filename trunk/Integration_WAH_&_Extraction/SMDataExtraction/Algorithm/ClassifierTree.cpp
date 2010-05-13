@@ -75,13 +75,28 @@ string ClassifierTree::toString(){
 	 
 }
 
+string ClassifierTree::toGraph()
+{
+	string text;
+
+	if (m_isLeaf) {
+		text.append(": ");
+		text.append(m_localModel->dumpLabel(0,m_train));
+	}else
+		dumpTree(0,text);
+	//text.append("\n\nNumber of Leaves  : \t"+ Utils::toStringVal(numLeaves()) +"\n");
+	//text.append("\nSize of the tree : \t"+ Utils::toStringVal(numNodes()) +"\n");
+	text.erase(text.begin());
+	return text;
+}
+
 void ClassifierTree::dumpTree(int depth, string & text) 
 {
 	int i,j;
 
 	for (i=0;i<m_sonsLength;i++)
 	{
-		text.append("\n");;
+		text.append("\n");
 		for (j=0;j<depth;j++)
 		{
 			text.append("|   ");

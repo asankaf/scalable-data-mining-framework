@@ -35,7 +35,7 @@ private:
 	AprioriOpt * m_apriori;
 	C45TreeNominal * m_classifier;
 	NaiveBayes * m_bayesian;
-	enum source_type{WRAPPED_SOURCE,APRIORI_SOURCE,CLASSIFIER_SOURCE,BAYESIAN_SOURCE};
+	enum source_type{WRAPPED_SOURCE,APRIORI_SOURCE,CLASSIFIER_SOURCE,CLASSIFIER_TEXT_SOURCE,BAYESIAN_SOURCE};
 
 	/**
 	Loads data from a CSV file

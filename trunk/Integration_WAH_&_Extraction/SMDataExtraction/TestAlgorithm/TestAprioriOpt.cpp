@@ -185,9 +185,9 @@ WrapDataSource * TestAprioriOpt::CreateWrappedDataSource()
 	cCon.initiateConnectionToDB();
 	char* command = "SELECT  * FROM soyabeantest ";
 	//char* command = "SELECT  precip,date,class FROM soyabeantest LIMIT 100";
-	DBQueryExecution cExec(command);
+	DBQueryExecution * cExec = new DBQueryExecution(command);
 	cout << "Loaded Data" << endl;
-	cExec.ExecuteQueryAndBindData(cCon.DBConnectionPtr());
+	cExec->ExecuteQueryAndBindData(cCon.DBConnectionPtr());
 
 	WrapDataSource *ds = new WrapDataSource(cExec,0);	
 ds->encodeAtrributes();

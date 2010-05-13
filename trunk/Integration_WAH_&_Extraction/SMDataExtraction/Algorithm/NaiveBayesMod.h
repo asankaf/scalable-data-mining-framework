@@ -3,15 +3,14 @@
 #include <iostream>
 #include "classifiertestsource.h"
 #include "instances.h"
-
+#include "Utils.h"
 using namespace std;
-
-class NaiveBayes
+class NaiveBayesMod
 {
 public:
-	_declspec(dllexport) NaiveBayes(void);
+	_declspec(dllexport) NaiveBayesMod(void);
 
-	_declspec(dllexport) ~NaiveBayes(void);
+	_declspec(dllexport) ~NaiveBayesMod(void);
 
 	/**Generates the classifier. */
 	_declspec(dllexport) void buildClassifier(WrapDataSource * instances,int class_index);
@@ -27,7 +26,7 @@ public:
 
 protected:
 	/** All the counts for nominal attributes. */
-	 double *** m_Counts;
+	double *** m_Counts;
 
 	/** The means for numeric attributes. */
 	double ** m_Means;
@@ -39,8 +38,8 @@ protected:
 	double * m_Priors;
 
 	/** The instances used for training. */
-	DataSource * m_Instances;
-	//Instances * m_Instances;
+	//DataSource * m_Instances;
+	Instances * m_Instances;
 
 	/** The class index used for current model. */
 	int m_class_index;

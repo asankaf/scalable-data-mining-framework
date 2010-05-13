@@ -292,6 +292,7 @@ using namespace std;
 		   while (value_pattern[k] == 1 && k < bit_set.size())
 			   k=k+1;
 
+		   //Possible memory leak
 		   if (k < value_pattern.size())
 			   bit_stream = attribute->bitStreamAt(k)->Clone();
 

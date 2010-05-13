@@ -25,6 +25,7 @@ void TestRangeSplitter::UniqueBitmapCreation()
 
 void TestRangeSplitter::TestUniqueBitmapCreation(WrapDataSource * _source)
 {
+	//Ranges considered [0,1],(1,2],(2,3]
 	EncodedAttributeInfo * inf = (*_source)(0);
 	vector<double> vals(5);
 	vals[0] = 0;

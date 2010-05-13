@@ -22,6 +22,9 @@ public:
 
 	_declspec(dllexport) string toString();
 
+	/** Gets the graph of the tree*/
+	_declspec(dllexport) string toGraph();
+
 	/** Public Getters and Setters*/
 	BitStreamInfo * Existence_map() const { return m_existence_map; }
 

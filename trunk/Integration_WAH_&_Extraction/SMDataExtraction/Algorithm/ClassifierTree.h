@@ -44,6 +44,10 @@ public:
 	*/
 	void dumpTree(int depth, string & text);
 
+	/** 
+	*Method for constructing a string graph
+	*/
+	string toGraph();
 
 	void SonsLength(int val) { m_sonsLength = val; }
 

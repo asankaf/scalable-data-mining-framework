@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include <vld.h>
+//#include <vld.h>
 /*
 #define VLD_CONFIG_AGGREGATE_DUPLICATES
 */
@@ -14,6 +14,7 @@
 #include "testcomputations.h"
 #include "testnaivebayes.h"
 #include <fstream>
+#include "testclassifiertestsource.h"
 using namespace std;
 
 void TestAprioriAlgo();
@@ -21,19 +22,21 @@ void TestC45Algo();
 void TestAlgoComp();
 void TestNaiveBayesAlgo();
 void MemleaksTest();
+void ClassifierTestSourceTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//TestC45Algo();
+	TestC45Algo();
 	//TestAprioriAlgo();
 	//cout << Utils::roundDouble((double)2.4343434,3)<< endl;
-	TestAlgoComp();
+	//TestAlgoComp();
 	
 	/*
 	vector<int> vv;
 		vv.~vector();*/
 	
 	//TestNaiveBayesAlgo();
+	//ClassifierTestSourceTest();
 	
 	return 0;
 }
@@ -62,6 +65,12 @@ void TestNaiveBayesAlgo()
 	TestNaiveBayes bayes;
 	bayes.TestSuite();
 	
+}
+
+void ClassifierTestSourceTest()
+{
+ TestClassifierTestSource test;
+ test.TestSuite();
 }
 
 void MemleaksTest()
