@@ -5,7 +5,7 @@ package ActionClasses
 		
 		public function FilterResample()
 		{
-			super("Resample");
+			super("Remove Null");
 		}
 
 		override public function type():Number

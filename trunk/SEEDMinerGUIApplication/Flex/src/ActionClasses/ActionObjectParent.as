@@ -19,6 +19,9 @@ package ActionClasses
 		public static const TREE_VIEWER:Number = 4;
 		public static const ALGORITHM_CLASSIFICATION:Number = 5;
 		public static const FILTER_RESAMPLE:Number = 6;
+		public static const WAH_COMPRESSTION:Number = 7;
+		public static const WAH_COMPRESSTION_2:Number = 8;
+		
 		
 		public static const NO_DRAWING:Number=-1;
 		public static const ARROW_DRAWING:Number=0;
