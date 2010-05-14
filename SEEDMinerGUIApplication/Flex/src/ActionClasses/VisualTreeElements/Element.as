@@ -30,9 +30,13 @@ package ActionClasses.VisualTreeElements
 					}		
 				}
 			}
-			else
+			else if(5<str.length)
 			{
 				estimatedLength=str.length*9;
+			}
+			else
+			{
+				estimatedLength=50;
 			}
 			
 			

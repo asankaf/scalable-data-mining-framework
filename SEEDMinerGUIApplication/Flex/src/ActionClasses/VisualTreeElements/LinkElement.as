@@ -14,7 +14,7 @@ package ActionClasses.VisualTreeElements
 		{
 			line = new Shape();
 			line.graphics.lineStyle(1, 0xffd0b4, .75);
-			line.graphics.beginFill(0xCE9DF1);
+			line.graphics.beginFill(0xB169E4);
 			line.graphics.moveTo(start.x, start.y);
 			line.graphics.lineTo(end.x, end.y);
 			
