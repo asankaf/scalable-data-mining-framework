@@ -5,6 +5,7 @@ package ActionClasses
 	import ActionClasses.VisualTreeElements.LinkElement;
 	import ActionClasses.VisualTreeElements.RootElement;
 	
+	import mx.collections.ArrayCollection;
 	import mx.containers.Canvas;
 	
 	public class GenerateGraphicalTree
@@ -22,16 +23,22 @@ package ActionClasses
 		var treeHeight:int=0;
 		var mostNegativeValue:int=0;
 		var mostPositiveValue:int=0;
+		var domRoot:DomNode;
 		
 		public function GenerateGraphicalTree(dom:ClassificationDom,treePopUp:TreeViewPopUp)
 		{
+			domRoot=dom.root;
 			treePopUpCanvas=treePopUp.drawingCanvas;
 			
 			
 			dom.root.x=0;
 			dom.root.y=0;
 			calculateNodeCoordinates(dom.root);
+			var children:ArrayCollection=new ArrayCollection();
+			children.addItem(dom.root);
+			checkAllChildNodesAreEquelyDistributedInALevelAndCorrect(children);
 			
+						
 			//tempLevel=0;
 			//calculateTreeLevels(dom.root);
 			//treePopUpCanvas.height=treeLevels*levelDistance+30;
@@ -46,12 +53,14 @@ package ActionClasses
 			
 			//middle=treePopUpCanvas.width/2;	
 				
+				
+				
 			calculateTreeWidthAndHeightAndMostNegativeValue(dom.root);
 			
 			treeWidth=-mostNegativeValue+mostPositiveValue;
 			calculateTreeLevels(dom.root);
 			treeHeight=treeLevels*levelDistance;
-			//trace(treeHeight);
+			trace(treeHeight);
 			
 			if(treePopUp.width<treeWidth)
 			{
@@ -61,9 +70,9 @@ package ActionClasses
 			{
 				treePopUpCanvas.width=treePopUp.width-150;		
 			}
-			if(treePopUp.height<treeWidth)
+			if(treePopUp.height<treeHeight)
 			{
-				treePopUpCanvas.height=(treeHeight-1)*Element.nodeDistance+50;
+				treePopUpCanvas.height=treeHeight;
 			}
 			else 
 			{
@@ -85,7 +94,55 @@ package ActionClasses
 			
 			traverseAndDraw(dom.root);
 		}
-				
+		
+		public function checkAllChildNodesAreEquelyDistributedInALevelAndCorrect(level:ArrayCollection):void
+		{
+			if(level.length!=0)
+			{
+				trace(level.toString());
+				var children:ArrayCollection=new ArrayCollection();
+				for(var i:int=0;i<level.length;i++)
+				{
+					var chd:DomNode=DomNode(level[i]);
+					var child:Array=chd.child;
+					for(var m:int=0;m<child.length;m++)
+					{
+						children.addItem(DomNode(child[m]).child[0]);
+					}	
+				}
+				if(checkDistributionAndCorrect(children))
+				{
+					calculateNodeCoordinates(domRoot);
+				}
+				checkAllChildNodesAreEquelyDistributedInALevelAndCorrect(children);
+			}
+			
+		}
+		
+		public function checkDistributionAndCorrect(level:ArrayCollection):Boolean
+		{
+			var corrected:Boolean=false;
+			for(var i:int=0;i<level.length-1;i++)
+			{
+				var currentChild:DomNode=DomNode(level[i]);
+				var nextChild:DomNode=DomNode(level[i+1]);
+				if(nextChild.x<currentChild.x)
+				{
+					var shift:int=(currentChild.x-nextChild.x)/2+nodeDistance/2;
+					for(var j:int=i;0<=j;j--)
+					{
+						DomNode(level[j]).x-=shift;
+					}
+					for(var l:int=i+1;l<level.length;l++)
+					{
+						DomNode(level[l]).x+=shift;
+					}
+					corrected=true;
+				}
+			}
+			return corrected;
+		}
+
 		public function calculateTreeWidthAndHeightAndMostNegativeValue(root:DomNode):void
 		{
 			if(root.x<mostNegativeValue)
@@ -109,14 +166,14 @@ package ActionClasses
 
 			if(root.type!=NodeParent.LINK)
 			{
-				var start:int=root.x-((root.child.length-1)/2)*nodeDistance
+				var start:int=root.x-((root.child.length-1)/2)*nodeDistance;
 				//trace(start);
 				for(var j:int=0;j<root.child.length;j++)
 				{
 					var childLink:DomNode=DomNode(root.child[j]);
 					//link sart
 					childLink.start.x=root.x;
-					childLink.start.y=root.y+25;
+					childLink.start.y=root.y+Element.rootElementHeight;
 					//children
 					var childNode:DomNode=childLink.child[0];
 					childNode.y=root.y+1*levelDistance;				
