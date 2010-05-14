@@ -26,7 +26,7 @@ void TestRangeSplitter::UniqueBitmapCreation()
 void TestRangeSplitter::TestUniqueBitmapCreation(WrapDataSource * _source)
 {
 	//Ranges considered [0,1],(1,2],(2,3]
-	EncodedAttributeInfo * inf = (*_source)(0);
+EncodedAttributeInfo * inf = (*_source)(0);
 	vector<double> vals(5);
 	vals[0] = 0;
 	vals[1] = 1;
@@ -37,14 +37,14 @@ void TestRangeSplitter::TestUniqueBitmapCreation(WrapDataSource * _source)
 	EncodedMultiCatAttribute* mulAtt = splitter->SplitIntoEqualRanges(3);
 	cout<<"Unique Values : "<<endl;
 	for (int i = 0 ; i < mulAtt->uniqueValList().size() ; i++)
-	{
+{
 		cout << mulAtt->uniqueValList()[i]<<endl;
 	}
 	cout<<"Converted Values : "<<endl;
 	for (int j = 0 ; j < _source->noOfRows() ; j++)
 	{
 		cout << mulAtt->decodeTheTuple(j + 1)<<endl;
-	}
+}
 
 	////Ranges considered [0,1],(1,2],(2,3]
 	//EncodedAttributeInfo * inf = (*_source)(0);

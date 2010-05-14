@@ -77,7 +77,8 @@ void NaiveBayesMod::buildClassifier(WrapDataSource * instances,int class_index)
 	double sum = 0;
 	m_class_index = class_index;
 	//m_Instances = new DataSource(instances,class_index);
-	m_Instances = new Instances(instances,class_index);
+	m_Instances = new WekaInstances(instances,class_index,true);
+	//m_Instances = new WekaInstances(instances,class_index);
 	// Reserve space
 	m_Counts = new double**[m_Instances->numClasses()];
 	for (size_t i = 0 ; i < m_Instances->numClasses(); i++)
@@ -101,42 +102,54 @@ void NaiveBayesMod::buildClassifier(WrapDataSource * instances,int class_index)
 	m_Priors = new double[m_Instances->numClasses()];
 
 	for (size_t attIndex = 0 ; attIndex < m_Instances->numAttributes()-1 ; attIndex++)	
-	{			
-		for (int j = 0; j < m_Instances->numClasses(); j++)
+	{		
+		if (m_Instances->isNumeric(attIndex))
 		{
-			m_Counts[j][attIndex] = new double[m_Instances->attribute(attIndex)->numValues()];
-			/*
-			for (size_t k = 0 ; k < m_Instances->attribute(attIndex)->numValues();k++)
+			for (int j = 0; j < m_Instances->numClasses(); j++)
 			{
-			m_Counts[j][attIndex][k] = 0;
-			}*/
 
-		}		 
+				m_Counts[j][attIndex] = new double[1];				
+				m_Counts[j][attIndex][0] = 0;
+			}
+		}else
+		{
+
+			for (int j = 0; j < m_Instances->numClasses(); j++)
+			{
+
+				m_Counts[j][attIndex] = new double[m_Instances->noOfVlaues(attIndex)];
+				for (size_t k =0 ; k < m_Instances->noOfVlaues(attIndex) ; k++)
+				{
+					m_Counts[j][attIndex][k] = 0;
+				}
+			}		 
+		}
 
 	}
 	BitStreamInfo * class_value = NULL;
 	// Compute counts and sums
 	//PrintCountArr(m_Counts);
-	for(size_t c_index = 0 ; c_index < m_Instances->numClasses() ; c_index++ )
+	for(size_t row_id = 0 ; row_id < m_Instances->Rows() ; row_id++ )
 	{
-		class_value = m_Instances->attribute(m_Instances->ClassIndex())->bitStreamAt(c_index);
-
+		
 		for(size_t a_Index = 0,attIndex = 0 ; a_Index < m_Instances->numAttributes();a_Index++)
 		{
-			if (class_index != a_Index)
-			{
-				//Attribute * attribute =  m_Instances->attribute(a_Index);
-				AbstractAtt * attribute =  m_Instances->attribute(a_Index);
-				for (size_t att_vals = 0 ; att_vals < attribute->numValues() ; att_vals++) 
-				{					
-					m_Counts[c_index][attIndex][att_vals] = AlgoUtils::ANDCount(class_value,attribute->bitStreamAt(att_vals));		
-
+			if (a_Index != m_class_index)
+{
+	if (m_Instances->isNumeric(a_Index)) {
+	
+					m_Means[(int)m_Instances->classValueFor(row_id)][attIndex] +=
+						m_Instances->instanceValue(row_id,a_Index);
+					m_Counts[(int)m_Instances->classValueFor(row_id)][attIndex][0]++;	
+					
+				} else {
+					m_Counts[(int)m_Instances->classValueFor(row_id)][attIndex]
+					[(int)m_Instances->instanceValue(row_id,a_Index)]++;
 				}
-				attIndex++;
-
-			}
+	attIndex++;
+}
 		}
-		m_Priors[c_index] = class_value->Count();
+		m_Priors[(int)m_Instances->classValueFor(row_id)]++;
 
 	}
 
@@ -208,7 +221,7 @@ void NaiveBayesMod::buildClassifier(WrapDataSource * instances,int class_index)
 	// Normalize counts
 
 
-	for(size_t attIndex = 0; attIndex < m_Instances->numAttributes()-1 ; attIndex++)
+	/*for(size_t attIndex = 0; attIndex < m_Instances->numAttributes()-1 ; attIndex++)
 	{
 		//Attribute  * attribute = m_Instances->attribute(attIndex);		
 		AbstractAtt * attribute = m_Instances->attribute(attIndex);		
@@ -229,54 +242,56 @@ void NaiveBayesMod::buildClassifier(WrapDataSource * instances,int class_index)
 	{
 		m_Priors[j] = (m_Priors[j] + 1) 
 			/ (sum + (double)m_Instances->numClasses());
-	}
+	}*/
 
-	//PrintCountArr(m_Counts);
+	PrintCountArr(m_Counts);
 }
 
 
 string NaiveBayesMod::toString()
 {
+	/*
 	if (m_Instances == NULL) {
-		return "Naive Bayes (simple): No model built yet.";
-	}
-
-	string text = "";
-	int attIndex = 0;
-
-	for (int i = 0; i < m_Instances->numClasses(); i++)
-	{
-		text.append("\n\nClass " + m_Instances->classAttribute()->value(i) 
-			+ ": P(C) = " 
-			+ Utils::doubleToString(m_Priors[i], 10, 8)
-			+ "\n\n");
-
-		for(size_t a_Index = 0,attIndex = 0; a_Index < m_Instances->numAttributes();a_Index++)
+			return "Naive Bayes (simple): No model built yet.";
+		}
+	
+		string text = "";
+		int attIndex = 0;
+	
+		for (int i = 0; i < m_Instances->numClasses(); i++)
 		{
-			if (m_class_index != a_Index)
+			text.append("\n\nClass " + m_Instances->classAttribute()->value(i) 
+				+ ": P(C) = " 
+				+ Utils::doubleToString(m_Priors[i], 10, 8)
+				+ "\n\n");
+	
+			for(size_t a_Index = 0,attIndex = 0; a_Index < m_Instances->numAttributes();a_Index++)
 			{
-				//Attribute * attribute = m_Instances->attribute(a_Index);
-				AbstractAtt * attribute = m_Instances->attribute(a_Index);
-				text.append("Attribute " + attribute->name() + "\n");
-
-				for (int j = 0; j < attribute->numValues(); j++)
+				if (m_class_index != a_Index)
 				{
-					text.append(attribute->value(j) + "\t");
+					//Attribute * attribute = m_Instances->attribute(a_Index);
+					AbstractAtt * attribute = m_Instances->attribute(a_Index);
+					text.append("Attribute " + attribute->name() + "\n");
+	
+					for (int j = 0; j < attribute->numValues(); j++)
+					{
+						text.append(attribute->value(j) + "\t");
+					}
+	
+					text.append("\n");
+	
+					for (int j = 0; j < attribute->numValues(); j++)
+						text.append(Utils::doubleToString(m_Counts[i][attIndex][j], 10, 8)
+						+ "\t");
+	
+					text.append("\n\n");
+					attIndex++;
 				}
-
-				text.append("\n");
-
-				for (int j = 0; j < attribute->numValues(); j++)
-					text.append(Utils::doubleToString(m_Counts[i][attIndex][j], 10, 8)
-					+ "\t");
-
-				text.append("\n\n");
-				attIndex++;
 			}
 		}
-	}
-
-	return text;
+	
+		return text;*/
+	return "";
 
 }
 
@@ -285,15 +300,27 @@ void NaiveBayesMod::PrintCountArr(double *** arr)
 	for (int j = 0; j < m_Instances->numClasses(); j++)
 
 	{			
-		cout << "Class : " << m_Instances->attribute(m_Instances->ClassIndex())->distinctValueAt(j)->name() << endl;
-		for (size_t attIndex = 0 ; attIndex < m_Instances->numAttributes()-1 ; attIndex++)		
+		cout << "Class : " << m_Instances->classValueString(j) << endl;
+		for (size_t attIndex = 0,a_index = 0 ; a_index < m_Instances->numAttributes() ; a_index++)		
 		{
-			cout << "\t Attribute : " << m_Instances->attribute(attIndex)->name()<<endl;
-			//m_Counts[j][attIndex] = new double[m_Instances->attribute(attIndex)->numValues()];
-			for (size_t k = 0 ; k < m_Instances->attribute(attIndex)->numValues();k++)
+			if (a_index != m_class_index)
 			{
+			
+			cout << "\t Attribute : " << m_Instances->nameOfAttribute(a_index)<<endl;
+			//m_Counts[j][attIndex] = new double[m_Instances->attribute(attIndex)->numValues()];
+			if (m_Instances->isNumeric(a_index))
+			{
+				cout << "\t\t"<<"Mean : "<<arr[j][attIndex][0] <<endl;
+			
+			}else
+			{
+				for (size_t k = 0 ; k < m_Instances->noOfVlaues(a_index);k++)
+				{
 
-				cout << "\t\t"<<k<<" : "<<arr[j][attIndex][k] <<endl;
+					cout << "\t\t"<<k<<" : "<<arr[j][attIndex][k] <<endl;
+				}
+			}
+			attIndex++;
 			}
 		}		 
 
@@ -302,34 +329,35 @@ void NaiveBayesMod::PrintCountArr(double *** arr)
 
 void NaiveBayesMod::ClassifyInstances( ClassifierTestSource * _source )
 {
-	double * predict_vals = _source->Predicted_classes();
+	/*
+double * predict_vals = _source->Predicted_classes();
 	for (size_t i = 0 ; i < _source->Rows(); i++)
 	{
 		predict_vals[i] = ClassifyInstance(_source->Data_source()[i],_source->Headers()->codedAttributes().size() -1,_source->Headers());
 	}
-
-	//_source->Print(predict_vals,_source->Rows());
-
+*/
 }
 
 int NaiveBayesMod::ClassifyInstance(double * _inputs,size_t _no_of_atts,WrapDataSource * _header)
-{
-	int class_values = m_Instances->classAttribute()->numValues();
-	double * classes = new double[class_values];
-
-	for (size_t  i = 0; i < class_values ; i++)
-	{
-		classes[i] = m_Priors[i];
-	}
-
-	for (size_t j = 0 ; j < class_values ; j++)
-	{
-		for (size_t i = 0 ; i < _no_of_atts ; i++)
+{/*
+	
+		int class_values = m_Instances->classAttribute()->numValues();
+		double * classes = new double[class_values];
+	
+		for (size_t  i = 0; i < class_values ; i++)
 		{
-			classes[j] *= m_Counts[j][i][(int)_inputs[i]];
+			classes[i] = m_Priors[i];
 		}
-	}
-	Utils::Normalize(classes,class_values);
-	return Utils::MaxIndex(classes,class_values);
+	
+		for (size_t j = 0 ; j < class_values ; j++)
+		{
+			for (size_t i = 0 ; i < _no_of_atts ; i++)
+			{
+				classes[j] *= m_Counts[j][i][(int)_inputs[i]];
+			}
+		}
+		Utils::Normalize(classes,class_values);
+		return Utils::MaxIndex(classes,class_values);*/
+	return 0;
 
 }

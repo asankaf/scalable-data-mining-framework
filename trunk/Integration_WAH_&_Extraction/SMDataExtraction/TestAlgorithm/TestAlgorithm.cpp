@@ -26,16 +26,10 @@ void ClassifierTestSourceTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestC45Algo();
+	//TestC45Algo();
 	//TestAprioriAlgo();
-	//cout << Utils::roundDouble((double)2.4343434,3)<< endl;
 	//TestAlgoComp();
-	
-	/*
-	vector<int> vv;
-		vv.~vector();*/
-	
-	//TestNaiveBayesAlgo();
+	TestNaiveBayesAlgo();
 	//ClassifierTestSourceTest();
 	
 	return 0;

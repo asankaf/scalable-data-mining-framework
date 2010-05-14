@@ -185,27 +185,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ClassifierTestSource.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dllmain.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EntropyBasedSplitCrit.cpp"
+				RelativePath=".\NaiveBayesMod.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GainRatioSplitCrit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\InfoGainSplitCrit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NoSplit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SplitCriterion.cpp"
+				RelativePath=".\NumericAttribute.cpp"
 				>
 			</File>
 			<File
@@ -229,7 +221,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Utils.cpp"
+				RelativePath=".\WekaInstances.cpp"
 				>
 			</File>
 			<Filter
@@ -261,6 +253,26 @@
 				</File>
 				<File
 					RelativePath=".\BitStreamHolder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EntropyBasedSplitCrit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GainRatioSplitCrit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\InfoGainSplitCrit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SplitCriterion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Utils.cpp"
 					>
 				</File>
 			</Filter>
@@ -323,12 +335,36 @@
 					RelativePath=".\DistinctValue.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\NoSplit.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="NaiveBayes"
 				>
 				<File
 					RelativePath=".\NaiveBayes.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="NaiveBayesSource"
+				>
+				<File
+					RelativePath=".\AbstractAtt.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\BayesDistinct.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Instances.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\NominalAttribute.cpp"
 					>
 				</File>
 			</Filter>
@@ -339,31 +375,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\EntropyBasedSplitCrit.h"
+				RelativePath=".\ClassifierTestSource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GainRatioSplitCrit.h"
+				RelativePath=".\NaiveBayesMod.h"
 				>
 			</File>
 			<File
-				RelativePath=".\InfoGainSplitCrit.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Init.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NaiveBayes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NoSplit.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SplitCriterion.h"
+				RelativePath=".\NumericAttribute.h"
 				>
 			</File>
 			<File
@@ -375,7 +395,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Utils.h"
+				RelativePath=".\WekaInstances.h"
 				>
 			</File>
 			<Filter
@@ -387,6 +407,30 @@
 				</File>
 				<File
 					RelativePath=".\BitStreamHolder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\EntropyBasedSplitCrit.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GainRatioSplitCrit.h"
+					>
+				</File>
+				<File
+					RelativePath=".\InfoGainSplitCrit.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Init.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SplitCriterion.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Utils.h"
 					>
 				</File>
 			</Filter>
@@ -457,6 +501,10 @@
 					RelativePath=".\ModelSelection.h"
 					>
 				</File>
+				<File
+					RelativePath=".\NoSplit.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="C45DataSource"
@@ -477,6 +525,30 @@
 			<Filter
 				Name="NaiveBayes"
 				>
+				<File
+					RelativePath=".\NaiveBayes.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="NaiveBayesSource"
+				>
+				<File
+					RelativePath=".\AbstractAtt.h"
+					>
+				</File>
+				<File
+					RelativePath=".\BayesDistinct.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Instances.h"
+					>
+				</File>
+				<File
+					RelativePath=".\NominalAttribute.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

@@ -8,7 +8,7 @@ ClassifierTestSource::ClassifierTestSource(void)
 	init();
 }
 
-ClassifierTestSource::ClassifierTestSource(WrapDataSource *_source, int _class_index)
+ClassifierTestSource::ClassifierTestSource(WrapDataSource *_source, int _class_index,bool _delete_atts)
 {
 
 	//CompressionHandler::ConvertTo(_source,BitStreamInfo::VERTICAL_STREAM_FORMAT);
@@ -41,6 +41,10 @@ ClassifierTestSource::ClassifierTestSource(WrapDataSource *_source, int _class_i
 		{
 			ConvertAttributeTo(att_info,m_data_source,att_index);
 			att_index++;
+			if (_delete_atts)
+			{
+				ClearBitStreams(att_info);
+			}
 		}
 		else
 		{
@@ -52,24 +56,29 @@ ClassifierTestSource::ClassifierTestSource(WrapDataSource *_source, int _class_i
 
 	/*
 	PrintSource();
-		cout << endl;
-		cout << "Printing Original Values " << endl;
-		Print(m_original_classes,m_rows);*/
-	
+	cout << endl;
+	cout << "Printing Original Values " << endl;
+	Print(m_original_classes,m_rows);*/
 
+
+}
+
+void ClassifierTestSource::ClearBitStreams(EncodedAttributeInfo * _attribute)
+{
+ _attribute->~EncodedAttributeInfo();
 }
 
 void ClassifierTestSource::PrintSource()
 {
-for (size_t i = 0 ; i < m_rows ; i++)
-{
-	cout << "Printing Tuple " << (i+1) << endl;
-	for (size_t j = 0 ; j < m_headers->codedAttributes().size() -1 ; j++)
+	for (size_t i = 0 ; i < m_rows ; i++)
 	{
-		cout << m_data_source[i][j] << "\t";
+		cout << "Printing Tuple " << (i+1) << endl;
+		for (size_t j = 0 ; j < m_headers->codedAttributes().size() -1 ; j++)
+		{
+			cout << m_data_source[i][j] << "\t";
+		}
+		cout << endl;
 	}
-	cout << endl;
-}
 }
 
 void ClassifierTestSource::ConvertAttributeTo(EncodedAttributeInfo * _attribute,double * _values)
@@ -222,14 +231,53 @@ void ClassifierTestSource::Print( double * _array,int _length )
 {
 	for (size_t i = 0 ; i < _length ; i++)
 	{
-	//	cout << "Class for Tuple "<< (i+1) << " : "<< _array[i] << endl;
-			cout << "Class for Tuple (original,predicted)"<< (i+1) << " : "<< m_original_classes[i]<<" "<<m_predicted_classes[i] << endl;
+		//	cout << "Class for Tuple "<< (i+1) << " : "<< _array[i] << endl;
+		cout << "Class for Tuple (original,predicted)"<< (i+1) << " : "<< m_original_classes[i]<<" "<<m_predicted_classes[i] << endl;
 	}
 }
 
 ClassifierTestSource::~ClassifierTestSource(void)
 {
+	//This is the original data source. This is deleted elsewhere in the program
+	m_headers =NULL;
 
+	if (m_original_classes != NULL)
+	{
+		delete[] m_original_classes;
+		m_original_classes = NULL;
+	}
+	if (m_predicted_classes != NULL)
+	{
+		delete[] m_predicted_classes;
+		m_predicted_classes = NULL;
+	}
+	if (m_data_source != NULL)
+	{
+		for (size_t i = 0 ; i < m_rows ; i++)
+		{
+			if (m_data_source[i] != NULL)
+			{
+				delete [] m_data_source[i];
+				m_data_source[i] = NULL;
+			}			
+		}
+		delete [] m_data_source;
+		m_data_source = NULL;
+	}
+
+
+	if (m_confusion_matrix != NULL)
+	{
+		for (size_t i = 0 ; i < m_number_of_classes ; i++)
+		{
+			if (m_confusion_matrix[i] != NULL )
+			{			
+				delete [] m_confusion_matrix[i];
+			}
+		}
+		delete [] m_confusion_matrix;
+		m_confusion_matrix = NULL;
+	}
 }
 
 void ClassifierTestSource::init()
@@ -261,9 +309,9 @@ string ClassifierTestSource::GetConfusionString()
 	{
 		if (i < 10)
 		{
-		output += " "+Utils::toStringVal((int)i)+" ";
+			output += " "+Utils::toStringVal((int)i)+" ";
 		}else{
-		output += Utils::toStringVal((int)i)+" ";
+			output += Utils::toStringVal((int)i)+" ";
 		}
 	}
 	output.erase(output.end()-1);
@@ -277,7 +325,7 @@ string ClassifierTestSource::GetConfusionString()
 			{
 				output += " "+Utils::toStringVal((int)m_confusion_matrix[i][j])+" ";
 			}else{
-			output += Utils::toStringVal((int)m_confusion_matrix[i][j])+" ";
+				output += Utils::toStringVal((int)m_confusion_matrix[i][j])+" ";
 			}
 		}
 		output.erase(output.end()-1);
@@ -286,9 +334,9 @@ string ClassifierTestSource::GetConfusionString()
 			output += " |  "+Utils::toStringVal((int)i) + " = " +m_class_values[i]+"\n";
 		}else
 		{
-output += " | "+Utils::toStringVal((int)i) + " = " +m_class_values[i]+"\n";
+			output += " | "+Utils::toStringVal((int)i) + " = " +m_class_values[i]+"\n";
 		}
-		
+
 	}
 
 	return output;
@@ -311,7 +359,7 @@ void ClassifierTestSource::BuildConfusionMatrix()
 			m_confusion_matrix[i][j] = 0;
 		}
 	}
-	
+
 	for (size_t i = 0 ; i < m_rows ; i++)
 	{
 		m_confusion_matrix[(int)m_original_classes[i]][(int)m_predicted_classes[i]]++;

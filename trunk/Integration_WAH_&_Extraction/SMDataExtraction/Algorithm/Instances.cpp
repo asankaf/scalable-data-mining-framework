@@ -95,4 +95,3 @@ void Instances::initialiseWeights(int _attr_no)
 		m_weights.push_back(1);
 	}
 }
-
