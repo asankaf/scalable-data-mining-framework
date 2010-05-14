@@ -134,14 +134,14 @@ for(size_t c_index = 0 ; c_index < m_Instances->numClasses() ; c_index++ )
 				{
 					Attribute * attribute =  m_Instances->attribute(a_Index);
 					//AbstractAtt * attribute =  m_Instances->attribute(a_Index);
-				for (size_t att_vals = 0 ; att_vals < attribute->numValues() ; att_vals++) 
-				{					
+					for (size_t att_vals = 0 ; att_vals < attribute->numValues() ; att_vals++) 
+					{					
 						m_Counts[c_index][attIndex][att_vals] = AlgoUtils::ANDCount(class_value,attribute->bitStreamAt(att_vals));		
-					
-				}
+
+					}
 					attIndex++;
-				
-			}
+
+				}
 			}
 			m_Priors[c_index] = class_value->Count();
 		
@@ -264,8 +264,8 @@ string NaiveBayes::toString()
 				{
 					Attribute * attribute = m_Instances->attribute(a_Index);
 					//AbstractAtt * attribute = m_Instances->attribute(a_Index);
-				text.append("Attribute " + attribute->name() + "\n");
-				
+					text.append("Attribute " + attribute->name() + "\n");
+
 					for (int j = 0; j < attribute->numValues(); j++)
 					{
 						text.append(attribute->value(j) + "\t");
@@ -276,11 +276,11 @@ string NaiveBayes::toString()
 					for (int j = 0; j < attribute->numValues(); j++)
 						text.append(Utils::doubleToString(m_Counts[i][attIndex][j], 10, 8)
 						+ "\t");
-				 
-				text.append("\n\n");
-				attIndex++;
+
+					text.append("\n\n");
+					attIndex++;
+				}
 			}
-		}
 		}
 
 		return text;

@@ -14,6 +14,11 @@ EncodedAttributeInfo::~EncodedAttributeInfo(){
 	Commons::DeleteVector(_vBitStreams.begin(),_vBitStreams.end());
 }
 
+void EncodedAttributeInfo::DeleteVBitStreams()
+{
+Commons::DeleteVector(_vBitStreams.begin(),_vBitStreams.end());
+}
+
 vector<BitStreamInfo*> EncodedAttributeInfo::vBitStreams(){
 	return this->_vBitStreams;
 }

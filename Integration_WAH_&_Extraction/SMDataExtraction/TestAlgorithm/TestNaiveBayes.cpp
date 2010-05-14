@@ -21,7 +21,7 @@ void TestNaiveBayes::TestSuite()
 	TestClassifier(CreateDataSource("C:\\Data\\weather.nominal.csv"));
 	//test dataset-10000.csv
 	//randInts
-	//TestClassifier(CreateDataSource("randInts_data","randInts_metadata","randInts"));
+	//TestClassifier(CreateDataSource("poker_hand_data","poker_hand_metadata","poker_hand"));
 	//TestClassifier(CreateDataSource("soyaTestlarge_300000_data","soyaTestlarge_300000_metadata","soyaTestlarge"));
 	//TestClassifier(CreateDataSource("C:\\Data\\soybeanTest3.csv"));
 	//soyaTestlarge_300000_metadata.xml
@@ -72,7 +72,7 @@ WrapDataSource * TestNaiveBayes::CreateDataSource(string csv_path)
 
 void TestNaiveBayes::TestClassifier(WrapDataSource * ds)
 {
-	CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	//CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 	//NaiveBayes bayes;
 	NaiveBayesMod bayes;
 	clock_t start,end;
@@ -82,9 +82,12 @@ void TestNaiveBayes::TestClassifier(WrapDataSource * ds)
 	end = clock();
 	cout << bayes.toString() << endl;
 	cout << "Time Spent : " << end - start << endl;
+	/*
 	ClassifierTestSource * test_source = new ClassifierTestSource(ds,ds->codedAttributes().size()-1);
-	bayes.ClassifyInstances(test_source);
-	test_source->BuildConfusionMatrix();
+		bayes.ClassifyInstances(test_source);
+		test_source->BuildConfusionMatrix();	
+	delete test_source;
+	*/
 	delete ds;
 }
 

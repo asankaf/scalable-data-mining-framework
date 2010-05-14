@@ -13,7 +13,7 @@ class ClassifierTestSource
 public:
 	_declspec(dllexport) ClassifierTestSource(void);
 
-	_declspec(dllexport) ClassifierTestSource(WrapDataSource * _source,int _class_index);	
+	_declspec(dllexport) ClassifierTestSource(WrapDataSource * _source,int _class_index,bool _delete_atts = false);	
 
 	_declspec(dllexport) ~ClassifierTestSource(void);
 
@@ -71,6 +71,9 @@ private:
 	void ConvertAttributeTo(EncodedAttributeInfo * _attribute,double * _values);
 
 	void ConvertAttributeTo(EncodedAttributeInfo * _attribute,double ** _values,int _att_index);
+
+	/** Delete Bitstreams in the current attribute*/
+	void ClearBitStreams(EncodedAttributeInfo * _attribute);
 
 	/** Holds the decoded data. */
 	double ** m_data_source;

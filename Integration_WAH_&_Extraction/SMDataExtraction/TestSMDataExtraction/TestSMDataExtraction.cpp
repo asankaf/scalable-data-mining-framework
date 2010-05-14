@@ -17,7 +17,7 @@
 
 using namespace std;
 using namespace DBConnectionInfo;
-using namespace DBQueryExecutionInfo;
+//using namespace DBQueryExecutionInfo;
 using namespace CSVConnectionInfo;
 using namespace CsvDataExtraction;
 
@@ -35,24 +35,26 @@ int _tmain(int argc, _TCHAR* argv[])
 	//CsvConnection *connection = new CsvConnection("C:\\Data\\doubval.csv",',','\n');
 	
 	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');
-	CsvConnection *connection = new CsvConnection("C:\\Data\\weather.nominal.csv",',','\n','""');
+	//J:\\pokerHand\\poker-hand-training-true.csv
+	CsvConnection *connection = new CsvConnection("J:\\pokerHand\\poker-hand-testing.csv",',','\n','""');
+	//CsvConnection *connection = new CsvConnection("C:\\Data\\weather.nominal.csv",',','\n','""');
 	/*
 	vector<int> order;
 		order.push_back(0);	*/
 	
 	//ExtractedCsvDTO *exDTO = connection->readCSV();
 	ExtractedCsvDTO *exDTO = connection->extractData();
-	WrapDataSource *dsSBN = new WrapDataSource(*exDTO,"weather.nominal");
+	WrapDataSource *dsSBN = new WrapDataSource(exDTO,"poker_hand");
 	dsSBN->encodeAtrributes();
 	//vector<EncodedAttributeInfo*> vals = dsSBN->codedAttributes();
-	delete dsSBN;
-	/*
+//	delete dsSBN;
+	
 DataSources *SBDss = new DataSources();
 	cout<<"Finished Encoding data"<<endl;
 	SBDss->insertDataSources(dsSBN);
-	DataSourceSerialization *dss =  new DataSourceSerialization(SBDss,"soyatestlarge_1000000_metadata","soyatestlarge_1000000_data");
+	DataSourceSerialization *dss =  new DataSourceSerialization(SBDss,"poker_hand_metadata","poker_hand_data");
 	dss->serializeDataSource();
-*/
+
 
 
 	

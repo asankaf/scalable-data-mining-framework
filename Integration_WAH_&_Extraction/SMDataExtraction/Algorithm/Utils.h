@@ -91,7 +91,7 @@ public:
 
 	/** Computes the sum of the elements of an array of doubles.*/
 	static double sum(double* doubles,size_t length);
-
+	
 };
 // const double Utils::log2 = log10((double)2);
 // const double Utils::SMALL = 1e-6;

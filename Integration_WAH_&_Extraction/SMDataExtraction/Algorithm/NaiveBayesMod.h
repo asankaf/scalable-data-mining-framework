@@ -4,6 +4,7 @@
 #include "classifiertestsource.h"
 #include "instances.h"
 #include "Utils.h"
+#include "wekainstances.h"
 using namespace std;
 class NaiveBayesMod
 {
@@ -38,8 +39,9 @@ protected:
 	double * m_Priors;
 
 	/** The instances used for training. */
+	WekaInstances * m_Instances;
 	//DataSource * m_Instances;
-	Instances * m_Instances;
+	//Instances * m_Instances;
 
 	/** The class index used for current model. */
 	int m_class_index;

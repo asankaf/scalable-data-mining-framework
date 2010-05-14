@@ -27,8 +27,8 @@ void TestC45Nominal::TestSuite()
 	ds->encodeAtrributes();
 /*
 	
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
-	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
+		DataSources *dsLoaded = lsd->loadSavedEncodedData();
 		WrapDataSource * ds =  (*dsLoaded)("soyabeansmall_100000");*/
 	
 	//soyaTestlarge,soyabeansmall_100000
