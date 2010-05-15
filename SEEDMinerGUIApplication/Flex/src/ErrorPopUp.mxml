@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="406" height="148" xmlns:ns1="ActionClasses.VisualTreeElements.*" title="Error!">
+	<mx:Script>
+	<![CDATA[
+	import mx.managers.PopUpManager;
+	 
+	]]>
+	</mx:Script>
+	<mx:Canvas x="10" y="10" width="366" height="88">
+	<mx:Image source="@Embed(source='error.png')"/>
+	<mx:Button x="162" y="62" label="Ok" click="PopUpManager.removePopUp(this)"/>
+	<mx:Label id="message" x="68" y="10" width="231" textAlign="center" height="44"/>
+	</mx:Canvas>
+	
+</mx:TitleWindow>
