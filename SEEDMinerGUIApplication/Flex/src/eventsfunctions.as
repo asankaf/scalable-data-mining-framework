@@ -27,7 +27,6 @@ import flash.events.MouseEvent;
 import mx.containers.Canvas;
 import mx.controls.Alert;
 import mx.controls.Image;
-import mx.controls.Label;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
@@ -90,8 +89,24 @@ public function cplusPluseCallBackFunction(str:String):void
 	    treePopUp.y=canvasmain.height/2-treePopUp.height/2;
 	    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);
 	}	
+	else if(view=="noView")
+	{
+		showError("Invalid flaw! Please create a new valid flaw to execute...");
+		clearCanvas(new MouseEvent(Event.CHANGE));
+	}
 	
 	showStatus(DONE);
+}
+
+private function showError(str:String):void
+{
+	var errorpop:ErrorPopUp=ErrorPopUp(PopUpManager.createPopUp(this, ErrorPopUp , false));
+	errorpop.message.text=str;
+	var point1:Point = new Point();
+	point1.x=0;
+    point1.y=0;                
+    errorpop.x=canvasmain.width/2-errorpop.width/2;
+    errorpop.y=canvasmain.height/2-errorpop.height/2;
 }
 
 private function executeFlow(event:Event):void
@@ -120,13 +135,13 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		__callBackFunction.call(fabridge,ret);
+		//__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
-		//var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)";
-		//cplusPluseCallBackFunction(str);
+		var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
+		cplusPluseCallBackFunction(str);
 	
 	}
 	
@@ -143,7 +158,8 @@ private function getCurrentProcedure():String
 		{
 			if(Obj.config==null)
 			{
-				Alert.show("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
+				showError("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
+				//Alert.show("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
 				return null;
 			}
 			else
