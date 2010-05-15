@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="154" height="174" title="MySql Data Sources">
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.List;
+		import mx.events.ListEvent;
+		import mx.managers.PopUpManager;
+		
+		private function select(e:ListEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+	]]>
+	</mx:Script>
+    
+	<mx:DataGrid  id="dg" x="0" y="0" rowCount="5" width="134" height="134" itemClick="select(event)">
+		<mx:columns>
+			<mx:DataGridColumn id="dataSoucesCol" headerText="Data Sources"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:TitleWindow>

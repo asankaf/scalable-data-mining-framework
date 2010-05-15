@@ -25,15 +25,11 @@ import flash.events.Event;
 import flash.events.MouseEvent;
 
 import mx.containers.Canvas;
-import mx.controls.Alert;
 import mx.controls.Image;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
 
-//<fab:FABridge id="fabridge" xmlns:fab="bridge.*" bridgeName="bridge1"/>
-//import bridge.FABridge;
-//import bridge.FlexVCBridge;
 include "bridge/FlexVCBridge.as";
 
 private var actionObj:ActionObject;
@@ -49,6 +45,10 @@ private static var ok:Boolean=false;
 private var procedurePara:String;
 private var DONE:String="Done";
 private var EXECUTING:String="Executing Flaw";
+
+private var sqlListX:int;
+private var sqlListY:int;
+
 
 public function startUp(event:Event):void
 {
@@ -78,7 +78,6 @@ public function cplusPluseCallBackFunction(str:String):void
 	{
 		
 		var treeString:String=strings[1];
-		//Alert.show(treeString);
 		var dom:ClassificationDom=new ClassificationDom(treeString);
 		
 	    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
@@ -89,6 +88,20 @@ public function cplusPluseCallBackFunction(str:String):void
 	    treePopUp.y=canvasmain.height/2-treePopUp.height/2;
 	    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);
 	}	
+	else if(view=="sqlDataSourcesList")
+	{
+		var sqlsourcelist:String=strings[1];
+		
+		var dataSourcesList:XMLList= new XMLList(sqlsourcelist);
+		var mysqlsources:MySqlDataSourcesSelectPopUp=MySqlDataSourcesSelectPopUp(PopUpManager.createPopUp(this, MySqlDataSourcesSelectPopUp , false));
+		mysqlsources.dataSoucesCol.dataField="name";
+		mysqlsources.dg.dataProvider=dataSourcesList;
+		var point1:Point = new Point();
+		point1.x=0;
+	    point1.y=0;                
+	    mysqlsources.x=sqlListX;
+	    mysqlsources.y=toptabs.height+sqlListY;
+	}
 	else if(view=="noView")
 	{
 		showError("Invalid flaw! Please create a new valid flaw to execute...");
@@ -158,8 +171,7 @@ private function getCurrentProcedure():String
 		{
 			if(Obj.config==null)
 			{
-				showError("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
-				//Alert.show("Path not configured!\nDoubleClick the 'CSV DataSource' icon to configure path!");
+				showError("Path not configured!\nDoubleClick the 'CSV DataSource' to configure path!");
 				return null;
 			}
 			else
@@ -197,7 +209,6 @@ private function getCurrentProcedure():String
 
 private function showStatus(status:String):void 
 {
-	 //progressBar.setProgress(j,100);
 	 if(status!=DONE)
 	 {
 	 	exe.label="Executing";
@@ -333,28 +344,43 @@ private function dragDropHandler(event:DragEvent):void
 	if (event.dragSource.hasFormat("img"))
     {
     	actionObj.vboxX=event.localX-correctionX-((actionObj.vbox.width/2)-(actionObj.image.measuredWidth/2));
-    	//trace(actionObj.vbox.width);
-    	//trace(actionObj.image.measuredWidth);
     	actionObj.vboxY=event.localY-correctionY-(actionObj.vbox.height-actionObj.image.measuredHeight-actionObj.label.height)/2;
+    	//add objects to canvas
     	drawingcanvas.addChild(actionObj.vbox);
-    	
     	//add objects to collection
     	actionObjectsOnCanvas[actionObj.id]=actionObj;
-    	//var ob:ActionObject=ActionObject(actionObjectsOnCanvas[actionObj.id]);
-    	//trace("id:"+ob.id+"type:"+ob.type());
+    	
+    	if(actionObj.type()==ActionObjectParent.MySQL_DATASOURCE)
+    	{
+    		sqlListX=actionObj.vboxX+actionObj.vbox.width;
+    		sqlListY=actionObj.vboxY+actionObj.vbox.height-40;
+    		getDataSourceList();
+    	}
     	
     	actionObj=null;
-    	
+
     }
     else if (event.dragSource.hasFormat("actionObj"))
     {
     	var obj:ActionObject = ActionObject(event.dragSource.dataForFormat("actionObj"));
     	obj.vboxX=event.localX-obj.correctionX;
-    	//trace(event.localX);
     	obj.vboxY=event.localY-obj.correctionY;
-    	//trace(event.localY);
     	updateArrows(actionObjectSequence);
     }
+}
+
+private function getDataSourceList():void 
+{
+	var ret:Object = new Object();
+	ret["flashId"] = __flashPlayerId;
+	ret["flashIndex"] = __flashPlayerIndex;
+	ret["itemId"] = "sql";
+	ret["itemType"] = "Button";
+	ret["eventType"] = "click";
+	ret["procedure"] = "getMySqlDataSourceList";
+	__callBackFunction.call(fabridge,ret);
+	//var str:String="sqlDataSourcesList##<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+	//cplusPluseCallBackFunction(str);
 }
 
 private function dragOverHandler(event:DragEvent):void 
