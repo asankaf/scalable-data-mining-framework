@@ -258,5 +258,17 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
 
 	}
+	else if (procedure=="getMySqlDataSourceList")
+	{
+		string formattedOutPut="sqlDataSourcesList##";
+
+		//implement the procedure for get data from csv file apply apriory algorithm 
+		//and make a string to out put the rules in the text viewer 
+		//assign it to "formattedOutPut" here
+
+		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+	}
 	
 }
