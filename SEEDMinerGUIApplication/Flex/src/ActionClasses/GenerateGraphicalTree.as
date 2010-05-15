@@ -60,7 +60,7 @@ package ActionClasses
 			treeWidth=-mostNegativeValue+mostPositiveValue;
 			calculateTreeLevels(dom.root);
 			treeHeight=treeLevels*levelDistance;
-			trace(treeHeight);
+			//trace(treeHeight);
 			
 			if(treePopUp.width<treeWidth)
 			{
