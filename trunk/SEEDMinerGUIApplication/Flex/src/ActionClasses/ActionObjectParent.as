@@ -62,11 +62,9 @@ package ActionClasses
 		
 		private  function mouseClickHandler(event:MouseEvent):void
 		{
-			//trace("clicked");
 			actionObjectClickStatus=ACTIONOBJECT_CLICKED;
 			if(arrowDrawingStatus==NO_DRAWING)
 			{
-				//trace("drawing start");
 				arrowDrawingStatus=ARROW_DRAWING;
 				drawingEvent=new DrawingEvent()
 				drawingEvent.startId=VBox(event.currentTarget).id;
@@ -80,7 +78,6 @@ package ActionClasses
 		
 		private  function mouseDoubleClickHandler(event:MouseEvent):void
 		{
-			//trace("double clicked");
 			actionObjectClickStatus=ACTIONOBJECT_DOUBLE_CLICKED;
 			arrowDrawingStatus=NO_DRAWING;
 			
@@ -98,8 +95,6 @@ package ActionClasses
 				point1.x=0;
 	            point1.y=0;                
 	            point1=this.vbox.localToGlobal(point1);
-	            //login.x=point1.x-50;
-	            //login.y=point1.y+90; 
 	            CSVConfigPopUp(config).x=200;
 	            CSVConfigPopUp(config).y=point1.y+90;
 			}
@@ -110,9 +105,6 @@ package ActionClasses
 			vboxObj=new VBox();
 			imageObj = new Image();
 			labelObj=new Label();
-			//vboxObj.setStyle("borderColor","ffffff")
-			//vboxObj.setStyle("borderStyle","solid")
-			//vboxObj.setStyle("borderThickness","1")
 			labelObj.setStyle("textAlign","center");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
@@ -125,12 +117,11 @@ package ActionClasses
 			this.idValue=idgen;
 			vboxObj.addChild(imageObj);
 			vboxObj.addChild(labelObj);
-			//trace(idgen);
 			vboxObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
-			vboxObj.doubleClickEnabled=true;
-			vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
+			//vboxObj.doubleClickEnabled=true;
+			//vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
 		}
 
 		public function type():Number
@@ -203,6 +194,16 @@ package ActionClasses
 		public function get correctionY():Number
 		{
 			return correctionYvalue;
+		}
+		
+		public function get configObj():Object
+		{
+			return config;
+		}
+		
+		public function set configObj(confobj:Object)
+		{
+			config=confobj;
 		}
 	}
 }

@@ -35,6 +35,9 @@ package ActionClasses
 		
 		function get correctionY():Number;
 		
+		function get configObj():Object;
+		
+		function set configObj(confobj:Object);
 				
 	}
 }

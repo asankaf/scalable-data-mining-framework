@@ -233,7 +233,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	if (procedure=="csv->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";
+		string formattedOutPut="textViewer##test string";
 
 		for (int i=0;i<100;i++)
 		{
@@ -244,7 +244,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//and make a string to out put data in the text viewer 
 		//assign it to "formattedOutPut" here
 
-		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
@@ -255,7 +255,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//and make a string to out put the rules in the text viewer 
 		//assign it to "formattedOutPut" here
 
-		flash->root.Call("cplusPluseCallBackFunction", procedure+formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
 	else if (procedure=="getMySqlDataSourceList")
@@ -267,6 +267,18 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		//assign it to "formattedOutPut" here
 
 		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+	}
+	else
+	{
+		string formattedOutPut="noView##";
+
+		//implement the procedure for get data from csv file apply apriory algorithm 
+		//and make a string to out put the rules in the text viewer 
+		//assign it to "formattedOutPut" here
+
+		
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
