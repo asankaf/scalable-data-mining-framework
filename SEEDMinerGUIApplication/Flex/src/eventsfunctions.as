@@ -46,9 +46,7 @@ private var procedurePara:String;
 private var DONE:String="Done";
 private var EXECUTING:String="Executing Flaw";
 
-private var sqlListX:int;
-private var sqlListY:int;
-
+private var mysqlObject:MySQLDataSource;
 
 public function startUp(event:Event):void
 {
@@ -65,7 +63,10 @@ public function cplusPluseCallBackFunction(str:String):void
 		var data:String=strings[1];
 		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
 		var startindex:int=String(data).search("\n");
-		textPopUp.textViewerTextArea.width=Element.estimateStringPixelLength(data.slice(0,startindex));
+		if(textPopUp.textViewerTextArea.minWidth<Element.estimateStringPixelLength(data.slice(0,startindex)))
+		{
+			textPopUp.textViewerTextArea.width=Element.estimateStringPixelLength(data.slice(0,startindex));
+		}	
 		textPopUp.textViewerTextArea.text=data;
 		var point1:Point = new Point();
 		point1.x=0;
@@ -90,17 +91,11 @@ public function cplusPluseCallBackFunction(str:String):void
 	}	
 	else if(view=="sqlDataSourcesList")
 	{
-		var sqlsourcelist:String=strings[1];
-		
+		var sqlsourcelist:String=strings[1];		
 		var dataSourcesList:XMLList= new XMLList(sqlsourcelist);
-		var mysqlsources:MySqlDataSourcesSelectPopUp=MySqlDataSourcesSelectPopUp(PopUpManager.createPopUp(this, MySqlDataSourcesSelectPopUp , false));
-		mysqlsources.dataSoucesCol.dataField="name";
-		mysqlsources.dg.dataProvider=dataSourcesList;
-		var point1:Point = new Point();
-		point1.x=0;
-	    point1.y=0;                
-	    mysqlsources.x=sqlListX;
-	    mysqlsources.y=toptabs.height+sqlListY;
+				
+		MySqlDataSourcesSelectPopUp(mysqlObject.config).dataSoucesCol.dataField="name";
+		MySqlDataSourcesSelectPopUp(mysqlObject.config).dg.dataProvider=dataSourcesList;
 	}
 	else if(view=="noView")
 	{
@@ -148,13 +143,14 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		//__callBackFunction.call(fabridge,ret);
+		__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
-		var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		cplusPluseCallBackFunction(str);
+		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
+		//var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)";
+		//cplusPluseCallBackFunction(str);
 	
 	}
 	
@@ -169,9 +165,9 @@ private function getCurrentProcedure():String
 		var Obj:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[i]]);
 		if(Obj.type()==ActionObjectParent.CSV_DATASOURCE)
 		{
-			if(Obj.config==null)
+			if(CSVConfigPopUp(Obj.config).location.text=="")
 			{
-				showError("Path not configured!\nDoubleClick the 'CSV DataSource' to configure path!");
+				showError("Path not configured!\nEnter the path of the CSV file...");
 				return null;
 			}
 			else
@@ -196,6 +192,11 @@ private function getCurrentProcedure():String
 		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
 		{
 			procedure+="classification";
+		}
+		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
+		{
+			procedure+="mysql";
+			procedurePara=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString();
 		}
 		
 		if(i+1!=actionObjectSequence.length)
@@ -352,9 +353,21 @@ private function dragDropHandler(event:DragEvent):void
     	
     	if(actionObj.type()==ActionObjectParent.MySQL_DATASOURCE)
     	{
-    		sqlListX=actionObj.vboxX+actionObj.vbox.width;
-    		sqlListY=actionObj.vboxY+actionObj.vbox.height-40;
+    		var sqlListX:int=actionObj.vboxX+actionObj.vbox.width;
+    		var sqlListY:int=toptabs.height+actionObj.vboxY+actionObj.vbox.height-40;
+    		var mysqlsourcesPopUp:MySqlDataSourcesSelectPopUp=MySqlDataSourcesSelectPopUp(PopUpManager.createPopUp(this, MySqlDataSourcesSelectPopUp , false));
+    		actionObj.configObj=mysqlsourcesPopUp; 
+    		mysqlObject=MySQLDataSource(actionObj);        
+		    mysqlsourcesPopUp.x=sqlListX;
+		    mysqlsourcesPopUp.y=sqlListY;		 
     		getDataSourceList();
+    	}
+    	else if(actionObj.type()==ActionObjectParent.CSV_DATASOURCE)
+    	{
+    		var csvPathEnterPopUp:CSVConfigPopUp=CSVConfigPopUp(PopUpManager.createPopUp(this, CSVConfigPopUp , false));
+    		actionObj.configObj=csvPathEnterPopUp;               
+            csvPathEnterPopUp.x=200;
+            csvPathEnterPopUp.y=toptabs.height+actionObj.vboxY+actionObj.vbox.height;
     	}
     	
     	actionObj=null;

@@ -20,9 +20,9 @@
         <mx:VBox x="10" y="10" height="52" width="542" horizontalAlign="right">
             <mx:HBox width="537">
                 <mx:Label text="csv file path"/>
-                <mx:TextInput width="456" id="location" creationComplete="focusManager.setFocus(location)"/>
+                <mx:TextInput width="456" id="location" creationComplete="focusManager.setFocus(location)" change="okbutton.enabled=true"/>
             </mx:HBox>
-            <mx:Button label="Ok" click="ok(event);"/>
+            <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false"/>
         </mx:VBox>
     </mx:Canvas>
 
