@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="100%" height="100%" initialize="startUp(event)">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="100%" height="100%" initialize="startUp(event)" xmlns:ns1="*">
 	<fab:FABridge id="fabridge" xmlns:fab="bridge.*" bridgeName="bridge1"/>
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
 		<mx:VBox x="0" y="0" height="100%" width="100%" verticalGap="0" backgroundColor="#FFFFFF">
@@ -75,8 +75,9 @@
 				<mx:Button label="Clear Flaw" bottom="10" right="120" click="clearCanvas(event)"/>
 			</mx:Canvas>
 			<mx:Canvas width="100%" height="35" backgroundColor="#F1F1F1" borderColor="#E0E0E0" borderThickness="2" borderStyle="solid">
-				<mx:ProgressBar y="1" label="Done" id="progressBar" right="7" labelPlacement="top" width="185" barColor="#5CB3F5"/>
-				<mx:Label x="10" y="10" text="SEEDMiner" width="142"/>
+				<mx:ProgressBar y="1" label="Done" id="progressBar" right="8" labelPlacement="top" width="197" barColor="#5CB3F5"/>
+				<mx:Label x="34" y="10" text="SEEDMiner" width="142"/>
+				<mx:Image x="10" y="10" height="16" source="@Embed('SeedMinerGUI.png')"/>
 			</mx:Canvas>
 		</mx:VBox>
 	</mx:Canvas>

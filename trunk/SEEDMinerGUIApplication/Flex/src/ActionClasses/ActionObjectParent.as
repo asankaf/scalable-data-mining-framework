@@ -108,6 +108,9 @@ package ActionClasses
 			labelObj.setStyle("textAlign","center");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
+			//vboxObj.setStyle("borderStyle","solid");
+			//vboxObj.setStyle("borderThickness","1");
+			//vboxObj.setStyle("borderColor","#555555");
 			labelObj.text=label;
 			vboxObj.width=120;
 			vboxObj.height=120;

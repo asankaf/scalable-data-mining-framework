@@ -45,6 +45,8 @@ private static var ok:Boolean=false;
 private var procedurePara:String;
 private var DONE:String="Done";
 private var EXECUTING:String="Executing Flaw";
+private var timeStampsOnCanvas:Dictionary = new Dictionary();
+private var timeStamps:Array = new Array();
 
 private var mysqlObject:MySQLDataSource;
 
@@ -53,10 +55,37 @@ public function startUp(event:Event):void
 	
 }
 
+private function addTimeStamp(actionObject:ActionObjectParent)
+{
+	var timeStamp:TimePopUp=new TimePopUp();
+	timeStamp.x=actionObject.vboxX;
+	timeStamp.y=actionObject.vboxY+actionObject.vbox.height-30;			
+	drawingcanvas.addChild(timeStamp);
+	timeStamps.push(timeStamp.toString());
+	timeStampsOnCanvas[timeStamp.toString()]=timeStamp;
+}
+
 public function cplusPluseCallBackFunction(str:String):void
 {
 	var strings:Array=str.split("##");
 	var view:String=strings[0];
+	
+	var strings1:Array=str.split("$$");
+	var timeInfo:String=strings1[1];
+	var strings2:Array=timeInfo.split("@@");
+	var procedure:String=strings2[0];
+	
+	if(procedure=="csv->text")
+	{
+		for(var i:int=0;i<actionObjectSequence.length;i++)
+		{
+			var actionObject:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[i]]);
+			if(actionObject.type()==ActionObjectParent.CSV_DATASOURCE)
+			{
+				addTimeStamp(actionObject);
+			}
+		}
+	}
 	
 	if(view=="textViewer")
 	{
@@ -143,14 +172,14 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		__callBackFunction.call(fabridge,ret);
+		//__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		//var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)";
-		//cplusPluseCallBackFunction(str);
+		var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)$$csv->text@@10.33ms";
+		cplusPluseCallBackFunction(str);
 	
 	}
 	
@@ -253,6 +282,14 @@ private function clearCanvas(event:MouseEvent):void
 			var id:String=String(actionObjects.pop());
 			drawingcanvas.removeChild(ActionObject(actionObjectsOnCanvas[id]).vbox);
 			delete actionObjectsOnCanvas[id];
+		}
+	}
+	var times:int=timeStamps.length;
+	if(0<times)
+	{
+		for(var i:int=0;i<times;i++)
+		{
+			drawingcanvas.removeChild(TimePopUp(timeStampsOnCanvas[timeStamps[i]]));
 		}
 	}
 }

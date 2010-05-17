@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="154" height="174" title="MySql Data Sources">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="154" height="174" title="MySql Data Sources" showCloseButton="true" close="select(event);">
 	<mx:Script>
 	<![CDATA[
 		import mx.controls.List;
 		import mx.events.ListEvent;
 		import mx.managers.PopUpManager;
 		
-		private function select(e:ListEvent):void
+		private function select(e:Event):void
 		{
 			PopUpManager.removePopUp(this);
 		}
