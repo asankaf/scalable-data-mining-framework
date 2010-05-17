@@ -16,6 +16,7 @@ import ActionClasses.Util;
 import ActionClasses.VisualTreeElements.Element;
 import ActionClasses.WAHCompression;
 import ActionClasses.WAHCompression2;
+import seedminer.TimePopUp;
 
 import com.dncompute.graphics.ArrowStyle;
 import com.dncompute.graphics.GraphicsUtil;
@@ -29,6 +30,8 @@ import mx.controls.Image;
 import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
+
+import seedminer.TimePopUp;
 
 include "bridge/FlexVCBridge.as";
 
@@ -55,14 +58,16 @@ public function startUp(event:Event):void
 	
 }
 
-private function addTimeStamp(actionObject:ActionObjectParent)
+private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
 {
 	var timeStamp:TimePopUp=new TimePopUp();
-	timeStamp.x=actionObject.vboxX;
-	timeStamp.y=actionObject.vboxY+actionObject.vbox.height-30;			
-	drawingcanvas.addChild(timeStamp);
-	timeStamps.push(timeStamp.toString());
-	timeStampsOnCanvas[timeStamp.toString()]=timeStamp;
+	timeStamp.x=0;
+	timeStamp.y=actionObject.vbox.height-30;
+	timeStamp.myLable.text=timeValue;
+	actionObject.addTimeStamp(timeStamp);	
+	//drawingcanvas.addChild(timeStamp);
+	//timeStamps.push(timeStamp.toString());
+	//timeStampsOnCanvas[timeStamp.toString()]=timeStamp;
 }
 
 public function cplusPluseCallBackFunction(str:String):void
@@ -82,7 +87,7 @@ public function cplusPluseCallBackFunction(str:String):void
 			var actionObject:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[i]]);
 			if(actionObject.type()==ActionObjectParent.CSV_DATASOURCE)
 			{
-				addTimeStamp(actionObject);
+				addTimeStamp(actionObject,strings2[1]);
 			}
 		}
 	}
@@ -178,7 +183,7 @@ private function executeFlow(event:Event):void
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)$$csv->text@@10.33ms";
+		var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)$$csv->text@@50ms";
 		cplusPluseCallBackFunction(str);
 	
 	}
@@ -284,14 +289,14 @@ private function clearCanvas(event:MouseEvent):void
 			delete actionObjectsOnCanvas[id];
 		}
 	}
-	var times:int=timeStamps.length;
+	/*var times:int=timeStamps.length;
 	if(0<times)
 	{
 		for(var i:int=0;i<times;i++)
 		{
 			drawingcanvas.removeChild(TimePopUp(timeStampsOnCanvas[timeStamps[i]]));
 		}
-	}
+	}*/
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
