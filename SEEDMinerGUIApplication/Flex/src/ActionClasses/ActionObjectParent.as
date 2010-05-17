@@ -9,6 +9,9 @@ package ActionClasses
 	import mx.core.DragSource;
 	import mx.managers.DragManager;
 	import mx.managers.PopUpManager;
+	import seedminer.TimePopUp;
+	
+	import seedminer.TimePopUp;
 
 	public class ActionObjectParent implements ActionObject
 	{
@@ -43,6 +46,7 @@ package ActionClasses
 		private var idValue:String;
 		public static var actionObjectClickStatus:Number=ACTIONOBJECT_NOT_CLICKED;
 		public var config:Object;
+		public var timeStamp:TimePopUp;
 		
 		private function mouseMoveHandler(event:MouseEvent):void
 		{
@@ -104,7 +108,7 @@ package ActionClasses
 		{
 			vboxObj=new VBox();
 			imageObj = new Image();
-			labelObj=new Label();
+			labelObj=new Label();			
 			labelObj.setStyle("textAlign","center");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
@@ -126,6 +130,12 @@ package ActionClasses
 			//vboxObj.doubleClickEnabled=true;
 			//vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
 		}
+		
+		public function addTimeStamp(timeStampObj:TimePopUp)
+		{
+			timeStamp=timeStampObj;
+			vboxObj.addChild(timeStamp);
+		}		
 
 		public function type():Number
 		{
