@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-    title="CSV Data Source" x="168" y="86" width="626" height="124">
+    title="CSV Data Source" x="168" y="86" width="626" height="124" showCloseButton="true" close="ok(event);">
 
     <mx:Script>
         <![CDATA[       
@@ -8,7 +8,7 @@
             import mx.managers.PopUpManager;
 	       		   
             // Event handler for the OK button.
-            private function ok(event:MouseEvent):void 
+            private function ok(event:Event):void 
             {
             	//trace(location.text);
             	PopUpManager.removePopUp(this);
