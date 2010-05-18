@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include "IntelliCheckersUI.h"
-#include "IntelliCheckersUIDlg.h"
+#include "SeedMinerGui.h"
+#include "SeedMinerGuiDlg.h"
 
 
 
@@ -377,7 +377,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	if (procedure=="csv->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";
+		string formattedOutPut="textViewer##";
 		//path = "C:\\Data\\soyaTest.csv";
 		
 		//implement the procedure for get data from csv file(path is the location of the file) 
@@ -386,21 +386,21 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		CSV(path,1000);		
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
 		//NullEliminator();
-		formattedOutPut = Text(WRAPPED_SOURCE,100);
+		formattedOutPut += Text(WRAPPED_SOURCE,100);
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";		
+		string formattedOutPut="textViewer##";		
 		CSV(path,1000);
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
 		Aprior(0.9,0.01,10);		
 		//Bayesian(m_source->codedAttributes().size()-1);
 		//Classifier();
 		//formattedOutPut = Text(CLASSIFIER_SOURCE,0);
-		formattedOutPut = Text(APRIORI_SOURCE,0);
+		formattedOutPut += Text(APRIORI_SOURCE,0);
 		//formattedOutPut = Text(BAYESIAN_SOURCE,0);
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
@@ -408,11 +408,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	}else if (procedure == "csv->classification->tree")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";		
+		string formattedOutPut="treeViewer##";		
 		CSV(path,1000);
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
 		Classifier();
-		formattedOutPut = Text(CLASSIFIER_SOURCE,0);		
+		formattedOutPut += Text(CLASSIFIER_SOURCE,0);		
 		DeleteAll();
 						
 		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
@@ -421,13 +421,36 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	else if (procedure == "csv->classification->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="";		
+		string formattedOutPut="textViewer##";		
 		CSV(path,1000);
 		Classifier();
-		formattedOutPut = Text(CLASSIFIER_TEXT_SOURCE,0);		
+		formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);		
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 
+	}
+	else if (procedure=="getMySqlDataSourceList")
+	{
+		string formattedOutPut="sqlDataSourcesList##";
+		//get the real mysql data sources list as below
+		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+	}
+	else if (procedure == "mysql->text")
+	{
+		string dataSource=evt->procedurePara;
+		string formattedOutPut="textViewer##";		
+		//read mysql
+		formattedOutPut += "test mysql read";		
+		
+		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+
+	}
+	else
+	{
+		string formattedOutPut="noView##";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
 	
 }
