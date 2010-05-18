@@ -146,7 +146,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Include;&quot;$(BOOST_HOME)&quot;;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm;..\SMPreprocessing"
+				AdditionalIncludeDirectories="..\Include;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm;..\SMPreprocessing;G:\programming and other\c++\boost_1_33_0\boost_1_33_0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -175,7 +175,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="..\debug\FlexVCBridgeStaticLib.lib ..\debug\SMDataExtraction.lib ..\debug\Algorithm.lib ..\debug\SMCompression.lib ..\debug\SMPreprocessing.lib"
-				OutputFile=".\Debug/IntelliCheckersUI.exe"
+				OutputFile=".\Debug/SeedMinerApplicationI.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\lib;..\Debug"
@@ -239,11 +239,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\IntelliCheckersUI.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\IntelliCheckersUIDlg.cpp"
+				RelativePath=".\SeedMinerGui.cpp"
 				>
 			</File>
 			<File
@@ -265,6 +261,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\SeedMinerGuiDlg.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\shockwaveflash.cpp"
@@ -300,15 +300,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\IntelliCheckersUI.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IntelliCheckersUIDlg.h"
-				>
-			</File>
-			<File
 				RelativePath="Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SeedMinerGui.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SeedMinerGuiDlg.h"
 				>
 			</File>
 			<File
@@ -324,10 +324,6 @@
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
-			<File
-				RelativePath=".\res\IntelliCheckersUI.ico"
-				>
-			</File>
 			<File
 				RelativePath=".\res\SeedMinerGUI.ico"
 				>
