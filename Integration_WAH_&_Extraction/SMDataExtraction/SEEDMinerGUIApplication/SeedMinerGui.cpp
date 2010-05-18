@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "IntelliCheckersUI.h"
-#include "IntelliCheckersUIDlg.h"
+#include "SeedMinerGui.h"
+#include "SeedMinerGuiDlg.h"
 #include <iostream>
 #ifdef _DEBUG
 #define new DEBUG_NEW
