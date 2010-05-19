@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="47" height="162" cornerRadius="4" headerHeight="8" borderThickness="1" borderStyle="solid" borderColor="#EEEEEE" roundedBottomCorners="true" clipContent="false" alpha=".3" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+	<mx:VBox x="-1.75" y="3" width="48.5" height="159" verticalAlign="middle" horizontalAlign="center">
+		<mx:Button id="executeButton" width="30" height="30" icon="@Embed(source='../execute.png')" toolTip="execute flaw"/>
+		<mx:Button id="saveButton" width="30" height="30" icon="@Embed(source='../save.png')" toolTip="save created flaw"/>
+		<mx:Button id="createLoopButton" width="30" height="30" icon="@Embed(source='../loop.png')" toolTip="create a loop for this flaw"/>
+		<mx:Button id="clearCanvasButton" width="30" height="30" icon="@Embed(source='../clear.png')" toolTip="clear canvas"/>
+	</mx:VBox>
+	<mx:Fade id="fadeOut" duration="1500" alphaFrom="1.0" alphaTo="0.3"/>
+    <mx:Fade id="fadeIn" duration="400" alphaFrom="0.3" alphaTo="1.0"/>
+</mx:TitleWindow>

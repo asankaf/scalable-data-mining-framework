@@ -107,6 +107,7 @@ package ActionClasses
 		public function ActionObjectParent(label:String)
 		{
 			vboxObj=new VBox();
+			
 			imageObj = new Image();
 			labelObj=new Label();			
 			labelObj.setStyle("textAlign","center");
