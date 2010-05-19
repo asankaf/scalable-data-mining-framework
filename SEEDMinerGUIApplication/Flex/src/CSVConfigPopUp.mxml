@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-    title="CSV Data Source" x="168" y="86" width="626" height="124" showCloseButton="true" close="ok(event);">
+    title="CSV Data Source" x="168" y="86" width="626" height="124" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 
     <mx:Script>
         <![CDATA[       
@@ -25,5 +25,8 @@
             <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false"/>
         </mx:VBox>
     </mx:Canvas>
+    
+    <mx:Fade id="fadeOut" duration="1000" alphaFrom="1" alphaTo="0.3"/>
+    <mx:Fade id="fadeIn" duration="500" alphaFrom="0.3" alphaTo="1"/>
 
 </mx:TitleWindow>  

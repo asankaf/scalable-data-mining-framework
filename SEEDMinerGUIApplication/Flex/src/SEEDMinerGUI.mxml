@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="100%" height="100%" initialize="startUp(event)" xmlns:ns1="*">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" backgroundColor="#E7E5E5" width="100%" height="100%" initialize="startUp(event)" xmlns:ns1="*" xmlns:ns2="seedminer.*">
 	<fab:FABridge id="fabridge" xmlns:fab="bridge.*" bridgeName="bridge1"/>
-	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain">
+	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain" >
 		<mx:VBox x="0" y="0" height="100%" width="100%" verticalGap="0" backgroundColor="#FFFFFF">
 			<mx:TabNavigator width="100%" height="127" id="toptabs" borderColor="#EDEDED" backgroundColor="#ECECEC" borderStyle="solid" borderThickness="1" cornerRadius="2" dropShadowColor="#D6D6D6">
 				<mx:Canvas label="DataSources" width="100%" height="100%">
@@ -69,10 +69,8 @@
 					</mx:HBox>
 				</mx:Canvas>
 			</mx:TabNavigator>
-			<mx:Canvas width="100%" borderColor="#C8C8C8" borderStyle="solid" backgroundColor="#FAFAFA" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)" click="mouseClickHandler(event)" borderThickness="1" cornerRadius="2" height="100%">
-				<mx:Button label="Execute Flow" id="exe" click="executeFlow(event);" right="10" bottom="10" width="100"/>
+			<mx:Canvas width="100%" borderColor="#C8C8C8" borderStyle="solid" backgroundColor="#FAFAFA" id="drawingcanvas" dragOver="dragOverHandler(event)" dragDrop="dragDropHandler(event);" dragEnter="dragEnterHandler(event);" mouseMove="mouseMoveHandler(event)" click="mouseClickHandler(event)" borderThickness="1" cornerRadius="2" height="100%" creationComplete="createControlPanel(event)">
 				<mx:Text x="206" y="166" text="Text" width="142" height="65" id="tt" visible="false"/>
-				<mx:Button label="Clear Flaw" bottom="10" right="120" click="clearCanvas(event)"/>
 			</mx:Canvas>
 			<mx:Canvas width="100%" height="35" backgroundColor="#F1F1F1" borderColor="#E0E0E0" borderThickness="2" borderStyle="solid">
 				<mx:ProgressBar y="1" label="Done" id="progressBar" right="8" labelPlacement="top" width="197" barColor="#5CB3F5"/>

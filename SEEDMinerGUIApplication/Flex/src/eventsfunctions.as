@@ -30,6 +30,7 @@ import mx.core.DragSource;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
 
+import seedminer.ControlPanel;
 import seedminer.TimePopUp;
 
 
@@ -53,9 +54,19 @@ private var timeStamps:Array = new Array();
 
 private var mysqlObject:MySQLDataSource;
 
+
 public function startUp(event:Event):void
 {
 	
+}
+public function createControlPanel(event:Event):void
+{
+	var controlPanel:ControlPanel=ControlPanel(PopUpManager.createPopUp(this, ControlPanel , false));
+	controlPanel.x=this.drawingcanvas.x+6;
+	controlPanel.y=this.drawingcanvas.y+70;
+	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
+	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
+	//this.addChild(controlPanel);
 }
 
 private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
@@ -96,6 +107,10 @@ public function cplusPluseCallBackFunction(str:String):void
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
 					else if(actionObject.type()==ActionObjectParent.ALGORITHM_APRIORY && currentProcedure=="apriory")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.MySQL_DATASOURCE && currentProcedure=="mysql")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
@@ -196,7 +211,7 @@ private function executeFlow(event:Event):void
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		var str:String="textViewer##asdfsasdf\nasdf\n$$csv->apriory->text@@50ms@@10ms";
+		var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
 		cplusPluseCallBackFunction(str);
 	
 	}
@@ -259,14 +274,14 @@ private function showStatus(status:String):void
 {
 	 if(status!=DONE)
 	 {
-	 	exe.label="Executing";
-	 	exe.enabled=false;
+	 	//exe.label="Executing";
+	 	//exe.enabled=false;
 	 	progressBar.indeterminate=true;
 	 }
 	 else
 	 {
-	 	exe.label="Execute Flow";
-	 	exe.enabled=true;
+	 	//exe.label="Execute Flow";
+	 	//exe.enabled=true;
 	 	progressBar.indeterminate=false;
 	 }
      progressBar.label= status;
