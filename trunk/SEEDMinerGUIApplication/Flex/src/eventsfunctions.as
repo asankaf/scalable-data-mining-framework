@@ -16,7 +16,6 @@ import ActionClasses.Util;
 import ActionClasses.VisualTreeElements.Element;
 import ActionClasses.WAHCompression;
 import ActionClasses.WAHCompression2;
-import seedminer.TimePopUp;
 
 import com.dncompute.graphics.ArrowStyle;
 import com.dncompute.graphics.GraphicsUtil;
@@ -32,6 +31,7 @@ import mx.events.DragEvent;
 import mx.managers.DragManager;
 
 import seedminer.TimePopUp;
+
 
 include "bridge/FlexVCBridge.as";
 
@@ -72,29 +72,42 @@ private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
 
 public function cplusPluseCallBackFunction(str:String):void
 {
-	var strings:Array=str.split("##");
+	var strings:Array=str.split("##");//get view
 	var view:String=strings[0];
 	
-	var strings1:Array=str.split("$$");
-	var timeInfo:String=strings1[1];
-	var strings2:Array=timeInfo.split("@@");
-	var procedure:String=strings2[0];
-	
-	if(procedure=="csv->text")
+	var strings1:Array=strings[1].split("$$");//get time stamps
+	if(1<strings1.length)
 	{
-		for(var i:int=0;i<actionObjectSequence.length;i++)
+		var timeInfo:String=strings1[1];
+		var strings2:Array=timeInfo.split("@@");
+		if(1<strings2.length)
 		{
-			var actionObject:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[i]]);
-			if(actionObject.type()==ActionObjectParent.CSV_DATASOURCE)
+			var procedure:Array=String(strings2[0]).split("->");
+			 
+			///////////////////////////////////////time//////////////////////////////
+			for(var i:int=0;i<procedure.length;i++)
 			{
-				addTimeStamp(actionObject,strings2[1]);
+				var currentProcedure:String=procedure[i];
+				for(var j:int=0;j<actionObjectSequence.length;j++)
+				{
+					var actionObject:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[j]]);
+					if(actionObject.type()==ActionObjectParent.CSV_DATASOURCE && currentProcedure=="csv")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.ALGORITHM_APRIORY && currentProcedure=="apriory")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+				}
 			}
 		}
 	}
 	
+	///////////////////////////////////////view////////////////////////////////////
 	if(view=="textViewer")
 	{
-		var data:String=strings[1];
+		var data:String=strings1[0];
 		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
 		var startindex:int=String(data).search("\n");
 		if(textPopUp.textViewerTextArea.minWidth<Element.estimateStringPixelLength(data.slice(0,startindex)))
@@ -112,7 +125,7 @@ public function cplusPluseCallBackFunction(str:String):void
 	else if(view=="treeViewer")
 	{
 		
-		var treeString:String=strings[1];
+		var treeString:String=strings1[0];
 		var dom:ClassificationDom=new ClassificationDom(treeString);
 		
 	    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
@@ -125,7 +138,7 @@ public function cplusPluseCallBackFunction(str:String):void
 	}	
 	else if(view=="sqlDataSourcesList")
 	{
-		var sqlsourcelist:String=strings[1];		
+		var sqlsourcelist:String=strings1[0];		
 		var dataSourcesList:XMLList= new XMLList(sqlsourcelist);
 				
 		MySqlDataSourcesSelectPopUp(mysqlObject.config).dataSoucesCol.dataField="name";
@@ -183,7 +196,7 @@ private function executeFlow(event:Event):void
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		var str:String="textViewer##petalwidth <= 0.6: 6.0/1.0)$$csv->text@@50ms";
+		var str:String="textViewer##asdfsasdf\nasdf\n$$csv->apriory->text@@50ms@@10ms";
 		cplusPluseCallBackFunction(str);
 	
 	}

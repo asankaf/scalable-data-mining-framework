@@ -12,7 +12,7 @@
             
         ]]>
     </mx:Script>
-	<mx:Canvas id="drawingCanvas" x="0" y="0" backgroundColor="#FFFFFF" horizontalScrollPolicy="auto" >
+	<mx:Canvas id="drawingCanvas" x="0" y="0" backgroundColor="#FFFFFF" horizontalScrollPolicy="auto"  constraintRows="1000">
 	</mx:Canvas>
 	
 </mx:TitleWindow>
