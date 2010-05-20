@@ -5,6 +5,9 @@
 #include <iostream>
 #include "SeedMinerGui.h"
 #include "SeedMinerGuiDlg.h"
+#include <sstream>
+#include <string>;
+#include <vector>
 
 
 
@@ -373,20 +376,37 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
 {
 	string procedure=evt->procedure;
+	string measureTime=evt->measureTime;
+	//clock_t start,end;
+	time_t start,end;
+	string timeUnit=" s";
 
 	if (procedure=="csv->text")
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="textViewer##";
+		string timeStamps="$$"+procedure;
 		//path = "C:\\Data\\soyaTest.csv";
 		
 		//implement the procedure for get data from csv file(path is the location of the file) 
 		//and make a string to out put data in the text viewer 
 		//assign it to "formattedOutPut" here
-		CSV(path,1000);		
+		timeStamps+="@@";
+		//start = clock() * CLK_TCK;
+		time (&start);
+		CSV(path,1000);
+		//end = clock() * CLK_TCK;
+		time (&end);
+		std::stringstream time;
+		time << difftime (end,start);;		
+		timeStamps+=time.str()+timeUnit;
 		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
 		//NullEliminator();
 		formattedOutPut += Text(WRAPPED_SOURCE,100);
+		if(measureTime=="true")
+		{
+			formattedOutPut+=timeStamps;
+		}
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
@@ -452,5 +472,52 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string formattedOutPut="noView##";
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
-	
+
+
+
+	/*vector<string> tokens;
+    Tokenize(procedure, tokens);
+
+	string formattedOutPut="";
+
+	for(int i=0;i<tokens.size();i++)
+	{
+		string token=tokens[i];
+		if(token=="csv")
+		{
+			string path=evt->procedurePara;
+			CSV(path,100);
+			formattedOutPut += Text(WRAPPED_SOURCE,100);
+		}
+		else if(token=="apriory")
+		{
+			Aprior(0.9,0.01,10);
+			formattedOutPut += Text(APRIORI_SOURCE,0);
+		}
+		else if(token=="text")
+		{
+			formattedOutPut = "textViewer##"+formattedOutPut;
+		}
+	}
+
+	DeleteAll();
+	flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);*/
+}
+
+void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
+{
+    // Skip delimiters at beginning.
+    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    // Find first "non-delimiter".
+    string::size_type pos     = str.find_first_of(delimiters, lastPos);
+
+    while (string::npos != pos || string::npos != lastPos)
+    {
+        // Found a token, add it to the vector.
+        tokens.push_back(str.substr(lastPos, pos - lastPos));
+        // Skip delimiters.  Note the "not_of"
+        lastPos = str.find_first_not_of(delimiters, pos);
+        // Find next "non-delimiter"
+        pos = str.find_first_of(delimiters, lastPos);
+    }
 }

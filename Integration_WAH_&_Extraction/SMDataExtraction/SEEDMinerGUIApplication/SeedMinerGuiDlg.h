@@ -88,6 +88,7 @@ public:
 	virtual void OnFlexInit(int flashIndex);
 	virtual void OnFlexButtonClick(CFlexEvent *evt, CString controller);
 	virtual void OnFlexEvent(CFlexEvent *evt);
+	void Tokenize(const string& str,vector<string>& tokens,const string& delimiters = "->");
 
 
 	void OnOK(); 
