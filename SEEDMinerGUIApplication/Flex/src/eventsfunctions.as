@@ -52,6 +52,8 @@ private var DONE:String="Done";
 private var EXECUTING:String="Executing Flaw";
 private var timeStampsOnCanvas:Dictionary = new Dictionary();
 private var timeStamps:Array = new Array();
+private var controlPanel:ControlPanel;
+private var sink:Sink;
 
 private var mysqlObject:MySQLDataSource;
 
@@ -62,14 +64,14 @@ public function startUp(event:Event):void
 }
 public function createControlPanel(event:Event):void
 {
-	var controlPanel:ControlPanel=ControlPanel(PopUpManager.createPopUp(this, ControlPanel , false));
+	controlPanel=ControlPanel(PopUpManager.createPopUp(this, ControlPanel , false));
 	controlPanel.x=this.drawingcanvas.x+6;
 	controlPanel.y=this.drawingcanvas.y+70;
 	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
 	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
 	
-	var sink:Sink=Sink(PopUpManager.createPopUp(this, Sink , false));
-	sink.x=this.drawingcanvas.width-sink.width-20;
+	sink=Sink(PopUpManager.createPopUp(this, Sink , false));
+	sink.x=this.drawingcanvas.width-sink.width-8;
 	sink.y=this.drawingcanvas.y+70;
 }
 
@@ -185,8 +187,8 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	//if(1<actionObjectSequence.length)
-	//{
+	if(1<actionObjectSequence.length)
+	{
 		showStatus(EXECUTING);
 		
 		var ret:Object = new Object();
@@ -206,8 +208,9 @@ private function executeFlow(event:Event):void
 			return;
 		}
 			
-		ret["procedure"] = getCurrentProcedure();	
+		ret["procedure"] = getCurrentProcedure();
 		ret["procedurePara"] = procedurePara;
+		ret["measureTime"] = controlPanel.measuretime.toString();	
 	
 		__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
@@ -218,7 +221,7 @@ private function executeFlow(event:Event):void
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
 		//cplusPluseCallBackFunction(str);
 	
-	//}
+	}
 	
 }
 
