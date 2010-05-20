@@ -77,14 +77,19 @@ public function createControlPanel(event:Event):void
 
 private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
 {
-	var timeStamp:TimePopUp=new TimePopUp();
+	var timeStamp:TimePopUp;
+	if(actionObject.timeStamp==null)
+	{
+		timeStamp=new TimePopUp();
+		actionObject.addTimeStamp(timeStamp);
+	}
+	else
+	{
+		timeStamp=actionObject.timeStamp;
+	}	
 	timeStamp.x=0;
 	timeStamp.y=actionObject.vbox.height-30;
 	timeStamp.myLable.text=timeValue;
-	actionObject.addTimeStamp(timeStamp);	
-	//drawingcanvas.addChild(timeStamp);
-	//timeStamps.push(timeStamp.toString());
-	//timeStampsOnCanvas[timeStamp.toString()]=timeStamp;
 }
 
 public function cplusPluseCallBackFunction(str:String):void
@@ -122,6 +127,14 @@ public function cplusPluseCallBackFunction(str:String):void
 					}
 				}
 			}
+		}
+	}
+	else
+	{
+		for(var k:int=0;k<actionObjectSequence.length;k++)
+		{
+			var actionObject_:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[k]]);
+			actionObject_.removeTimeStamp();
 		}
 	}
 	

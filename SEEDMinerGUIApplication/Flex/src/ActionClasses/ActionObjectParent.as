@@ -136,6 +136,15 @@ package ActionClasses
 		{
 			timeStamp=timeStampObj;
 			vboxObj.addChild(timeStamp);
+		}
+		
+		public function removeTimeStamp()
+		{			
+			if(timeStamp!=null)
+			{
+				vboxObj.removeChild(timeStamp);
+			}			
+			timeStamp=null;
 		}		
 
 		public function type():Number
