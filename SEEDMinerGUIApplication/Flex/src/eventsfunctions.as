@@ -31,6 +31,7 @@ import mx.events.DragEvent;
 import mx.managers.DragManager;
 
 import seedminer.ControlPanel;
+import seedminer.Sink;
 import seedminer.TimePopUp;
 
 
@@ -66,7 +67,10 @@ public function createControlPanel(event:Event):void
 	controlPanel.y=this.drawingcanvas.y+70;
 	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
 	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
-	//this.addChild(controlPanel);
+	
+	var sink:Sink=Sink(PopUpManager.createPopUp(this, Sink , false));
+	sink.x=this.drawingcanvas.width-sink.width-20;
+	sink.y=this.drawingcanvas.y+70;
 }
 
 private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
@@ -181,8 +185,8 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	if(1<actionObjectSequence.length)
-	{
+	//if(1<actionObjectSequence.length)
+	//{
 		showStatus(EXECUTING);
 		
 		var ret:Object = new Object();
@@ -205,16 +209,16 @@ private function executeFlow(event:Event):void
 		ret["procedure"] = getCurrentProcedure();	
 		ret["procedurePara"] = procedurePara;
 	
-		//__callBackFunction.call(fabridge,ret);
+		__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
-		var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
-		cplusPluseCallBackFunction(str);
+		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
+		//cplusPluseCallBackFunction(str);
 	
-	}
+	//}
 	
 }
 
