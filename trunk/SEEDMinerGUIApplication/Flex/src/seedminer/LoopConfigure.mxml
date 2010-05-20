@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" alpha="0" showEffect="{fadeIn}" creationCompleteEffect="{fadeIn}" layout="absolute" height="50" clipContent="false" borderColor="#ADEDFF" borderStyle="solid" borderThickness="1" backgroundColor="#E9FAFF" headerHeight="15" cornerRadius="0" dropShadowColor="#F1F1F1">
+	<mx:title>THE FLAW CREATED ON THE CANVAS WILL RUN IN A LOOP AS CONFIGURED BELOW, CHANGE THE DEFAULT VALUES AS YOU WISH</mx:title>
+	<mx:Script>
+        <![CDATA[
+        	import mx.core.IFlexDisplayObject;
+        	import mx.managers.PopUpManager;
+            public var runInALoop:Boolean=false;
+            public function show():void
+            {
+            	runInALoop=true;
+            	//fadeIn.target=this;
+            	//fadeIn.play();
+            }
+            public function hide():void
+            {
+            	runInALoop=false;
+            	//fadeOut.target=this;
+            	//fadeOut.play();
+            }
+        ]]>
+    </mx:Script>
+	<mx:Fade id="fadeOut" duration="1000" alphaFrom="{1}" alphaTo="0"/>
+    <mx:Fade id="fadeIn" duration="1000" alphaFrom="{0}" alphaTo="1.0"/>
+    <mx:HBox x="10" y="20" width="100%" height="22">
+        <mx:Label text="LOOP COUNT:" color="#7E7E7E"/>
+        <mx:TextInput width="78" text="10"/>
+        <mx:Label text="INCREMENT:" color="#7E7E7E"/>
+        <mx:TextInput width="78" text="100"/>
+    </mx:HBox>
+</mx:TitleWindow>

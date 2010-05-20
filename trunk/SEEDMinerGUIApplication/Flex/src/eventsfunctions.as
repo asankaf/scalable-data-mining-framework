@@ -27,10 +27,14 @@ import flash.events.MouseEvent;
 import mx.containers.Canvas;
 import mx.controls.Image;
 import mx.core.DragSource;
+import mx.core.IFlexDisplayObject;
+import mx.events.CloseEvent;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
+import mx.managers.PopUpManager;
 
 import seedminer.ControlPanel;
+import seedminer.LoopConfigure;
 import seedminer.Sink;
 import seedminer.TimePopUp;
 
@@ -54,6 +58,7 @@ private var timeStampsOnCanvas:Dictionary = new Dictionary();
 private var timeStamps:Array = new Array();
 private var controlPanel:ControlPanel;
 private var sink:Sink;
+private var loopConfig:LoopConfigure;
 
 private var mysqlObject:MySQLDataSource;
 
@@ -69,13 +74,43 @@ public function createControlPanel(event:Event):void
 	controlPanel.y=this.drawingcanvas.y+70;
 	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
 	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
+	controlPanel.createLoopButton.addEventListener(MouseEvent.CLICK,showLoopConfigureWindow);
 	
 	sink=Sink(PopUpManager.createPopUp(this, Sink , false));
 	sink.x=this.drawingcanvas.width-sink.width-8;
 	sink.y=this.drawingcanvas.y+70;
 }
 
-private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String)
+private function showLoopConfigureWindow(event:MouseEvent):void
+{
+	if(loopConfig==null)
+	{
+		loopConfig=LoopConfigure(PopUpManager.createPopUp(drawingcanvas, LoopConfigure , false));
+		loopConfig.show();
+		controlPanel.toggleLoop();
+		loopConfig.width=drawingcanvas.width;
+		loopConfig.x=drawingcanvas.x;
+		loopConfig.y=drawingcanvas.y;
+	}
+	else
+	{
+		if(!loopConfig.runInALoop)
+		{
+			loopConfig.show();
+			controlPanel.toggleLoop();
+			PopUpManager.addPopUp(loopConfig as IFlexDisplayObject,drawingcanvas);
+		}
+		else if(loopConfig.runInALoop)
+		{
+			loopConfig.hide();
+			controlPanel.toggleLoop();
+			PopUpManager.removePopUp(loopConfig as IFlexDisplayObject);
+		}
+	}
+	
+}
+
+private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String):void
 {
 	var timeStamp:TimePopUp;
 	if(actionObject.timeStamp==null)
