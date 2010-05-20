@@ -4,7 +4,7 @@
 	<mx:Canvas x="0" y="0" width="100%" height="100%" id="canvasmain" >
 		<mx:VBox x="0" y="0" height="100%" width="100%" verticalGap="0" backgroundColor="#FFFFFF">
 			<mx:TabNavigator width="100%" height="127" id="toptabs" borderColor="#EDEDED" backgroundColor="#ECECEC" borderStyle="solid" borderThickness="1" cornerRadius="2" dropShadowColor="#D6D6D6">
-				<mx:Canvas label="DataSources" width="100%" height="100%">
+				<mx:Canvas label="DATA SOURCES" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('1.png')" mouseDown="mouseDownHandler(event);" id="CSV_DataSource"/>
@@ -16,7 +16,7 @@
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>				
-				<mx:Canvas label="Compression" width="100%" height="100%">
+				<mx:Canvas label="COMPRESSION" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('compress.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression"/>
@@ -28,7 +28,7 @@
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
-				<mx:Canvas label="Filters" width="100%" height="100%">
+				<mx:Canvas label="FILTERS" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('DatabaseFilter.png')" mouseDown="mouseDownHandler(event);" id="FILTER_Resample"/>
@@ -44,7 +44,7 @@
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
-				<mx:Canvas label="Data Mining Algorithms" width="100%" height="100%">
+				<mx:Canvas label="DATA MINING ALGORITHMS" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('apriory.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_Apriory"/>
@@ -56,7 +56,7 @@
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
-				<mx:Canvas label="visualization" width="100%" height="100%">
+				<mx:Canvas label="VISUALIZATION" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox styleName="actionIcons" width="125" height="73">
 							<mx:Image source="@Embed('3.png')" mouseDown="mouseDownHandler(event);" id="Text_Viewer"/>
