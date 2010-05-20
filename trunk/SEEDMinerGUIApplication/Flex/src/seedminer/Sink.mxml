@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="168" height="328" title="SINK" alpha=".6" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="168" height="328" title="SINK" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 	<mx:VBox x="0" y="0" width="100%" height="100%">
 		<mx:Canvas width="100%" height="50%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
 			<mx:Button id="clearSavedFlaws" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" right="5" bottom="5"/>
@@ -16,6 +16,6 @@
 			<mx:Label text="SAVED GRAPHS" paddingLeft="2" paddingBottom="2" paddingRight="2" paddingTop="2" top="0" width="100%" color="#858585" fontWeight="bold"/>
 		</mx:Canvas>
 	</mx:VBox>
-	<mx:Fade id="fadeOut" duration="1500" alphaFrom="1.0" alphaTo="0.6"/>
-    <mx:Fade id="fadeIn" duration="400" alphaFrom="0.6" alphaTo="1.0"/>
+	<mx:Fade id="fadeOut" duration="1500" alphaFrom="1.0" alphaTo="0.4"/>
+    <mx:Fade id="fadeIn" duration="400" alphaFrom="0.4" alphaTo="1.0"/>
 </mx:TitleWindow>

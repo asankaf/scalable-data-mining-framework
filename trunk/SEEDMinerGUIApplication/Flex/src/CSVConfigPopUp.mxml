@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-    title="CSV Data Source" x="168" y="86" width="626" height="124" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+    title="CSV Data Source" x="168" y="86" width="612" height="98" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 
     <mx:Script>
         <![CDATA[       
@@ -16,15 +16,13 @@
 
         ]]>
     </mx:Script>
-    <mx:Canvas width="568" height="71">
-        <mx:VBox x="10" y="10" height="52" width="542" horizontalAlign="right">
-            <mx:HBox width="537">
-                <mx:Label text="csv file path"/>
-                <mx:TextInput width="456" id="location" creationComplete="focusManager.setFocus(location)" change="okbutton.enabled=true"/>
-            </mx:HBox>
-            <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false"/>
-        </mx:VBox>
-    </mx:Canvas>
+    <mx:VBox height="49" width="542" horizontalAlign="right">
+        <mx:HBox width="537">
+            <mx:Label text="csv file path"/>
+            <mx:TextInput width="456" id="location" creationComplete="focusManager.setFocus(location)" change="okbutton.enabled=true"/>
+        </mx:HBox>
+        <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false" width="43" height="18" fontSize="10"/>
+    </mx:VBox>
     
     <mx:Fade id="fadeOut" duration="1000" alphaFrom="1" alphaTo="0.3"/>
     <mx:Fade id="fadeIn" duration="500" alphaFrom="0.3" alphaTo="1"/>
