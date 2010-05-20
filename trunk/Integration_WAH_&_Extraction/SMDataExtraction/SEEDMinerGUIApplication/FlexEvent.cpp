@@ -22,6 +22,7 @@ CFlexEvent::CFlexEvent()
 	eventType = "";
 	procedure = "";
 	procedurePara="";
+	measureTime="";
 }
 
 CFlexEvent::~CFlexEvent()
