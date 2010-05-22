@@ -15,17 +15,21 @@
         [Bindable]
         private var time:Class;
         
-        private function toggleMeasureTime(e:MouseEvent):void
+        public function toggleMeasureTime():void
         {
+        	if(loopFlaw==true)
+        	{
+        		toggleLoop();
+        	}
         	if(measuretime==false)
         	{
         		measuretime=true;
-        		measureTime.setStyle("icon",time);
+        		measureTimeButton.setStyle("icon",time);
         	}
         	else
         	{
         		measuretime=false;
-        		measureTime.setStyle("icon",no_time);
+        		measureTimeButton.setStyle("icon",no_time);
         	}
         }
         
@@ -58,7 +62,7 @@
 		<mx:Button id="executeButton" width="30" height="30" icon="@Embed(source='../execute.png')" toolTip="execute flaw"/>
 		<mx:Button id="saveButton" width="30" height="30" icon="@Embed(source='../save.png')" toolTip="save created flaw"/>
 		<mx:Button id="createLoopButton" width="30" height="30" icon="{loop}" toolTip="create a loop for this flaw"/>
-		<mx:Button id="measureTime" click="{toggleMeasureTime(event)}" width="30" height="30" icon="{no_time}" toolTip="show time stamps"/>
+		<mx:Button id="measureTimeButton" width="30" height="30" icon="{no_time}" toolTip="show time stamps"/>
 		<mx:Button id="clearCanvasButton" width="30" height="30" icon="@Embed(source='../clear.png')" toolTip="clear canvas"/>
 	</mx:VBox>
 	<mx:Fade id="fadeOut" duration="1500" alphaFrom="{1}" alphaTo="0.4"/>

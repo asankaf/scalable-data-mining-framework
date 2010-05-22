@@ -1,7 +1,6 @@
 package ActionClasses
 {
 	import flash.events.MouseEvent;
-	import flash.geom.Point;
 	
 	import mx.containers.VBox;
 	import mx.controls.Image;
@@ -9,9 +8,9 @@ package ActionClasses
 	import mx.core.DragSource;
 	import mx.managers.DragManager;
 	import mx.managers.PopUpManager;
-	import seedminer.TimePopUp;
 	
 	import seedminer.TimePopUp;
+
 
 	public class ActionObjectParent implements ActionObject
 	{
@@ -95,12 +94,17 @@ package ActionClasses
 				{
 					PopUpManager.addPopUp(CSVConfigPopUp(config),this.vbox,false);
 				}
-				var point1:Point = new Point();
-				point1.x=0;
-	            point1.y=0;                
-	            point1=this.vbox.localToGlobal(point1);
-	            CSVConfigPopUp(config).x=200;
-	            CSVConfigPopUp(config).y=point1.y+90;
+			}
+			else if(this.type()==ActionObjectParent.MySQL_DATASOURCE)
+			{ 
+				if(config==null)
+				{
+					config=MySqlDataSourcesSelectPopUp(PopUpManager.createPopUp(this.vbox, MySqlDataSourcesSelectPopUp , false));
+				}
+				else
+				{
+					PopUpManager.addPopUp(MySqlDataSourcesSelectPopUp(config),this.vbox,false);
+				}
 			}
 		}
 		
@@ -128,8 +132,8 @@ package ActionClasses
 			vboxObj.addEventListener(MouseEvent.CLICK,mouseClickHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandler);
 			vboxObj.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
-			//vboxObj.doubleClickEnabled=true;
-			//vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
+			vboxObj.doubleClickEnabled=true;
+			vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
 		}
 		
 		public function addTimeStamp(timeStampObj:TimePopUp)

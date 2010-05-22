@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-    title="CSV Data Source" x="168" y="86" width="612" height="98" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+    title="CSV Data Source" x="168" y="86" width="612" height="98"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 
     <mx:Script>
         <![CDATA[       

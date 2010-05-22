@@ -24,16 +24,19 @@ import flash.display.Shape;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+import mx.charts.series.LineSeries;
+import mx.collections.ArrayCollection;
 import mx.containers.Canvas;
 import mx.controls.Image;
 import mx.core.DragSource;
 import mx.core.IFlexDisplayObject;
-import mx.events.CloseEvent;
 import mx.events.DragEvent;
 import mx.managers.DragManager;
 import mx.managers.PopUpManager;
+import mx.utils.ObjectProxy;
 
 import seedminer.ControlPanel;
+import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
 import seedminer.Sink;
 import seedminer.TimePopUp;
@@ -75,14 +78,31 @@ public function createControlPanel(event:Event):void
 	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
 	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
 	controlPanel.createLoopButton.addEventListener(MouseEvent.CLICK,showLoopConfigureWindow);
+	controlPanel.measureTimeButton.addEventListener(MouseEvent.CLICK,measureTime);
 	
 	sink=Sink(PopUpManager.createPopUp(this, Sink , false));
 	sink.x=this.drawingcanvas.width-sink.width-8;
 	sink.y=this.drawingcanvas.y+70;
 }
 
+private function measureTime(event:MouseEvent):void
+{
+	if(controlPanel.loopFlaw==true)
+	{
+		loopConfig.hide();
+		controlPanel.toggleLoop();
+		PopUpManager.removePopUp(loopConfig as IFlexDisplayObject);
+	}
+	controlPanel.toggleMeasureTime();
+}
+
 private function showLoopConfigureWindow(event:MouseEvent):void
 {
+	if(controlPanel.measuretime==true)
+	{
+		controlPanel.toggleMeasureTime();
+	}
+	
 	if(loopConfig==null)
 	{
 		loopConfig=LoopConfigure(PopUpManager.createPopUp(drawingcanvas, LoopConfigure , false));
@@ -129,6 +149,7 @@ private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String):
 
 public function cplusPluseCallBackFunction(str:String):void
 {
+	//Alert.show(str);
 	var strings:Array=str.split("##");//get view
 	var view:String=strings[0];
 	
@@ -160,8 +181,12 @@ public function cplusPluseCallBackFunction(str:String):void
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
+					else if(actionObject.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION && currentProcedure=="classification")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
 				}
-			}
+			}	
 		}
 	}
 	else
@@ -170,14 +195,14 @@ public function cplusPluseCallBackFunction(str:String):void
 		{
 			var actionObject_:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[k]]);
 			actionObject_.removeTimeStamp();
-		}
+		}				
 	}
 	
 	///////////////////////////////////////view////////////////////////////////////
 	if(view=="textViewer")
 	{
 		var data:String=strings1[0];
-		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , false));
+		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , true));
 		var startindex:int=String(data).search("\n");
 		if(textPopUp.textViewerTextArea.minWidth<Element.estimateStringPixelLength(data.slice(0,startindex)))
 		{
@@ -197,7 +222,7 @@ public function cplusPluseCallBackFunction(str:String):void
 		var treeString:String=strings1[0];
 		var dom:ClassificationDom=new ClassificationDom(treeString);
 		
-	    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , false));
+	    var treePopUp:TreeViewPopUp=TreeViewPopUp(PopUpManager.createPopUp(this, TreeViewPopUp , true));
 	    var point1:Point = new Point();
 		point1.x=0;
 	    point1.y=0;                
@@ -213,6 +238,28 @@ public function cplusPluseCallBackFunction(str:String):void
 		MySqlDataSourcesSelectPopUp(mysqlObject.config).dataSoucesCol.dataField="name";
 		MySqlDataSourcesSelectPopUp(mysqlObject.config).dg.dataProvider=dataSourcesList;
 	}
+	else if(view=="graph")
+	{
+		var graphData:String=strings1[0];
+		var dataXMLList:XMLList= new XMLList(graphData);	
+		var a:Array = xmlListToObjectArray(dataXMLList.children());
+        var ac:ArrayCollection = new ArrayCollection(a);
+        var graphPopUp:GraphViewPop=GraphViewPop(PopUpManager.createPopUp(this, GraphViewPop , true));
+        graphPopUp.dataCollection=ac;
+        
+        var mySeries:Array=new Array();
+        var series1:LineSeries = new LineSeries();
+        series1.yField="value";
+        mySeries.push(series1);
+
+		graphPopUp.graphLineChart.series= mySeries;
+        
+        var point1:Point = new Point();
+        point1.x=0;
+	    point1.y=0;                
+	    graphPopUp.x=canvasmain.width/2-graphPopUp.width/2;
+	    graphPopUp.y=canvasmain.height/2-graphPopUp.height/2;
+	}
 	else if(view=="noView")
 	{
 		showError("Invalid flaw! Please create a new valid flaw to execute...");
@@ -220,6 +267,37 @@ public function cplusPluseCallBackFunction(str:String):void
 	}
 	
 	showStatus(DONE);
+}
+
+private function xmlListToObjectArray(xmlList:XMLList):Array
+{
+    var a:Array = new Array();
+    for each(var xml:XML in xmlList)
+    {
+        var attributes:XMLList = xml.attributes();
+        var o:Object = new Object();
+        for each (var attribute:XML in attributes)
+        {
+            var nodeName:String = attribute.name().toString();
+            var value:*;
+            if (nodeName == "date")
+            {
+                var date:Date = new Date();
+                date.setTime(Number(attribute.toString()));
+                value = date;
+            }
+            else
+            {
+                value = attribute.toString();
+            }
+                
+            o[nodeName] = value;
+        }
+        
+        a.push(new ObjectProxy(o));
+    }
+    
+    return a;
 }
 
 private function showError(str:String):void
@@ -235,8 +313,8 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	if(1<actionObjectSequence.length)
-	{
+	//if(1<actionObjectSequence.length)
+	//{
 		showStatus(EXECUTING);
 		
 		var ret:Object = new Object();
@@ -250,26 +328,37 @@ private function executeFlow(event:Event):void
 		ret["itemType"] = "Button";
 		ret["eventType"] = event.type.toString();
 		
-		if(getCurrentProcedure()==null)//validate procedure
+		/*if(getCurrentProcedure()==null)//validate procedure
 		{
 			showStatus("Done");
 			return;
 		}
 			
 		ret["procedure"] = getCurrentProcedure();
-		ret["procedurePara"] = procedurePara;
-		ret["measureTime"] = controlPanel.measuretime.toString();	
+		ret["procedurePara"] = procedurePara;*/
+		
+		ret["measureTime"] = controlPanel.measuretime.toString();
+		if(!controlPanel.loopFlaw)
+		{
+			ret["runInALoop"] = controlPanel.loopFlaw.toString()+"@@"+"1"+"@@"+"1000";
+		}
+		else if(controlPanel.loopFlaw)
+		{
+			ret["runInALoop"] = controlPanel.loopFlaw.toString()+"@@"+loopConfig.loopCount.text+"@@"+loopConfig.increment.text;
+		}		
 	
-		__callBackFunction.call(fabridge,ret);
+		//__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
-		//cplusPluseCallBackFunction(str);
+		//var str:String="treeViewer##plant = :  (5)/nplant = lt-normal: gt-norm (8320/468)/nplant = normal: norm (1635/39)/nplant = plant-stand: precip (39)$$csv->classification->tree@@1 s@@0 s";
+		var str:String='graph##<items><item month=\"1000\" value=\"60\" /><item month=\"2000\" value=\"50\" /><item month="3000" value=".7" /><item month="4000" value="2.3" /><item month="5000" value="3.1" /></items>';
+		cplusPluseCallBackFunction(str);
 	
-	}
+	//}
 	
 }
 
@@ -479,7 +568,7 @@ private function dragDropHandler(event:DragEvent):void
     	if(actionObj.type()==ActionObjectParent.MySQL_DATASOURCE)
     	{
     		var sqlListX:int=actionObj.vboxX+actionObj.vbox.width;
-    		var sqlListY:int=toptabs.height+actionObj.vboxY+actionObj.vbox.height-40;
+    		var sqlListY:int=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height-40;
     		var mysqlsourcesPopUp:MySqlDataSourcesSelectPopUp=MySqlDataSourcesSelectPopUp(PopUpManager.createPopUp(this, MySqlDataSourcesSelectPopUp , false));
     		actionObj.configObj=mysqlsourcesPopUp; 
     		mysqlObject=MySQLDataSource(actionObj);        
@@ -492,7 +581,7 @@ private function dragDropHandler(event:DragEvent):void
     		var csvPathEnterPopUp:CSVConfigPopUp=CSVConfigPopUp(PopUpManager.createPopUp(this, CSVConfigPopUp , false));
     		actionObj.configObj=csvPathEnterPopUp;               
             csvPathEnterPopUp.x=200;
-            csvPathEnterPopUp.y=toptabs.height+actionObj.vboxY+actionObj.vbox.height;
+            csvPathEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height;
     	}
     	
     	actionObj=null;

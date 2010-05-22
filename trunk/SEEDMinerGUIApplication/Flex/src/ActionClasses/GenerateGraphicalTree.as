@@ -99,7 +99,7 @@ package ActionClasses
 		{
 			if(level.length!=0)
 			{
-				trace(level.toString());
+				//trace(level.toString());
 				var children:ArrayCollection=new ArrayCollection();
 				for(var i:int=0;i<level.length;i++)
 				{
