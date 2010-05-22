@@ -377,7 +377,6 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 {
 	string procedure=evt->procedure;
 	string measureTime=evt->measureTime;
-	//clock_t start,end;
 	time_t start,end;
 	string timeUnit=" s";
 
@@ -385,23 +384,17 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="textViewer##";
-		string timeStamps="$$"+procedure;
-		//path = "C:\\Data\\soyaTest.csv";
-		
-		//implement the procedure for get data from csv file(path is the location of the file) 
-		//and make a string to out put data in the text viewer 
-		//assign it to "formattedOutPut" here
-		timeStamps+="@@";
-		//start = clock() * CLK_TCK;
+		string timeStamps="$$"+procedure;		
+
 		time (&start);
 		CSV(path,1000);
-		//end = clock() * CLK_TCK;
 		time (&end);
-		std::stringstream time;
-		time << difftime (end,start);;		
-		timeStamps+=time.str()+timeUnit;
-		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",10);
-		//NullEliminator();
+
+		stringstream timeStream;
+		timeStream << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream.str()+timeUnit;
+
 		formattedOutPut += Text(WRAPPED_SOURCE,100);
 		if(measureTime=="true")
 		{
@@ -413,38 +406,104 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	else if (procedure=="csv->apriory->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="textViewer##";		
+		string formattedOutPut="textViewer##";	
+		string timeStamps="$$"+procedure;
+		
+		time (&start);
 		CSV(path,1000);
-		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
-		Aprior(0.9,0.01,10);		
-		//Bayesian(m_source->codedAttributes().size()-1);
-		//Classifier();
-		//formattedOutPut = Text(CLASSIFIER_SOURCE,0);
+		time (&end);
+
+		stringstream timeStream;
+		timeStream << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream.str()+timeUnit;
+				
+		time (&start);
+		Aprior(0.9,0.01,10);
+		time (&end);
+
+		stringstream timeStream_2;
+		timeStream_2 << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream_2.str()+timeUnit;
+
 		formattedOutPut += Text(APRIORI_SOURCE,0);
-		//formattedOutPut = Text(BAYESIAN_SOURCE,0);
+
+		if(measureTime=="true")
+		{
+			formattedOutPut+=timeStamps;
+		}
+
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
-	}else if (procedure == "csv->classification->tree")
+	}
+	else if (procedure == "csv->classification->tree")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="treeViewer##";		
+		string formattedOutPut="treeViewer##";	
+		string timeStamps="$$"+procedure;
+
+		time (&start);
 		CSV(path,1000);
-		//SavedDataLoader("soyabeansmall_200000_metadata","soyabeansmall_200000_data","soyabeansmall_100000",100);
+		time (&end);
+
+		stringstream timeStream;
+		timeStream << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream.str()+timeUnit;
+		
+		time (&start);
 		Classifier();
-		formattedOutPut += Text(CLASSIFIER_SOURCE,0);		
-		DeleteAll();
-						
+		time (&end);
+
+		stringstream timeStream_2;
+		timeStream_2 << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream_2.str()+timeUnit;
+
+		formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+
+		if(measureTime=="true")
+		{
+			formattedOutPut+=timeStamps;
+		}
+
+		DeleteAll();						
 		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 
 	}
 	else if (procedure == "csv->classification->text")
 	{
 		string path=evt->procedurePara;
-		string formattedOutPut="textViewer##";		
+		string formattedOutPut="textViewer##";
+		string timeStamps="$$"+procedure;
+
+		time (&start);
 		CSV(path,1000);
+		time (&end);
+
+		stringstream timeStream;
+		timeStream << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream.str()+timeUnit;
+
+		time (&start);
 		Classifier();
-		formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);		
+		time (&end);
+
+		stringstream timeStream_2;
+		timeStream_2 << difftime (end,start);	
+		timeStamps+="@@";
+		timeStamps+=timeStream_2.str()+timeUnit;
+
+		formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+
+		if(measureTime=="true")
+		{
+			formattedOutPut+=timeStamps;
+		}
+
 		DeleteAll();
 		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 
@@ -460,7 +519,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	else if (procedure == "mysql->text")
 	{
 		string dataSource=evt->procedurePara;
-		string formattedOutPut="textViewer##";		
+		string formattedOutPut="textViewer##";
+		string timeStamps="$$"+procedure;
+
 		//read mysql
 		formattedOutPut += "test mysql read";		
 		
