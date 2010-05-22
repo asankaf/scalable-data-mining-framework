@@ -16,6 +16,8 @@ public:
 	void TestClassifier(WrapDataSource * ds);
 	WrapDataSource * CreateDataSource(string csv_path);
 	WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename);
+	void TestWekaNaiveBayes(WrapDataSource * _data_source, int _class_index,int _loop);
+	void TestSMNaiveBayes(WrapDataSource * _data_source, int _class_index,int _loop);
 	void TestSuite();
 	~TestNaiveBayes(void);
 };

@@ -45,36 +45,63 @@ void TestAprioriOpt::TestSuite()
 	comp_start = clock();
 	
 	
-		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyaTestlarge_500000_metadata","soyaTestlarge_500000_data");
-			DataSources *dsLoaded = lsd->loadSavedEncodedData();
-				WrapDataSource * ds =  (*dsLoaded)("soyaTestlarge");	
+	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyafull_metadata","soyafull_data");
+	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+	WrapDataSource * ds =  (*dsLoaded)("soyabean_5mill");	
+
 		
-	
+	/*
+			LoadSavedDataSources *lsd = new LoadSavedDataSources("soya_15col_metadata","soya_15col_data");
+				DataSources *dsLoaded = lsd->loadSavedEncodedData();
+				WrapDataSource * ds =  (*dsLoaded)("soya_15col_");*/
+		comp_end = clock();
+		cout << "Time to load data : " << (comp_end -comp_start) << endl;
 		AlgoUtils utils;	
 		cout << "Finished Loading Data "<< endl;
-		CompressionHandler comp;
-	//	clock_t comp_start,comp_end;
+
+		/*
+		cout << "Without Compression " << endl;
+				//	clock_t comp_start,comp_end;
+				cout << endl;
+				cout << "Time Spent : " ;
+				for (size_t i = 0 ; i < 5; i++)
+				{
+					AprioriOpt opt;	
+					clock_t begin,end;
+					begin = clock();
+					TestBuildAssociations(ds,opt);
+					end = clock();
+					cout << (end - begin) << " ";
+				}
+				cout << endl;	*/
+		
+
+		CompressionHandler comp;		
 		comp_start = clock();
-		comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-	//	comp.ConvertTo(ds,BitStreamInfo::VERTICAL_STREAM_FORMAT);
+	//	comp.ConvertTo(ds,BitStreamInfo::WAH_COMPRESSION);
 		comp_end = clock();
 		cout << "Compression Time : " << comp_end - comp_start << endl;
-		AprioriOpt opt;	
-		clock_t begin,end;
-		begin = clock();
-		TestBuildAssociations(ds,opt);
-		end = clock();
-		cout << "Time Spent : " << (end - begin) << endl;
-		cout << "No off cycles : " << opt.Cycles() << endl;
-		vector<AprioriItemset *> set2 =  opt.UniqueItems();
-		utils.PrintRules(opt.Rules());
+		cout << "With Compression " << endl;
+		cout << "Time Spent : ";
+		for (size_t i = 0 ; i < 5; i++)
+		{
+			AprioriOpt opt;	
+			clock_t begin,end;
+			begin = clock();
+			TestBuildAssociations(ds,opt);
+			end = clock();
+			 cout<< (end - begin) << " ";
+		}
+		cout << endl;
+		
+		
 		//delete cConcsv;
 	// 	delete lsd;
 	// 	delete dsLoaded;
 	//	delete ds;
 		//TestAprioriAlgo();
 /*
-			CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
+		CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
 		//CsvConnection cConcsv(path.c_str(),',','\n','""');
 		ExtractedCsvDTO *dat = cConcsv.extractData();
 		WrapDataSource *ds = new WrapDataSource(*dat,"0");	
@@ -120,11 +147,12 @@ void TestAprioriOpt::TestUniqueItemSetGeneration(WrapDataSource * _wrapped, Apri
 
 void TestAprioriOpt::TestBuildAssociations(WrapDataSource * _wrapped, AprioriOpt & _ap_opt)
 {
-	cout << "Starting to Build Associations " << endl;
+	//cout << "Starting to Build Associations " << endl;
 	_ap_opt.Confidence(0.9);
 	_ap_opt.NumRules(10);
+	_ap_opt.MinSupport(0.5);
 	_ap_opt.BuildAssociations(_wrapped);
-	AlgoUtils::PrintRules(_ap_opt.Rules());
+//	AlgoUtils::PrintRules(_ap_opt.Rules());
 }
 
 void TestAprioriOpt::TestFindFrequentItemSets(AprioriOpt & _ap_opt,WrapDataSource * ws)

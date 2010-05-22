@@ -46,6 +46,9 @@ public:
 
 	//Gives the name of the instance
 	string nameOfAttribute(int _att_index){return m_headers->codedAttributes()[_att_index]->attributeName();}
+
+	//Gives the string value of a nominal attribute
+	string valueOfNominalAtt(int _att_index, int _value_index){return m_distinct_vals[_att_index][_value_index];}
 	
 private:
 	void init();

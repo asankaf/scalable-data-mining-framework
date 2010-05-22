@@ -41,7 +41,7 @@ WekaInstances::WekaInstances(WrapDataSource * _source,int _class_index,bool _del
 			ClearBitStreams(att_info);
 		}
 	}
-	PrintSource();
+	//PrintSource();
 }
 
 bool WekaInstances::AttributeTypeSelector(EncodedAttributeInfo * _attribute)
@@ -87,7 +87,7 @@ void WekaInstances::ConvertAttributeTo(EncodedAttributeInfo * _attribute,double 
 				{
 					temp_bitset[j] = bit_sets[j][i];				
 				}
-				_values[i][_att_index] = temp_bitset.to_ulong() * precission;
+				_values[i][_att_index] = temp_bitset.to_ulong() / precission;
 			}
 
 		}

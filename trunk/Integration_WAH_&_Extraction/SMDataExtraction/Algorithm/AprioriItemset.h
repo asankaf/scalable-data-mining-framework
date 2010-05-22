@@ -2,6 +2,7 @@
 #ifndef APRIOIRI_ITEMSET_H
 #define APRIOIRI_ITEMSET_H
 #include "BitStreamInfo.h"
+#include "utils.h"
 #include <hash_map>
 #include <map>
 
@@ -10,12 +11,7 @@ class AprioriItemset
 {
 		
 public:
-// 	static struct itemset_comp{
-// 		bool operator()(const AprioriItemset * _item1, AprioriItemset * _item2) const
-// 		{
-// 			return memcmp(_item1->Items(),_item2->Items(),_item1->Attribute_no()) != 0;
-// 		}
-// 	};
+
 	_declspec(dllexport) AprioriItemset(void);
 	_declspec(dllexport) ~AprioriItemset(void);
 	_declspec(dllexport) int Count() const { return m_count; }
@@ -30,6 +26,9 @@ public:
 	_declspec(dllexport) int HashCode();
 	_declspec(dllexport) inline static int GetHashValue(int _no_of_attrib,int * _int_arr);
 	_declspec(dllexport) void ClearPreviousItemsSet(vector<hash_map<int,AprioriItemset *>> & _int_item_set_vector);
+	_declspec(dllexport) string toString();
+
+	_declspec(dllexport)void ClearBitStream();
 
 private :
 	// Keeps the length of the m_items

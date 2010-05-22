@@ -5,6 +5,7 @@
 #include "instances.h"
 #include "Utils.h"
 #include "wekainstances.h"
+#include "Commons.h"
 using namespace std;
 class NaiveBayesMod
 {
@@ -14,7 +15,7 @@ public:
 	_declspec(dllexport) ~NaiveBayesMod(void);
 
 	/**Generates the classifier. */
-	_declspec(dllexport) void buildClassifier(WrapDataSource * instances,int class_index);
+	_declspec(dllexport) void buildClassifier(WekaInstances * instances,int class_index);
 
 	/**Prints the value of m_count*/
 	_declspec(dllexport) void PrintCountArr(double *** array);
@@ -52,4 +53,13 @@ private:
 
 	/** Classifies a single instance*/
 	int ClassifyInstance(double * _inputs,size_t _no_of_atts,WrapDataSource * _header);
+	
+	/** Print prior probabilities*/
+	void PrintPriors();
+
+	/** Print means corresponding to each class*/
+	void PrintMeans();
+
+	/** Print standard deviations corresponding to each class*/
+	void PrintDevs();
 };
