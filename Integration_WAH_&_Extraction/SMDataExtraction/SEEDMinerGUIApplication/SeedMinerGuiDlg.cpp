@@ -377,30 +377,60 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 {
 	string procedure=evt->procedure;
 	string measureTime=evt->measureTime;
+	string runInALoop=evt->runInALoop;
+	int loopCount;
+	int increment;
+
+	vector<string> loopTokens;
+	Tokenize(runInALoop, loopTokens, "@@");
+	loopCount=atoi( loopTokens[1].c_str());
+	increment=atoi( loopTokens[2].c_str());
+	
 	time_t start,end;
+	time_t startGraphTime,endGraphTime;
 	string timeUnit=" s";
 
 	if (procedure=="csv->text")
 	{
 		string path=evt->procedurePara;
 		string formattedOutPut="textViewer##";
-		string timeStamps="$$"+procedure;		
+		string timeStamps="$$"+procedure;
+		string graphData="$$graph";
 
-		time (&start);
-		CSV(path,1000);
-		time (&end);
 
-		stringstream timeStream;
-		timeStream << difftime (end,start);	
-		timeStamps+="@@";
-		timeStamps+=timeStream.str()+timeUnit;
+		for(int i=0;i<loopCount;i++)
+		{
+			time (&startGraphTime);
 
-		formattedOutPut += Text(WRAPPED_SOURCE,100);
+			time (&start);
+			CSV(path,1000);
+			time (&end);
+
+			time (&endGraphTime);
+
+			stringstream timeStreamGraph;
+			timeStreamGraph << difftime (startGraphTime,endGraphTime);
+			grahpData+="@@";
+			grahpData+=timeStreamGraph.str();
+
+			stringstream timeStream;
+			timeStream << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream.str()+timeUnit;
+
+			formattedOutPut += Text(WRAPPED_SOURCE,100);
+			DeleteAll();
+
+			if(!(runInALoop=="false"))
+			{
+				formattedOutPut+=grahpData;
+			}
+		}
+
 		if(measureTime=="true")
 		{
 			formattedOutPut+=timeStamps;
-		}
-		DeleteAll();
+		}		
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}
 	else if (procedure=="csv->apriory->text")

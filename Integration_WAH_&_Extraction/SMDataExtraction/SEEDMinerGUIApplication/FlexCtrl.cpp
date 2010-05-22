@@ -52,6 +52,7 @@ void CFlexCtrl::EventCallBack(CASObject& obj, CFlexBridge* pBridge){
 	evt->procedure      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["procedure"]);
 	evt->procedurePara      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["procedurePara"]);
 	evt->measureTime      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["measureTime"]);
+	evt->runInALoop      = CFlexCtrl::GetStringValue(obj.GetObjectMap()["runInALoop"]);
 
 	CFlexObject fobj(CFlexCtrl::objCallBack[flashID],evt->flashIndex);
 

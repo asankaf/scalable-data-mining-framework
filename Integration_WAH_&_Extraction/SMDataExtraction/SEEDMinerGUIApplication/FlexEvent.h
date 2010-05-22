@@ -21,6 +21,7 @@ public:
 	CString procedure;
 	CString procedurePara;
 	CString measureTime;
+	CString runInALoop;
 
 	int flashIndex;
 

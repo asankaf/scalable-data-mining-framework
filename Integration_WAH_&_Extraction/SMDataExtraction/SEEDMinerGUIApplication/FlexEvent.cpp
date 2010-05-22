@@ -23,6 +23,7 @@ CFlexEvent::CFlexEvent()
 	procedure = "";
 	procedurePara="";
 	measureTime="";
+	runInALoop="";
 }
 
 CFlexEvent::~CFlexEvent()
