@@ -10,116 +10,42 @@ Commons::~Commons(void)
 {
 }
 
-/*
-BitStreamInfo * Commons::UGreaterThan( EncodedAttributeInfo * attribute, unsigned long value,int rows )
+void Commons::PrintArray(double * _double_arr,int _length)
 {
-	BitStreamInfo * info = NULL;	
-	switch(attribute->attributeType())
+	for (size_t i =0 ; i < _length ;i++)
 	{
-	case SIGNEDINT_VAL:
-		{
-			info = UGreaterThanInt(attribute,value,rows);
-			break;
-		}
-	case DOUBLE_VAL:
-		{
-			EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
-			long precission = double_att->Precision();
-
-			info = UGreaterThanInt(attribute,value * precission , rows);
-			break;
-		}
-	case DATE_VAL:
-		{
-			assert(false);
-
-		}
-	case MULTICAT_VAL:
-		{
-			assert(false);
-
-		}
+		cout << "Index " << i << " : " << _double_arr[i]<< endl;
 	}
-	return info;
 }
 
-BitStreamInfo * Commons::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows)
+void Commons::PrintArray(double **_double_arr, int _length, int _width)
 {
-	dynamic_bitset<> bit_set(noOfRows);
-	BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
-	dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
-
-	size_t k=0;
-	while (value_pattern[k] == 1 && k < bit_set.size())
-		k=k+1;
-
-	if (k < value_pattern.size())
-		bit_stream = attribute->bitStreamAt(k)->Clone();
-
-	BitStreamInfo * prev_val = NULL;
-
-	for (size_t i=k+1; i < value_pattern.size(); i++)
+	for (size_t i = 0; i < _length ; i++)
 	{
-		prev_val = bit_stream;
-		if (value_pattern[i] == 1)
+		cout << "Printing Row " << i << endl;
+		for (size_t j = 0 ; j < _width ; j++)
 		{
-			bit_stream = *(bit_stream) & *(attribute->bitStreamAt(i));
+			cout << _double_arr[i][j] << "\t";
 		}
-		else 
-		{
-			bit_stream = *(bit_stream) | *(attribute->bitStreamAt(i));
-		}
-		delete prev_val;
+		cout << endl;
 	}
-	return bit_stream;
-
 }
 
-BitStreamInfo * Commons::BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream)
+void Commons::InitArray( double * _double_arr,int _length,double _init_val )
 {
-
-	BitStreamInfo::vertical_bit_type type = attribute->bitStreamAt(0)->Type();		   
-	BitStreamInfo * new_stream = NULL;
-	switch(type)
+	for (size_t i = 0 ; i < _length ; i++)
 	{
-	case BitStreamInfo::VERTICAL_STREAM_FORMAT :
-		{
-			new_stream = new VBitStream();	   
-		}
-		break;
-	case BitStreamInfo::WAH_COMPRESSION:
-		{
-			new_stream = new WAHStructure();
-		}
-		break;
-	case BitStreamInfo::EWAH_COMPRESSION:
-		{
-			new_stream = new EWAH();
-		}
-		break;
+		_double_arr[i] = _init_val;
 	}
-	new_stream->CompressWords(_bit_stream);
-	return new_stream;
 }
 
-BitStreamInfo * Commons::UEq( EncodedAttributeInfo * attribute, unsigned long value )
+void Commons::InitArray(double ** _double_arr,int _length,int _width,double _init_val)
 {
-	switch(attribute->attributeType())
+	for (size_t i = 0 ; i < _length ; i++)
 	{
-	case SIGNEDINT_VAL:
+		for (size_t j = 0 ; j < _width ; j++)
 		{
-			dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
-			return FindPattern(pattern_val,attribute->vBitStreams());
-		}
-		break;
-
-	case DOUBLE_VAL:
-		{
-			EncodedDoubleAttribute * double_att = static_cast<EncodedDoubleAttribute *>(attribute);
-			value = value * double_att->Precision();
-			dynamic_bitset<> pattern_val((int)attribute->NoOfVBitStreams(),value);
-			return FindPattern(pattern_val,attribute->vBitStreams());
+			_double_arr[i][j] = _init_val;
 		}
 	}
-
-}*/
+}

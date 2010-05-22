@@ -7,33 +7,39 @@ AprioriItemset::AprioriItemset(void)
 	m_bit_stream = NULL;
 }
 
-AprioriItemset::~AprioriItemset(void)
+void AprioriItemset::ClearBitStream()
 {
-	if (m_items != NULL)
-	{
-		delete m_items;
-	}
 	if (m_bit_stream != NULL)
 	{
 		delete m_bit_stream;
 	}
-	
+	m_bit_stream= NULL;
+}
+
+AprioriItemset::~AprioriItemset(void)
+{
+	if (m_items != NULL)
+	{
+		delete[] m_items;
+	}
+	m_items = NULL;
+	if (m_bit_stream != NULL)
+	{
+		delete m_bit_stream;
+	}
+	m_bit_stream = NULL;
+
 }
 int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 {
 	long result = 0;
 	int factor = 1;
 	int val = 0;
-// 	for (size_t i = 0; i< _no_of_attrib; i++)
-// 	{
-// 		val = _int_arr[i]+1;		
-// 		result +=  val * factor;
-// 		factor *= 10;
-// 	}
+	
 	for (int i = _no_of_attrib-1; i >= 0; i--)
 	{
-		result += ((i) * _int_arr[i]);
-	}
+		result += ((i) * _int_arr[i]);		
+	}	
 
 	return (int)result;
 }
@@ -41,6 +47,23 @@ int AprioriItemset::GetHashValue(int _no_of_attrib,int * _int_arr)
 int AprioriItemset::HashCode()
 {
 	return GetHashValue(m_attribute_no,m_items);
+}
+
+
+string AprioriItemset::toString()
+{
+	string temp = "\n{";
+	for (size_t i = 0 ; i < m_attribute_no ; i++)
+	{
+		if (m_items[i] != -1)
+		{
+			temp += Utils::toStringVal(m_items[i]) +",";
+		}
+		
+	}
+	temp.erase(temp.size()-1);
+	temp += "}";
+	return temp;
 }
 
 hash_map<int,int> AprioriItemset::GetHashtable(vector<AprioriItemset *> & _itemsets,vector<hash_map<int,AprioriItemset *>> & _hash_itemset_vector)

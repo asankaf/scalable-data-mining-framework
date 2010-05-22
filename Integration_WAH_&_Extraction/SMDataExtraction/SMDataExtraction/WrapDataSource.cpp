@@ -73,7 +73,7 @@ void WrapDataSource::Init()
 	Commons::InitVector(_codedAtts.begin(),_codedAtts.end());
 	Commons::InitVector(_codedIntAtts.begin(),_codedIntAtts.end());
 	Commons::InitVector(_codedDoubleAtts.begin(),_codedDoubleAtts.end());
-	Commons::InitVector(_codedStringAtts.begin(),_codedStringAtts.end());	
+	Commons::InitVector(_codedStringAtts.begin(),_codedStringAtts.end());
 }
 
 size_t WrapDataSource::SpaceUtilsation()

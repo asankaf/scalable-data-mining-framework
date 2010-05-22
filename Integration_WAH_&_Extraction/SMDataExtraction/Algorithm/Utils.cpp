@@ -163,7 +163,7 @@ string Utils::doubleToString(double value, int width,int afterDecimalPoint)
 	string new_res = res;
 	delete result;
 	return new_res;
-}
+	}
 
 double Utils::sum(double* doubles,size_t length)
 {

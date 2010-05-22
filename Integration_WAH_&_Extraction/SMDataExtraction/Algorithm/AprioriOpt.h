@@ -31,8 +31,7 @@ public:
 	_declspec(dllexport) void SortRules();
 	_declspec(dllexport) void UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize);
 	_declspec(dllexport) static void UpDateCounters(vector<AprioriItemset *> & _ksets, vector<AprioriItemset *> & _kMinusSets);
-// 	_declspec(dllexport) double MinimumSupport() const { return m_minimumSupport; }
-// 	_declspec(dllexport) void MinimumSupport(double val) { m_minimumSupport = val; }
+	_declspec(dllexport) void PrintItemsets();
 	_declspec(dllexport) vector<vector<AprioriItemset *>> LargeItemSets() const { return m_largeItemSets; }
 	_declspec(dllexport) void LargeItemSets(vector<vector<AprioriItemset *>> val) { m_largeItemSets = val; }
 	_declspec(dllexport) int Cycles() const { return m_cycles; }
@@ -53,6 +52,8 @@ public:
 	_declspec(dllexport) void BuildStrings();
 	_declspec(dllexport) int NumRules() const { return m_numRules; }
 	_declspec(dllexport) void NumRules(int val) { m_numRules = val; }
+	_declspec(dllexport) string GetItemSetString(AprioriItemset * _itemset);
+	_declspec(dllexport) void ClearPreviousBitStreams(vector<AprioriItemset *> & _prev_set);
 
 private:
 	void ClearlargeItemSets();
