@@ -385,13 +385,15 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string procedure=evt->procedure;
 	string measureTime=evt->measureTime;
 	string runInALoop=evt->runInALoop;
-	int loopCount;
-	int increment;
+	int loopCount = 1;
+	int increment = 0;
 
 	vector<string> loopTokens;
+	/*
 	Tokenize(runInALoop, loopTokens, "@@");
-	loopCount=atoi( loopTokens[1].c_str());
-	increment=atoi( loopTokens[2].c_str());
+		loopCount=atoi( loopTokens[1].c_str());
+		increment=atoi( loopTokens[2].c_str());*/
+	
 	
 	time_t start,end;
 	time_t startGraphTime,endGraphTime;
@@ -417,8 +419,8 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 			stringstream timeStreamGraph;
 			timeStreamGraph << difftime (startGraphTime,endGraphTime);
-			grahpData+="@@";
-			grahpData+=timeStreamGraph.str();
+			graphData+="@@";
+			graphData+=timeStreamGraph.str();
 
 			stringstream timeStream;
 			timeStream << difftime (end,start);	
@@ -430,7 +432,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 			if(!(runInALoop=="false"))
 			{
-				formattedOutPut+=grahpData;
+				formattedOutPut+=graphData;
 			}
 		}
 
