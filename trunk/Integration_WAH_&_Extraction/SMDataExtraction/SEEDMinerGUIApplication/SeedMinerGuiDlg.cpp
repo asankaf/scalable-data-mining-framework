@@ -316,7 +316,7 @@ void CIntelliCheckersUIDlg::Classifier()
 }
 string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 {
-	string output = "Invalid Data Source Selected";
+	string output = "";
 	switch(type)
 	{
 	case APRIORI_SOURCE:
@@ -336,7 +336,7 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 		{
 			if (m_classifier != NULL)
 			{
-				output = m_classifier->toGraph();
+				output += m_classifier->toGraph();
 			}
 
 		}
@@ -345,7 +345,7 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 		{
 			if (m_classifier != NULL)
 			{
-				output = m_classifier->toString();
+				output += m_classifier->toString();
 			}
 
 		}
@@ -354,7 +354,7 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 		{
 			if (m_source != NULL)
 			{
-				output = m_source->generateCSVStringofDecodedData(noOfRows);
+				output += m_source->generateCSVStringofDecodedData(noOfRows);
 			}
 
 
@@ -364,12 +364,19 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 		{
 			if (m_bayesian != NULL)
 			{
-				output = m_bayesian->toString();
+				output += m_bayesian->toString();
 			}
 
 		}
 		break;
+	default:
+		{
+			output += "Invalid Data Source Selected";
+			break;
+		}
 	}
+	
+		
 	return output;
 }
 
