@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="154" alpha="0.3"  rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" height="174" title="MySql Data Sources" showCloseButton="true" close="select(event);">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" layout="absolute" width="154" alpha="0.3"  rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" height="174" title="MySql Data Sources" showCloseButton="true" close="select(event);">
 	<mx:Script>
 	<![CDATA[
 		import mx.controls.List;
