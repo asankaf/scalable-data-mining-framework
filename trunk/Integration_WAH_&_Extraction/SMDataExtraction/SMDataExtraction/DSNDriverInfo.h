@@ -11,6 +11,12 @@ namespace DSNInfo{
 	class DSNDriverInfo
 	{
 	public:
+		enum DATASOURCE_TYPE{
+			MySQL = 0,
+			SQL_SERVER = 1,
+			ORACLE = 2,
+			TEXT_CSV = 3
+		};
 		__declspec(dllexport) DSNDriverInfo();
 		__declspec(dllexport) DSNDriverInfo(const char* driverName);
 		__declspec(dllexport) ~DSNDriverInfo(void);

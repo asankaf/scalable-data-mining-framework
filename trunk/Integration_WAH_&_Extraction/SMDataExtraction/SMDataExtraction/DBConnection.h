@@ -1,8 +1,12 @@
+#include <vector>
 #include <stdhead.h>
 #include "DSNDriverInfo.h"
 #include "SMException.h"
+#include <string>
+#include <wtypes.h>
 
 using namespace DSNInfo;
+using namespace std;
 
 /************************************************************************/
 /*    Class  :DBConnection.h
@@ -27,6 +31,8 @@ namespace DBConnectionInfo{
 		__declspec(dllexport) char* getDBConnectionString(void);
 		__declspec(dllexport) CGOdbcConnect DBConnectionPtr(void);
 		__declspec(dllexport) DSNDriverInfo DSNDriver(void);
+		__declspec(dllexport) vector<string> getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE _sourcetype);
+		__declspec(dllexport) vector<string> QueryKey(HKEY hKey,string ds_string);
 
 
 	private:
