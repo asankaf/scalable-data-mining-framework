@@ -13,18 +13,14 @@ TestC45Nominal::~TestC45Nominal(void)
 }
 
 void TestC45Nominal::TestSuite()
-{
-	// Testing unique itemset generation
-
-	// Creating a wrapped data source
-
-	//weather.nominal.csv
-	CsvConnection cConcsv("C:\\Data\\weather.nominal.csv",',','\n','""');	
-	//soyaTest.csv
-// 	CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
- 	ExtractedCsvDTO *dat = cConcsv.extractData();
- 	WrapDataSource *ds = new WrapDataSource(dat,"0");	
-	ds->encodeAtrributes();
+{cout <<"Start Loading Data " << endl;
+	
+WrapDataSource *ds  = NULL;
+ 	/*
+		ds= Utils::CreateDataSource("SoyabeanColumns5mil\\integrate\\soyabean_data",
+				"SoyabeanColumns5mil\\integrate\\soyabean_metadata","soyabean_5mill");;	*/
+ds = Utils::CreateDataSource("C:\\Data\\bank-data.csv");
+	cout << "Finished Loading data :" << endl;
 /*
 	
 		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");
@@ -41,7 +37,7 @@ void TestC45Nominal::TestSuite()
 	
 	C45TreeNominal tree;
 	CompressionHandler comp;
-	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	//comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 	tree.buildClassifier(ds);
 	cout <<"No new LIne";
 	cout << tree.toString() << endl;

@@ -2,8 +2,14 @@
 #include <math.h>
 #include "boost/lexical_cast.hpp"
 #include <xstring>
+#include "WrapDataSource.h"
+#include "LoadSavedDataSources.h"
+#include "DataSources.h"
+#include "csvconnection.h"
+#include "extractedCsvDTO.h"
 
 using namespace std;
+using namespace CSVConnectionInfo;
 class Utils
 {
 public:
@@ -50,7 +56,7 @@ public:
 	/**
 	* Converts an integer to a string	
 	*/
-	static string toStringVal(int val);
+	_declspec(dllexport) static string toStringVal(int val);
 
 	/**
 	* Normalizes the doubles in the array using the given value.	
@@ -61,37 +67,46 @@ public:
 	* Returns index of maximum element in a given
 	* array of doubles. First maximum is returned.	
 	*/
-	static int MaxIndex(double * doubles,size_t _length); 
+	_declspec(dllexport) static int MaxIndex(double * doubles,size_t _length); 
 
 	/**
 	* Converts a double value to a string	
 	*/
-	static string toStringVal(double val);
+	_declspec(dllexport) static string toStringVal(double val);
 
 	/**
 	* Gives a string having a the given number of precissions	
 	*/
-	static string toStringVal(double val,int precission);
+	_declspec(dllexport) static string toStringVal(double val,int precission);
 
 	/**
 	* Normalizes the doubles in the array by their sum.	
 	*/
-	static void Utils::Normalize(double * doubles,size_t _length);
+	_declspec(dllexport) static void Utils::Normalize(double * doubles,size_t _length);
 
 	/**
 	* Rounds a double and converts it into a formatted decimal-justified String.
 	* Trailing 0's are replaced with spaces.
 	*/
-	static string doubleToString(double value, int width,int afterDecimalPoint);
+	_declspec(dllexport) static string doubleToString(double value, int width,int afterDecimalPoint);
 
 	/**
 	* Rounds a double and converts it into String.
 	*/
-	static string doubleToString(double value, int afterDecimalPoint);
+	_declspec(dllexport) static string doubleToString(double value, int afterDecimalPoint);
 
 	/** Computes the sum of the elements of an array of doubles.*/
-	static double sum(double* doubles,size_t length);
-	
+	_declspec(dllexport) static double sum(double* doubles,size_t length);
+
+	/** Loads the data source saved as a XML file*/
+	_declspec(dllexport) static WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename);
+
+	/** Loads the data source from a CSV*/
+	_declspec(dllexport) static WrapDataSource * CreateDataSource(string csv_path);
+
+	/** Loads the number of rows specified from the saved data set*/
+	_declspec(dllexport) static WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename,int _limit);
+		
 };
 // const double Utils::log2 = log10((double)2);
 // const double Utils::SMALL = 1e-6;

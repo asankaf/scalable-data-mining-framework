@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include <limits.h>
 
+
 using namespace boost;
 Utils::~Utils(void)
 {
@@ -54,6 +55,30 @@ string Utils::toStringVal(double val)
 	// This method is said to be inefficient
 	return boost::lexical_cast<string>(val);
 }
+
+WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string filename)
+{
+	LoadSavedDataSources *lsd = new LoadSavedDataSources(metadFile,datafile);	
+	DataSources *dsLoaded = lsd->loadSavedEncodedData();
+	return (*dsLoaded)(filename);
+}
+
+WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string filename,int _limit)
+{
+	LoadSavedDataSources *lsd = new LoadSavedDataSources(metadFile,datafile,_limit);	
+	DataSources *dsLoaded = lsd->loadSavedEncodedData(true);
+	return (*dsLoaded)(filename);
+}
+
+WrapDataSource * Utils::CreateDataSource(string csv_path)
+{
+	CsvConnection cConcsv(csv_path.data(),',','\n','""');		
+	ExtractedCsvDTO *dat = cConcsv.extractData();
+	WrapDataSource *ds = new WrapDataSource(dat,"0");	
+	ds->encodeAtrributes();
+	return ds;
+}
+
 
 string Utils::doubleToString(double value, int afterDecimalPoint)
 {

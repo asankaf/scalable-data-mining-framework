@@ -20,7 +20,6 @@ AprioriOpt::AprioriOpt(void)
 
 AprioriOpt::~AprioriOpt(void)
 {
-	cout << "Deleting AprioriOpt" << endl;
 	ClearAll();
 }
 

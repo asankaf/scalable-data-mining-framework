@@ -21,7 +21,7 @@ public:
 	_declspec(dllexport) void adjustSize(unsigned long nv, unsigned long nt);
 	_declspec(dllexport) void set(int val, unsigned long n);
 	_declspec(dllexport) void setBit(const unsigned long i, int val);
-//	_declspec(dllexport) void setSize (unsigned long n);
+
 	_declspec(dllexport) unsigned long size();
 	_declspec(dllexport) void compress();
 	_declspec(dllexport) size_t compressible();
@@ -39,6 +39,7 @@ public:
 	_declspec(dllexport) WrappedBitVector * operator|(WrappedBitVector & _right);
 	_declspec(dllexport) WrappedBitVector * operator~();
 	_declspec(dllexport) unsigned long long	count();
+	_declspec(dllexport) unsigned long SpaceUtilsation();
 
 
 private:

@@ -6,12 +6,7 @@ WrappedBitVector::WrappedBitVector(void)
 
 WrappedBitVector::~WrappedBitVector(void)
 {
-	//m_bitvector.clear();
-	//delete m_bitvector;
-	//bitvector temp;
-	//m_bitvector.swap(temp);
 	m_bitvector.~bitvector();
-	//temp.~bitvector();
 }
 
 void WrappedBitVector::operator &=(WrappedBitVector & _vect)
@@ -39,29 +34,13 @@ ostream & WrappedBitVector::print(ostream & _stream)
 
 WrappedBitVector::WrappedBitVector(dynamic_bitset<> & _bitset)
 {
-		/*array_t<ibis::bitvector::word_t> tt(3);
-								tt[0] = 10;
-								tt[1] = 5;
-								tt[2] = 3;*/				
-			
-			bitvector temp;			
-			
-						for (size_t i = 0; i < _bitset.size() ; i++)
-												{
-													temp +=  _bitset[i];
-												}	
-						
-			
-		
-			/*
-	temp.decompress();
-		temp.write(tt);
-		for (size_t i = 0 ; i < tt.size() ; i++)
-		{
-			cout << tt[i] << " ";
-		}*/
-	
-	//cout << endl;
+	bitvector temp;			
+
+	for (size_t i = 0; i < _bitset.size() ; i++)
+	{
+		temp +=  _bitset[i];
+	}	
+
 	m_bitvector.copy(temp);	
 }
 
@@ -88,14 +67,12 @@ WrappedBitVector & WrappedBitVector::copy(WrappedBitVector & _copy)
 
 void WrappedBitVector::decompress(dynamic_bitset<> & _bitset)
 {
-
 	array_t<bitvector::word_t> temp_arr;
 	m_bitvector.decompress();
 	m_bitvector.write(temp_arr);
 	bitvector::word_t ss = m_bitvector.size();
-//	_bitset.resize((unsigned long)40);
-//   _bitset.resize((size_t)m_bitvector.size());
- 	dynamic_bitset<> temp_bits;
+
+	dynamic_bitset<> temp_bits;
  	size_t k = 0;
 	for (size_t i = 0; i < temp_arr.size();i++)
 	{			
@@ -155,11 +132,7 @@ void WrappedBitVector::write(vector<unsigned long> &arr)
 {
 	array_t<bitvector::word_t> temp_arr;
 	m_bitvector.write(temp_arr);
-	//Inefficient method. Check whether there's a direct constructor available to copy.
-	// 	for (size_t i = 0; i < temp_arr.size() ; i++)
-	// 	{		
-	// 		arr.push_back((unsigned long)temp_arr[i]);
-	// 	}
+	
 	for (array_t<bitvector::word_t>::const_iterator iter = temp_arr.begin(); iter != temp_arr.end(); iter++)
 	{
 		arr.push_back(*(iter));
@@ -179,7 +152,6 @@ void WrappedBitVector::clear()
 WrappedBitVector * WrappedBitVector::operator &(WrappedBitVector &_right)
 {
 	bitvector * result_vect = m_bitvector & _right.m_bitvector;
-	//result_vect->operator +=
 	WrappedBitVector * result = new WrappedBitVector(*(result_vect));
 	result_vect->~bitvector();
 	return result;
@@ -197,6 +169,11 @@ WrappedBitVector * WrappedBitVector::operator ~()
 	WrappedBitVector * result = new WrappedBitVector(m_bitvector);
 	result->m_bitvector.flip();
 	return result;
+}
+
+unsigned long WrappedBitVector::SpaceUtilsation()
+{
+	return (unsigned long)m_bitvector.bytes();
 }
 
 unsigned long long WrappedBitVector::count()
