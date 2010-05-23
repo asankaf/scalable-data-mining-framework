@@ -25,7 +25,9 @@ void TestNaiveBayes::TestSuite()
 	//soyabean_10col_metadata.xml
 	//TestClassifier(CreateDataSource("soyabean_10col_data","soyabean_10col_metadata","soyabean"));
 	//TestClassifier(CreateDataSource("poker_5mill_data","poker_5mill_metadata","poker_5mill_"));
-	TestClassifier(CreateDataSource("soya_5col_data","soya_5col_metadata","soya_5col_"));
+	//TestClassifier(CreateDataSource("soya_5col_data","soya_5col_metadata","soya_5col_"));
+	TestClassifier(CreateDataSource("SoyabeanColumns5mil\\integrate\\soyabean_data",
+		"SoyabeanColumns5mil\\integrate\\soyabean_metadata","soyabean_5mill"));
 	//TestClassifier(CreateDataSource("soyabean_1mill_10col_data","soyabean_1mill_10col_metadata","soyabean_1mill_10col"));
 	//TestClassifier(CreateDataSource("C:\\Data\\soybeanTest3.csv"));
 	//soyaTestlarge_300000_metadata.xml

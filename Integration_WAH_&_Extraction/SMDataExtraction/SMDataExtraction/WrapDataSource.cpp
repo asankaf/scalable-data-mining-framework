@@ -78,8 +78,7 @@ void WrapDataSource::Init()
 
 size_t WrapDataSource::SpaceUtilsation()
 {
-	size_t space = 0;
-	//typedef vector<EncodedAttributeInfo *> ::const_iterator vector_iter;
+	size_t space = sizeof(this);
 	for (size_t index = 0; index < this->_codedAtts.size(); index++)
 	{
 		space += _codedAtts[index]->SpaceUtilisation();

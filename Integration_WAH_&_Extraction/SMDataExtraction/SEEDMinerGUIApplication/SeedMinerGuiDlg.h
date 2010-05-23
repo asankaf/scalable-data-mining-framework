@@ -82,6 +82,9 @@ private:
 
 	/**Initialises all instance variables set for particular flow*/
 	void InitAll();
+
+	/** Gives the space consumed by the Wrappeddatasource in Bytes*/
+	string MeasureSpace();
 public:
 	
 	CIntelliCheckersUIDlg(CWnd* pParent = NULL);	// standard constructor

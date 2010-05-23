@@ -6,6 +6,7 @@
 #include "DataSources.h"
 #include "LoadSavedDataSources.h"
 #include "DecodedTuple.h"
+#include "utils.h"
 
 using namespace CSVConnectionInfo;
 TestAprioriOpt::TestAprioriOpt(void)
@@ -18,42 +19,12 @@ TestAprioriOpt::~TestAprioriOpt(void)
 }
 void TestAprioriOpt::TestSuite()
 {
-		// Testing unique itemset generation
-		
-		// Creating a wrapped data source
-	
-	//
-	//CsvConnection cConcsv("C:\\soybeanTest-1mill.csv",',','\n','""');	
-	//CsvConnection cConcsv("C:\\Data\\soyaTestsort.csv",',','\n','""');	
-	/*
-				CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');	
-					//CsvConnection cConcsv("C:\\soyaTest-mod1.csv",',','\n','""');	
-					
-						ExtractedCsvDTO *dat = cConcsv.extractData();
-								WrapDataSource *ds = new WrapDataSource(*dat,"0");	
-								ds->encodeAtrributes();*/
-				
-		
-	//cout << "Loaded Data" << endl;
-	//cout << "No of Records : "<< dat->RowCount() << endl;
-	//training dataset - 200000_data.xml
-	//training dataset-200000_metadata
-	//test dataset-10000_metadata.xml
-	
 	clock_t comp_start,comp_end;
 	cout << "Starting to load data : " << endl;
 	comp_start = clock();
 	
+	WrapDataSource * ds = Utils::CreateDataSource("poker_hand_data","poker_hand_metadata","poker_hand");
 	
-	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyafull_metadata","soyafull_data");
-	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	WrapDataSource * ds =  (*dsLoaded)("soyabean_5mill");	
-
-		
-	/*
-			LoadSavedDataSources *lsd = new LoadSavedDataSources("soya_15col_metadata","soya_15col_data");
-				DataSources *dsLoaded = lsd->loadSavedEncodedData();
-				WrapDataSource * ds =  (*dsLoaded)("soya_15col_");*/
 		comp_end = clock();
 		cout << "Time to load data : " << (comp_end -comp_start) << endl;
 		AlgoUtils utils;	
@@ -75,14 +46,15 @@ void TestAprioriOpt::TestSuite()
 				}
 				cout << endl;	*/
 		
-
+		cout << "Befor Comp : " << ds->SpaceUtilsation() << endl;
 		CompressionHandler comp;		
 		comp_start = clock();
-	//	comp.ConvertTo(ds,BitStreamInfo::WAH_COMPRESSION);
+		comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 		comp_end = clock();
+		cout << "After Compression : " << ds->SpaceUtilsation() << endl;
 		cout << "Compression Time : " << comp_end - comp_start << endl;
 		cout << "With Compression " << endl;
-		cout << "Time Spent : ";
+		cout << "Time Spent : "; 
 		for (size_t i = 0 ; i < 5; i++)
 		{
 			AprioriOpt opt;	

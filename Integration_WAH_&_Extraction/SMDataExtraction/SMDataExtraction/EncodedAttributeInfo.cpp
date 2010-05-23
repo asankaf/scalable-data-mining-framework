@@ -41,7 +41,7 @@ int EncodedAttributeInfo::NoOfVBitStreams(){
 
 size_t EncodedAttributeInfo::SpaceUtilisation()
 {
-	size_t space = 0;
+	size_t space = sizeof(this);
 	//typedef vector<BitStreamInfo *>::const_iterator bit_iter;
 	for (size_t index = 0; index < _vBitStreams.size(); index++)
 	{

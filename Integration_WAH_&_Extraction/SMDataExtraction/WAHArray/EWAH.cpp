@@ -80,7 +80,7 @@ dynamic_bitset<> EWAH::Decompress()
 
 size_t EWAH::SpaceUtilisation()
 {
-	return 0;
+	return sizeof(EWAH) + m_bitvector.SpaceUtilsation();	
 }
 
 void EWAH::Print()
