@@ -6,9 +6,11 @@
 #include "SeedMinerGui.h"
 #include "SeedMinerGuiDlg.h"
 #include <sstream>
-#include <string>;
+#include <string>
 #include <vector>
 #include "Utils.h"
+#include <wtypes.h>
+#include "DBConnection.h"
 
 
 #ifdef _DEBUG
@@ -571,9 +573,19 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 	}else if (procedure=="getMySqlDataSourceList")
 	{
+		DBConnectionInfo::DBConnection nrw_con("");
+		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
 		string formattedOutPut="sqlDataSourcesList##";
 		//get the real mysql data sources list as below
-		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		
+		for (int i = 0 ; i < source_names.size() ; i++)
+		{
+			formattedOutPut+="<mysqlsource>";
+			formattedOutPut+="<name>" + source_names[i] + "</name>";
+			formattedOutPut+="</mysqlsource>";
+		}
+		
+		//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
