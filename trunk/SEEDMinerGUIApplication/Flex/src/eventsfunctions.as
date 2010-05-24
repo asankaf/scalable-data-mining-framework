@@ -36,6 +36,7 @@ import mx.managers.PopUpManager;
 import mx.utils.ObjectProxy;
 
 import seedminer.ControlPanel;
+import seedminer.GraphViewObject;
 import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
 import seedminer.Sink;
@@ -62,6 +63,8 @@ private var timeStamps:Array = new Array();
 private var controlPanel:ControlPanel;
 private var sink:Sink;
 private var loopConfig:LoopConfigure;
+private var rememberGraphName:String;
+private var c:int=0;
 
 private var mysqlObject:MySQLDataSource;
 
@@ -81,6 +84,9 @@ public function createControlPanel(event:Event):void
 	controlPanel.measureTimeButton.addEventListener(MouseEvent.CLICK,measureTime);
 	
 	sink=Sink(PopUpManager.createPopUp(this, Sink , false));
+	sink.canvas_Main=canvasmain;
+	sink.clearSavedGraphs.addEventListener(MouseEvent.CLICK,sink.clearGraphs);
+	sink.comparegraphs.addEventListener(MouseEvent.CLICK,sink.compareAllGraphsInOneGraph);
 	sink.x=this.drawingcanvas.width-sink.width-8;
 	sink.y=this.drawingcanvas.y+70;
 }
@@ -244,14 +250,16 @@ public function cplusPluseCallBackFunction(str:String):void
 		var dataXMLList:XMLList= new XMLList(graphData);	
 		var a:Array = xmlListToObjectArray(dataXMLList.children());
         var ac:ArrayCollection = new ArrayCollection(a);
+        addGraphToSink(dataXMLList.children(),rememberGraphName);
         var graphPopUp:GraphViewPop=GraphViewPop(PopUpManager.createPopUp(this, GraphViewPop , true));
         graphPopUp.dataCollection=ac;
         
         var mySeries:Array=new Array();
         var series1:LineSeries = new LineSeries();
-        series1.yField="value";
+        series1.yField=rememberGraphName;
+        series1.displayName=rememberGraphName;
+        sink.graphNames.push(rememberGraphName);
         mySeries.push(series1);
-
 		graphPopUp.graphLineChart.series= mySeries;
         
         var point1:Point = new Point();
@@ -269,6 +277,21 @@ public function cplusPluseCallBackFunction(str:String):void
 	showStatus(DONE);
 }
 
+private function addGraphToSink(xmlList:XMLList,GraphName:String):void
+{
+	sink.graphCount++;
+	var graphButton:GraphViewObject=new GraphViewObject();
+	graphButton.addEventListener(MouseEvent.CLICK,graphButton.drawThisGraph);
+	graphButton.canvas_Main=canvasmain;
+	graphButton.graphName=GraphName;
+	var a:Array = xmlListToObjectArray(xmlList);
+	var ac:ArrayCollection = new ArrayCollection(a);
+	graphButton.graph=ac;
+	graphButton.label=" : "+GraphName;
+	sink.saveGraphs.addChild(graphButton);
+	sink.graphs.addItem(xmlList);
+}
+
 private function xmlListToObjectArray(xmlList:XMLList):Array
 {
     var a:Array = new Array();
@@ -279,17 +302,12 @@ private function xmlListToObjectArray(xmlList:XMLList):Array
         for each (var attribute:XML in attributes)
         {
             var nodeName:String = attribute.name().toString();
-            var value:*;
-            if (nodeName == "date")
+            if(nodeName!="month")
             {
-                var date:Date = new Date();
-                date.setTime(Number(attribute.toString()));
-                value = date;
+            	rememberGraphName=nodeName; 	
             }
-            else
-            {
-                value = attribute.toString();
-            }
+            var value:*;          
+            value = attribute.toString();
                 
             o[nodeName] = value;
         }
@@ -355,7 +373,16 @@ private function executeFlow(event:Event):void
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
 		//var str:String="treeViewer##plant = :  (5)/nplant = lt-normal: gt-norm (8320/468)/nplant = normal: norm (1635/39)/nplant = plant-stand: precip (39)$$csv->classification->tree@@1 s@@0 s";
-		var str:String='graph##<items><item month=\"1000\" value=\"60\" /><item month=\"2000\" value=\"50\" /><item month="3000" value=".7" /><item month="4000" value="2.3" /><item month="5000" value="3.1" /></items>';
+		if(c==0)
+		{
+			c++;
+			var str:String='graph##<items><item month=\"1000\" csv=\"10\" /><item month=\"2000\" csv=\"4\" /><item month="3000" csv=".7" /><item month="4000" csv="85" /><item month="5000" csv="14" /></items>';
+		}
+		else
+		{
+			c=0;
+			var str:String='graph##<items><item month=\"1000\" mysql=\"60\" /><item month=\"2000\" mysql=\"50\" /><item month="3000" mysql=".7" /><item month="4000" mysql="2.3" /><item month="5000" mysql="3.1" /></items>';
+		}		
 		cplusPluseCallBackFunction(str);
 	
 	//}
