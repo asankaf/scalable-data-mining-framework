@@ -267,7 +267,10 @@ EncodedMultiCatAttribute* RangeSplitter::SplitRanges()
 // 	}
 
 	int no_v_bitstreams = (int)(ceil(log10((double)no_unique_vals)/log10(2.0)));
-	
+	if (pow(2.0,(double)no_v_bitstreams) == (double)no_unique_vals)
+	{
+		no_v_bitstreams++;
+	}
 	string unique_val_order;
 	for (int i = 1 ; i < no_unique_vals ; i++)
 	{

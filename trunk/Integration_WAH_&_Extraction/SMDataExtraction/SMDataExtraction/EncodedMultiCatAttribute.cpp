@@ -60,7 +60,7 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 	}
 	else 
 	{
-		temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));		
+		temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
 	}
 	this->setNoOfVBitStreams(temp,noOfRows);
 	this->_noOfUniqueVals = _uniqueValList.size();

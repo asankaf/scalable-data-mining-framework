@@ -268,10 +268,12 @@ void CIntelliCheckersUIDlg::DeleteAll()
 
 void CIntelliCheckersUIDlg::SavedDataLoader(string _meta_file_name,string _data_file_name,string _data_source_name,int _noOfRows)
 {
-	//LoadSavedDataSources lsd(_meta_file_name,_data_file_name,_noOfRows);	
-	//DataSources *dsLoaded = lsd.loadSavedEncodedData(true);
+	LoadSavedDataSources lsd(_meta_file_name,_data_file_name,_noOfRows);	
+	DataSources *dsLoaded = lsd.loadSavedEncodedData(true);
+	/*
 	LoadSavedDataSources lsd(_meta_file_name,_data_file_name);	
-	DataSources *dsLoaded = lsd.loadSavedEncodedData();
+	DataSources *dsLoaded = lsd.loadSavedEncodedData();*/
+	
 	m_source =  (*dsLoaded)(_data_source_name);
 	//delete dsLoaded;
 }
@@ -454,49 +456,50 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	}
 	else if (procedure=="csv->apriory->text")
 	{
-		
-		string path=evt->procedurePara;
-				string formattedOutPut="textViewer##";	
-				string timeStamps="$$"+procedure;
-				
-				time (&start);
-				CSV(path,1000);
-				time (&end);
-		
-				stringstream timeStream;
-				timeStream << difftime (end,start);	
-				timeStamps+="@@";
-				timeStamps+=timeStream.str()+timeUnit;
-						
-				time (&start);
-				Aprior(0.9,0.01,10);
-				time (&end);
-		
-				stringstream timeStream_2;
-				timeStream_2 << difftime (end,start);	
-				timeStamps+="@@";
-				timeStamps+=timeStream_2.str()+timeUnit;
-		
-				formattedOutPut += Text(APRIORI_SOURCE,0);
-		
-				if(measureTime=="true")
-				{
-					formattedOutPut+=timeStamps;
-				}
-		
-				DeleteAll();
-				flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		/*
 		
+				string path=evt->procedurePara;
+						string formattedOutPut="textViewer##";	
+						string timeStamps="$$"+procedure;
+						
+						time (&start);
+						CSV(path,1000);
+						time (&end);
+				
+						stringstream timeStream;
+						timeStream << difftime (end,start);	
+						timeStamps+="@@";
+						timeStamps+=timeStream.str()+timeUnit;
+								
+						time (&start);
+						Aprior(0.9,0.01,10);
+						time (&end);
+				
+						stringstream timeStream_2;
+						timeStream_2 << difftime (end,start);	
+						timeStamps+="@@";
+						timeStamps+=timeStream_2.str()+timeUnit;
+				
+						formattedOutPut += Text(APRIORI_SOURCE,0);
+				
+						if(measureTime=="true")
+						{
+							formattedOutPut+=timeStamps;
+						}
+				
+						DeleteAll();
+						flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+				
+				
+				*/
 				string formattedOutPut="textViewer##";
 				//Give the relative path from Report
 				//"poker_hand_data","poker_hand_metadata","poker_hand"
-				SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",100000);
+				SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
 				Aprior(0.9,0.01,10);
-				formattedOutPut += Text(APRIORI_SOURCE,0);
-				DeleteAll();
-				flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-				*/
+				formattedOutPut += Text(APRIORI_SOURCE,0);				
+				//DeleteAll();
+				flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);			
 		
 	}
 	else if (procedure == "csv->classification->tree")
