@@ -11,15 +11,14 @@ TestC45Nominal::TestC45Nominal(void)
 TestC45Nominal::~TestC45Nominal(void)
 {
 }
-
+ 
 void TestC45Nominal::TestSuite()
-{cout <<"Start Loading Data " << endl;
+{
+	cout <<"Start Loading Data " << endl;
 	
 WrapDataSource *ds  = NULL;
- 	/*
-		ds= Utils::CreateDataSource("SoyabeanColumns5mil\\integrate\\soyabean_data",
-				"SoyabeanColumns5mil\\integrate\\soyabean_metadata","soyabean_5mill");;	*/
-ds = Utils::CreateDataSource("C:\\Data\\bank-data.csv");
+
+ 	ds = Utils::CreateDataSource("poker_hand_data","poker_hand_metadata","poker_hand");
 	cout << "Finished Loading data :" << endl;
 /*
 	
@@ -32,12 +31,13 @@ ds = Utils::CreateDataSource("C:\\Data\\bank-data.csv");
 	cout <<"Finished Loading data " << endl;
 	cout << "=======================================" << endl;
 	
-	cout << "Finished Encoding Data" << endl;
-	cout << "=======================================" << endl;
+	
 	
 	C45TreeNominal tree;
 	CompressionHandler comp;
-	//comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	comp.ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
+	cout << "Finished Encoding Data" << endl;
+	cout << "=======================================" << endl;
 	tree.buildClassifier(ds);
 	cout <<"No new LIne";
 	cout << tree.toString() << endl;

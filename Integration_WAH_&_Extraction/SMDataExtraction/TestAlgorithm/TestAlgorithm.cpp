@@ -26,8 +26,8 @@ void ClassifierTestSourceTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//TestC45Algo();
-	TestAprioriAlgo();
+	TestC45Algo();
+	//TestAprioriAlgo();
 	//TestAlgoComp();
 	//TestNaiveBayesAlgo();
 	//ClassifierTestSourceTest();
