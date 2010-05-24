@@ -34,6 +34,9 @@ public:
 	__declspec(dllexport) void CodedAtts(vector<EncodedAttributeInfo *> _coded_atts );
 	__declspec(dllexport) size_t SpaceUtilsation();
 	__declspec(dllexport) DBQueryExecution* queryExecPointer();
+	__declspec(dllexport) void queryExecPointer(DBQueryExecution* cExec){this->_queryDataInfo = cExec;}
+	__declspec(dllexport) ExtractedCsvDTO * CsvExtractedDatainfo() const { return _csvExtractedDatainfo; }
+	__declspec(dllexport) void CsvExtractedDatainfo(ExtractedCsvDTO * val) { _csvExtractedDatainfo = val; }
 	__declspec(dllexport) int DataSourceID() const { return _dataSourceID; }
 	__declspec(dllexport) void DataSourceID(int val) { _dataSourceID = val; }
 	__declspec(dllexport) DATASOURCE SourceType() const { return _sourceType; }

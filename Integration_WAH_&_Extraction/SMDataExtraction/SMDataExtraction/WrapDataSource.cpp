@@ -44,6 +44,8 @@ WrapDataSource::WrapDataSource(ExtractedCsvDTO *csvExec,string dsName){
 WrapDataSource::WrapDataSource(void)
 {	Init();
 	this->_existanceDatabitMap = PureAttInfo::existanceBitSet;
+	this->_csvExtractedDatainfo = NULL;
+	this->_queryDataInfo = NULL;
 	PureAttInfo::existanceBitSet.clear();
 }
 WrapDataSource::~WrapDataSource(void)
