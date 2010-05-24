@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="168" height="328" title="SINK" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.Canvas;
+			import mx.utils.ObjectProxy;
+			import mx.charts.series.LineSeries;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			public var graphCount:int;
+			public var graphs:ArrayCollection=new ArrayCollection();
+			public var graphNames:Array=new Array();
+			public var canvas_Main:Canvas;
+			
+			public function clearGraphs(e:MouseEvent):void
+			{
+				if(0<graphCount)
+				{
+					graphCount=0;
+					graphs.removeAll();
+					saveGraphs.removeAllChildren();
+					graphNames=new Array();
+				}
+			}
+			
+			public function compareAllGraphsInOneGraph(e:MouseEvent):void
+			{
+				if(0<graphCount)
+				{
+					var graphPopUp:GraphViewPop=GraphViewPop(PopUpManager.createPopUp(canvas_Main, GraphViewPop , true));
+			        PopUpManager.centerPopUp(graphPopUp);
+					graphPopUp.dataCollection=new ArrayCollection(combineArrayCollections(graphs));					
+					var mySeries:Array=new Array();
+					for(var i:int=0;i<graphCount;i++)
+					{
+				        var series:LineSeries = new LineSeries();
+				        series.yField=graphNames[i].toString();
+				        series.displayName=graphNames[i].toString();
+				        mySeries.push(series);
+					}
+					graphPopUp.graphLineChart.series= mySeries;
+				}
+			}
+			
+			private function combineArrayCollections(acn:ArrayCollection):Array
+			{
+				var dataPoints:int=XMLList(acn[0]).length();
+				var a:Array = new Array();
+				for(var i:int=0;i<dataPoints;i++)
+			    {
+			    	var o:Object = new Object();
+			    	var round:int=1;
+			    	for(var j:int=0;j<graphCount;j++)
+			    	{
+			    		var xmlList:XMLList = XMLList(acn[j]);
+			    		var xml:XML=xmlList[i];
+			    		var attributes:XMLList = xml.attributes();
+			    		var attributeNumber:int=1;
+				        for each (var attribute:XML in attributes)
+				        {
+				        	var nodeName:String = attribute.name().toString();
+				        	var value:*;
+			    			if(round==1)
+				    		{
+				    			value = attribute.toString();
+				    			o[nodeName] = value;
+				    		}
+				    		else				   
+				    		{				    			
+				    			if(attributeNumber==1)
+				    			{
+				    				attributeNumber++;
+				    				continue;
+				    			}			
+				    			else
+				    			{
+				    				value = attribute.toString();
+				    				o[nodeName] = value;
+				    			}	  
+				    				  		
+				    		}    			    
+				        }
+				        round++;
+			    	}
+			    	a.push(new ObjectProxy(o));
+			    }			    			 
+			    return a;
+			}
+
+		]]>
+	</mx:Script>
 	<mx:VBox x="0" y="0" width="100%" height="100%">
 		<mx:Canvas width="100%" height="50%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
 			<mx:Button id="clearSavedFlaws" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" right="5" bottom="5"/>
@@ -9,11 +98,13 @@
 		</mx:Canvas>
 		<mx:HRule width="100%"/>
 		<mx:Canvas width="100%" height="50%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
-			<mx:Button id="clearSavedGraphs" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" bottom="5" right="5"/>
-			<mx:VBox id="saveGraphs" x="0" y="30" width="100%" height="43" top="20" bottom="35" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
-			</mx:VBox>
-			<mx:Button width="24" height="25" toolTip="compare graphs" icon="@Embed(source='../compareGraphs.png')" x="88" y="72" id="comparegraphs" bottom="5" right="27"/>
 			<mx:Label text="SAVED GRAPHS" paddingLeft="2" paddingBottom="2" paddingRight="2" paddingTop="2" top="0" width="100%" color="#858585" fontWeight="bold"/>
+			<mx:Canvas x="0" y="30" width="100%" height="43" top="20" bottom="35">
+				<mx:VBox id="saveGraphs" x="0" y="0" width="100%" height="100%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1" paddingTop="4" paddingRight="4" paddingLeft="4" paddingBottom="4" verticalGap="1" verticalPageScrollSize="2">
+				</mx:VBox>
+			</mx:Canvas>
+			<mx:Button width="24" height="25" toolTip="compare graphs" icon="@Embed(source='../compareGraphs.png')" x="88" y="72" id="comparegraphs" bottom="5" right="27"/>
+			<mx:Button id="clearSavedGraphs" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" bottom="5" right="5"/>
 		</mx:Canvas>
 	</mx:VBox>
 	<mx:Fade id="fadeOut" duration="1500" alphaFrom="1.0" alphaTo="0.4"/>
