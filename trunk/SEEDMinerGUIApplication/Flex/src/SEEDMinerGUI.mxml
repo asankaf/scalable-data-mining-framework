@@ -14,6 +14,10 @@
 							<mx:Image source="@Embed('2.png')" mouseDown="mouseDownHandler(event);" id="MySQL_DataSource"/>
 							<mx:Label text="MySQL DataSource"/>
 						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('xmlLoad.jpg')" mouseDown="mouseDownHandler(event);" id="XML_Loader"/>
+							<mx:Label text="XML Loader"/>
+						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>				
 				<mx:Canvas label="COMPRESSION" width="100%" height="100%">

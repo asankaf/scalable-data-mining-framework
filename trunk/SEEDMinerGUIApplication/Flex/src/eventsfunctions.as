@@ -16,6 +16,7 @@ import ActionClasses.Util;
 import ActionClasses.VisualTreeElements.Element;
 import ActionClasses.WAHCompression;
 import ActionClasses.WAHCompression2;
+import ActionClasses.XML_Loader_;
 
 import com.dncompute.graphics.ArrowStyle;
 import com.dncompute.graphics.GraphicsUtil;
@@ -353,7 +354,7 @@ private function executeFlow(event:Event):void
 		}
 			
 		ret["procedure"] = getCurrentProcedure();
-		ret["procedurePara"] = procedurePara;*/
+		ret["procedurePara"] = procedurePara;
 		
 		ret["measureTime"] = controlPanel.measuretime.toString();
 		if(!controlPanel.loopFlaw)
@@ -363,7 +364,7 @@ private function executeFlow(event:Event):void
 		else if(controlPanel.loopFlaw)
 		{
 			ret["runInALoop"] = controlPanel.loopFlaw.toString()+"@@"+loopConfig.loopCount.text+"@@"+loopConfig.increment.text;
-		}		
+		}*/		
 	
 		//__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
@@ -382,7 +383,7 @@ private function executeFlow(event:Event):void
 		{
 			c=0;
 			var str:String='graph##<items><item month=\"1000\" mysql=\"60\" /><item month=\"2000\" mysql=\"50\" /><item month="3000" mysql=".7" /><item month="4000" mysql="2.3" /><item month="5000" mysql="3.1" /></items>';
-		}		
+		}	
 		cplusPluseCallBackFunction(str);
 	
 	//}
@@ -430,6 +431,10 @@ private function getCurrentProcedure():String
 		{
 			procedure+="mysql";
 			procedurePara=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString();
+		}
+		else if(Obj.type()==ActionObjectParent.XML_LOADER)
+		{
+			procedure+="xml";
 		}
 		
 		if(i+1!=actionObjectSequence.length)
@@ -561,6 +566,12 @@ private function mouseDownHandler(event:MouseEvent):void
     	var wahcompression2:ActionObject = new WAHCompression2();
     	wahcompression2.image=dragInitiator;
     	actionObj=wahcompression2;	
+    }
+    else if(dragInitiator.id=="XML_Loader")
+    {
+    	var xmlloader:ActionObject=new XML_Loader_();
+    	xmlloader.image=dragInitiator;
+    	actionObj=xmlloader;	
     }
 
     var imageProxy:Image = new Image();

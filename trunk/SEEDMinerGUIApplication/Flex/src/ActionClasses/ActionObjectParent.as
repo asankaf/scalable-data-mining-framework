@@ -23,6 +23,7 @@ package ActionClasses
 		public static const FILTER_RESAMPLE:Number = 6;
 		public static const WAH_COMPRESSTION:Number = 7;
 		public static const WAH_COMPRESSTION_2:Number = 8;
+		public static const XML_LOADER:Number = 9;
 		
 		
 		public static const NO_DRAWING:Number=-1;
