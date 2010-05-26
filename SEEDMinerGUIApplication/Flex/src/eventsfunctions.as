@@ -195,6 +195,7 @@ public function cplusPluseCallBackFunction(str:String):void
 				}
 			}	
 		}
+		
 	}
 	else
 	{
@@ -211,10 +212,6 @@ public function cplusPluseCallBackFunction(str:String):void
 		var data:String=strings1[0];
 		var textPopUp:TEXTViewPopUp=TEXTViewPopUp(PopUpManager.createPopUp(this, TEXTViewPopUp , true));
 		var startindex:int=String(data).search("\n");
-		if(textPopUp.textViewerTextArea.minWidth<Element.estimateStringPixelLength(data.slice(0,startindex)))
-		{
-			textPopUp.textViewerTextArea.width=Element.estimateStringPixelLength(data.slice(0,startindex));
-		}	
 		textPopUp.textViewerTextArea.text=data;
 		var point1:Point = new Point();
 		point1.x=0;
@@ -332,8 +329,8 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	//if(1<actionObjectSequence.length)
-	//{
+	if(1<actionObjectSequence.length)
+	{
 		showStatus(EXECUTING);
 		
 		var ret:Object = new Object();
@@ -347,7 +344,7 @@ private function executeFlow(event:Event):void
 		ret["itemType"] = "Button";
 		ret["eventType"] = event.type.toString();
 		
-		/*if(getCurrentProcedure()==null)//validate procedure
+		if(getCurrentProcedure()==null)//validate procedure
 		{
 			showStatus("Done");
 			return;
@@ -364,7 +361,7 @@ private function executeFlow(event:Event):void
 		else if(controlPanel.loopFlaw)
 		{
 			ret["runInALoop"] = controlPanel.loopFlaw.toString()+"@@"+loopConfig.loopCount.text+"@@"+loopConfig.increment.text;
-		}*/		
+		}	
 	
 		//__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
@@ -373,11 +370,13 @@ private function executeFlow(event:Event):void
 		//var str:String="treeViewer##petalwidth <= 0.6: Iris-setosa (50.0)\npetalwidth > 0.6\n|   petalwidth <= 1.7\n|   |   petallength <= 4.9: Iris-versicolor (48.0/1.0)\n|   |   petallength > 4.9\n|   |   |   petalwidth <= 1.5: Iris-virginica (3.0)\n|   |   |   petalwidth > 1.5: Iris-versicolor (3.0/1.0)\n|   petalwidth > 1.7: Iris-virginica (46.0/1.0)";
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
+		//var str:String="textViewer##asdfsasdf\nasdf";
 		//var str:String="treeViewer##plant = :  (5)/nplant = lt-normal: gt-norm (8320/468)/nplant = normal: norm (1635/39)/nplant = plant-stand: precip (39)$$csv->classification->tree@@1 s@@0 s";
 		if(c==0)
 		{
 			c++;
-			var str:String='graph##<items><item month=\"1000\" csv=\"10\" /><item month=\"2000\" csv=\"4\" /><item month="3000" csv=".7" /><item month="4000" csv="85" /><item month="5000" csv="14" /></items>';
+			//var str:String='graph##<items><item month=\"1000\" csv=\"10\" /><item month=\"2000\" csv=\"4\" /><item month="3000" csv=".7" /><item month="4000" csv="85" /><item month="5000" csv="14" /></items>';
+			var str:String="graph##<items><item datasize=\"100\" csv_text=\"20\"/><item datasize=\"200\" csv_text=\"0\"/><item datasize=\"300\" csv_text=\"0\"/><item datasize=\"400\" csv_text=\"0\"/><item datasize=\"500\" csv_text=\"0\"/><item datasize=\"600\" csv_text=\"220\"/><item datasize=\"700\" csv_text=\"0\"/><item datasize=\"800\" csv_text=\"0\"/><item datasize=\"900\" csv_text=\"20\"/><item datasize=\"1000\" csv_text=\"40\"/></items>";
 		}
 		else
 		{
@@ -386,7 +385,7 @@ private function executeFlow(event:Event):void
 		}	
 		cplusPluseCallBackFunction(str);
 	
-	//}
+	}
 	
 }
 
