@@ -29,7 +29,7 @@ using namespace CSVConnectionInfo;
 
 class CIntelliCheckersUIDlg : public CDialog, public CFlexCallBack
 {
-private:
+private:	
 // Construction
 	WrapDataSource * m_source;
 	AprioriOpt * m_apriori;
@@ -85,6 +85,7 @@ private:
 
 	/** Gives the space consumed by the Wrappeddatasource in Bytes*/
 	string MeasureSpace();
+	
 public:
 	
 	CIntelliCheckersUIDlg(CWnd* pParent = NULL);	// standard constructor
