@@ -394,264 +394,312 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 
 void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
 {
+	static int flowSequenceNumber;
 	string procedure=evt->procedure;
-	string measureTime=evt->measureTime;
-	string runInALoop=evt->runInALoop;
-	int loopCount = 1;
-	int increment = 0;
-
-	vector<string> loopTokens;
-	/*
-	Tokenize(runInALoop, loopTokens, "@@");
-		loopCount=atoi( loopTokens[1].c_str());
-		increment=atoi( loopTokens[2].c_str());*/
-	
-	
-	time_t start,end;
-	time_t startGraphTime,endGraphTime;
-	string timeUnit=" s";
-
-	if (procedure=="csv->text")
+	if (procedure=="getMySqlDataSourceList")
 	{
-		string path=evt->procedurePara;
-		string formattedOutPut="textViewer##";
-		string timeStamps="$$"+procedure;
-		string graphData="$$graph";
-
-
-		for(int i=0;i<loopCount;i++)
-		{
-			time (&startGraphTime);
-
-			time (&start);
-			CSV(path,1000);
-			time (&end);
-
-			time (&endGraphTime);
-
-			stringstream timeStreamGraph;
-			timeStreamGraph << difftime (startGraphTime,endGraphTime);
-			graphData+="@@";
-			graphData+=timeStreamGraph.str();
-
-			stringstream timeStream;
-			timeStream << difftime (end,start);	
-			timeStamps+="@@";
-			timeStamps+=timeStream.str()+timeUnit;
-
-			formattedOutPut += Text(WRAPPED_SOURCE,100);
-			DeleteAll();
-
-			if(!(runInALoop=="false"))
-			{
-				formattedOutPut+=graphData;
-			}
-		}
-
-		if(measureTime=="true")
-		{
-			formattedOutPut+=timeStamps;
-		}		
-		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-	}
-	else if (procedure=="csv->apriory->text")
-	{
-		/*
-		
-				string path=evt->procedurePara;
-						string formattedOutPut="textViewer##";	
-						string timeStamps="$$"+procedure;
-						
-						time (&start);
-						CSV(path,1000);
-						time (&end);
-				
-						stringstream timeStream;
-						timeStream << difftime (end,start);	
-						timeStamps+="@@";
-						timeStamps+=timeStream.str()+timeUnit;
-								
-						time (&start);
-						Aprior(0.9,0.01,10);
-						time (&end);
-				
-						stringstream timeStream_2;
-						timeStream_2 << difftime (end,start);	
-						timeStamps+="@@";
-						timeStamps+=timeStream_2.str()+timeUnit;
-				
-						formattedOutPut += Text(APRIORI_SOURCE,0);
-				
-						if(measureTime=="true")
-						{
-							formattedOutPut+=timeStamps;
-						}
-				
-						DeleteAll();
-						flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-				
-				
-				*/
-				string formattedOutPut="textViewer##";
-				//Give the relative path from Report
-				//"poker_hand_data","poker_hand_metadata","poker_hand"
-				SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
-				Aprior(0.9,0.01,10);
-				formattedOutPut += Text(APRIORI_SOURCE,0);				
-				//DeleteAll();
-				flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);			
-		
-	}
-	else if (procedure == "csv->classification->tree")
-	{
-		string path=evt->procedurePara;
-		string formattedOutPut="treeViewer##";	
-		string timeStamps="$$"+procedure;
-
-		time (&start);
-		CSV(path,1000);
-		time (&end);
-
-		stringstream timeStream;
-		timeStream << difftime (end,start);	
-		timeStamps+="@@";
-		timeStamps+=timeStream.str()+timeUnit;
-		
-		time (&start);
-		Classifier();
-		time (&end);
-
-		stringstream timeStream_2;
-		timeStream_2 << difftime (end,start);	
-		timeStamps+="@@";
-		timeStamps+=timeStream_2.str()+timeUnit;
-
-		formattedOutPut += Text(CLASSIFIER_SOURCE,0);
-
-		if(measureTime=="true")
-		{
-			formattedOutPut+=timeStamps;
-		}
-
-		DeleteAll();						
-		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-
-	}
-	else if (procedure == "csv->classification->text")
-	{
-		
-		string path=evt->procedurePara;
-		string formattedOutPut="textViewer##";
-		string timeStamps="$$"+procedure;
-
-		time (&start);
-		CSV(path,1000);
-		time (&end);
-
-		stringstream timeStream;
-		timeStream << difftime (end,start);	
-		timeStamps+="@@";
-		timeStamps+=timeStream.str()+timeUnit;
-
-		time (&start);
-		Classifier();
-		time (&end);
-
-		stringstream timeStream_2;
-		timeStream_2 << difftime (end,start);	
-		timeStamps+="@@";
-		timeStamps+=timeStream_2.str()+timeUnit;
-
-		formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
-
-		if(measureTime=="true")
-		{
-			formattedOutPut+=timeStamps;
-		}
-
-		DeleteAll();
-		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-
-		
-
-	}else if (procedure=="getMySqlDataSourceList")
-	{
-		DBConnectionInfo::DBConnection nrw_con("");
-		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
+		//DBConnectionInfo::DBConnection nrw_con("");
+		//vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
 		string formattedOutPut="sqlDataSourcesList##";
-		//get the real mysql data sources list as below
+		/*//get the real mysql data sources list as below
 		
 		for (int i = 0 ; i < source_names.size() ; i++)
 		{
 			formattedOutPut+="<mysqlsource>";
 			formattedOutPut+="<name>" + source_names[i] + "</name>";
 			formattedOutPut+="</mysqlsource>";
-		}
+		}*/
 		
-		//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
-	}
-	else if (procedure == "mysql->text")
-	{
-		
-		/*
-		string dataSource=evt->procedurePara;
-				string formattedOutPut="textViewer##";
-				string timeStamps="$$"+procedure;
-		
-				//read mysql
-				formattedOutPut += "test mysql read";		
-				
-				flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);*/
-
-		string formattedOutPut="textViewer##";
-		// Suppose that the string is csv->SpaceMeasure->EWAH->SpaceMeasure
-		//Here SpaceMeasure indicates the symbol used to measure space
-		CSV("C:\\Data\\soyaTestsort.csv",1000);
-		formattedOutPut += "Space Before Compression : " +MeasureSpace()+"Bytes\n";
-		Convert(BitStreamInfo::WAH_COMPRESSION);
-		formattedOutPut += "Space After Compression : " +MeasureSpace()+"Bytes";
-		DeleteAll();
-		flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 	}
 	else
 	{
-		string formattedOutPut="noView##";
-		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-	}
+		string measureTime=evt->measureTime;
+		string loopInformation=evt->runInALoop;
+		int loopCount = 1;
+		int increment = 0;
+		string runInALoop = "";
 
+		vector<string> procedureTokens;
+		string graph_procedure="";
 
+		Tokenize(procedure, procedureTokens, "->");
+		int k=0;
+		for (;k<procedureTokens.size()-1;k++)
+		{
+			graph_procedure+=procedureTokens[k]+"_";
+		}
+		stringstream flowSequenceSS;
+		flowSequenceSS<<flowSequenceNumber;
+		graph_procedure+=procedureTokens[k]+"_"+flowSequenceSS.str();
+		flowSequenceNumber++;
 
-	/*
-	vector<string> tokens;
-    Tokenize(procedure, tokens);
+		vector<string> loopTokens;
+		
+		Tokenize(loopInformation, loopTokens, "@@");
+		runInALoop=loopTokens[0];
+		loopCount=atoi( loopTokens[1].c_str());
+		increment=atoi( loopTokens[2].c_str());
+		
+		
+		time_t start,end;
+		time_t startGraphTime,endGraphTime;
+		string timeUnit=" s";
 
-	string formattedOutPut="";
-
-	for(int i=0;i<tokens.size();i++)
-	{
-		string token=tokens[i];
-		if(token=="csv")
+		if (procedure=="csv->text")
 		{
 			string path=evt->procedurePara;
-			CSV(path,100);
-			formattedOutPut += Text(WRAPPED_SOURCE,100);
-		}
-		else if(token=="apriory")
-		{
-			Aprior(0.9,0.01,10);
-			formattedOutPut += Text(APRIORI_SOURCE,0);
-		}
-		else if(token=="text")
-		{
-			formattedOutPut = "textViewer##"+formattedOutPut;
-		}
-	}
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="textViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;		
 
-	DeleteAll();
-	flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-	*/
+
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+				time (&startGraphTime);
+
+				time (&start);
+				CSV(path,increment*(i+1));
+				time (&end);
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+
+				if(runInALoop=="false")
+				{
+					formattedOutPut += Text(WRAPPED_SOURCE,100);
+				}
+				DeleteAll();
+
+				/*if(!(runInALoop=="false"))
+				{
+					formattedOutPut+=graphData;
+				}*/
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}		
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		}
+		else if (procedure=="csv->apriory->text")
+		{
+
+					string path=evt->procedurePara;
+					string formattedOutPut="textViewer##";	
+					string timeStamps="$$"+procedure;
+					
+					time (&start);
+					CSV(path,1000);
+					time (&end);
+			
+					stringstream timeStream;
+					timeStream << difftime (end,start);	
+					timeStamps+="@@";
+					timeStamps+=timeStream.str()+timeUnit;
+							
+					time (&start);
+					Aprior(0.9,0.01,10);
+					time (&end);
+			
+					stringstream timeStream_2;
+					timeStream_2 << difftime (end,start);	
+					timeStamps+="@@";
+					timeStamps+=timeStream_2.str()+timeUnit;
+			
+					formattedOutPut += Text(APRIORI_SOURCE,0);
+			
+					if(measureTime=="true")
+					{
+						formattedOutPut+=timeStamps;
+					}
+			
+					DeleteAll();
+					flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+					
+					
+					
+					/*string formattedOutPut="textViewer##";
+					//Give the relative path from Report
+					//"poker_hand_data","poker_hand_metadata","poker_hand"
+					SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
+					Aprior(0.9,0.01,10);
+					formattedOutPut += Text(APRIORI_SOURCE,0);				
+					//DeleteAll();
+					flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
+			
+		}
+		else if (procedure=="xml->apriory->text")
+		{
+			string formattedOutPut="textViewer##";
+			//Give the relative path from Report
+			//"poker_hand_data","poker_hand_metadata","poker_hand"
+			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
+			Aprior(0.9,0.01,10);
+			formattedOutPut += Text(APRIORI_SOURCE,0);				
+			DeleteAll();
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+		}
+		else if (procedure == "csv->classification->tree")
+		{
+			string path=evt->procedurePara;
+			string formattedOutPut="treeViewer##";	
+			string timeStamps="$$"+procedure;
+
+			time (&start);
+			CSV(path,1000);
+			time (&end);
+
+			stringstream timeStream;
+			timeStream << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream.str()+timeUnit;
+			
+			time (&start);
+			Classifier();
+			time (&end);
+
+			stringstream timeStream_2;
+			timeStream_2 << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream_2.str()+timeUnit;
+
+			formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}
+
+			DeleteAll();						
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+
+		}
+		else if (procedure == "csv->classification->text")
+		{
+			
+			string path=evt->procedurePara;
+			string formattedOutPut="textViewer##";
+			string timeStamps="$$"+procedure;
+
+			time (&start);
+			CSV(path,1000);
+			time (&end);
+
+			stringstream timeStream;
+			timeStream << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream.str()+timeUnit;
+
+			time (&start);
+			Classifier();
+			time (&end);
+
+			stringstream timeStream_2;
+			timeStream_2 << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream_2.str()+timeUnit;
+
+			formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}
+
+			DeleteAll();
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+
+			
+
+		}
+		else if (procedure == "mysql->text")
+		{
+			
+			/*
+			string dataSource=evt->procedurePara;
+					string formattedOutPut="textViewer##";
+					string timeStamps="$$"+procedure;
+			
+					//read mysql
+					formattedOutPut += "test mysql read";		
+					
+					flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);*/
+
+			string formattedOutPut="textViewer##";
+			// Suppose that the string is csv->SpaceMeasure->EWAH->SpaceMeasure
+			//Here SpaceMeasure indicates the symbol used to measure space
+			CSV("C:\\Data\\soyaTestsort.csv",1000);
+			formattedOutPut += "Space Before Compression : " +MeasureSpace()+"Bytes\n";
+			Convert(BitStreamInfo::WAH_COMPRESSION);
+			formattedOutPut += "Space After Compression : " +MeasureSpace()+"Bytes";
+			DeleteAll();
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+		}
+		else
+		{
+			string formattedOutPut="noView##";
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		}
+
+
+
+		/*
+		vector<string> tokens;
+		Tokenize(procedure, tokens);
+
+		string formattedOutPut="";
+
+		for(int i=0;i<tokens.size();i++)
+		{
+			string token=tokens[i];
+			if(token=="csv")
+			{
+				string path=evt->procedurePara;
+				CSV(path,100);
+				formattedOutPut += Text(WRAPPED_SOURCE,100);
+			}
+			else if(token=="apriory")
+			{
+				Aprior(0.9,0.01,10);
+				formattedOutPut += Text(APRIORI_SOURCE,0);
+			}
+			else if(token=="text")
+			{
+				formattedOutPut = "textViewer##"+formattedOutPut;
+			}
+		}
+
+		DeleteAll();
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		*/
+	}
+	
 }
 
 void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
