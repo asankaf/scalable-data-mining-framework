@@ -5,11 +5,13 @@ import ActionClasses.AlgorithmApriory;
 import ActionClasses.AlgorithmClassification;
 import ActionClasses.CSVDataSource;
 import ActionClasses.ClassificationDom;
+import ActionClasses.DiscretizeFilter;
 import ActionClasses.DrawingEvent;
 import ActionClasses.FilterResample;
 import ActionClasses.GenerateGraphicalTree;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Path;
+import ActionClasses.RangeSplitter;
 import ActionClasses.TextViewer;
 import ActionClasses.TreeViewer;
 import ActionClasses.Util;
@@ -590,6 +592,18 @@ private function mouseDownHandler(event:MouseEvent):void
     	var xmlloader:ActionObject=new XML_Loader_();
     	xmlloader.image=dragInitiator;
     	actionObj=xmlloader;	
+    }
+    else if(dragInitiator.id=="DISCRETIZE")
+    {
+    	var discretizeFilter:DiscretizeFilter=new DiscretizeFilter();
+    	discretizeFilter.image=dragInitiator;
+    	actionObj=discretizeFilter;	
+    }
+    else if(dragInitiator.id=="RANGE_SPLIT")
+    {
+    	var rangeSplitter:RangeSplitter=new RangeSplitter();
+    	rangeSplitter.image=dragInitiator;
+    	actionObj=rangeSplitter;	
     }
 
     var imageProxy:Image = new Image();

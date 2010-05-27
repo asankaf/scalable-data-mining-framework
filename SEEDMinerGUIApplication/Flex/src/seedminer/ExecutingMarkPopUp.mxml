@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="364" height="366" alpha="1" modalTransparency=".1" modalTransparencyBlur="2" modalTransparencyColor="#000000" modalTransparencyDuration="300" borderThickness="0" borderStyle="solid" cornerRadius="0" backgroundAlpha="0" dropShadowEnabled="false" xmlns:ns1="seedminer.*">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="364" height="366" alpha="1" modalTransparency=".1" modalTransparencyBlur="0" modalTransparencyColor="#000000" modalTransparencyDuration="300" borderThickness="0" borderStyle="solid" cornerRadius="0" backgroundAlpha="0" dropShadowEnabled="false" xmlns:ns1="seedminer.*">
 	<mx:Script>
         <![CDATA[
         	//import org.bytearray.gif.player.GIFPlayer;

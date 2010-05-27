@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="168" height="328" title="SINK" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="126" height="328" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" borderThicknessTop="5" borderThicknessRight="5" borderThicknessLeft="5" borderThicknessBottom="5" borderColor="#9E9E9E" cornerRadius="2" headerHeight="8">
 	<mx:Script>
 		<![CDATA[
 			import mx.containers.Canvas;
