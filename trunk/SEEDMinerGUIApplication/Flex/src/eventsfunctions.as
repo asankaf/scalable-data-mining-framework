@@ -13,7 +13,6 @@ import ActionClasses.Path;
 import ActionClasses.TextViewer;
 import ActionClasses.TreeViewer;
 import ActionClasses.Util;
-import ActionClasses.VisualTreeElements.Element;
 import ActionClasses.WAHCompression;
 import ActionClasses.WAHCompression2;
 import ActionClasses.XML_Loader_;
@@ -29,6 +28,7 @@ import mx.charts.series.LineSeries;
 import mx.collections.ArrayCollection;
 import mx.containers.Canvas;
 import mx.controls.Image;
+import mx.controls.ProgressBar;
 import mx.core.DragSource;
 import mx.core.IFlexDisplayObject;
 import mx.events.DragEvent;
@@ -37,9 +37,11 @@ import mx.managers.PopUpManager;
 import mx.utils.ObjectProxy;
 
 import seedminer.ControlPanel;
+import seedminer.ExecutingMarkPopUp;
 import seedminer.GraphViewObject;
 import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
+import seedminer.ProgressBarComponent;
 import seedminer.Sink;
 import seedminer.TimePopUp;
 
@@ -58,7 +60,7 @@ private var fillColour:uint=0xdad8d8;
 private static var ok:Boolean=false;
 private var procedurePara:String;
 private var DONE:String="Done";
-private var EXECUTING:String="Executing Flaw";
+private var EXECUTING:String="Executing Flow";
 private var timeStampsOnCanvas:Dictionary = new Dictionary();
 private var timeStamps:Array = new Array();
 private var controlPanel:ControlPanel;
@@ -68,6 +70,9 @@ private var rememberGraphName:String;
 private var c:int=0;
 
 private var mysqlObject:MySQLDataSource;
+private var executingMask:ExecutingMarkPopUp;
+private var progress_Bar:ProgressBar;
+private var sequenceNumber:int=0;
 
 
 public function startUp(event:Event):void
@@ -300,7 +305,7 @@ private function xmlListToObjectArray(xmlList:XMLList):Array
         for each (var attribute:XML in attributes)
         {
             var nodeName:String = attribute.name().toString();
-            if(nodeName!="month")
+            if(nodeName!="datasize")
             {
             	rememberGraphName=nodeName; 	
             }
@@ -312,7 +317,7 @@ private function xmlListToObjectArray(xmlList:XMLList):Array
         
         a.push(new ObjectProxy(o));
     }
-    
+    sequenceNumber++;
     return a;
 }
 
@@ -363,7 +368,7 @@ private function executeFlow(event:Event):void
 			ret["runInALoop"] = controlPanel.loopFlaw.toString()+"@@"+loopConfig.loopCount.text+"@@"+loopConfig.increment.text;
 		}	
 	
-		//__callBackFunction.call(fabridge,ret);
+		__callBackFunction.call(fabridge,ret);
 		//var str:String="treeViewer##outlook = sunny\n|   humidity = high: no (3.0)\n|   humidity = normal: yes (2.0)\noutlook = overcast: yes (4.0)\noutlook = rainy\n|   windy = TRUE: no (2.0)\n|   windy = FALSE: yes (3.0)";
 		//var str:String="treeViewer##1 = 0\n|   2 = 0: 0 (186/1)\n|   2 = 1\n|   |   0 = 0: 0 (4)\n|   |   0 = 1: 1 (3)\n|   2 = 2: 0 (61)\n1 = 1\n|   0 = 0\n|   |   1 = 0\n|   |   |   0 = 0: 0 (7)\n|   |   |   0 = 1\n|   |   |   |   0 = 0: 1 (49/1)\n|   |   |   |   0 = 1: 0 (3)\n|   |   |   |   0 = 2: 1 (0)\n|   |   1 = 1: 0 (39/1)\n|   |   1 = 2: 0 (14)\n|   0 = 1: 2 (9/1)";
 		//var str:String="treeViewer##children = 0\n|   save_act = NO: YES (48)\n|   save_act = YES: NO (240)\nchildren = 1: YES (144)\nchildren = 2\n|   car = NO: YES (48)\n|   car = YES: NO (96)\nchildren = 3: NO (96)";
@@ -372,20 +377,21 @@ private function executeFlow(event:Event):void
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
 		//var str:String="textViewer##asdfsasdf\nasdf";
 		//var str:String="treeViewer##plant = :  (5)/nplant = lt-normal: gt-norm (8320/468)/nplant = normal: norm (1635/39)/nplant = plant-stand: precip (39)$$csv->classification->tree@@1 s@@0 s";
-		if(c==0)
+		/*if(c==0)
 		{
 			c++;
 			//var str:String='graph##<items><item month=\"1000\" csv=\"10\" /><item month=\"2000\" csv=\"4\" /><item month="3000" csv=".7" /><item month="4000" csv="85" /><item month="5000" csv="14" /></items>';
-			var str:String="graph##<items><item datasize=\"100\" csv_text=\"20\"/><item datasize=\"200\" csv_text=\"0\"/><item datasize=\"300\" csv_text=\"0\"/><item datasize=\"400\" csv_text=\"0\"/><item datasize=\"500\" csv_text=\"0\"/><item datasize=\"600\" csv_text=\"220\"/><item datasize=\"700\" csv_text=\"0\"/><item datasize=\"800\" csv_text=\"0\"/><item datasize=\"900\" csv_text=\"20\"/><item datasize=\"1000\" csv_text=\"40\"/></items>";
+			var str:String="graph##<items><item datasize=\"100\" csv_text=\"213\"/><item datasize=\"200\" csv_text=\"540\"/><item datasize=\"300\" csv_text=\"587\"/><item datasize=\"400\" csv_text=\"0\"/><item datasize=\"500\" csv_text=\"0\"/><item datasize=\"600\" csv_text=\"220\"/><item datasize=\"700\" csv_text=\"0\"/><item datasize=\"800\" csv_text=\"0\"/><item datasize=\"900\" csv_text=\"20\"/><item datasize=\"1000\" csv_text=\"40\"/></items>";
 		}
 		else
 		{
 			c=0;
-			var str:String='graph##<items><item month=\"1000\" mysql=\"60\" /><item month=\"2000\" mysql=\"50\" /><item month="3000" mysql=".7" /><item month="4000" mysql="2.3" /><item month="5000" mysql="3.1" /></items>';
-		}	
-		cplusPluseCallBackFunction(str);
+			var str:String='graph##<items><item datasize=\"1000\" mysql=\"60\" /><item datasize=\"2000\" mysql=\"50\" /><item datasize="3000" mysql=".7" /><item datasize="4000" mysql="2.3" /><item datasize="5000" mysql="3.1" /></items>';
+		}
+		cplusPluseCallBackFunction(str);*/
 	
 	}
+	//showStatus("DONE");
 	
 }
 
@@ -446,20 +452,33 @@ private function getCurrentProcedure():String
 }
 
 private function showStatus(status:String):void 
-{
+{	 
 	 if(status!=DONE)
 	 {
-	 	//exe.label="Executing";
-	 	//exe.enabled=false;
-	 	progressBar.indeterminate=true;
+	 	if(executingMask==null)
+		{
+			executingMask=ExecutingMarkPopUp(PopUpManager.createPopUp(canvasmain, ExecutingMarkPopUp , true));
+			//executingMask.y=canvasmain.height-50;
+			//executingMask.x=canvasmain.width-executingMask.width;
+			progress_Bar=new ProgressBarComponent();
+			progress_Bar.x=60;
+			progress_Bar.y=250;
+			executingMask.addChild(progress_Bar);			
+			PopUpManager.centerPopUp(executingMask);
+		}
+		else
+		{
+			PopUpManager.addPopUp(executingMask,canvasmain,true);
+			PopUpManager.centerPopUp(executingMask);
+		}	 	
+	 	progress_Bar.indeterminate=true;
 	 }
 	 else
 	 {
-	 	//exe.label="Execute Flow";
-	 	//exe.enabled=true;
-	 	progressBar.indeterminate=false;
+	 	PopUpManager.removePopUp(executingMask);
+	 	progress_Bar.indeterminate=false;
 	 }
-     progressBar.label= status;
+     progress_Bar.label= status;
 }
 
 private function clearCanvas(event:MouseEvent):void 

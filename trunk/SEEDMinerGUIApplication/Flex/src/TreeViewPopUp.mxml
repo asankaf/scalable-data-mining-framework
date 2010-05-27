@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" layout="absolute" width="920" height="600" title="Tree Viewer" close="titleWin_close(event);">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" layout="absolute" width="920" height="552" title="Tree Viewer" close="titleWin_close(event);">
 	<mx:Script>
         <![CDATA[
         	import mx.core.IFlexDisplayObject;

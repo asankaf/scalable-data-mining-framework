@@ -59,7 +59,7 @@
         ]]>
     </mx:Script>
 	<mx:VBox x="-1.75" y="3" width="48.5" height="189" verticalAlign="middle" horizontalAlign="center">
-		<mx:Button id="executeButton" width="30" height="30" icon="@Embed(source='../execute.png')" toolTip="execute flaw"/>
+		<mx:Button id="executeButton" width="30" height="30" icon="@Embed(source='../execute.png')" toolTip="execute flow"/>
 		<mx:Button id="saveButton" width="30" height="30" icon="@Embed(source='../save.png')" toolTip="save created flaw"/>
 		<mx:Button id="createLoopButton" width="30" height="30" icon="{loop}" toolTip="create a loop for this flaw"/>
 		<mx:Button id="measureTimeButton" width="30" height="30" icon="{no_time}" toolTip="show time stamps"/>
