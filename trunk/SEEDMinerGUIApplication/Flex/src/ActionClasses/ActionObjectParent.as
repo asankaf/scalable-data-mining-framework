@@ -24,6 +24,8 @@ package ActionClasses
 		public static const WAH_COMPRESSTION:Number = 7;
 		public static const WAH_COMPRESSTION_2:Number = 8;
 		public static const XML_LOADER:Number = 9;
+		public static const DESCRITIZE:Number = 10;
+		public static const RANGESPLITE:Number = 11;
 		
 		
 		public static const NO_DRAWING:Number=-1;
@@ -116,6 +118,7 @@ package ActionClasses
 			imageObj = new Image();
 			labelObj=new Label();			
 			labelObj.setStyle("textAlign","center");
+			labelObj.setStyle("color","#5A5A5A");
 			vboxObj.setStyle("verticalAlign","middle");
 			vboxObj.setStyle("horizontalAlign","center");
 			//vboxObj.setStyle("borderStyle","solid");
