@@ -51,15 +51,24 @@ WrapDataSource::WrapDataSource(void)
 WrapDataSource::~WrapDataSource(void)
 {	
 	cout<<"WrapDataSource Destructor calls..."<<endl;
+	vector<EncodedAttributeInfo *> zero_vect(0);
+	vector<EncodedIntAttribute *> zero_vect_int(0);
+	vector<EncodedDoubleAttribute *> zero_vect_double(0);
+	vector<EncodedMultiCatAttribute *> zero_vect_multi(0);
+	
 	Commons::DeleteVector(_codedIntAtts.begin(),_codedIntAtts.end());
 	Commons::DeleteVector(_codedDoubleAtts.begin(),_codedDoubleAtts.end());
 	Commons::DeleteVector(_codedStringAtts.begin(),_codedStringAtts.end());	
+
 	this->_codedIntAtts.clear();
+	_codedIntAtts.swap(zero_vect_int);
 	this->_codedDoubleAtts.clear();
+	_codedDoubleAtts.swap(zero_vect_double);
 	this->_codedStringAtts.clear();
-	this->_codedStringAtts.clear();
+	_codedStringAtts.swap(zero_vect_multi);
 //	Commons::DeleteVector(_codedAtts.begin(),_codedAtts.end());
 	this->_codedAtts.clear();
+	_codedAtts.swap(zero_vect);
 	if (this->_queryDataInfo != NULL)
 	{
 		delete this->_queryDataInfo;
