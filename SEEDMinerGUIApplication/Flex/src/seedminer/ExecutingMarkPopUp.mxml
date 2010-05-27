@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="364" height="366" alpha="1" modalTransparency=".1" modalTransparencyBlur="2" modalTransparencyColor="#000000" modalTransparencyDuration="300" borderThickness="0" borderStyle="solid" cornerRadius="0" backgroundAlpha="0" dropShadowEnabled="false" xmlns:ns1="seedminer.*">
+	<mx:Script>
+        <![CDATA[
+        	//import org.bytearray.gif.player.GIFPlayer;
+        
+            import mx.core.BitmapAsset;
+        
+            [Embed(source="loadings.gif")]
+            [Bindable]
+            public var imgCls:Class;
+            /*private function createGifPlayer(e:Event):void
+            {
+            	var myGIFPlayer:GIFPlayer = new GIFPlayer();
+				addChild ( myGIFPlayer );
+				myGIFPlayer.load ( new URLRequest ("loadings.gif") );
+            }*/
+
+        ]]>
+    </mx:Script>
+    <!-- <mx:SWFLoader id="gifcanvas" x="111" y="0" width="234" height="16"  creationComplete="createGifPlayer(event)" alpha="1"/> -->
+	
+	
+</mx:TitleWindow>

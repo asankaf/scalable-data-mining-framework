@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ProgressBar xmlns:mx="http://www.adobe.com/2006/mxml" label="Done" labelPlacement="top" width="197" barColor="#5CB3F5" height="32" alpha="1">
+</mx:ProgressBar>
