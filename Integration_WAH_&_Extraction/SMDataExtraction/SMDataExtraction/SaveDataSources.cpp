@@ -3,6 +3,8 @@
 #include "tinyxml.h"
 #include <time.h>
 #include <sstream>
+#include <winbase.h>
+#include "..\dll\const.h"
 
 using namespace std;
 
@@ -32,6 +34,18 @@ bool DataSourceSerialization::serializeDataSource(){
 		TiXmlElement *attNo = new TiXmlElement("noOfAttributes");
 		attNo->LinkEndChild(new TiXmlText(itoa(ds->noOfAttributes(),new char[1024],10)));
 		dsNode->LinkEndChild(attNo);
+
+		vector<string> att_file_names = getAttributeFileNames(ds->DataSourceName());
+		TiXmlElement *attFiles = new TiXmlElement("AttributeFiles");
+		
+		for (int j = 0 ; j < att_file_names.size() ; j++)
+		{
+			TiXmlElement *att = new TiXmlElement("att_file");
+			att->LinkEndChild(new TiXmlText(att_file_names[j].c_str()));
+			attFiles->LinkEndChild(att);
+		}
+
+		dsNode->LinkEndChild(attFiles);
 
 		TiXmlElement *noRows = new TiXmlElement("noOfRows");
 		noRows->LinkEndChild(new TiXmlText(itoa(ds->noOfRows(),new char[1024],10)));
@@ -153,10 +167,13 @@ bool DataSourceSerialization::serializeDataSource(){
 				codedAtts->LinkEndChild(att);
 			}
 		}
+		mkdir(this->_dataFileName.c_str(),7777);
+		//doc.SaveFile("../Reports/" + xmlFile.c_str());
+		doc.SaveFile(("../Reports/" + this->_dataFileName + "/" + xmlFile).c_str());
+		//saveCodedData();
+		saveCodedDataInDifferentFiles(att_file_names);
 	}
-
-	doc.SaveFile(("../Reports/" + xmlFile).c_str());
-	saveCodedData();
+	
 	return true;
 }
 
@@ -227,4 +244,74 @@ dynamic_bitset<> DataSourceSerialization::signMapAsLong(vector<bool> signMap){
 
 	}
 	return temp;
+}
+
+vector<string> DataSourceSerialization::getAttributeFileNames(string dsName)
+{
+	int attNo = (*this->_dataSources)(dsName)->noOfAttributes();
+	string *atts = new string[attNo];
+	vector<EncodedAttributeInfo*> attributes = ((*this->_dataSources)(dsName))->codedAttributes();
+	for (int i = 0 ; i < attNo ; i++)
+	{
+		atts[i] = dsName + "_" + attributes[i]->attributeName() + "_attData.DATA";
+	}
+
+	attributes.clear();
+	vector<EncodedAttributeInfo*> clr_atts;
+	attributes.swap(clr_atts);
+
+	vector<string> vec_atts(atts,atts + attNo);
+	return vec_atts;
+}
+
+void DataSourceSerialization::saveCodedDataInDifferentFiles(vector<string> attFiles)
+{	
+	string direct = "../Reports/" + this->_dataFileName;
+	//mkdir(direct.c_str(),7777);
+	//CreateDirectory((WCHAR*)direct.c_str(),NULL);
+	for (int i = 0 ; i < attFiles.size() ; i++)
+	{
+		string fileName = direct + "/" + attFiles[i];
+		TiXmlDocument doc;
+		TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","");
+		doc.LinkEndChild(decl);
+
+		TiXmlElement *rootNode = new TiXmlElement("DataSources");
+		rootNode->SetAttribute("noOfDataSources",this->_dataSources->noOfdataSources());
+		doc.LinkEndChild(rootNode);
+
+		TiXmlComment *comments = new TiXmlComment(" Actual Encoded data in Data Sources ");
+		rootNode->LinkEndChild(comments);
+
+		TiXmlElement *dsNode = new TiXmlElement("DataSource");
+		rootNode->LinkEndChild(dsNode);
+
+		for(int l = 0 ; l < this->_dataSources->noOfdataSources() ; l++)
+		{
+			vector<string> dsNames = this->_dataSources->dsNames();
+			WrapDataSource *ds = (*this->_dataSources)(dsNames[l]);
+			dsNode->SetAttribute("Name",ds->DataSourceName().c_str());
+
+			EncodedAttributeInfo *attInfo = ds->codedAttributes()[i];
+			TiXmlElement *att = new TiXmlElement("CodedAttribute");
+			att->SetAttribute("ID",attInfo->attributeID());
+			att->SetAttribute("Type",(int)attInfo->attributeType());
+			att->SetAttribute("Name",attInfo->attributeName().c_str());
+			att->SetAttribute("noOfVBitStreams",attInfo->NoOfVBitStreams());
+
+			TiXmlElement *VBitStreams=new TiXmlElement("VBitStreams");
+			for (int j = 0 ; j < attInfo->NoOfVBitStreams() ; j++)
+			{
+				TiXmlElement *vbs = new TiXmlElement("vbitstream");
+				vbs->SetAttribute("ID",j);
+				string s;
+				to_string(attInfo->vBitStreams()[j]->getProcessedBitStream(),s);
+				vbs->LinkEndChild(new TiXmlText(s.c_str()));
+				VBitStreams->LinkEndChild(vbs);
+			}
+			att->LinkEndChild(VBitStreams);
+			dsNode->LinkEndChild(att);
+		}
+		doc.SaveFile(fileName.c_str());		
+	}
 }
