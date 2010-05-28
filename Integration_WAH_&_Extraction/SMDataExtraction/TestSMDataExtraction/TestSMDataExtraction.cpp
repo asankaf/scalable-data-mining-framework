@@ -28,6 +28,32 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	EncodeForAll();
 	
+	CsvConnection *csv = new CsvConnection("E:\\University\\Level 4\\CS4200 - Data Mining\\Data Mining\\DataFiles\\dataSets\\small_data.txt",',','\n');
+	vector<int> r_order;
+	r_order.push_back(0);
+	r_order.push_back(2);
+	r_order.push_back(1);
+	r_order.push_back(0);
+	r_order.push_back(0);
+	r_order.push_back(1);
+	r_order.push_back(2);
+
+	ExtractedCsvDTO *r_csv = csv->readCSV(r_order);
+	WrapDataSource *r_ds = new WrapDataSource(r_csv,"small_data");
+	r_ds->encodeAtrributes();
+	DataSources *r_dss = new DataSources();
+	r_dss->insertDataSources(r_ds);
+	DataSourceSerialization *source_ser = new DataSourceSerialization(r_dss,"small_metadata","small_data");
+	source_ser->serializeDataSource();
+	
+	//load from multiple files with a limit of 3 rows...
+	LoadSavedDataSources *lds = new LoadSavedDataSources(3,"small_data","small_metadata");
+	DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
+	WrapDataSource *wds = (*dss)("small_data");
+	cout<<wds->generateCSVStringofDecodedData();
+	delete wds;
+	
+	
 	/*
   	time_t start_1,end_1;	
 
