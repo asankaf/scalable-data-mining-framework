@@ -2,10 +2,10 @@
 #include "csv_parser.hpp"
 #include "extractedCsvDTO.h"
 #include "CsvConnection.h"
-#include "AttributeType.h"
 
 #include<fstream>
 #include <vector>
+#include "AttributeType.h"
 
 using namespace std;
 using namespace CsvDataExtraction;
@@ -31,6 +31,7 @@ namespace CSVConnectionInfo{
 		__declspec(dllexport) ExtractedCsvDTO* readCSV(vector<int> order);
 
 		vector<AttributeProps> getAttributeNames(int attType,vector<int> order);
+		
 		
 		
 	private:
