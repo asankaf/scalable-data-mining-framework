@@ -593,17 +593,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				formattedOutPut+=timeStamps;
 			}
 			
-			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);						
-			
-			/*string formattedOutPut="textViewer##";
-			//Give the relative path from Report
-			//"poker_hand_data","poker_hand_metadata","poker_hand"
-			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
-			Aprior(0.9,0.01,10);
-			formattedOutPut += Text(APRIORI_SOURCE,0);				
-			//DeleteAll();
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
-			
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);									
 		}
 		else if (procedure == "csv->classification->tree")
 		{
@@ -681,39 +671,6 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			}
 			
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-
-
-
-
-
-			/*time (&start);
-			CSV(path,1000);
-			time (&end);
-
-			stringstream timeStream;
-			timeStream << difftime (end,start);	
-			timeStamps+="@@";
-			timeStamps+=timeStream.str()+timeUnit;
-			
-			time (&start);
-			Classifier();
-			time (&end);
-
-			stringstream timeStream_2;
-			timeStream_2 << difftime (end,start);	
-			timeStamps+="@@";
-			timeStamps+=timeStream_2.str()+timeUnit;
-
-			formattedOutPut += Text(CLASSIFIER_SOURCE,0);
-
-			if(measureTime=="true")
-			{
-				formattedOutPut+=timeStamps;
-			}
-
-			DeleteAll();						
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);*/
-
 		}
 		else if (procedure=="xml->text")
 		{
@@ -782,28 +739,158 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			}		
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
-		/*else if (procedure=="xml->apriory->text")
+		else if (procedure=="xml->apriory->text")
 		{
-			string formattedOutPut="textViewer##";
-			//Give the relative path from Report
-			//"poker_hand_data","poker_hand_metadata","poker_hand"
-			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
-			Aprior(0.9,0.01,10);
-			formattedOutPut += Text(APRIORI_SOURCE,0);				
-			DeleteAll();
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+			string paths=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(paths, pathsTokens, "@@");
+			string xml_metadata_location=pathsTokens[0];
+			string xml_data_location=pathsTokens[1];
+			int xml_data_size=atoi( pathsTokens[2].c_str());
+
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="textViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+				time (&startGraphTime);
+
+				time (&start);
+				if(loopCount==1)
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",xml_data_size);
+				}
+				else
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+				}				
+				time (&end);
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+
+				time (&start);
+				Aprior(0.9,0.01,10);
+				time (&end);
+	
+				stringstream timeStream_2;
+				timeStream_2 << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream_2.str()+timeUnit;
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+
+				if(runInALoop=="false")
+				{
+					formattedOutPut += Text(APRIORI_SOURCE,0);
+				}
+				DeleteAll();
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}		
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
-		else if (procedure=="xml->classification->text")
+		else if (procedure=="xml->classification->tree")
 		{
-			string formattedOutPut="textViewer##";
-			//Give the relative path from Report
-			//"poker_hand_data","poker_hand_metadata","poker_hand"
-			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
-			Aprior(0.9,0.01,10);
-			formattedOutPut += Text(APRIORI_SOURCE,0);				
-			DeleteAll();
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-		}*/
+			string paths=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(paths, pathsTokens, "@@");
+			string xml_metadata_location=pathsTokens[0];
+			string xml_data_location=pathsTokens[1];
+			int xml_data_size=atoi( pathsTokens[2].c_str());
+
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="treeViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+				time (&startGraphTime);
+
+				time (&start);
+				if(loopCount==1)
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",xml_data_size);
+				}
+				else
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+				}				
+				time (&end);
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+
+				time (&start);
+				Classifier();
+				time (&end);
+	
+				stringstream timeStream_2;
+				timeStream_2 << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream_2.str()+timeUnit;
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+
+				if(runInALoop=="false")
+				{
+					formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+				}
+				DeleteAll();
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}		
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		}
 		else if (procedure == "csv->classification->text")
 		{
 			
