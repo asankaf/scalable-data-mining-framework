@@ -416,11 +416,12 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	}
 	else
 	{
+		
 		string measureTime=evt->measureTime;
 		string loopInformation=evt->runInALoop;
 		int loopCount = 1;
 		int increment = 0;
-		string runInALoop = "";
+		string runInALoop = "";		
 
 		vector<string> procedureTokens;
 		string graph_procedure="";
@@ -469,11 +470,17 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				graphData+="<item datasize=\"";
 				tempstream<<increment*(i+1);
 				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
 				time (&startGraphTime);
 
 				time (&start);
 				CSV(path,increment*(i+1));
 				time (&end);
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
 
 				time (&endGraphTime);
 
@@ -481,21 +488,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				timeStreamGraph << difftime (endGraphTime,startGraphTime);
 				graphData+=timeStreamGraph.str()+"\"/>";
 
-				stringstream timeStream;
-				timeStream << difftime (end,start);	
-				timeStamps+="@@";
-				timeStamps+=timeStream.str()+timeUnit;
-
 				if(runInALoop=="false")
 				{
 					formattedOutPut += Text(WRAPPED_SOURCE,100);
 				}
 				DeleteAll();
-
-				/*if(!(runInALoop=="false"))
-				{
-					formattedOutPut+=graphData;
-				}*/
 			}
 			if(runInALoop=="true")
 			{
@@ -506,52 +503,80 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				formattedOutPut+=timeStamps;
 			}		
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-		}
+		}		
 		else if (procedure=="csv->apriory->text")
 		{
 
-					string path=evt->procedurePara;
-					string formattedOutPut="textViewer##";	
-					string timeStamps="$$"+procedure;
+			string path=evt->procedurePara;
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="textViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;	
+			
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+				time (&startGraphTime);
+
+				time (&start);
+				CSV(path,increment*(i+1));
+				time (&end);
+	
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
 					
-					time (&start);
-					CSV(path,1000);
-					time (&end);
-			
-					stringstream timeStream;
-					timeStream << difftime (end,start);	
-					timeStamps+="@@";
-					timeStamps+=timeStream.str()+timeUnit;
-							
-					time (&start);
-					Aprior(0.9,0.01,10);
-					time (&end);
-			
-					stringstream timeStream_2;
-					timeStream_2 << difftime (end,start);	
-					timeStamps+="@@";
-					timeStamps+=timeStream_2.str()+timeUnit;
-			
+				time (&start);
+				Aprior(0.9,0.01,10);
+				time (&end);
+	
+				stringstream timeStream_2;
+				timeStream_2 << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream_2.str()+timeUnit;
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+	
+				if(runInALoop=="false")
+				{
 					formattedOutPut += Text(APRIORI_SOURCE,0);
+				}
+				DeleteAll();
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}
 			
-					if(measureTime=="true")
-					{
-						formattedOutPut+=timeStamps;
-					}
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);						
 			
-					DeleteAll();
-					flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-					
-					
-					
-					/*string formattedOutPut="textViewer##";
-					//Give the relative path from Report
-					//"poker_hand_data","poker_hand_metadata","poker_hand"
-					SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
-					Aprior(0.9,0.01,10);
-					formattedOutPut += Text(APRIORI_SOURCE,0);				
-					//DeleteAll();
-					flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
+			/*string formattedOutPut="textViewer##";
+			//Give the relative path from Report
+			//"poker_hand_data","poker_hand_metadata","poker_hand"
+			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
+			Aprior(0.9,0.01,10);
+			formattedOutPut += Text(APRIORI_SOURCE,0);				
+			//DeleteAll();
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
 			
 		}
 		else if (procedure=="xml->apriory->text")
@@ -667,39 +692,8 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
 
+	}	
 
-
-		/*
-		vector<string> tokens;
-		Tokenize(procedure, tokens);
-
-		string formattedOutPut="";
-
-		for(int i=0;i<tokens.size();i++)
-		{
-			string token=tokens[i];
-			if(token=="csv")
-			{
-				string path=evt->procedurePara;
-				CSV(path,100);
-				formattedOutPut += Text(WRAPPED_SOURCE,100);
-			}
-			else if(token=="apriory")
-			{
-				Aprior(0.9,0.01,10);
-				formattedOutPut += Text(APRIORI_SOURCE,0);
-			}
-			else if(token=="text")
-			{
-				formattedOutPut = "textViewer##"+formattedOutPut;
-			}
-		}
-
-		DeleteAll();
-		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-		*/
-	}
-	
 }
 
 void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
