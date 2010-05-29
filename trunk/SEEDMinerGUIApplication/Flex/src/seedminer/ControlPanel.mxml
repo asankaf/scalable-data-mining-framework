@@ -25,11 +25,13 @@
         	{
         		measuretime=true;
         		measureTimeButton.setStyle("icon",time);
+        		measureTimeButton.toolTip="hide time stamps";
         	}
         	else
         	{
         		measuretime=false;
         		measureTimeButton.setStyle("icon",no_time);
+        		measureTimeButton.toolTip="show time stamps";        		
         	}
         }
         
@@ -49,11 +51,13 @@
         	{
         		loopFlaw=true;
         		createLoopButton.setStyle("icon",no_loop);
+        		createLoopButton.toolTip="remove loop";
         	}
         	else
         	{
         		loopFlaw=false;
         		createLoopButton.setStyle("icon",loop);
+        		createLoopButton.toolTip="create a loop for this flaw";        		
         	}
         }
         ]]>

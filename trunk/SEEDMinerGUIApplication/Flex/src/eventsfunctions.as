@@ -46,6 +46,7 @@ import seedminer.LoopConfigure;
 import seedminer.ProgressBarComponent;
 import seedminer.Sink;
 import seedminer.TimePopUp;
+import seedminer.XMLLoaderConfigPopUp;
 
 
 include "bridge/FlexVCBridge.as";
@@ -75,6 +76,7 @@ private var mysqlObject:MySQLDataSource;
 private var executingMask:ExecutingMarkPopUp;
 private var progress_Bar:ProgressBar;
 private var sequenceNumber:int=0;
+private var rowsToLoad:int=10000;
 
 
 public function startUp(event:Event):void
@@ -196,6 +198,10 @@ public function cplusPluseCallBackFunction(str:String):void
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
 					else if(actionObject.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION && currentProcedure=="classification")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.XML_LOADER && currentProcedure=="xml")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
@@ -414,7 +420,7 @@ private function getCurrentProcedure():String
 			else
 			{
 				procedure+="csv";
-				procedurePara=CSVConfigPopUp(Obj.config).location.text.toString();
+				procedurePara=CSVConfigPopUp(Obj.config).location.text.toString()+"@@"+CSVConfigPopUp(Obj.config).csv_data_size.text.toString();
 			}
 			
 		}
@@ -441,7 +447,16 @@ private function getCurrentProcedure():String
 		}
 		else if(Obj.type()==ActionObjectParent.XML_LOADER)
 		{
-			procedure+="xml";
+			if(XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text=="" || XMLLoaderConfigPopUp(Obj.config).xml_data_location.text=="")
+			{
+				showError("Paths not configured!\nEnter the paths of the XML files...");
+				return null;
+			}
+			else
+			{
+				procedure+="xml";
+				procedurePara=XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_size.text.toString();
+			}
 		}
 		
 		if(i+1!=actionObjectSequence.length)
@@ -657,6 +672,13 @@ private function dragDropHandler(event:DragEvent):void
     		actionObj.configObj=csvPathEnterPopUp;               
             csvPathEnterPopUp.x=200;
             csvPathEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height;
+    	}
+    	else if(actionObj.type()==ActionObjectParent.XML_LOADER)
+    	{
+    		var xmlPathsEnterPopUp:XMLLoaderConfigPopUp=XMLLoaderConfigPopUp(PopUpManager.createPopUp(this, XMLLoaderConfigPopUp , false));
+    		actionObj.configObj=xmlPathsEnterPopUp;               
+            xmlPathsEnterPopUp.x=200;
+            xmlPathsEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height;
     	}
     	
     	actionObj=null;
