@@ -42,16 +42,6 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 			dsElement = dsElement->FirstChildElement("noOfAttributes");
 			int noAtts = atoi(dsElement->GetText());
 
-			//position where attributes from multiple attribute files are loaded.
-			dsElement = dsElement->NextSiblingElement("AttributeFiles");
-			TiXmlElement* saved_file_att_element = dsElement->FirstChildElement("att_file");
-			this->saved_file_names.resize(noAtts);
-			int count_att = 0;
-			while (saved_file_att_element)
-			{
-				this->saved_file_names[count_att++] = saved_file_att_element->GetText();
-				saved_file_att_element = saved_file_att_element->NextSiblingElement("att_file");
-			}
 
 			dsElement = dsElement->NextSiblingElement("noOfRows");
 			int noRows = atoi(dsElement->GetText());
