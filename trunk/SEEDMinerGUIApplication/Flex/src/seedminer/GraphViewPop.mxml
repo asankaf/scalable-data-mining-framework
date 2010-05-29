@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="800" height="410" title="Graph Viewer" showCloseButton="true" close="closePop(event);" modalTransparency=".2" modalTransparencyBlur="2" modalTransparencyColor="#FFFFFF" modalTransparencyDuration="200" cornerRadius="0">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="836" height="410" title="Graph Viewer" showCloseButton="true" close="closePop(event);" modalTransparency=".2" modalTransparencyBlur="2" modalTransparencyColor="#FFFFFF" modalTransparencyDuration="200" cornerRadius="0">
 	<mx:Script>
 		<![CDATA[
 			import mx.managers.PopUpManager;
@@ -13,7 +13,7 @@
 		]]>
 	</mx:Script>
 
-	<mx:LineChart width="100%" height="100%" x="90" y="0" id="graphLineChart" dataProvider="{dataCollection}" showDataTips="true">
+	<mx:LineChart width="682" height="100%" x="134" y="0" id="graphLineChart" dataProvider="{dataCollection}" showDataTips="true">
     
 		<mx:horizontalAxis>
             <mx:CategoryAxis title="DATA SIZE (number of rows)" categoryField="datasize" />
@@ -22,6 +22,6 @@
             <mx:LinearAxis title="TIME (seconds)"/>
         </mx:verticalAxis>
 	</mx:LineChart>
-	<mx:Legend dataProvider="{graphLineChart}"/>
+	<mx:Legend dataProvider="{graphLineChart}" width="136"/>
 	
 </mx:TitleWindow>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="126" height="328" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" borderThicknessTop="5" borderThicknessRight="5" borderThicknessLeft="5" borderThicknessBottom="5" borderColor="#9E9E9E" cornerRadius="2" headerHeight="8">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="170" height="328" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" borderThicknessTop="5" borderThicknessRight="5" borderThicknessLeft="5" borderThicknessBottom="5" borderColor="#9E9E9E" cornerRadius="2" headerHeight="8">
 	<mx:Script>
 		<![CDATA[
 			import mx.containers.Canvas;
@@ -107,6 +107,6 @@
 			<mx:Button id="clearSavedGraphs" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" bottom="5" right="5"/>
 		</mx:Canvas>
 	</mx:VBox>
-	<mx:Fade id="fadeOut" duration="1500" alphaFrom="1.0" alphaTo="0.4"/>
+	<mx:Fade id="fadeOut" duration="600" alphaFrom="1.0" alphaTo="0.4"/>
     <mx:Fade id="fadeIn" duration="400" alphaFrom="0.4" alphaTo="1.0"/>
 </mx:TitleWindow>

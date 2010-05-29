@@ -475,12 +475,15 @@ private function showStatus(status:String):void
 		}	 	
 	 	progress_Bar.indeterminate=true;
 	 }
-	 else
+	 else if(progress_Bar!=null && progress_Bar.indeterminate==true)
 	 {
 	 	PopUpManager.removePopUp(executingMask);
 	 	progress_Bar.indeterminate=false;
 	 }
-     progress_Bar.label= status;
+	 if(progress_Bar!=null)
+	 {
+    	progress_Bar.label= status;
+	 }
 }
 
 private function clearCanvas(event:MouseEvent):void 
@@ -625,7 +628,8 @@ private function dragEnterHandler(event:DragEvent):void
 }
 
 private function dragDropHandler(event:DragEvent):void
-{
+{ 
+	trace("dorp");
 	if (event.dragSource.hasFormat("img"))
     {
     	actionObj.vboxX=event.localX-correctionX-((actionObj.vbox.width/2)-(actionObj.image.measuredWidth/2));
@@ -643,8 +647,9 @@ private function dragDropHandler(event:DragEvent):void
     		actionObj.configObj=mysqlsourcesPopUp; 
     		mysqlObject=MySQLDataSource(actionObj);        
 		    mysqlsourcesPopUp.x=sqlListX;
-		    mysqlsourcesPopUp.y=sqlListY;		 
-    		getDataSourceList();
+		    mysqlsourcesPopUp.y=sqlListY;
+			var itemId:String = actionObj.id;
+    		getDataSourceList(itemId);
     	}
     	else if(actionObj.type()==ActionObjectParent.CSV_DATASOURCE)
     	{
@@ -666,12 +671,13 @@ private function dragDropHandler(event:DragEvent):void
     }
 }
 
-private function getDataSourceList():void 
+private function getDataSourceList(itemId:String):void 
 {
+	trace("call");
 	var ret:Object = new Object();
 	ret["flashId"] = __flashPlayerId;
 	ret["flashIndex"] = __flashPlayerIndex;
-	ret["itemId"] = "sql";
+	ret["itemId"] = itemId;
 	ret["itemType"] = "Button";
 	ret["eventType"] = "click";
 	ret["procedure"] = "getMySqlDataSourceList";

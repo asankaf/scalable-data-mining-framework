@@ -28,7 +28,7 @@
 						</mx:VBox>
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('compress2.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression2"/>
-							<mx:Label text="Compression2"/>
+							<mx:Label text="EWAH Compression"/>
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>

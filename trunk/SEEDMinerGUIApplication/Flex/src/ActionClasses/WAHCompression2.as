@@ -4,7 +4,7 @@ package ActionClasses
 	{
 		public function WAHCompression2()
 		{
-			super("Compression2");
+			super("EWAH Compression");
 		}
 		
 		override public function type():Number
