@@ -1,10 +1,16 @@
+#pragma once
 #include "BitStreamInfo.h"
+#include <hash_map>
 #include "EncodedAttributeInfo.h"
 #include "boost\dynamic_bitset\dynamic_bitset.hpp"
 #include <iostream>
+#include "EncodedDoubleAttribute.h"
+#include <fstream>
+#include "boost/tokenizer.hpp"
 
+using namespace stdext;
 using namespace std;
-#pragma once
+
 
 class Commons
 {
@@ -47,9 +53,20 @@ public:
 	/** Initializes a two dimensional double array by a given value*/
 	_declspec(dllexport) static void InitArray(double ** _double_arr,int _length,int _width,double _init_val);
 
-	/*
-	BitStreamInfo * BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream);
-		BitStreamInfo * UGreaterThan( EncodedAttributeInfo * attribute, unsigned long value,int rows );
-		BitStreamInfo * UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows);*/
+	/** Gives the value of the property indicated by _property*/
+	_declspec(dllexport)static  string ReadConfiguration(string & _property);
+
+	/** Creating the configuration file, given by the location _path*/
+	_declspec(dllexport) static void BuildFile(string & _path);
+
+
+	private :
+	static hash_map<string,string> m_map;
+
+	/** Tokenises the string and add to the hash map*/
+	static void Tokenise(string & _str,hash_map<string,string> & _map);
+
+	/** Method to read a file and populate it into a vector*/
+	static vector<string> ReadFile(string & _path);
 	
 };

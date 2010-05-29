@@ -39,7 +39,7 @@ namespace CsvDataExtraction{
 						delete this->_stringData[i];
 					}
 				}
-				delete _stringData;
+				delete []_stringData;
 			}
 
 		}

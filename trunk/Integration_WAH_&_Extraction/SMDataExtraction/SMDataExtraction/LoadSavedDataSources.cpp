@@ -83,6 +83,7 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 			//ds->ExistanceDatabitMap(existance_map);
 			dsElement = dsElement->NextSiblingElement("CodedAttributes");
 			TiXmlElement *attElement = dsElement->FirstChildElement("Attribute");
+	
 			int counter = 0;
 			while (attElement && (counter <= noAtts))
 			{
