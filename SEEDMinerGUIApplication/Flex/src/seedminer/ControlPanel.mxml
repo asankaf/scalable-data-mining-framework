@@ -65,7 +65,7 @@
 		<mx:Button id="measureTimeButton" width="30" height="30" icon="{no_time}" toolTip="show time stamps"/>
 		<mx:Button id="clearCanvasButton" width="30" height="30" icon="@Embed(source='../clear.png')" toolTip="clear canvas"/>
 	</mx:VBox>
-	<mx:Fade id="fadeOut" duration="1500" alphaFrom="{1}" alphaTo="0.4"/>
+	<mx:Fade id="fadeOut" duration="600" alphaFrom="{1}" alphaTo="0.4"/>
     <mx:Fade id="fadeIn" duration="400" alphaFrom="{.4}" alphaTo="1.0"/>
     
 </mx:TitleWindow>
