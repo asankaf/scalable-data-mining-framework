@@ -452,6 +452,12 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		if (procedure=="csv->text")
 		{
 			string path=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(path, pathsTokens, "@@");
+			string csv_data_location=pathsTokens[0];
+			int csv_data_size=atoi( pathsTokens[1].c_str());
+
 			string formattedOutPut="";
 			string graphData="";
 			if(runInALoop=="false")
@@ -474,7 +480,14 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				time (&startGraphTime);
 
 				time (&start);
-				CSV(path,increment*(i+1));
+				if(loopCount==1)
+				{
+					CSV(csv_data_location,csv_data_size);
+				}
+				else
+				{
+					CSV(csv_data_location,increment*(i+1));
+				}	
 				time (&end);
 
 				stringstream timeStream;
@@ -508,6 +521,12 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		{
 
 			string path=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(path, pathsTokens, "@@");
+			string csv_data_location=pathsTokens[0];
+			int csv_data_size=atoi( pathsTokens[1].c_str());
+
 			string formattedOutPut="";
 			string graphData="";
 			if(runInALoop=="false")
@@ -529,7 +548,14 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				time (&startGraphTime);
 
 				time (&start);
-				CSV(path,increment*(i+1));
+				if(loopCount==1)
+				{
+					CSV(csv_data_location,csv_data_size);
+				}
+				else
+				{
+					CSV(csv_data_location,increment*(i+1));
+				}	
 				time (&end);
 	
 				stringstream timeStream;
@@ -579,6 +605,116 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
 			
 		}
+		else if (procedure == "csv->classification->tree")
+		{
+			string path=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(path, pathsTokens, "@@");
+			string csv_data_location=pathsTokens[0];
+			int csv_data_size=atoi( pathsTokens[1].c_str());
+
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="treeViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;
+
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+				time (&startGraphTime);
+
+				time (&start);
+				if(loopCount==1)
+				{
+					CSV(csv_data_location,csv_data_size);
+				}
+				else
+				{
+					CSV(csv_data_location,increment*(i+1));
+				}	
+				time (&end);
+	
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+					
+				time (&start);
+				Classifier();
+				time (&end);
+	
+				stringstream timeStream_2;
+				timeStream_2 << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream_2.str()+timeUnit;
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+	
+				if(runInALoop=="false")
+				{
+					formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+				}
+				DeleteAll();
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}
+			
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+
+
+
+
+			/*time (&start);
+			CSV(path,1000);
+			time (&end);
+
+			stringstream timeStream;
+			timeStream << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream.str()+timeUnit;
+			
+			time (&start);
+			Classifier();
+			time (&end);
+
+			stringstream timeStream_2;
+			timeStream_2 << difftime (end,start);	
+			timeStamps+="@@";
+			timeStamps+=timeStream_2.str()+timeUnit;
+
+			formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}
+
+			DeleteAll();						
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);*/
+
+		}
 		else if (procedure=="xml->text")
 		{
 			string paths=evt->procedurePara;
@@ -587,6 +723,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			Tokenize(paths, pathsTokens, "@@");
 			string xml_metadata_location=pathsTokens[0];
 			string xml_data_location=pathsTokens[1];
+			int xml_data_size=atoi( pathsTokens[2].c_str());
 
 			string formattedOutPut="";
 			string graphData="";
@@ -608,7 +745,14 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				time (&startGraphTime);
 
 				time (&start);
-				SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+				if(loopCount==1)
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",xml_data_size);
+				}
+				else
+				{
+					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+				}				
 				time (&end);
 
 				stringstream timeStream;
@@ -660,41 +804,6 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			DeleteAll();
 			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 		}*/
-		else if (procedure == "csv->classification->tree")
-		{
-			string path=evt->procedurePara;
-			string formattedOutPut="treeViewer##";	
-			string timeStamps="$$"+procedure;
-
-			time (&start);
-			CSV(path,1000);
-			time (&end);
-
-			stringstream timeStream;
-			timeStream << difftime (end,start);	
-			timeStamps+="@@";
-			timeStamps+=timeStream.str()+timeUnit;
-			
-			time (&start);
-			Classifier();
-			time (&end);
-
-			stringstream timeStream_2;
-			timeStream_2 << difftime (end,start);	
-			timeStamps+="@@";
-			timeStamps+=timeStream_2.str()+timeUnit;
-
-			formattedOutPut += Text(CLASSIFIER_SOURCE,0);
-
-			if(measureTime=="true")
-			{
-				formattedOutPut+=timeStamps;
-			}
-
-			DeleteAll();						
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-
-		}
 		else if (procedure == "csv->classification->text")
 		{
 			
