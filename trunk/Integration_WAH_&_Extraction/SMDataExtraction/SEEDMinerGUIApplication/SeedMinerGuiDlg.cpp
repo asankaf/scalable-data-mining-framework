@@ -579,7 +579,66 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);	*/		
 			
 		}
-		else if (procedure=="xml->apriory->text")
+		else if (procedure=="xml->text")
+		{
+			string paths=evt->procedurePara;
+
+			vector<string> pathsTokens;		
+			Tokenize(paths, pathsTokens, "@@");
+			string xml_metadata_location=pathsTokens[0];
+			string xml_data_location=pathsTokens[1];
+
+			string formattedOutPut="";
+			string graphData="";
+			if(runInALoop=="false")
+			{
+				formattedOutPut="textViewer##";
+			}
+			else {
+				formattedOutPut="graph##<items>";
+			}
+			string timeStamps="$$"+procedure;
+			for(int i=0;i<loopCount;i++)
+			{
+				stringstream tempstream;
+				graphData+="<item datasize=\"";
+				tempstream<<increment*(i+1);
+				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+				time (&startGraphTime);
+
+				time (&start);
+				SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+				time (&end);
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+
+				time (&endGraphTime);
+
+				stringstream timeStreamGraph;
+				timeStreamGraph << difftime (endGraphTime,startGraphTime);
+				graphData+=timeStreamGraph.str()+"\"/>";
+
+				if(runInALoop=="false")
+				{
+					formattedOutPut += Text(WRAPPED_SOURCE,100);
+				}
+				DeleteAll();
+			}
+			if(runInALoop=="true")
+			{
+				formattedOutPut+=graphData+"</items>";
+			}
+			if(measureTime=="true")
+			{
+				formattedOutPut+=timeStamps;
+			}		
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		}
+		/*else if (procedure=="xml->apriory->text")
 		{
 			string formattedOutPut="textViewer##";
 			//Give the relative path from Report
@@ -590,6 +649,17 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			DeleteAll();
 			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
 		}
+		else if (procedure=="xml->classification->text")
+		{
+			string formattedOutPut="textViewer##";
+			//Give the relative path from Report
+			//"poker_hand_data","poker_hand_metadata","poker_hand"
+			SavedDataLoader("poker_hand_metadata","poker_hand_data","poker_hand",999999);
+			Aprior(0.9,0.01,10);
+			formattedOutPut += Text(APRIORI_SOURCE,0);				
+			DeleteAll();
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
+		}*/
 		else if (procedure == "csv->classification->tree")
 		{
 			string path=evt->procedurePara;
