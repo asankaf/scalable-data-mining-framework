@@ -10,6 +10,7 @@ package ActionClasses
 	import mx.managers.PopUpManager;
 	
 	import seedminer.TimePopUp;
+	import seedminer.XMLLoaderConfigPopUp;
 
 
 	public class ActionObjectParent implements ActionObject
@@ -107,6 +108,17 @@ package ActionClasses
 				else
 				{
 					PopUpManager.addPopUp(MySqlDataSourcesSelectPopUp(config),this.vbox,false);
+				}
+			}
+			if(this.type()==ActionObjectParent.XML_LOADER)
+			{ 
+				if(config==null)
+				{
+					config=XMLLoaderConfigPopUp(PopUpManager.createPopUp(this.vbox, XMLLoaderConfigPopUp , false));
+				}
+				else
+				{
+					PopUpManager.addPopUp(XMLLoaderConfigPopUp(config),this.vbox,false);
 				}
 			}
 		}

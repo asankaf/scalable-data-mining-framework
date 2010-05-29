@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+    title="XML Data Source" x="168" y="86" width="602" height="160"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+
+    <mx:Script>
+        <![CDATA[       
+        import flash.net.FileReference;
+            import mx.managers.PopUpManager;
+	       		   
+            // Event handler for the OK button.
+            private function ok(event:Event):void 
+            {
+            	//trace(location.text);
+            	PopUpManager.removePopUp(this);
+            }
+
+        ]]>
+    </mx:Script>
+    <mx:VBox height="100%" width="100%" horizontalAlign="right">
+        <mx:HBox width="100%" horizontalAlign="right">
+            <mx:Label width="110" text="xml meta file path" textAlign="right"/>
+            <mx:TextInput width="452" id="xml_metadata_location" creationComplete="focusManager.setFocus(xml_metadata_location)"/>
+            
+        </mx:HBox>
+        <mx:HBox width="100%" horizontalAlign="right">
+            <mx:Label width="110" text="xml data file path" textAlign="right"/>
+            <mx:TextInput width="452" id="xml_data_location" change="okbutton.enabled=true"/>
+            
+        </mx:HBox>
+        <mx:HBox width="100%" horizontalAlign="right">
+            <mx:Label width="110" text="data size" textAlign="right"/>
+            <mx:TextInput width="452" id="xml_data_size" text="1000"/>
+            
+        </mx:HBox>
+        <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false" width="43" height="18" fontSize="10"/>
+    </mx:VBox>
+    
+    <mx:Fade id="fadeOut" duration="600" alphaFrom="1" alphaTo="0.3"/>
+    <mx:Fade id="fadeIn" duration="500" alphaFrom="0.3" alphaTo="1"/>
+
+</mx:TitleWindow>  
