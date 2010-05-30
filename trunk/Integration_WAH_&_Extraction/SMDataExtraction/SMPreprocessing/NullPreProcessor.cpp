@@ -38,7 +38,8 @@ void NullPreProcessor::elimiateNullValues(){
 					modifiedAtt->setAttType(intAtt->attributeType());
 					modifiedAtt->setMaxVal(intAtt->maxAttVal());
 					modifiedAtt->setMinVal(intAtt->minAttVal());
-					modifiedAtt->setSignBitMap(intAtt->SignBitMap());
+					//modifiedAtt->setSignBitMap(intAtt->SignBitMap());
+					modifiedAtt->setSignBitSet(intAtt->SignBitSet());
 					modifiedAtt->setVBitStreams(nullEliminatedBitstreams(currBitStreams,nullbitIDs));
 					modifiedAtt->setNoOfVBitStreams(intAtt->NoOfVBitStreams(),0);
 					newAtts[i] = modifiedAtt;
@@ -53,7 +54,8 @@ void NullPreProcessor::elimiateNullValues(){
 					modifiedAtt->setAttType(doubleAtt->attributeType());
 					modifiedAtt->setMaxVal(doubleAtt->maxAttVal());
 					modifiedAtt->setMinVal(doubleAtt->minAttVal());
-					modifiedAtt->SignBitMap(doubleAtt->SignBitMap());
+					modifiedAtt->setSignBitSet(doubleAtt->signBitSet());
+					//modifiedAtt->SignBitMap(doubleAtt->SignBitMap());
 					modifiedAtt->Precision(doubleAtt->Precision());
 					modifiedAtt->setVBitStreams(nullEliminatedBitstreams(currBitStreams,nullbitIDs));
 					modifiedAtt->setNoOfVBitStreams(doubleAtt->NoOfVBitStreams(),0);
