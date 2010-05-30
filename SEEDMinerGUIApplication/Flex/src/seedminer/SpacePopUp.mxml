@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="120" height="24" backgroundAlpha=".5" fontSize="12" verticalAlign="middle" horizontalAlign="center" horizontalGap="5" borderColor="#FAD5C3" borderThickness="1" borderStyle="solid" backgroundColor="#FCF2ED">
+	<mx:Label id="space_before_compression" textAlign="center" color="#945B3F" fontWeight="bold"/>
+</mx:HBox>
