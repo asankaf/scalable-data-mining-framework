@@ -92,6 +92,8 @@ BEGIN_MESSAGE_MAP(CIntelliCheckersUIDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
+//	ON_WM_SIZE()
+//ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -396,6 +398,30 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 {
 	static int flowSequenceNumber;
 	string procedure=evt->procedure;
+
+	string csv="csv";
+	string xml="xml";
+	string mysql="mysql";
+	string classification="classification";
+	string apriory="apriory";
+
+	string csv_text="csv->text";
+	string xml_text="xml->text";
+	string mysql_text="mysql->text";
+
+	string csv_apriory_text="csv->apriory->text";
+	string csv_classification_text="csv->classification->text";
+	string csv_classification_tree="csv->classification->tree";	
+	string xml_apriory_text="xml->apriory->text";
+	string xml_classification_text="xml->classification->text";	
+	string xml_classification_tree="xml->classification->tree";	
+
+	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
+	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text;
+	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text;
+	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text;
+	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree;
+
 	if (procedure=="getMySqlDataSourceList")
 	{
 		//DBConnectionInfo::DBConnection nrw_con("");
@@ -414,7 +440,185 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
+	else if(data_to_textview_procedures || data_to_algorithm_to_textview_procedures || data_to_classification_to_treeview_procedures)
+	{		
+		string measureTime=evt->measureTime;
+		string loopInformation=evt->runInALoop;
+		int loopCount = 1;
+		int increment = 0;
+		string runInALoop = "";		
+
+		vector<string> procedureTokens;
+		string graph_procedure="";
+
+		Tokenize(procedure, procedureTokens, "->");
+		int k=0;
+		for (;k<procedureTokens.size()-1;k++)
+		{
+			graph_procedure+=procedureTokens[k]+"_";
+		}
+		stringstream flowSequenceSS;
+		flowSequenceSS<<flowSequenceNumber;
+		graph_procedure+=procedureTokens[k]+"_"+flowSequenceSS.str();
+		flowSequenceNumber++;
+
+		string viewer=procedureTokens[procedureTokens.size()-1];
+
+		vector<string> loopTokens;
+		
+		Tokenize(loopInformation, loopTokens, "@@");
+		runInALoop=loopTokens[0];
+		loopCount=atoi( loopTokens[1].c_str());
+		increment=atoi( loopTokens[2].c_str());
+		
+		
+		time_t start,end;
+		time_t startGraphTime,endGraphTime;
+		string timeUnit=" s";
+
+		string paths=evt->procedurePara;
+		vector<string> pathsTokens;
+		Tokenize(paths, pathsTokens, "@@");
+
+		string csv_data_location;
+		int csv_data_size;
+		string xml_metadata_location;
+		string xml_data_location;
+		string xml_data_source;
+		int xml_data_size;
+
+		string formattedOutPut="";
+		string graphData="";
+		if(runInALoop=="false")
+		{
+			if(viewer=="text")
+			{
+				formattedOutPut="textViewer##";
+			}
+			else if(viewer=="tree")
+			{
+				formattedOutPut="treeViewer##";
+			}
+		}
+		else {
+			formattedOutPut="graph##<items>";
+		}
+		string timeStamps="$$"+procedure;
+
+		for(int i=0;i<loopCount;i++)
+		{
+			stringstream tempstream;
+			graphData+="<item datasize=\"";
+			tempstream<<increment*(i+1);
+			graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+			time (&startGraphTime);
+
+			for(int j=0;j<procedureTokens.size()-1;j++)
+			{
+				time (&start);
+
+				if (procedureTokens[j]==csv)
+				{
+					csv_data_location=pathsTokens[0];
+					csv_data_size=atoi( pathsTokens[1].c_str());
+					if(loopCount==1)
+					{
+						CSV(csv_data_location,csv_data_size);
+					}
+					else
+					{
+						CSV(csv_data_location,increment*(i+1));
+					}
+				}
+				else if (procedureTokens[j]==xml)
+				{
+					xml_metadata_location=pathsTokens[0];
+					xml_data_location=pathsTokens[1];
+					xml_data_source=pathsTokens[2];
+					xml_data_size=atoi( pathsTokens[3].c_str());
+					if(loopCount==1)
+					{
+						SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,xml_data_size);
+					}
+					else
+					{
+						SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
+					}
+				}
+				/*else if (procedureTokens[j]=="mysql")
+				{
+					if(loopCount==1)
+					{
+						
+					}
+					else
+					{
+						
+					}
+				}*/
+				if (procedureTokens[j]==apriory)
+				{
+					Aprior(0.9,0.01,10);
+				}
+				if (procedureTokens[j]==classification)
+				{
+					Classifier();
+				}
+
+				time (&end);
+
+				stringstream timeStream;
+				timeStream << difftime (end,start);	
+				timeStamps+="@@";
+				timeStamps+=timeStream.str()+timeUnit;
+
+			}
+			
+			time (&endGraphTime);
+
+			stringstream timeStreamGraph;
+			timeStreamGraph << difftime (endGraphTime,startGraphTime);
+			graphData+=timeStreamGraph.str()+"\"/>";
+
+			if(runInALoop=="false")
+			{
+				if(data_to_textview_procedures)
+				{
+					formattedOutPut += Text(WRAPPED_SOURCE,100);
+				}
+				else if(data_to_apriory_to_textview_procedures)
+				{
+					formattedOutPut += Text(APRIORI_SOURCE,0);
+				}
+				else if(data_to_classification_to_textview_procedures)
+				{
+					formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+				}
+				else if(data_to_classification_to_treeview_procedures)
+				{
+					formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+				}
+			}
+			DeleteAll();
+		}
+		if(runInALoop=="true")
+		{
+			formattedOutPut+=graphData+"</items>";
+		}
+		if(measureTime=="true")
+		{
+			formattedOutPut+=timeStamps;
+		}		
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		
+	}
 	else
+	{
+		string formattedOutPut="noView##";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}
+	/*else
 	{
 		
 		string measureTime=evt->measureTime;
@@ -514,9 +718,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			if(measureTime=="true")
 			{
 				formattedOutPut+=timeStamps;
-			}		
+			}
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-		}		
+		}
 		else if (procedure=="csv->apriory->text")
 		{
 
@@ -847,11 +1051,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				time (&start);
 				if(loopCount==1)
 				{
-					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",xml_data_size);
+					SavedDataLoader(xml_metadata_location,xml_data_location,"soya_5col_",xml_data_size);
 				}
 				else
 				{
-					SavedDataLoader(xml_metadata_location,xml_data_location,"poker_hand",increment*(i+1));
+					SavedDataLoader(xml_metadata_location,xml_data_location,"soya_5col_",increment*(i+1));
 				}				
 				time (&end);
 
@@ -924,23 +1128,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			}
 
 			DeleteAll();
-			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);
-
-			
-
+			flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);			
 		}
 		else if (procedure == "mysql->text")
 		{
-			
-			/*
-			string dataSource=evt->procedurePara;
-					string formattedOutPut="textViewer##";
-					string timeStamps="$$"+procedure;
-			
-					//read mysql
-					formattedOutPut += "test mysql read";		
-					
-					flash->root.Call("cplusPluseCallBackFunction",formattedOutPut);*/
 
 			string formattedOutPut="textViewer##";
 			// Suppose that the string is csv->SpaceMeasure->EWAH->SpaceMeasure
@@ -958,7 +1149,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
 
-	}	
+	}	*/
 
 }
 
@@ -979,3 +1170,20 @@ void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,co
         pos = str.find_first_of(delimiters, lastPos);
     }
 }
+//void CIntelliCheckersUIDlg::OnSize(UINT nType, int cx, int cy)
+//{
+//	__super::OnSize(nType, cx, cy);
+//
+//	// TODO: Add your message handler code here
+//	CAboutDlg dlgAbout;
+//	dlgAbout.DoModal();
+//}
+
+//void CIntelliCheckersUIDlg::OnSize(UINT nType, int cx, int cy)
+//{
+//	__super::OnSize(nType, cx, cy);
+//
+//	// TODO: Add your message handler code here
+//	//m_Flash=null;
+//	CShockwaveFlash k(m_Flash);
+//}
