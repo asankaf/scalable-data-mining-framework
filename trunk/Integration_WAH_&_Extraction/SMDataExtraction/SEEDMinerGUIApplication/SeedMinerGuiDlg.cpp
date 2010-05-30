@@ -399,25 +399,33 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	static int flowSequenceNumber;
 	string procedure=evt->procedure;
 
-	string csv="csv";
-	string xml="xml";
-	string mysql="mysql";
-	string classification="classification";
-	string apriory="apriory";
+	string const csv="csv";
+	string const xml="xml";
+	string const mysql="mysql";
+	string const classification="classification";
+	string const apriory="apriory";
+	string const wah="wah";
+	string const text="text";
+	string const tree="tree";
 
-	string csv_text="csv->text";
-	string xml_text="xml->text";
-	string mysql_text="mysql->text";
+	string const csv_text="csv->text";
+	string const xml_text="xml->text";
+	string const mysql_text="mysql->text";
 
-	string csv_apriory_text="csv->apriory->text";
-	string csv_classification_text="csv->classification->text";
-	string csv_classification_tree="csv->classification->tree";	
-	string xml_apriory_text="xml->apriory->text";
-	string xml_classification_text="xml->classification->text";	
-	string xml_classification_tree="xml->classification->tree";	
+	string const csv_wah="csv->wah";
+	string const xml_wah="xml->wah";
+	string const mysql_wah="mysql->wah";
+
+	string const csv_apriory_text="csv->apriory->text";
+	string const csv_classification_text="csv->classification->text";
+	string const csv_classification_tree="csv->classification->tree";	
+	string const xml_apriory_text="xml->apriory->text";
+	string const xml_classification_text="xml->classification->text";	
+	string const xml_classification_tree="xml->classification->tree";	
 
 	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
 	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text;
+	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah;
 	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text;
 	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text;
 	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree;
@@ -440,7 +448,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
-	else if(data_to_textview_procedures || data_to_algorithm_to_textview_procedures || data_to_classification_to_treeview_procedures)
+	else if(data_to_textview_procedures || data_to_algorithm_to_textview_procedures || data_to_classification_to_treeview_procedures || data_to_compression_procedures)
 	{		
 		string measureTime=evt->measureTime;
 		string loopInformation=evt->runInALoop;
@@ -499,6 +507,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			{
 				formattedOutPut="treeViewer##";
 			}
+			else
+			{
+				formattedOutPut="nullView##";
+			}
 		}
 		else {
 			formattedOutPut="graph##<items>";
@@ -514,65 +526,74 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 			time (&startGraphTime);
 
-			for(int j=0;j<procedureTokens.size()-1;j++)
+			for(int j=0;j<procedureTokens.size();j++)
 			{
-				time (&start);
+				if(procedureTokens[j]!=text || procedureTokens[j]!=tree)
+				{
+					time (&start);
 
-				if (procedureTokens[j]==csv)
-				{
-					csv_data_location=pathsTokens[0];
-					csv_data_size=atoi( pathsTokens[1].c_str());
-					if(loopCount==1)
+					if (procedureTokens[j]==csv)
 					{
-						CSV(csv_data_location,csv_data_size);
+						csv_data_location=pathsTokens[0];
+						csv_data_size=atoi( pathsTokens[1].c_str());
+						if(loopCount==1)
+						{
+							CSV(csv_data_location,csv_data_size);
+						}
+						else
+						{
+							CSV(csv_data_location,increment*(i+1));
+						}
 					}
-					else
+					else if (procedureTokens[j]==xml)
 					{
-						CSV(csv_data_location,increment*(i+1));
+						xml_metadata_location=pathsTokens[0];
+						xml_data_location=pathsTokens[1];
+						xml_data_source=pathsTokens[2];
+						xml_data_size=atoi( pathsTokens[3].c_str());
+						if(loopCount==1)
+						{
+							SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,xml_data_size);
+						}
+						else
+						{
+							SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
+						}
 					}
-				}
-				else if (procedureTokens[j]==xml)
-				{
-					xml_metadata_location=pathsTokens[0];
-					xml_data_location=pathsTokens[1];
-					xml_data_source=pathsTokens[2];
-					xml_data_size=atoi( pathsTokens[3].c_str());
-					if(loopCount==1)
+					/*else if (procedureTokens[j]=="mysql")
 					{
-						SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,xml_data_size);
-					}
-					else
+						if(loopCount==1)
+						{
+							
+						}
+						else
+						{
+							
+						}
+					}*/
+					else if (procedureTokens[j]==apriory)
 					{
-						SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
+						Aprior(0.9,0.01,10);
 					}
-				}
-				/*else if (procedureTokens[j]=="mysql")
-				{
-					if(loopCount==1)
+					else if (procedureTokens[j]==classification)
 					{
-						
+						Classifier();
 					}
-					else
+					else if (procedureTokens[j]==wah)
 					{
-						
+						formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						Convert(BitStreamInfo::WAH_COMPRESSION);
+						formattedOutPut += MeasureSpace()+"^&&";
 					}
-				}*/
-				if (procedureTokens[j]==apriory)
-				{
-					Aprior(0.9,0.01,10);
-				}
-				if (procedureTokens[j]==classification)
-				{
-					Classifier();
-				}
 
-				time (&end);
+					time (&end);
 
-				stringstream timeStream;
-				timeStream << difftime (end,start);	
-				timeStamps+="@@";
-				timeStamps+=timeStream.str()+timeUnit;
+					stringstream timeStream;
+					timeStream << difftime (end,start);	
+					timeStamps+="@@";
+					timeStamps+=timeStream.str()+timeUnit;
 
+				}				
 			}
 			
 			time (&endGraphTime);
@@ -598,6 +619,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				else if(data_to_classification_to_treeview_procedures)
 				{
 					formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+				}
+				else if(data_to_compression_procedures)
+				{
+					//formattedOutPut += Text(CLASSIFIER_SOURCE,0);
 				}
 			}
 			DeleteAll();
