@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
-    title="XML Data Source" x="168" y="86" width="602" height="160"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+    title="XML Data Source" x="168" y="86" width="602" height="184"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" showCloseButton="true" alpha="0.3" close="ok(event);" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 
     <mx:Script>
         <![CDATA[       
@@ -24,7 +24,12 @@
         </mx:HBox>
         <mx:HBox width="100%" horizontalAlign="right">
             <mx:Label width="110" text="xml data file path" textAlign="right"/>
-            <mx:TextInput width="452" id="xml_data_location" change="okbutton.enabled=true"/>
+            <mx:TextInput width="452" id="xml_data_location"/>
+            
+        </mx:HBox>
+        <mx:HBox width="100%" horizontalAlign="right">
+            <mx:Label width="110" text="xml data source" textAlign="right"/>
+            <mx:TextInput width="452" id="xml_data_source" change="okbutton.enabled=true"/>
             
         </mx:HBox>
         <mx:HBox width="100%" horizontalAlign="right">

@@ -455,7 +455,7 @@ private function getCurrentProcedure():String
 			else
 			{
 				procedure+="xml";
-				procedurePara=XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_size.text.toString();
+				procedurePara=XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_source.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_size.text.toString();
 			}
 		}
 		
