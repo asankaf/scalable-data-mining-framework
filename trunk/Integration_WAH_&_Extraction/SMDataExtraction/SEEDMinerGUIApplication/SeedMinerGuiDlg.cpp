@@ -423,21 +423,64 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const csv_wah_text="csv->wah->text";
 	string const xml_wah_text="xml->wah->text";
 	string const mysql_wah_text="mysql->wah->text";
+	string const csv_ewah_text="csv->ewah->text";
+	string const xml_ewah_text="xml->ewah->text";
+	string const mysql_ewah_text="mysql->ewah->text";
+
+	string const csv_apriory="csv->apriory";
+	string const csv_classification="csv->classification";
+	string const xml_apriory="xml->apriory";
+	string const xml_classification="xml->classification";	
 
 	string const csv_apriory_text="csv->apriory->text";
 	string const csv_classification_text="csv->classification->text";
 	string const csv_classification_tree="csv->classification->tree";	
 	string const xml_apriory_text="xml->apriory->text";
 	string const xml_classification_text="xml->classification->text";	
-	string const xml_classification_tree="xml->classification->tree";	
+	string const xml_classification_tree="xml->classification->tree";
+
+	string const csv_wah_apriory_text="csv->wah->apriory->text";
+	string const csv_wah_classification_text="csv->wah->classification->text";
+	string const csv_wah_classification_tree="csv->wah->classification->tree";	
+	string const xml_wah_apriory_text="xml->wah->apriory->text";
+	string const xml_wah_classification_text="xml->wah->classification->text";	
+	string const xml_wah_classification_tree="xml->wah->classification->tree";
+
+	string const csv_ewah_apriory_text="csv->ewah->apriory->text";
+	string const csv_ewah_classification_text="csv->ewah->classification->text";
+	string const csv_ewah_classification_tree="csv->ewah->classification->tree";	
+	string const xml_ewah_apriory_text="xml->ewah->apriory->text";
+	string const xml_ewah_classification_text="xml->ewah->classification->text";	
+	string const xml_ewah_classification_tree="xml->ewah->classification->tree";
+
+	string const csv_wah_apriory="csv->wah->apriory";
+	string const csv_wah_classification="csv->wah->classification";
+	string const xml_wah_apriory="xml->wah->apriory";
+	string const xml_wah_classification="xml->wah->classification";
+
+	string const csv_ewah_apriory="csv->ewah->apriory";
+	string const csv_ewah_classification="csv->ewah->classification";
+	string const xml_ewah_apriory="xml->ewah->apriory";
+	string const xml_ewah_classification="xml->ewah->classification";	
 
 	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
 	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text;
+	bool data_to_algorithm_procedures = procedure==csv_apriory || procedure==csv_classification || procedure==xml_apriory || procedure==xml_classification;
 	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah || procedure==csv_ewah || procedure==xml_ewah || procedure==mysql_ewah;
 	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text;
-	bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text;
+	bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text || procedure==csv_ewah_text || procedure==xml_ewah_text || procedure==mysql_ewah_text;
 	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text;
 	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree;
+
+	bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text;
+	bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text;
+	bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree;
+	bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
+
+	bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory;
+	bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification;
+	bool data_to_compression_to_algorithm_procedures = data_to_compression_to_apriory_procedures || data_to_compression_to_classification_procedures;
+
 
 	if (procedure=="getMySqlDataSourceList")
 	{
@@ -457,7 +500,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
-	else if(data_to_textview_procedures || data_to_algorithm_to_textview_procedures || data_to_classification_to_treeview_procedures || data_to_compression_procedures)
+	else if(data_to_textview_procedures || data_to_algorithm_procedures || data_to_algorithm_to_textview_procedures || data_to_classification_to_treeview_procedures || data_to_compression_procedures || data_to_comression_to_textview_procedures || data_to_compression_to_algorithm_to_view_procedures || data_to_compression_to_algorithm_procedures)
 	{		
 		string measureTime=evt->measureTime;
 		string loopInformation=evt->runInALoop;
@@ -537,7 +580,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 			for(int j=0;j<procedureTokens.size();j++)
 			{
-				if(procedureTokens[j]!=text || procedureTokens[j]!=tree)
+				if(procedureTokens[j]!=text && procedureTokens[j]!=tree)
 				{
 					time (&start);
 
@@ -590,15 +633,27 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					}
 					else if (procedureTokens[j]==wah)
 					{
-						formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						if(runInALoop=="false")
+						{
+							formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						}					
 						Convert(BitStreamInfo::WAH_COMPRESSION);
-						formattedOutPut += MeasureSpace()+"^&&";
+						if(runInALoop=="false")
+						{
+							formattedOutPut += MeasureSpace()+"^&&";
+						}						
 					}
-					else if (procedureTokens[j]==ewah)
+					else if (procedureTokens[j]==ewah && runInALoop=="false")
 					{
-						formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						if(runInALoop=="false")
+						{
+							formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						}						
 						Convert(BitStreamInfo::EWAH_COMPRESSION);
-						formattedOutPut += MeasureSpace()+"^&&";
+						if(runInALoop=="false")
+						{
+							formattedOutPut += MeasureSpace()+"^&&";
+						}						
 					}
 
 					time (&end);
@@ -637,7 +692,35 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				}
 				else if(data_to_compression_procedures)
 				{
-					//formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+					//keep empty
+				}
+				else if(data_to_comression_to_textview_procedures)
+				{
+					//formattedOutPut += Text(WRAPPED_SOURCE,100);
+				}
+				else if(data_to_algorithm_procedures)
+				{
+					//keep empty
+				}
+				else if(data_to_compression_to_apriory_to_textview_procedures)
+				{
+					formattedOutPut += Text(APRIORI_SOURCE,0);
+				}
+				else if(data_to_compression_to_classification_to_textview_procedures)
+				{
+					formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+				}
+				else if(data_to_compression_to_classification_to_treeview_procedures)
+				{
+					formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+				}
+				else if(data_to_compression_to_apriory_procedures)
+				{
+					//keep empty
+				}
+				else if(data_to_compression_to_classification_procedures)
+				{
+					//keep empty
 				}
 			}
 			DeleteAll();
