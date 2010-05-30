@@ -190,9 +190,10 @@ private function addSpaceStamps(actionObject:ActionObjectParent,spaceValues:Stri
 
 public function cplusPluseCallBackFunction(str:String):void
 {	
+	//Alert.show(str);
 	var compressData:String="";
 	var strs:Array=str.split("^&&");
-	if(0<strs.length)
+	if(1<strs.length)
 	{
 		str="";
 		compressData=strs[1];
@@ -317,14 +318,15 @@ public function cplusPluseCallBackFunction(str:String):void
 		var dataXMLList:XMLList= new XMLList(graphData);	
 		var a:Array = xmlListToObjectArray(dataXMLList.children());
         var ac:ArrayCollection = new ArrayCollection(a);
+        var displayCleanName:String=getGraphName(rememberGraphName);
         addGraphToSink(dataXMLList.children(),rememberGraphName);
         var graphPopUp:GraphViewPop=GraphViewPop(PopUpManager.createPopUp(this, GraphViewPop , true));
         graphPopUp.dataCollection=ac;
         
         var mySeries:Array=new Array();
         var series1:LineSeries = new LineSeries();
-        series1.yField=rememberGraphName;
-        series1.displayName=rememberGraphName;
+        series1.yField=rememberGraphName;        
+        series1.displayName=displayCleanName;
         sink.graphNames.push(rememberGraphName);
         mySeries.push(series1);
 		graphPopUp.graphLineChart.series= mySeries;
@@ -347,6 +349,21 @@ public function cplusPluseCallBackFunction(str:String):void
 	showStatus(DONE);
 }
 
+private function getGraphName(GraphName:String):String
+{
+	var strs:Array=GraphName.split("_");
+	var newName:String="";
+	for(var i:int=0;i<strs.length-1;i++)
+	{
+		newName+=strs[i];
+		if(strs.length-2 != i)
+		{
+			newName+="_";
+		}		
+	}
+	return newName;
+}
+
 private function addGraphToSink(xmlList:XMLList,GraphName:String):void
 {
 	sink.graphCount++;
@@ -357,7 +374,7 @@ private function addGraphToSink(xmlList:XMLList,GraphName:String):void
 	var a:Array = xmlListToObjectArray(xmlList);
 	var ac:ArrayCollection = new ArrayCollection(a);
 	graphButton.graph=ac;
-	graphButton.label=" : "+GraphName;
+	graphButton.label=" : "+getGraphName(GraphName);
 	sink.saveGraphs.addChild(graphButton);
 	sink.graphs.addItem(xmlList);
 }
@@ -457,6 +474,7 @@ private function executeFlow(event:Event):void
 			var str:String='graph##<items><item datasize=\"1000\" mysql=\"60\" /><item datasize=\"2000\" mysql=\"50\" /><item datasize="3000" mysql=".7" /><item datasize="4000" mysql="2.3" /><item datasize="5000" mysql="3.1" /></items>';
 		}*/
 		//var str:String="nullView##^&&3000^^5000^&&";
+		//var str:String="textViewer##";
 		//cplusPluseCallBackFunction(str);
 	
 	}	
