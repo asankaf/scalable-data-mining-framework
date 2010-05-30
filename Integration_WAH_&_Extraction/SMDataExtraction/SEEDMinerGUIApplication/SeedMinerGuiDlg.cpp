@@ -405,6 +405,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const classification="classification";
 	string const apriory="apriory";
 	string const wah="wah";
+	string const ewah="ewah";
 	string const text="text";
 	string const tree="tree";
 
@@ -415,6 +416,13 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const csv_wah="csv->wah";
 	string const xml_wah="xml->wah";
 	string const mysql_wah="mysql->wah";
+	string const csv_ewah="csv->ewah";
+	string const xml_ewah="xml->ewah";
+	string const mysql_ewah="mysql->ewah";
+
+	string const csv_wah_text="csv->wah->text";
+	string const xml_wah_text="xml->wah->text";
+	string const mysql_wah_text="mysql->wah->text";
 
 	string const csv_apriory_text="csv->apriory->text";
 	string const csv_classification_text="csv->classification->text";
@@ -425,8 +433,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
 	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text;
-	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah;
+	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah || procedure==csv_ewah || procedure==xml_ewah || procedure==mysql_ewah;
 	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text;
+	bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text;
 	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text;
 	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree;
 
@@ -583,6 +592,12 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					{
 						formattedOutPut += "^&&"+MeasureSpace()+"^^";
 						Convert(BitStreamInfo::WAH_COMPRESSION);
+						formattedOutPut += MeasureSpace()+"^&&";
+					}
+					else if (procedureTokens[j]==ewah)
+					{
+						formattedOutPut += "^&&"+MeasureSpace()+"^^";
+						Convert(BitStreamInfo::EWAH_COMPRESSION);
 						formattedOutPut += MeasureSpace()+"^&&";
 					}
 
