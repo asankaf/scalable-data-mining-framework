@@ -19,18 +19,6 @@
 							<mx:Label text="XML Loader"/>
 						</mx:VBox>
 					</mx:HBox>
-				</mx:Canvas>				
-				<mx:Canvas label="COMPRESSION" width="100%" height="100%">
-					<mx:HBox x="10" y="10" width="100%" height="74">
-						<mx:VBox width="125" height="73" styleName="actionIcons">
-							<mx:Image source="@Embed('compress.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression"/>
-							<mx:Label text="WAH Compression"/>
-						</mx:VBox>
-						<mx:VBox width="125" height="73" styleName="actionIcons">
-							<mx:Image source="@Embed('compress2.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression2"/>
-							<mx:Label text="EWAH Compression"/>
-						</mx:VBox>
-					</mx:HBox>
 				</mx:Canvas>
 				<mx:Canvas label="FILTERS" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
@@ -47,7 +35,19 @@
 							<mx:Label text="Range Split" textAlign="center"/>
 						</mx:VBox>
 					</mx:HBox>
-				</mx:Canvas>
+				</mx:Canvas>				
+				<mx:Canvas label="COMPRESSION" width="100%" height="100%">
+					<mx:HBox x="10" y="10" width="100%" height="74">
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('compress.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression"/>
+							<mx:Label text="WAH Compression"/>
+						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('compress2.png')" mouseDown="mouseDownHandler(event);" id="WAH_Compression2"/>
+							<mx:Label text="EWAH Compression"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:Canvas>			
 				<mx:Canvas label="DATA MINING ALGORITHMS" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
