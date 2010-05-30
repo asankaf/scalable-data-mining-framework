@@ -45,6 +45,7 @@ import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
 import seedminer.ProgressBarComponent;
 import seedminer.Sink;
+import seedminer.SpacePopUp;
 import seedminer.TimePopUp;
 import seedminer.XMLLoaderConfigPopUp;
 
@@ -77,6 +78,7 @@ private var executingMask:ExecutingMarkPopUp;
 private var progress_Bar:ProgressBar;
 private var sequenceNumber:int=0;
 private var rowsToLoad:int=10000;
+private var compress_unit:String="KB";
 
 
 public function startUp(event:Event):void
@@ -163,8 +165,49 @@ private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String):
 	timeStamp.myLable.text=timeValue;
 }
 
-public function cplusPluseCallBackFunction(str:String):void
+private function addSpaceStamps(actionObject:ActionObjectParent,spaceValues:String):void
 {
+	var spaceStamp:SpacePopUp;
+	if(actionObject.spaceStamps==null)
+	{
+		spaceStamp=new SpacePopUp();
+		actionObject.addSpaceStamp(spaceStamp);
+	}
+	else
+	{
+		spaceStamp=actionObject.spaceStamps;
+	}	
+	spaceStamp.x=110;
+	spaceStamp.y=-50;
+	var strs:Array=spaceValues.split("^^");
+	spaceStamp.space_before_compression.text=(int(parseInt(strs[0])/1024)).toString()+" "+compress_unit+" → "+(int(parseInt(strs[1])/1024)).toString()+" "+compress_unit;
+}
+
+public function cplusPluseCallBackFunction(str:String):void
+{	
+	var compressData:String="";
+	var strs:Array=str.split("^&&");
+	if(0<strs.length)
+	{
+		str="";
+		compressData=strs[1];
+		for(var mm:int;mm<strs.length;mm++)
+		{
+			if(mm==1)
+			{
+				continue;
+			}
+			str+=strs[mm];
+		}
+		for(var jj:int=0;jj<actionObjectSequence.length;jj++)
+		{
+			var actionObject_:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[jj]]);
+			if(actionObject_.type()==ActionObjectParent.WAH_COMPRESSTION)
+			{
+				addSpaceStamps(actionObject_,compressData);				
+			}
+		}		
+	}
 	//Alert.show(str);
 	var strings:Array=str.split("##");//get view
 	var view:String=strings[0];
@@ -205,6 +248,10 @@ public function cplusPluseCallBackFunction(str:String):void
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
+					else if(actionObject.type()==ActionObjectParent.WAH_COMPRESSTION && currentProcedure=="wah")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);					
+					}
 				}
 			}	
 		}
@@ -214,8 +261,8 @@ public function cplusPluseCallBackFunction(str:String):void
 	{
 		for(var k:int=0;k<actionObjectSequence.length;k++)
 		{
-			var actionObject_:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[k]]);
-			actionObject_.removeTimeStamp();
+			var actionObject__:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[k]]);
+			actionObject__.removeTimeStamp();
 		}				
 	}
 	
@@ -283,6 +330,9 @@ public function cplusPluseCallBackFunction(str:String):void
 	{
 		showError("Invalid flaw! Please create a new valid flaw to execute...");
 		clearCanvas(new MouseEvent(Event.CHANGE));
+	}
+	else if(view=="nullView")
+	{
 	}
 	
 	showStatus(DONE);
@@ -384,6 +434,7 @@ private function executeFlow(event:Event):void
 		//var str:String="noView##petalwidth <= 0.6: 6.0/1.0)";
 		//var str:String="textViewer##asdfsasdf\nasdf\n$$mysql->text@@50ms@@10ms";
 		//var str:String="textViewer##asdfsasdf\nasdf";
+		//var str:String="nullView##^&&3000^^5000^&&";
 		//var str:String="treeViewer##plant = :  (5)/nplant = lt-normal: gt-norm (8320/468)/nplant = normal: norm (1635/39)/nplant = plant-stand: precip (39)$$csv->classification->tree@@1 s@@0 s";
 		/*if(c==0)
 		{
@@ -395,12 +446,11 @@ private function executeFlow(event:Event):void
 		{
 			c=0;
 			var str:String='graph##<items><item datasize=\"1000\" mysql=\"60\" /><item datasize=\"2000\" mysql=\"50\" /><item datasize="3000" mysql=".7" /><item datasize="4000" mysql="2.3" /><item datasize="5000" mysql="3.1" /></items>';
-		}
-		cplusPluseCallBackFunction(str);*/
+		}*/
+		//var str:String="nullView##^&&3000^^5000^&&";
+		//cplusPluseCallBackFunction(str);
 	
-	}
-	//showStatus("DONE");
-	
+	}	
 }
 
 private function getCurrentProcedure():String
@@ -458,6 +508,10 @@ private function getCurrentProcedure():String
 				procedurePara=XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_source.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_size.text.toString();
 			}
 		}
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION)
+		{
+			procedure+="wah";
+		}
 		
 		if(i+1!=actionObjectSequence.length)
 		{
@@ -490,7 +544,7 @@ private function showStatus(status:String):void
 		}	 	
 	 	progress_Bar.indeterminate=true;
 	 }
-	 else if(progress_Bar!=null && progress_Bar.indeterminate==true)
+	 else if(progress_Bar!=null && status==DONE)
 	 {
 	 	PopUpManager.removePopUp(executingMask);
 	 	progress_Bar.indeterminate=false;

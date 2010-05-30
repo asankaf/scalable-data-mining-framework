@@ -9,6 +9,7 @@ package ActionClasses
 	import mx.managers.DragManager;
 	import mx.managers.PopUpManager;
 	
+	import seedminer.SpacePopUp;
 	import seedminer.TimePopUp;
 	import seedminer.XMLLoaderConfigPopUp;
 
@@ -50,13 +51,14 @@ package ActionClasses
 		public static var actionObjectClickStatus:Number=ACTIONOBJECT_NOT_CLICKED;
 		public var config:Object;
 		public var timeStamp:TimePopUp;
+		public var spaceStamps:SpacePopUp;
 		
 		private function mouseMoveHandler(event:MouseEvent):void
 		{
 		    var dragInitiator:VBox=VBox(event.currentTarget);
 		    var ds:DragSource = new DragSource();
 		    ds.addData(this, "actionObj");
-		    var imageProxy:Image = new Image();
+		    var imageProxy:Image = new Image();		    
 		    imageProxy.source = Image(dragInitiator.getChildAt(0)).source;
 		    DragManager.doDrag(Image(dragInitiator.getChildAt(0)), ds, event, imageProxy,0,2, 0.80);
 		}
@@ -152,19 +154,34 @@ package ActionClasses
 			vboxObj.addEventListener(MouseEvent.DOUBLE_CLICK,mouseDoubleClickHandler);
 		}
 		
-		public function addTimeStamp(timeStampObj:TimePopUp)
+		public function addTimeStamp(timeStampObj:TimePopUp):void
 		{
 			timeStamp=timeStampObj;
 			vboxObj.addChild(timeStamp);
 		}
 		
-		public function removeTimeStamp()
+		public function removeTimeStamp():void
 		{			
 			if(timeStamp!=null)
 			{
 				vboxObj.removeChild(timeStamp);
 			}			
 			timeStamp=null;
+		}
+		
+		public function addSpaceStamp(space_stamp:SpacePopUp):void
+		{
+			spaceStamps=space_stamp;
+			vboxObj.addChildAt(spaceStamps,1);
+		}
+		
+		public function removeSpaceStamp():void
+		{			
+			if(spaceStamps!=null)
+			{
+				vboxObj.removeChild(spaceStamps);
+			}			
+			spaceStamps=null;
 		}		
 
 		public function type():Number
