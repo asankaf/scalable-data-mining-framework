@@ -79,6 +79,7 @@ private var progress_Bar:ProgressBar;
 private var sequenceNumber:int=0;
 private var rowsToLoad:int=10000;
 private var compress_unit:String="KB";
+private var small_compress_unit:String="B";
 
 
 public function startUp(event:Event):void
@@ -160,8 +161,6 @@ private function addTimeStamp(actionObject:ActionObjectParent,timeValue:String):
 	{
 		timeStamp=actionObject.timeStamp;
 	}	
-	timeStamp.x=0;
-	timeStamp.y=actionObject.vbox.height-30;
 	timeStamp.myLable.text=timeValue;
 }
 
@@ -177,10 +176,16 @@ private function addSpaceStamps(actionObject:ActionObjectParent,spaceValues:Stri
 	{
 		spaceStamp=actionObject.spaceStamps;
 	}	
-	spaceStamp.x=110;
-	spaceStamp.y=-50;
 	var strs:Array=spaceValues.split("^^");
-	spaceStamp.space_before_compression.text=(int(parseInt(strs[0])/1024)).toString()+" "+compress_unit+" → "+(int(parseInt(strs[1])/1024)).toString()+" "+compress_unit;
+	var numbers_:int=String(strs[0]).length;
+	if(4<numbers_)
+	{
+		spaceStamp.space_before_compression.text=(int(parseInt(strs[0])/1024)).toString()+" "+compress_unit+" → "+(int(parseInt(strs[1])/1024)).toString()+" "+compress_unit;
+	}
+	else
+	{
+		spaceStamp.space_before_compression.text=strs[0]+" "+small_compress_unit+" → "+strs[1]+" "+small_compress_unit;
+	}
 }
 
 public function cplusPluseCallBackFunction(str:String):void
@@ -202,7 +207,7 @@ public function cplusPluseCallBackFunction(str:String):void
 		for(var jj:int=0;jj<actionObjectSequence.length;jj++)
 		{
 			var actionObject_:ActionObjectParent=ActionObjectParent(actionObjectsOnCanvas[actionObjectSequence[jj]]);
-			if(actionObject_.type()==ActionObjectParent.WAH_COMPRESSTION)
+			if(actionObject_.type()==ActionObjectParent.WAH_COMPRESSTION || actionObject_.type()==ActionObjectParent.WAH_COMPRESSTION_2)
 			{
 				addSpaceStamps(actionObject_,compressData);				
 			}
@@ -249,6 +254,10 @@ public function cplusPluseCallBackFunction(str:String):void
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
 					else if(actionObject.type()==ActionObjectParent.WAH_COMPRESSTION && currentProcedure=="wah")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);					
+					}
+					else if(actionObject.type()==ActionObjectParent.WAH_COMPRESSTION_2 && currentProcedure=="ewah")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);					
 					}
@@ -512,7 +521,10 @@ private function getCurrentProcedure():String
 		{
 			procedure+="wah";
 		}
-		
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION_2)
+		{
+			procedure+="ewah";
+		}		
 		if(i+1!=actionObjectSequence.length)
 		{
 			procedure+="->";

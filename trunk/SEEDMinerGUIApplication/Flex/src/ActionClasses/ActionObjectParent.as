@@ -139,8 +139,8 @@ package ActionClasses
 			//vboxObj.setStyle("borderThickness","1");
 			//vboxObj.setStyle("borderColor","#555555");
 			labelObj.text=label;
-			vboxObj.width=120;
-			vboxObj.height=120;
+			vboxObj.width=140;
+			vboxObj.height=140;
 			labelObj.height=20;
 			var idgen:String =Util.generateId();
 			vboxObj.id=idgen;
@@ -172,7 +172,7 @@ package ActionClasses
 		public function addSpaceStamp(space_stamp:SpacePopUp):void
 		{
 			spaceStamps=space_stamp;
-			vboxObj.addChildAt(spaceStamps,1);
+			vboxObj.addChild(spaceStamps);
 		}
 		
 		public function removeSpaceStamp():void
