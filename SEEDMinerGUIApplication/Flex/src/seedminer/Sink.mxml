@@ -35,7 +35,7 @@
 					{
 				        var series:LineSeries = new LineSeries();
 				        series.yField=graphNames[i].toString();
-				        series.displayName=graphNames[i].toString();
+				        series.displayName=getGraphName(graphNames[i]);
 				        mySeries.push(series);
 					}
 					graphPopUp.graphLineChart.series= mySeries;
@@ -85,6 +85,21 @@
 			    	a.push(new ObjectProxy(o));
 			    }			    			 
 			    return a;
+			}
+			
+			private function getGraphName(GraphName:String):String
+			{
+				var strs:Array=GraphName.split("_");
+				var newName:String="";
+				for(var i:int=0;i<strs.length-1;i++)
+				{
+					newName+=strs[i];
+					if(strs.length-2 != i)
+					{
+						newName+="_";
+					}		
+				}
+				return newName;
 			}
 
 		]]>

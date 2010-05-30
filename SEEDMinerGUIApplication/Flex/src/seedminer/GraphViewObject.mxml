@@ -18,9 +18,24 @@
 	        	var mySeries:Array=new Array();
 		        var series:LineSeries = new LineSeries();
 		        series.yField=graphName;
-		        series.displayName=graphName;
+		        series.displayName=getGraphName(graphName);
 		        mySeries.push(series);
 				graphPopUp.graphLineChart.series= mySeries;
+			}
+			
+			private function getGraphName(GraphName:String):String
+			{
+				var strs:Array=GraphName.split("_");
+				var newName:String="";
+				for(var i:int=0;i<strs.length-1;i++)
+				{
+					newName+=strs[i];
+					if(strs.length-2 != i)
+					{
+						newName+="_";
+					}		
+				}
+				return newName;
 			}
 		]]>
 	</mx:Script>
