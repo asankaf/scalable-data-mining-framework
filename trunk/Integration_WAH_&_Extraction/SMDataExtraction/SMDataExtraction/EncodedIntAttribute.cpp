@@ -36,7 +36,7 @@ int EncodedIntAttribute::decodeTheTuple(int tupleID){
 
 	for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
 	{
-		temp[i] = this->vBitStreams()[i]->getProcessedBitStream()[tupleID - 1];
+		temp[i] = this->vBitStreams()[i]->Decompress()[tupleID - 1];
 	}
 
 	val = temp.to_ulong();
