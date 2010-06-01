@@ -50,22 +50,10 @@ void TestApriori::PrintRules(vector<AssociateRule *> & _rules)
 void TestApriori::PrintAssociateRule(AssociateRule * rule)
 {
 	TestAlgoUtil test_util;
-	//cout << "Starting Rule" << endl;
-	//cout <<"Printing Antecedent" << endl;
-	//PrintVector(rule->Antecedant());
-	//cout << endl;
-	//cout <<"Printing Consequent" << endl;
-	//PrintVector(rule->Consequent());
-	//cout << endl;
 	cout << "Confidence : " << rule->Confidence() << endl;
-	//cout << endl;
 	cout << "Support : " << rule->Support() << endl;
-	//cout << endl;
-
-	//cout << "Support : " << rule->Support()<< endl;
 	cout << "Rule : " << rule->Rule() << endl;
 	cout << endl;
-	//cout << "Ending Rule" << endl;
 }
 
 void TestApriori::PrintMap(map<int,int> & _map)
@@ -131,10 +119,8 @@ void TestApriori::TestRuleGeneration(Apriori & _algo,AlgoUtils & _util)
 {	
 	TestAlgoUtil test_algo_utils;
 	cout << "Printing Candidate Holder " << endl;
-	//test_algo_utils.PrintBitStreamHolder(_algo.Frequent_item_set().at(0));
 	test_algo_utils.PrintBitStreamHolderVector(_algo.Frequent_item_set());
 	cout <<"Finished Printing Holder" << endl;	
-	//_algo.GenerateRulesForHolder(_algo.Frequent_item_set().at(0));
 	_algo.GenerateRules();
 	cout << endl;
 	cout << "Printing Rules : " << endl;

@@ -90,8 +90,9 @@ vector<DistinctValue *> DataSource::getDistinctValues( EncodedAttributeInfo * _a
 
 void DataSource::initialiseWeights(int _attr_no)
 {
+	m_weights = vector<double>(_attr_no);
 	for (size_t i = 0 ; i < _attr_no ; i++)
 	{
-		m_weights.push_back(1);
+		m_weights[i] = 1;
 	}
 }

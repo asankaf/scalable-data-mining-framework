@@ -39,7 +39,8 @@ using namespace std;
 				left_op_zero = true;
 				left_op_prev = left_op;
 			}else{
-				left_op = _container.at(index);
+				left_op = _container.at(index)->Clone();
+				left_op_prev = left_op;
 			}
 
 			for (index = 1; index < pattern_size;index++)
@@ -53,9 +54,10 @@ using namespace std;
 				}
 
 				left_op = (*(left_op) & *(right_op));
+				delete left_op_prev;
+				left_op_prev = left_op;
 				if (left_op_zero)
-				{
-					delete left_op_prev;
+				{					
 					left_op_zero = false;
 				}
 				if (right_op_zero)
@@ -478,6 +480,37 @@ using namespace std;
 		
 	}
 
+	double AlgoUtils::USum(EncodedAttributeInfo * attribute, BitStreamInfo * _existence)
+	{
+		switch(attribute->attributeType())
+		{
+		case SIGNEDINT_VAL:
+			{
+				return SumOfInt(attribute,_existence);
+				break;
+			}
+		case DOUBLE_VAL:
+			{
+				EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+				double double_val = SumOfInt(attribute,_existence)/double_att->Precision();
+
+				return double_val;
+				break;
+			}
+		case DATE_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		case MULTICAT_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		}
+
+	}
+
 	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute)
 	{
 		switch(attribute->attributeType())
@@ -493,6 +526,50 @@ using namespace std;
 				long precission = double_att->Precision();
 				precission *= precission;
 				double double_val = SumSquareOfInt(attribute)/precission;
+
+				return double_val;
+				break;
+			}
+		case DATE_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		case MULTICAT_VAL:
+			{
+				assert(false);
+				return 0;
+			}
+		}
+	}
+
+	double AlgoUtils::Variance(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)
+	{
+		unsigned long count = _existence->Count();
+		if (!count)
+		{
+			assert(false);
+		}
+		double sum = USum(attribute,_existence);
+		double val = SumSquare(attribute,_existence) - ( sum * sum )/_existence->Count();
+		return val/_existence->Count();
+	}
+
+	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)
+	{
+		switch(attribute->attributeType())
+		{
+		case SIGNEDINT_VAL:
+			{
+				return SumSquareOfInt(attribute,_existence);
+				break;
+			}
+		case DOUBLE_VAL:
+			{
+				EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
+				long precission = double_att->Precision();
+				precission *= precission;
+				double double_val = SumSquareOfInt(attribute,_existence)/precission;
 
 				return double_val;
 				break;
@@ -534,12 +611,47 @@ using namespace std;
 			return sum;
 	}
 
+	double AlgoUtils::SumSquareOfInt(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)
+	{
+		//for j =num_bits-1 downto 0
+		//k=j*2
+		double sum = 0;
+		int k = 0;
+		int l = 0;
+		for (int j =  attribute->NoOfVBitStreams() -1; j >=0 ; j--)
+		{
+			k = j*2;
+			sum += pow((double)2,k) * ANDCount(attribute->bitStreamAt(j),_existence);
+			l = j-1;
+			while (l >= 0)
+			{
+				BitStreamInfo * result = *(attribute->bitStreamAt(j)) &  *(attribute->bitStreamAt(l));
+				sum += pow((double)2,k) * ANDCount(result,_existence);
+				delete result;
+				l=l-1;
+				k=k-1;
+			}
+		}
+		return sum;
+	}
+
+
 	double AlgoUtils::SumOfInt(EncodedAttributeInfo * attribute)
 	{
 		double val = 0;
 		for (int i = 0 ; i < attribute->NoOfVBitStreams(); i++)
 		{
 			val = val + attribute->bitStreamAt(i)->Count() * pow((double)2,i);
+		}
+		return val;
+	}
+
+	double AlgoUtils::SumOfInt(EncodedAttributeInfo * attribute, BitStreamInfo * _existence)
+	{
+		double val = 0;
+		for (int i = 0 ; i < attribute->NoOfVBitStreams(); i++)
+		{
+			val = val + ANDCount(attribute->bitStreamAt(i),_existence) * pow((double)2,i);
 		}
 		return val;
 	}
@@ -682,12 +794,7 @@ using namespace std;
 		copy(left.begin(),left.end(),back_iter);
 	}
 	
-// 	template<class X> void AlgoUtils::CopyFirstToSecond(vector<X *> & left,vector<X *> & right)
-// 	{
-// 		back_insert_iterator<vector<X *>> back_iter(right);
-// 		copy(left.begin(),left.end(),back_iter);
-// 	}
-
+	
 	BitStreamHolder * AlgoUtils::WrapWithHolder(BitStreamInfo *_stream, int _attribute_id, int _bit_map_id)
 	{
 		BitStreamHolder * result = new BitStreamHolder();

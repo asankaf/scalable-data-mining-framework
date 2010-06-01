@@ -27,11 +27,9 @@ public:
 	__declspec(dllexport) RangeSplitter(void);
 	__declspec(dllexport) RangeSplitter(EncodedAttributeInfo* attribute,long rowCount){this->_attribute=attribute;this->_rowCount=rowCount;}
 	__declspec(dllexport) RangeSplitter(EncodedAttributeInfo* attribute,vector<double> rangeVals,long rowCount){this->_attribute = attribute;this->_rangeVals = rangeVals;this->_rowCount = rowCount;this->_maxValAssigned = 0;}
-	__declspec(dllexport) RangeSplitter(WrapDataSource* ds){this->_ds = ds;this->_rowCount = ds->noOfRows();this->_attribute = NULL;}
 	__declspec(dllexport) EncodedMultiCatAttribute* SplitRangesInNumericAtts();
 	__declspec(dllexport) EncodedMultiCatAttribute* SplitRanges();
 	__declspec(dllexport) EncodedMultiCatAttribute* SplitIntoEqualRanges(int no_of_ranges);
-	__declspec(dllexport) void SplitAllNumericalAttsIntoEualRanges(int no_of_ranges);
 	__declspec(dllexport) vector<double> RangeVals() const { return _rangeVals; }
 	__declspec(dllexport) void RangeVals(vector<double> val) { _rangeVals = val; }
 	__declspec(dllexport) ~RangeSplitter(void);
@@ -45,7 +43,6 @@ public:
 
 private:
 	EncodedAttributeInfo* _attribute;
-	WrapDataSource* _ds;
 	vector<double> _rangeVals;
 	long _rowCount;
 	long _maxValAssigned;

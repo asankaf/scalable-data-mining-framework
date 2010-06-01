@@ -5,8 +5,49 @@
 #include "naivebayesmod.h"
 
 
-TestNaiveBayes::TestNaiveBayes(void)
+TestNaiveBayes::TestNaiveBayes(void):m_execution_config("algorithm.cfg"),LOOP_COUNT("loops"),
+COMPRESSION("compression"),
+METAFILE_NAME("metafile"),
+DATAFILE_NAME("datafile"),
+FILE_NAME("filename"),
+FOLDER_NAME("datafolder"),
+LOAD_TYPE("loadtype"),
+LOAD_TYPE_MULTI("multiple"),
+LOAD_TYPE_SINGLE("single"),
+LOAD_TYPE_CSV("csv")
 {
+	/*
+LOOP_COUNT = "loops";
+	COMPRESSION = "compression";
+	METAFILE_NAME = "metafile";
+	DATAFILE_NAME = "datafile";
+	FILE_NAME = "filename";
+	FOLDER_NAME = "datafolder";
+	LOAD_TYPE = "loadtype";
+
+	LOAD_TYPE_MULTI = "multiple";
+	LOAD_TYPE_SINGLE = "single";
+	LOAD_TYPE_CSV = "csv";
+*/
+
+	//Commons::BuildFile(m_execution_config);
+	m_no_of_loops = boost::lexical_cast<int>(Commons::ReadConfiguration(LOOP_COUNT));
+	if (Commons::ReadConfiguration(COMPRESSION) == "NO")
+	{
+		m_compression = BitStreamInfo::VERTICAL_STREAM_FORMAT;
+	} else if (Commons::ReadConfiguration(COMPRESSION) == "EWAH")
+	{
+		m_compression = BitStreamInfo::EWAH_COMPRESSION;
+	}
+	else if (Commons::ReadConfiguration(COMPRESSION) == "WAH")
+	{
+		m_compression = BitStreamInfo::WAH_COMPRESSION;
+	}
+	
+	m_meta_file_name = Commons::ReadConfiguration(METAFILE_NAME);
+	m_data_file_name = Commons::ReadConfiguration(DATAFILE_NAME);
+	m_file_name = Commons::ReadConfiguration(FILE_NAME);
+	m_folder_name = Commons::ReadConfiguration(FOLDER_NAME);
 }
 
 TestNaiveBayes::~TestNaiveBayes(void)
@@ -15,89 +56,59 @@ TestNaiveBayes::~TestNaiveBayes(void)
 
 void TestNaiveBayes::TestSuite()
 {
-	//
-	//TestClassifier(CreateDataSource("C:\\Data\\test dataset-10000.csv"));
-	//TestClassifier(CreateDataSource("C:\\Data\\iris.csv"));
-	//TestClassifier(CreateDataSource("C:\\Data\\soyaTestsort.csv"));
-	//TestClassifier(CreateDataSource("C:\\Data\\weather.nominal.csv"));
-	//TestClassifier(CreateDataSource("C:\\Data\\weather.csv"));
-	//test dataset-10000.csv
-	//soyabean_10col_metadata.xml
-	//TestClassifier(CreateDataSource("soyabean_10col_data","soyabean_10col_metadata","soyabean"));
-	//TestClassifier(CreateDataSource("poker_5mill_data","poker_5mill_metadata","poker_5mill_"));
-	//TestClassifier(CreateDataSource("soya_5col_data","soya_5col_metadata","soya_5col_"));
-	TestClassifier(CreateDataSource("SoyabeanColumns5mil\\integrate\\soyabean_data",
-		"SoyabeanColumns5mil\\integrate\\soyabean_metadata","soyabean_5mill"));
-	//TestClassifier(CreateDataSource("soyabean_1mill_10col_data","soyabean_1mill_10col_metadata","soyabean_1mill_10col"));
-	//TestClassifier(CreateDataSource("C:\\Data\\soybeanTest3.csv"));
-	//soyaTestlarge_300000_metadata.xml
-/*
-	string line;
-	vector<string> conf(4);
-	size_t i = 0; 
-	ifstream myfile ("config.txt");
-	if (myfile.is_open())
+	WrapDataSource * ds = NULL;
+	if (Commons::ReadConfiguration(LOAD_TYPE) == LOAD_TYPE_SINGLE)
 	{
-		cout << "File read successfully" << endl;
-		while (! myfile.eof() )
-		{
-			getline (myfile,line);
-			if (i < conf.size())
-			{
-				conf[i++] = line;
-			}
-			
-		}
-		myfile.close();
-	}
-
-	else cout << "Unable to open file"<< endl;; 
-		
-	if (conf[3] == "EWAH")
+		ds = Utils::CreateDataSource(m_data_file_name,m_meta_file_name,m_file_name);
+	} else if (Commons::ReadConfiguration(LOAD_TYPE) == LOAD_TYPE_MULTI)
 	{
-		WrapDataSource * ds = CreateDataSource(conf[0],conf[1],conf[2]);
-
-		CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-		TestClassifier(ds);
+		ds = Utils::CreateDataSourceFromMultipleFiles(m_folder_name,m_meta_file_name,m_file_name);
 	}
-	else{
-		TestClassifier(CreateDataSource(conf[0],conf[1],conf[2]));
-	}*/
-
-}
-
-WrapDataSource * TestNaiveBayes::CreateDataSource(string csv_path)
-{
-	//"C:\\Data\\weather.nominal.csv"
-	CsvConnection cConcsv(csv_path.data(),',','\n','""');		
-	//CsvConnection cConcsv(csv_path.data(),',','\n');		
-	//ExtractedCsvDTO *dat = cConcsv.extractData();
-	/*
-	vector<int> meta_vect(5);
-		meta_vect[0] = 2;
-		meta_vect[1] = 1;
-		meta_vect[2] = 1;
-		meta_vect[3] = 2;
-		meta_vect[4] = 2;*/
+	else if (Commons::ReadConfiguration(LOAD_TYPE) == LOAD_TYPE_CSV)
+	{
+		ds = Utils::CreateDataSource(m_file_name);
+	}
 	
-	ExtractedCsvDTO *dat = cConcsv.extractData();
-	WrapDataSource *ds = new WrapDataSource(dat,"0");	
-	ds->encodeAtrributes();
-	return ds;
+	TestClassifier(ds);
+	//PerformMemoryTest();
+}
+void TestNaiveBayes::PerformMemoryTest()
+{
+	cout << "Algorithm : Naive Bayes" << endl;
+	DWORD process_id = GetCurrentProcessId();
+	int ii =0 ;
+	cout << "Current Process ID : " << process_id<<endl;
+	cin>>ii;	
+	cout << "Start Time :" << time(NULL)<< endl;
+
+	WrapDataSource * ds = Utils::CreateDataSource(m_data_file_name,m_meta_file_name,m_file_name);
+	cout <<"Finished Creating Data Source : "  << time(NULL)<< endl;	
+	CompressionHandler::ConvertTo(ds,m_compression);
+	cout <<"Starting To Execute Algorithm : " << time(NULL)<< endl;
+	//cin >>ii;
+	for (size_t i = 0 ; i < m_no_of_loops ; i++)
+	{
+		SingleExecution(ds);
+	}	
+	cout <<"Finished Executing Algorithm : " << time(NULL) << endl;
+	//cin>>ii;
+	delete ds;
+	cout <<"Deleted Data Source: " << time(NULL) << endl;
+	//cin>>ii;
+}
+void TestNaiveBayes::SingleExecution(WrapDataSource * _ds)
+{
+	NaiveBayes bayes;
+	bayes.buildClassifier(_ds,_ds->noOfAttributes()-1);
+	//cout <<bayes.toString() << endl;
 }
 
 void TestNaiveBayes::TestClassifier(WrapDataSource * ds)
 {
-	//CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
 	cout << endl;
-	TestSMNaiveBayes(ds,ds->codedAttributes().size()-1,5);
-	/*
-	CompressionHandler::ConvertTo(ds,BitStreamInfo::EWAH_COMPRESSION);
-		cout << endl;
-		TestSMNaiveBayes(ds,ds->codedAttributes().size()-1,5);*/
-	
+	TestSMNaiveBayes(ds,ds->codedAttributes().size()-1,m_no_of_loops);	
 	cout << endl;
-	TestWekaNaiveBayes(ds,ds->codedAttributes().size()-1,5);
+	//TestWekaNaiveBayes(ds,ds->codedAttributes().size()-1,5);
 	delete ds;
 }
 
@@ -137,17 +148,8 @@ void TestNaiveBayes::TestSMNaiveBayes(WrapDataSource * _data_source, int _class_
 		bayes.buildClassifier(_data_source,_class_index);
 		end = clock();
 		cout <<(end -start) << "\t";
+		cout << bayes.toString() << endl;
 
 	}
 	cout << endl;
 }
-
-
-WrapDataSource * TestNaiveBayes::CreateDataSource(string datafile,string metadFile,string filename)
-{
-	LoadSavedDataSources *lsd = new LoadSavedDataSources(metadFile,datafile);
-	//	LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabean_0.5mil_metadata","soyabean_0.5mil_data");
-	DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	return (*dsLoaded)(filename);
-}
-

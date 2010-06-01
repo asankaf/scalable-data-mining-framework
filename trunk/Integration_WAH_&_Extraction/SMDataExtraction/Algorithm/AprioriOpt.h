@@ -30,6 +30,7 @@ public:
 	_declspec(dllexport) int Compare(const void * arg1, const void * arg2);
 	_declspec(dllexport) void SortRules();
 	_declspec(dllexport) void UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize);
+	_declspec(dllexport) string toString();
 	_declspec(dllexport) static void UpDateCounters(vector<AprioriItemset *> & _ksets, vector<AprioriItemset *> & _kMinusSets);
 	_declspec(dllexport) void PrintItemsets();
 	_declspec(dllexport) vector<vector<AprioriItemset *>> LargeItemSets() const { return m_largeItemSets; }

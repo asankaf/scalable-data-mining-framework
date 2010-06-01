@@ -39,8 +39,8 @@ protected:
 	double * m_Priors;
 
 	/** The instances used for training. */
-	DataSource * m_Instances;
-	//Instances * m_Instances;
+	//DataSource * m_Instances;
+	Instances * m_Instances;
 
 	/** The class index used for current model. */
 	int m_class_index;

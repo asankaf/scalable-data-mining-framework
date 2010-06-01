@@ -15,6 +15,7 @@
 #include "testnaivebayes.h"
 #include <fstream>
 #include "testclassifiertestsource.h"
+#include "commons.h"
 using namespace std;
 
 void TestAprioriAlgo();
@@ -26,11 +27,22 @@ void ClassifierTestSourceTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestC45Algo();
-	//TestAprioriAlgo();
-	//TestAlgoComp();
-	//TestNaiveBayesAlgo();
-	//ClassifierTestSourceTest();
+	Commons::BuildFile(string("algorithm.cfg"));
+	
+	Commons::BuildFile(string("algorithm.cfg"));
+		if (Commons::ReadConfiguration(string("algorithm")) == "Apriori")
+		{
+			TestAprioriAlgo();
+		}else if (Commons::ReadConfiguration(string("algorithm")) == "NaiveBayes")
+		{
+			TestNaiveBayesAlgo();
+		}else if (Commons::ReadConfiguration(string("algorithm"))=="c4.5")
+		{
+			TestC45Algo();
+		}
+		
+//	TestNaiveBayesAlgo();
+	
 	
 	return 0;
 }

@@ -7,15 +7,19 @@
 #include "DataSources.h"
 #include "csvconnection.h"
 #include "extractedCsvDTO.h"
+#include <windows.h>
+#include <stdio.h>
+#include <psapi.h>
+#pragma comment(lib,"psapi.lib")
 
 using namespace std;
 using namespace CSVConnectionInfo;
 class Utils
 {
 public:
-	Utils(void){}
+	_declspec(dllexport) Utils(void){}
 	
-	~Utils(void);
+	_declspec(dllexport) ~Utils(void);
 
 	/** The natural logarithm of 2. */
 	static double const log2;
@@ -98,6 +102,9 @@ public:
 	/** Computes the sum of the elements of an array of doubles.*/
 	_declspec(dllexport) static double sum(double* doubles,size_t length);
 
+	/** Gives the string representation of the input value */
+	_declspec(dllexport) string toStringVal(size_t _val);
+
 	/** Loads the data source saved as a XML file*/
 	_declspec(dllexport) static WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename);
 
@@ -106,7 +113,11 @@ public:
 
 	/** Loads the number of rows specified from the saved data set*/
 	_declspec(dllexport) static WrapDataSource * CreateDataSource(string datafile,string metadFile,string filename,int _limit);
+
+	/** Loads the whole data set from the data files located inside the directory indicated by _data_folder*/
+	_declspec(dllexport) static WrapDataSource * CreateDataSourceFromMultipleFiles(string _data_folder,string _meta_File,string _source_name);
+
+	/** Returns a string depicting the memory information about the process*/
+	_declspec(dllexport) string GetMemoryInfo(DWORD & _processID );
 		
 };
-// const double Utils::log2 = log10((double)2);
-// const double Utils::SMALL = 1e-6;

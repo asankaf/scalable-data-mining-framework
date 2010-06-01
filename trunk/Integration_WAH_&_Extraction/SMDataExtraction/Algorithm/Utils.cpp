@@ -58,9 +58,16 @@ string Utils::toStringVal(double val)
 
 WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string filename)
 {
+
 	LoadSavedDataSources *lsd = new LoadSavedDataSources(metadFile,datafile);	
 	DataSources *dsLoaded = lsd->loadSavedEncodedData();
 	return (*dsLoaded)(filename);
+}
+
+WrapDataSource * Utils::CreateDataSourceFromMultipleFiles(string _data_folder,string _meta_File,string _source_name)
+{LoadSavedDataSources *lds = new LoadSavedDataSources(0,_data_folder,_meta_File);
+DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
+return (*dss)(_source_name);
 }
 
 WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string filename,int _limit)
@@ -120,7 +127,7 @@ string Utils::doubleToString(double value, int afterDecimalPoint)
 		int currentPos = stringBuffer.length() - 1;
 		while ((currentPos > dotPosition) && (stringBuffer[currentPos] == '0')) 
 		{
-				stringBuffer[currentPos--] = ' ';
+			stringBuffer[currentPos--] = ' ';
 		}
 		if (stringBuffer[currentPos] == '.') {
 			stringBuffer[currentPos] = ' ';
@@ -142,12 +149,12 @@ string Utils::doubleToString(double value, int width,int afterDecimalPoint)
 	if ((afterDecimalPoint >= width) 
 		|| ((int)tempString.find('e') != -1)||((int)tempString.find('E') != -1)) 
 	{ // Protects sci notation
-			return tempString;
+		return tempString;
 	}
 
 	// Initialize result
-	
-	for (int i = 0; i < result_length ; i++) {
+
+	for (size_t i = 0; i < result_length ; i++) {
 		result[i] = ' ';
 	}
 
@@ -188,7 +195,46 @@ string Utils::doubleToString(double value, int width,int afterDecimalPoint)
 	string new_res = res;
 	delete result;
 	return new_res;
+}
+
+string Utils::toStringVal(size_t _val)
+{
+	return boost::lexical_cast<string>(_val);
+}
+
+
+string Utils::GetMemoryInfo(DWORD & _processID )
+{
+	string result ="";
+	HANDLE hProcess;
+	PROCESS_MEMORY_COUNTERS pmc;
+
+	// Appends the process identifier.
+	result += "\nProcess ID: "+ toStringVal((int)_processID);
+
+	// Appends information about the memory usage of the process.
+
+	hProcess = OpenProcess(  PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,FALSE, _processID );
+	if (NULL == hProcess)
+		return result;
+
+	if ( GetProcessMemoryInfo( hProcess, &pmc, sizeof(pmc)) )
+	{
+		result +="\npage fault count : "+toStringVal((size_t)pmc.PageFaultCount);
+		result +="\nPeak Working Set Size  : "	+ toStringVal((size_t)pmc.PeakWorkingSetSize);
+		result +="\nWorking Set Size : "+toStringVal((size_t)pmc.WorkingSetSize);
+		result +="\nQuota Peak Paged Pool Usage : "+toStringVal((size_t)pmc.QuotaPeakPagedPoolUsage);
+		result +="\nQuota Paged Pool Usage : "+toStringVal((size_t)pmc.QuotaPagedPoolUsage);
+		result +="\nQuota Peak Non Paged Pool Usage : "+toStringVal((size_t)pmc.QuotaPeakNonPagedPoolUsage);
+		result +="\nQuota Non Paged Pool Usage : "+ toStringVal((size_t)pmc.QuotaNonPagedPoolUsage);
+		result +="\nPagefile Usage : "+toStringVal((size_t)pmc.PagefileUsage);
+		result +="\nPeak Pagefile Usage : "	+toStringVal((size_t)pmc.PeakPagefileUsage);
 	}
+
+	CloseHandle( hProcess );
+	return result;
+}
+
 
 double Utils::sum(double* doubles,size_t length)
 {

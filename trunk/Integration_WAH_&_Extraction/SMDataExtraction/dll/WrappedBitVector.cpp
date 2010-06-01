@@ -14,6 +14,11 @@ void WrappedBitVector::operator &=(WrappedBitVector & _vect)
 	m_bitvector &= _vect.m_bitvector;
 }
 
+void WrappedBitVector::operator |=(WrappedBitVector & _vect)
+{
+	m_bitvector |= _vect.m_bitvector;
+}
+
 WrappedBitVector::WrappedBitVector(const WrappedBitVector &bv)
 {
 	//m_bitvector = bitvector temp(bv.m_bitvector);
@@ -169,6 +174,11 @@ WrappedBitVector * WrappedBitVector::operator ~()
 	WrappedBitVector * result = new WrappedBitVector(m_bitvector);
 	result->m_bitvector.flip();
 	return result;
+}
+
+void WrappedBitVector::Flip()
+{
+	m_bitvector.flip();
 }
 
 unsigned long WrappedBitVector::SpaceUtilsation()
