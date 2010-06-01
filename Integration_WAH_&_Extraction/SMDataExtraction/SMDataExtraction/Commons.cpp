@@ -57,6 +57,11 @@ string Commons::ReadConfiguration(string & _property)
 	return m_map[_property];
 }
 
+string Commons::ReadConfiguration(const string & _property)
+{
+	return m_map[_property];
+}
+
 vector<string> Commons::ReadFile(string & _path)
 {
 	vector<string> row_vect;

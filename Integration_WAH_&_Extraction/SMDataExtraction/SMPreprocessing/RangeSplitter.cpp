@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "RangeSplitter.h"
 #include "EncodedIntAttribute.h"
+
 #include <sstream>
 #include "EncodedDoubleAttribute.h"
 
@@ -310,7 +311,7 @@ EncodedMultiCatAttribute* RangeSplitter::SplitRanges()
 	multiAtt->setNoOfVBitStreams(no_v_bitstreams,this->_rowCount);
 	multiAtt->setAttID(this->_attribute->attributeID());
 	multiAtt->setAttName(this->_attribute->attributeName());
-	multiAtt->setAttType(ATT_TYPE::MULTICAT_VAL);
+	multiAtt->setAttType(this->_attribute->attributeType());
 	multiAtt->setVBitStreams(v_bitStreams);
 	return multiAtt;
 }
@@ -344,27 +345,4 @@ EncodedMultiCatAttribute* RangeSplitter::SplitIntoEqualRanges( int no_of_ranges 
 	}
 	this->_rangeVals = ranges;
 	return SplitRanges();
-}
-
-void RangeSplitter::SplitAllNumericalAttsIntoEualRanges( int no_of_ranges )
-{
-	vector<EncodedAttributeInfo*> encodedAtts;
-	vector<EncodedIntAttribute*> encodedDisctretedIntAtts;
-	encodedAtts.resize(this->_ds->noOfAttributes());
-
-	for (int i = 0 ; i < this->_ds->noOfAttributes() ; i++)
-	{
-		EncodedAttributeInfo* att = this->_ds->codedAttributes()[i];
-		int attType = (int)att->attributeType();
-		if (attType == 0 || attType == 1)
-		{
-			this->_attribute = att;
-			EncodedMultiCatAttribute* convertedMulAtt = SplitIntoEqualRanges(no_of_ranges);
-			delete att;
-			encodedAtts[i] = convertedMulAtt;
-		}
-		else encodedAtts[i] = att;
-	}
-
-	this->_ds->CodedAtts(encodedAtts);
 }

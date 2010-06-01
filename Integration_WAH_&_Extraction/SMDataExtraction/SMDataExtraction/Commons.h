@@ -56,6 +56,9 @@ public:
 	/** Gives the value of the property indicated by _property*/
 	_declspec(dllexport)static  string ReadConfiguration(string & _property);
 
+	/** Gives the value of the property indicated by _property*/
+	_declspec(dllexport)static  string ReadConfiguration(const string & _property);
+
 	/** Creating the configuration file, given by the location _path*/
 	_declspec(dllexport) static void BuildFile(string & _path);
 

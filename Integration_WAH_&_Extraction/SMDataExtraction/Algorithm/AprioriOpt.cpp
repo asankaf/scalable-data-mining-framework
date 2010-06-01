@@ -131,55 +131,7 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 		//findRulesQuickly();
 		FindRulesQuickly(m_rules);
 
-		/*int j = m_allTheRules[2].size()-1;
-		supports = new double[m_allTheRules[2].size()];
-		for (int i = 0; i < (j+1); i++) 
-		supports[j-i] = ((double)((ItemSet)m_allTheRules[1].elementAt(j-i)).support())*(-1);
-		indices = Utils.stableSort(supports);
-		for (int i = 0; i < (j+1); i++) {
-		sortedRuleSet[0].addElement(m_allTheRules[0].elementAt(indices[j-i]));
-		sortedRuleSet[1].addElement(m_allTheRules[1].elementAt(indices[j-i]));
-		sortedRuleSet[2].addElement(m_allTheRules[2].elementAt(indices[j-i]));
-		if (m_metricType != CONFIDENCE || m_significanceLevel != -1) {
-		sortedRuleSet[3].addElement(m_allTheRules[3].elementAt(indices[j-i]));
-		sortedRuleSet[4].addElement(m_allTheRules[4].elementAt(indices[j-i]));
-		sortedRuleSet[5].addElement(m_allTheRules[5].elementAt(indices[j-i]));
-		}
-		}
 
-		Sort rules according to their confidence
-		m_allTheRules[0].removeAllElements();
-		m_allTheRules[1].removeAllElements();
-		m_allTheRules[2].removeAllElements();
-		if (m_metricType != CONFIDENCE || m_significanceLevel != -1) {
-		m_allTheRules[3].removeAllElements();
-		m_allTheRules[4].removeAllElements();
-		m_allTheRules[5].removeAllElements();
-		}
-		confidences = new double[sortedRuleSet[2].size()];
-		int sortType = 2 + m_metricType;
-
-		for (int i = 0; i < sortedRuleSet[2].size(); i++) 
-		confidences[i] = 
-		((Double)sortedRuleSet[sortType].elementAt(i)).doubleValue();
-		indices = Utils.stableSort(confidences);
-		for (int i = sortedRuleSet[0].size() - 1; 
-		(i >= (sortedRuleSet[0].size() - m_numRules)) && (i >= 0); i--) {
-		m_allTheRules[0].addElement(sortedRuleSet[0].elementAt(indices[i]));
-		m_allTheRules[1].addElement(sortedRuleSet[1].elementAt(indices[i]));
-		m_allTheRules[2].addElement(sortedRuleSet[2].elementAt(indices[i]));
-		if (m_metricType != CONFIDENCE || m_significanceLevel != -1) {
-		m_allTheRules[3].addElement(sortedRuleSet[3].elementAt(indices[i]));
-		m_allTheRules[4].addElement(sortedRuleSet[4].elementAt(indices[i]));
-		m_allTheRules[5].addElement(sortedRuleSet[5].elementAt(indices[i]));
-		}
-		}
-
-		if (m_verbose) {
-		if (m_Ls.size() > 1) {
-		System.out.println(toString());
-		}
-		}*/
 		if(m_minSupport == lower_bound_min_support_to_use || m_minSupport - m_delta >  lower_bound_min_support_to_use)
 			m_minSupport -= m_delta;
 		else
@@ -198,7 +150,7 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 		);
 	m_minSupport += m_delta;
 	SortRules();
-	BuildStrings();
+	BuildStrings();	
 }
 
 void AprioriOpt::SortRules()
@@ -208,22 +160,6 @@ void AprioriOpt::SortRules()
 	// 	pair<int,int> p2;
 	pair<float,int> p;
 
-	// 	for (int i = 0 ; i < m_rules.size(); i++)
-	// 	{
-	// 		p2 = pair<int,int>(m_rules[i]->Consequence_count(),i);
-	// 		sup_index_map.insert(p2);
-	// 	}
-	// 	multimap<int,int>::iterator iter_sup;
-	// 	vector<AssociateRule *> rules_sup(m_rules.size());
-	// 	size_t sup_no = 0;
-	// 	iter_sup = sup_index_map.end();
-	// 	iter_sup--;
-	// 	for (; iter_sup != (sup_index_map.begin()); iter_sup--,sup_no++)
-	// 	{
-	// 		rules_sup[sup_no] = m_rules[iter_sup->second];
-	// 	}
-	// 	rules_sup[sup_no] = m_rules[iter_sup->second];
-	// 	m_rules = rules_sup;
 	float sort_val = 0;
 	int exponent = (int)ceil(log10((float)m_instances->noOfRows()));
 	int factor = pow((float)10,exponent);
@@ -282,15 +218,28 @@ void AprioriOpt::FindLargeItemSets(){
 		kMinusOneSets = kSets;
 		kSets = MergeAllItemSets(kMinusOneSets, i);
 		hashtable = AprioriItemset::GetHashtable(kMinusOneSets,m_hashItemSets);
+		//hashtable = AprioriItemset::GetHashtable(kMinusOneSets,m_hashItemSets,i);
 		// Find if this step is really necessary
 		m_hashTables.push_back(hashtable);
 		kSets = PruneItemSets(kSets, hashtable);
 		UpdateCounters(kSets, i);
-		kSets = DeleteItemSets(kSets, necSupport, necMaxSupport,false);
+		kSets = DeleteItemSets(kSets, necSupport, necMaxSupport,true);
 		i++;
 	} while (kSets.size() > 0);
 }
 
+
+string AprioriOpt::toString()
+{
+	string output = "";
+	
+	for (size_t i = 0 ; i < m_rules.size() ; i++)
+	{
+		string rule = m_rules[i]->Rule();
+		output += rule +"\n";
+	}
+	return output;
+}
 
 void AprioriOpt::UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize)
 {
@@ -347,7 +296,8 @@ void AprioriOpt::UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize
 }
 
 vector<AprioriItemset *> AprioriOpt::PruneItemSets(vector<AprioriItemset *> & _ksets,hash_map<int,int> & _kMinusOne)
-{//Java counterpart initializes the vector to a predefined size
+{
+	//Java counterpart initializes the vector to a predefined size
 	vector<AprioriItemset *> result;	
 	int help, j;
 	int * current_m_items;
@@ -366,7 +316,8 @@ vector<AprioriItemset *> AprioriOpt::PruneItemSets(vector<AprioriItemset *> & _k
 				} else{ 
 					current_m_items[j] = help;
 				}
-			}}
+			}
+		}
 		// Checks if the array has come to its end
 		// Length of the array is equal to the number of attributes in the table
 		if (j == m_numberOfAttributes){ 
@@ -418,6 +369,8 @@ vector<AprioriItemset *> AprioriOpt::MergeAllItemSets(vector<AprioriItemset *> &
 			}
 			if (external_for_break)
 			{
+				delete result;
+				//delete[] m_items;
 				break;
 			}
 
@@ -540,7 +493,7 @@ void AprioriOpt::FindRulesQuickly(vector<AssociateRule *> & _rules)
 void AprioriOpt::ClearAll()
 {	
 	ClearlargeItemSets();
-	//ClearHashTable();
+	ClearHashTable();
 	ClearUniqueItems();		
 	ClearRules();
 }
@@ -555,6 +508,8 @@ void AprioriOpt::ClearlargeItemSets()
 	{
 		for (size_t j = 0 ; j < m_largeItemSets[i].size(); j++)
 		{
+
+			m_hashItemSets[i][m_largeItemSets[i][j]->HashCode()] = NULL;
 			delete m_largeItemSets[i][j];
 		}
 		m_largeItemSets[i].clear();
@@ -580,7 +535,11 @@ void AprioriOpt::ClearHashTable()
 		hash_map<int,AprioriItemset *>::iterator iter;
 		for (iter = hash_table.begin(); iter != hash_table.end() ; iter++)
 		{
-			delete iter->second;
+			if (iter->second != NULL)
+			{
+				delete iter->second;
+			}
+			
 		}
 		hash_table.clear();
 	}

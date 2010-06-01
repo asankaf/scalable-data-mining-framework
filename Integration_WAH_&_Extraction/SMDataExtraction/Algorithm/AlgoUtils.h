@@ -44,12 +44,17 @@ using namespace std;
 		_declspec(dllexport) static BitStreamHolder * WrapWithHolder(BitStreamInfo * _stream,int _attribute_id,int _bit_map_id);
 
 
-		
 		/**Computes the sum of a numeric attribute*/
-		_declspec(dllexport) static double USum(EncodedAttributeInfo * attribute);		
+		_declspec(dllexport) static double USum(EncodedAttributeInfo * attribute);
+
+		/**Computes the sum of a numeric attribute sampled by the _existence bitmap*/
+		_declspec(dllexport) static double USum(EncodedAttributeInfo * attribute, BitStreamInfo * _existence);
 
 		/**Computes the sum square of a numeric attribute*/
 		_declspec(dllexport) static double SumSquare(EncodedAttributeInfo * attribute);		
+
+		/**Computes the sum square of a numeric attribute sampled by the _existence bitmap*/
+		_declspec(dllexport) static double SumSquare(EncodedAttributeInfo * attribute,BitStreamInfo * _existence);
 
 		/**Returns the bitmap of results greater than the  given value*/
 		_declspec(dllexport) static BitStreamInfo * UGreaterThan(EncodedAttributeInfo * attribute, double value,int rows);		
@@ -68,6 +73,9 @@ using namespace std;
 
 		/**Generates a BitstreamInfo as same the type of attribute */
 		_declspec(dllexport) static BitStreamInfo * BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream);		
+
+		/** Function for calculating the variance of an attribute*/
+		_declspec(dllexport) static double Variance(EncodedAttributeInfo * attribute,BitStreamInfo * _existence);
 		
 		_declspec(dllexport) static map<int,int> CreateIndexAttributeMap(map<int,vector<int>> & _index_att_map);
 		
@@ -95,10 +103,18 @@ using namespace std;
 			//BitStreamHolder * MergeHolder(BitStreamHolder * _holder,vector<BitStreamHolder *> _index_holder_map);
 
 	private :
+
+		static double SumOfInt(EncodedAttributeInfo * attribute, BitStreamInfo * _existence);
+
 		static double SumOfInt(EncodedAttributeInfo * attribute);
 
 		/**Handles the sum square obtaining function for int values*/
 		static double SumSquareOfInt(EncodedAttributeInfo * attribute);
+
+		/** Handles the sum square obtaining function for int values. The sample of which the sum is to be taken is
+		given by the bitstream _existence
+		*/
+		static double SumSquareOfInt(EncodedAttributeInfo * attribute,BitStreamInfo * _existence);
 
 		/**Finds value greater than the given value (the given value should be unsigned)*/
 		static BitStreamInfo * UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows);

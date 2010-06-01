@@ -58,6 +58,18 @@ public:
 
 	void Print();
 
+	bool isNumeric(size_t _att_index);
+
+	bool isNominal(size_t _att_index);
+
+	string classValueString(size_t _class_value);
+
+	string nameOfAttribute(size_t _att_index);
+	
+	size_t noOfVlaues(size_t _att_index);
+
+	string valueOfNominalAtt(size_t _att_index,size_t _value_index);
+
 private:
 	/*Holds no of attributes for this datasource*/
 	int m_no_of_attributes;
@@ -75,7 +87,10 @@ private:
 	int m_classIndex;
 
 	/** Build Data source object from the instances*/
-	void buildDataSource(WrapDataSource * _source); 
+	void buildNumericAtts(WrapDataSource *_source);
+
+	/** Build Data source object from the instances*/
+	void buildNominalAtts(WrapDataSource * _source); 
 
 	/** Holds different weights assigned for each attribute*/
 	vector<double> m_weights;
@@ -88,4 +103,9 @@ private:
 
 	/** Compression Type*/
 	BitStreamInfo::vertical_bit_type m_type;
+
+	/***/
+	const string NOMINAL_CLASS;
+	
+	const string NUMERIC_CLASS;
 };

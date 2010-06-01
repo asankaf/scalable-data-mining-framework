@@ -23,9 +23,15 @@ EWAH::EWAH(WrappedBitVector & _vect)
 
 BitStreamInfo * EWAH::operator ~()
 {
+	/*
 	WrappedBitVector * wrapped_vect = ~(m_bitvector);
-	EWAH * new_vect = new EWAH(*(wrapped_vect));
+		EWAH * new_vect = new EWAH(*(wrapped_vect));
+		return new_vect;
+		*/
+	EWAH * new_vect = new EWAH(m_bitvector);
+	m_bitvector.Flip();
 	return new_vect;
+	
 }
 
 BitStreamInfo * EWAH::Clone()
@@ -53,9 +59,15 @@ BitStreamInfo * EWAH::operator &(BitStreamInfo & _right_op)
 
 BitStreamInfo * EWAH::operator |(BitStreamInfo & _right_op)
 {	
+	/*
 	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
-	WrappedBitVector * result_vect = m_bitvector | right_op->m_bitvector;	
-	return new EWAH(*(result_vect));;
+		WrappedBitVector * result_vect = m_bitvector | right_op->m_bitvector;	
+		return new EWAH(*(result_vect));;*/
+	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
+	EWAH * result_vect = new EWAH(m_bitvector);
+	result_vect->m_bitvector |= right_op->m_bitvector;		
+	return result_vect;
+	
 }
 
 unsigned long long EWAH::Count()

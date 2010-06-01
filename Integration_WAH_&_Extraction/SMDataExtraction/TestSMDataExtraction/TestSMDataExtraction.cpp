@@ -26,72 +26,14 @@ void EncodeForAll();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	EncodeForAll();
+	LoadSavedDataSources *lds = new LoadSavedDataSources(3,"zoo_data_data","zoo_metadata");
 	
-	CsvConnection *csv = new CsvConnection("E:\\University\\Level 4\\CS4200 - Data Mining\\Data Mining\\DataFiles\\dataSets\\small_data.txt",',','\n');
-	vector<int> r_order;
-	r_order.push_back(0);
-	r_order.push_back(2);
-	r_order.push_back(1);
-	r_order.push_back(0);
-	r_order.push_back(0);
-	r_order.push_back(1);
-	r_order.push_back(2);
-
-	ExtractedCsvDTO *r_csv = csv->readCSV(r_order);
-	WrapDataSource *r_ds = new WrapDataSource(r_csv,"small_data");
-	r_ds->encodeAtrributes();
-	DataSources *r_dss = new DataSources();
-	r_dss->insertDataSources(r_ds);
-	DataSourceSerialization *source_ser = new DataSourceSerialization(r_dss,"small_metadata","small_data");
-	source_ser->serializeDataSource();
-	
-	//load from multiple files with a limit of 3 rows...
-	LoadSavedDataSources *lds = new LoadSavedDataSources(3,"small_data","small_metadata");
-	DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
-	WrapDataSource *wds = (*dss)("small_data");
+DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
+	WrapDataSource *wds = (*dss)("zoo_data");
 	cout<<wds->generateCSVStringofDecodedData();
 	delete wds;
-	
-	
-	/*
-  	time_t start_1,end_1;	
 
-	//Code Snippet to load data from a saved encoded file. 
-	//Important : Files should be saved in ../Reports/ folder.
- 	//LoadSavedDataSources *lsd = new LoadSavedDataSources("test_Data_Large_metadata","test_Data_Large_data");
- 	//DataSources *dsLoaded = lsd->loadSavedEncodedData();
-	
-	//intval2mill.csv
-	//CsvConnection *connection = new CsvConnection("C:\\Data\\doubval.csv",',','\n');
-	
-	//CsvConnection cConcsv("C:\\Data\\soyaTest.csv",',','\n','""');
-	//J:\\pokerHand\\poker-hand-training-true.csv
-	//CsvConnection *connection = new CsvConnection("J:\\pokerHand\\poker-hand-testing.csv",',','\n','""');
-	//soyabean-10cols-2mill.txt
-	//soyabean-10cols-1mill.csv
-	//CsvConnection *connection = new CsvConnection("J:\dataSets\soyaTestlarge\column1_date.csv",',','\n','""');
-	CsvConnection *connection = new CsvConnection("C:\\Data\\weather.nominal.csv",',','\n','""');
-	
-	
-	//ExtractedCsvDTO *exDTO = connection->readCSV();
-	ExtractedCsvDTO *exDTO = connection->extractData();
-	WrapDataSource *dsSBN = new WrapDataSource(exDTO,"column1_date_5mil");
-	dsSBN->encodeAtrributes();
-	//vector<EncodedAttributeInfo*> vals = dsSBN->codedAttributes();
-//	delete dsSBN;
-	
-DataSources *SBDss = new DataSources();
-	cout<<"Finished Encoding data"<<endl;
-	SBDss->insertDataSources(dsSBN);
-	DataSourceSerialization *dss =  new DataSourceSerialization(SBDss,"column1_date_5mil_metadata","column1_date_5mil_data");
-	dss->serializeDataSource();
-delete connection;
-//delete exDTO;
-delete dsSBN;
-delete SBDss;
-delete dss;
-*/
+
 	return 0;
 }
 
