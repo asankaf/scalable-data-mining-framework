@@ -420,7 +420,8 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const xml_ewah="xml->ewah";
 	string const mysql_ewah="mysql->ewah";
 
-	string const csv_wah_text="csv->wah->text";
+	//string const csv_wah_text="csv->wah->text";
+	string const csv_wah_text="csv->->text";
 	string const xml_wah_text="xml->wah->text";
 	string const mysql_wah_text="mysql->wah->text";
 	string const csv_ewah_text="csv->ewah->text";
