@@ -8,7 +8,7 @@
 
 class DataSourceSerialization{
 public:
-	__declspec(dllexport) DataSourceSerialization(DataSources *ds,std::string xmlFile,std::string dataFile){this->_dataSources = ds;this->_xmlFileName = xmlFile;this->_dataFileName = dataFile;}
+	__declspec(dllexport) DataSourceSerialization(DataSources *ds,std::string xmlFile,std::string dataFile){this->_dataSources = ds;this->_xmlFileName = xmlFile;this->_dataFileName = "../Reports/" + dataFile;}
 	__declspec(dllexport) bool serializeDataSource();
 	__declspec(dllexport) ~DataSourceSerialization(){}
 
