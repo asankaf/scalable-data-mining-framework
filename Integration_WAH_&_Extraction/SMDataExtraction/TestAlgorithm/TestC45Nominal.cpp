@@ -18,8 +18,7 @@ void TestC45Nominal::TestSuite()
 	
 WrapDataSource *ds  = NULL;
 
- 	ds = Utils::CreateDataSource("poker_hand_data","poker_hand_metadata","poker_hand");
-	cout << "Finished Loading data :" << endl;
+ 	ds = Utils::CreateDataSourceFromMultipleFiles("zoo_data_data","zoo_metadata","zoo_data");
 /*
 	
 		LoadSavedDataSources *lsd = new LoadSavedDataSources("soyabeansmall_200000_metadata","soyabeansmall_200000_data");

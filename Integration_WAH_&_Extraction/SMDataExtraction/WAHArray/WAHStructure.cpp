@@ -102,7 +102,8 @@ namespace CompressedStructure{
 		int length = sizeof(_bit_literal);
 		while(length)
 		{
-			result += boost::detail::dynamic_bitset_count_impl::count_table<>::table[*(pbyte_ptr)];
+			//result += boost::detail::dynamic_bitset_count_impl::count_table<>::table[*(pbyte_ptr)];
+			result += boost::detail::dynamic_bitset_impl::count_table<>::table[*(pbyte_ptr)];
 			pbyte_ptr++;
 			length--;
 		}
