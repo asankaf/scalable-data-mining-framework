@@ -293,6 +293,21 @@ void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
 	m_source = new WrapDataSource(dat,"0");	
 	m_source->encodeAtrributes();
 }
+
+void CIntelliCheckersUIDlg::MYSQL(string source_name,string mysql_query)
+{
+	char * writable = new char[source_name.size() + 1];
+	std::copy(source_name.begin(), source_name.end(), writable);
+	writable[source_name.size()] = '\0';
+	DBConnectionInfo::DBConnection cCon(writable,"","");
+	cCon.initiateConnectionToDB();
+	DBQueryExecutionInfo::DBQueryExecution *cExec = new DBQueryExecutionInfo::DBQueryExecution(mysql_query.c_str());
+	cExec->ExecuteQueryAndBindData(cCon.DBConnectionPtr());
+	WrapDataSource *ds = new WrapDataSource(cExec,source_name);
+	ds->encodeAtrributes();
+	m_source = ds;
+}
+
 void CIntelliCheckersUIDlg::Aprior( double _confidence,double _min_suport,int _rules )
 {
 	//Setting confidence, minimum support  
@@ -439,6 +454,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const xml_apriory_text="xml->apriory->text";
 	string const xml_classification_text="xml->classification->text";	
 	string const xml_classification_tree="xml->classification->tree";
+	string const mysql_apriory_text="mysql->apriory->text";
+	string const mysql_classification_text="mysql->classification->text";	
+	string const mysql_classification_tree="mysql->classification->tree";
 
 	string const csv_wah_apriory_text="csv->wah->apriory->text";
 	string const csv_wah_classification_text="csv->wah->classification->text";
@@ -446,6 +464,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const xml_wah_apriory_text="xml->wah->apriory->text";
 	string const xml_wah_classification_text="xml->wah->classification->text";	
 	string const xml_wah_classification_tree="xml->wah->classification->tree";
+	string const mysql_wah_apriory_text="mysql->wah->apriory->text";
+	string const mysql_wah_classification_text="mysql->wah->classification->text";	
+	string const mysql_wah_classification_tree="mysql->wah->classification->tree";
 
 	string const csv_ewah_apriory_text="csv->ewah->apriory->text";
 	string const csv_ewah_classification_text="csv->ewah->classification->text";
@@ -453,51 +474,75 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 	string const xml_ewah_apriory_text="xml->ewah->apriory->text";
 	string const xml_ewah_classification_text="xml->ewah->classification->text";	
 	string const xml_ewah_classification_tree="xml->ewah->classification->tree";
+	string const mysql_ewah_apriory_text="mysql->ewah->apriory->text";
+	string const mysql_ewah_classification_text="mysql->ewah->classification->text";	
+	string const mysql_ewah_classification_tree="mysql->ewah->classification->tree";
 
 	string const csv_wah_apriory="csv->wah->apriory";
 	string const csv_wah_classification="csv->wah->classification";
 	string const xml_wah_apriory="xml->wah->apriory";
 	string const xml_wah_classification="xml->wah->classification";
+	string const mysql_wah_apriory="mysql->wah->apriory";
+	string const mysql_wah_classification="mysql->wah->classification";
 
 	string const csv_ewah_apriory="csv->ewah->apriory";
 	string const csv_ewah_classification="csv->ewah->classification";
 	string const xml_ewah_apriory="xml->ewah->apriory";
 	string const xml_ewah_classification="xml->ewah->classification";	
+	string const mysql_ewah_apriory="mysql->ewah->apriory";
+	string const mysql_ewah_classification="mysql->ewah->classification";	
 
 	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
-	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text;
+	bool data_to_algorithm_to_textview_procedures = procedure==csv_apriory_text || procedure==csv_classification_text || procedure==xml_apriory_text || procedure==xml_classification_text || procedure==mysql_apriory_text || procedure==mysql_classification_text;
 	bool data_to_algorithm_procedures = procedure==csv_apriory || procedure==csv_classification || procedure==xml_apriory || procedure==xml_classification;
 	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah || procedure==csv_ewah || procedure==xml_ewah || procedure==mysql_ewah;
 	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text;
 	bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text || procedure==csv_ewah_text || procedure==xml_ewah_text || procedure==mysql_ewah_text;
-	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text;
-	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree;
+	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text || procedure==mysql_classification_text;
+	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree || procedure==mysql_classification_tree;
 
-	bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text;
-	bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text;
-	bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree;
+	bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text || procedure==mysql_ewah_apriory_text || procedure==mysql_wah_apriory_text;
+	bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text || procedure==mysql_ewah_classification_text || procedure==mysql_wah_classification_text;
+	bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree;
 	bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
 
-	bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory;
-	bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification;
+	bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory || procedure==mysql_wah_apriory || procedure==mysql_ewah_apriory;
+	bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification || procedure==mysql_wah_classification || procedure==mysql_ewah_classification;
 	bool data_to_compression_to_algorithm_procedures = data_to_compression_to_apriory_procedures || data_to_compression_to_classification_procedures;
 
 
 	if (procedure=="getMySqlDataSourceList")
 	{
-		//DBConnectionInfo::DBConnection nrw_con("");
-		//vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
-		string formattedOutPut="sqlDataSourcesList##";
-		/*//get the real mysql data sources list as below
+		DBConnectionInfo::DBConnection nrw_con("");
+		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
+		string formattedOutPut="mysqlDataSourcesList##";
+	    //get the real mysql data sources list as below
 		
 		for (int i = 0 ; i < source_names.size() ; i++)
 		{
 			formattedOutPut+="<mysqlsource>";
 			formattedOutPut+="<name>" + source_names[i] + "</name>";
 			formattedOutPut+="</mysqlsource>";
-		}*/
+		}
 		
-		formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
+	}
+	else if (procedure=="getMsSqlDataSourceList")
+	{
+		DBConnectionInfo::DBConnection nrw_con("");
+		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::SQL_SERVER);
+		string formattedOutPut="mssqlDataSourcesList##";
+	    //get the real mysql data sources list as below
+		
+		for (int i = 0 ; i < source_names.size() ; i++)
+		{
+			formattedOutPut+="<mssqlsource>";
+			formattedOutPut+="<name>" + source_names[i] + "</name>";
+			formattedOutPut+="</mssqlsource>";
+		}
+		//string formattedOutPut="mssqlDataSourcesList##<mssqlsource><name>Mssource1</name></mssqlsource><mssqlsource><name>Mssource2</name></mssqlsource>";
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 
 	}
@@ -547,6 +592,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string xml_data_location;
 		string xml_data_source;
 		int xml_data_size;
+		string mysql_source_name;
+		string mysql_query;
+		string mysql_data_size;
 
 		string formattedOutPut="";
 		string graphData="";
@@ -613,17 +661,23 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 							SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
 						}
 					}
-					/*else if (procedureTokens[j]=="mysql")
+					else if (procedureTokens[j]=="mysql")
 					{
+						mysql_source_name=pathsTokens[0];
+						mysql_query=pathsTokens[1];
+						mysql_data_size=pathsTokens[2];
 						if(loopCount==1)
 						{
-							
+							MYSQL(mysql_source_name,mysql_query+" LIMIT "+mysql_data_size);
 						}
 						else
 						{
-							
+							int rowcount=atoi( mysql_data_size.c_str())*(i+1);
+							stringstream rowcountstream;							
+							rowcountstream<<rowcount;
+							MYSQL(mysql_source_name,mysql_query+" LIMIT "+rowcountstream.str());
 						}
-					}*/
+					}
 					else if (procedureTokens[j]==apriory)
 					{
 						Aprior(0.9,0.01,10);
@@ -723,6 +777,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				{
 					//keep empty
 				}
+
 			}
 			DeleteAll();
 		}

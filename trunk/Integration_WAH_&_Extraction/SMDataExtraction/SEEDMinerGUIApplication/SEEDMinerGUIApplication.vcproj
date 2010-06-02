@@ -146,14 +146,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Include;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm;..\SMPreprocessing;G:\programming and other\c++\boost_1_33_0\boost_1_33_0"
+				AdditionalIncludeDirectories="..\Include;..\FlexVCBridgeStaticLib\;..\SMDataExtraction;..\WAHArray;..\dll;..\Algorithm;..\SMPreprocessing;&quot;$(BOOST_HOME)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;WINVER=0x0501;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/IntelliCheckersUI.pch"
+				PrecompiledHeaderFile=".\Debug/SeedMinerUI.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -180,7 +180,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\lib;..\Debug"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/IntelliCheckersUI.pdb"
+				ProgramDatabaseFile=".\Debug/SeedMinerUI.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -198,7 +198,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/IntelliCheckersUI.bsc"
+				OutputFile=".\Debug/SeedMinerUI.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

@@ -44,6 +44,9 @@ private:
 	*/
 	void CSV(string _path,int _no_of_rows);
 
+	
+	void MYSQL(string source_name,string mysql_query);
+
 	/**Loads data from a previously encoded file
 	@param _meta_file_name name of the meta file containing description of data
 	@param _data_file_name name of the file containing encoded data
