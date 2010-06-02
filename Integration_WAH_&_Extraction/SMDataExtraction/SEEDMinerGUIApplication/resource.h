@@ -6,6 +6,7 @@
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_IntelliCheckersUI_DIALOG    102
+#define IDD_SeedMinerUI_DIALOG          102
 #define IDR_MAINFRAME                   128
 #define IDC_SHOCKWAVEFLASH1             1000
 
