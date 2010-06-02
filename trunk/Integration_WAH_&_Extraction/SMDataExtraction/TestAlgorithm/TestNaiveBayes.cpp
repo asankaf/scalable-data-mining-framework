@@ -148,7 +148,7 @@ void TestNaiveBayes::TestSMNaiveBayes(WrapDataSource * _data_source, int _class_
 		bayes.buildClassifier(_data_source,_class_index);
 		end = clock();
 		cout <<(end -start) << "\t";
-		cout << bayes.toString() << endl;
+		//cout << bayes.toString() << endl;
 
 	}
 	cout << endl;

@@ -1,5 +1,6 @@
 #pragma once
 #include "boost/dynamic_bitset/dynamic_bitset.hpp"
+#include "boost/detail/dynamic_bitset.hpp"
 #include "Math.h"
 #include "BitStreamInfo.h"
 #include <vector>
