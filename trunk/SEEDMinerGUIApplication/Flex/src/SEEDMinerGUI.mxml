@@ -18,6 +18,10 @@
 							<mx:Image source="@Embed('xmlLoad.png')" mouseDown="mouseDownHandler(event);" id="XML_Loader"/>
 							<mx:Label text="XML Loader"/>
 						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('mssql.png')" mouseDown="mouseDownHandler(event);" id="MSSQL_DataSource"/>
+							<mx:Label text="MSSQL DataSource"/>
+						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
 				<mx:Canvas label="FILTERS" width="100%" height="100%">

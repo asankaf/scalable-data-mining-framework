@@ -28,6 +28,7 @@ package ActionClasses
 		public static const XML_LOADER:Number = 9;
 		public static const DESCRITIZE:Number = 10;
 		public static const RANGESPLITE:Number = 11;
+		public static const MSSQL_DATASOURCE:Number = 12;
 		
 		
 		public static const NO_DRAWING:Number=-1;
