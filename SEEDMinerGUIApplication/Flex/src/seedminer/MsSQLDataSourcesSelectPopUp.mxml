@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  modalTransparency=".5" modalTransparencyBlur="4" modalTransparencyColor="#E8E8E8" modalTransparencyDuration="200" layout="absolute" width="580" alpha="0.3"  rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" height="136" title="MsSql Data Sources" showCloseButton="true" close="ok(event);">
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.List;
+		import mx.events.ListEvent;
+		import mx.managers.PopUpManager;
+		
+		private function ok(event:Event):void 
+        {
+        	//trace(location.text);
+        	PopUpManager.removePopUp(this);
+        }
+	]]>
+	</mx:Script>
+	<mx:Fade id="fadeOut" duration="1000" alphaFrom="1" alphaTo="0.3"/>
+    <mx:Fade id="fadeIn" duration="500" alphaFrom="0.3" alphaTo="1"/>
+	<mx:HBox x="0" y="0" width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
+	    <mx:DataGrid  id="dg" rowCount="5" width="30%" height="100%">
+	    	<mx:columns>
+	    		<mx:DataGridColumn id="dataSoucesCol" headerText="Select A Data Source"/>
+	    	</mx:columns>
+	    </mx:DataGrid>
+	    <mx:VBox height="100%" horizontalAlign="right" width="70%" paddingRight="5">
+	        <mx:HBox width="100%" horizontalAlign="right">
+	            <mx:Label text="mssql query" textAlign="right" width="80"/>
+	            <mx:TextInput width="80%" id="mssql_query" change="okbutton.enabled=true"/>
+	        </mx:HBox>
+	        <mx:HBox horizontalAlign="right" width="100%">
+	            <mx:Label text="data size" textAlign="right" width="80"/>
+	            <mx:TextInput width="80%" id="mssql_data_size" text="1000"/>
+	        </mx:HBox>
+	        <mx:Button id="okbutton" label="Ok" click="ok(event);" enabled="false" width="43" height="18" fontSize="10"/>
+	    </mx:VBox>
+	</mx:HBox>
+	
+</mx:TitleWindow>

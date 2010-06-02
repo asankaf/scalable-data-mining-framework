@@ -9,6 +9,7 @@ import ActionClasses.DiscretizeFilter;
 import ActionClasses.DrawingEvent;
 import ActionClasses.FilterResample;
 import ActionClasses.GenerateGraphicalTree;
+import ActionClasses.MsSqlDataSource;
 import ActionClasses.MySQLDataSource;
 import ActionClasses.Path;
 import ActionClasses.RangeSplitter;
@@ -43,6 +44,7 @@ import seedminer.ExecutingMarkPopUp;
 import seedminer.GraphViewObject;
 import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
+import seedminer.MsSQLDataSourcesSelectPopUp;
 import seedminer.ProgressBarComponent;
 import seedminer.Sink;
 import seedminer.SpacePopUp;
@@ -74,6 +76,7 @@ private var rememberGraphName:String;
 private var c:int=0;
 
 private var mysqlObject:MySQLDataSource;
+private var mssqlObject:MsSqlDataSource;
 private var executingMask:ExecutingMarkPopUp;
 private var progress_Bar:ProgressBar;
 private var sequenceNumber:int=0;
@@ -304,13 +307,21 @@ public function cplusPluseCallBackFunction(str:String):void
 	    treePopUp.y=canvasmain.height/2-treePopUp.height/2;
 	    var genTree:GenerateGraphicalTree=new GenerateGraphicalTree(dom,treePopUp);
 	}	
-	else if(view=="sqlDataSourcesList")
+	else if(view=="mysqlDataSourcesList")
 	{
 		var sqlsourcelist:String=strings1[0];		
 		var dataSourcesList:XMLList= new XMLList(sqlsourcelist);
 				
 		MySqlDataSourcesSelectPopUp(mysqlObject.config).dataSoucesCol.dataField="name";
 		MySqlDataSourcesSelectPopUp(mysqlObject.config).dg.dataProvider=dataSourcesList;
+	}
+	else if(view=="mssqlDataSourcesList")
+	{
+		var mssqlsourcelist:String=strings1[0];		
+		var msdataSourcesList:XMLList= new XMLList(mssqlsourcelist);
+				
+		MsSQLDataSourcesSelectPopUp(mssqlObject.config).dataSoucesCol.dataField="name";
+		MsSQLDataSourcesSelectPopUp(mssqlObject.config).dg.dataProvider=msdataSourcesList;
 	}
 	else if(view=="graph")
 	{
@@ -418,7 +429,7 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	if(1<actionObjectSequence.length)
+	/*if(1<actionObjectSequence.length)
 	{
 		showStatus(EXECUTING);
 		
@@ -474,10 +485,19 @@ private function executeFlow(event:Event):void
 			var str:String='graph##<items><item datasize=\"1000\" mysql=\"60\" /><item datasize=\"2000\" mysql=\"50\" /><item datasize="3000" mysql=".7" /><item datasize="4000" mysql="2.3" /><item datasize="5000" mysql="3.1" /></items>';
 		}*/
 		//var str:String="nullView##^&&3000^^5000^&&";
-		//var str:String="textViewer##";
-		//cplusPluseCallBackFunction(str);
+		var str:String="treeViewer##int-discolor = absent\n|   plant-stand = lt-normal: herbicide-injury (12)\n|   plant-stand = normal\n|   |   leaf-malf = absent: cyst-nematode (20)\n|   |   leaf-malf = present: 2-4-d-injury (17)\nint-discolor = black: charcoal-rot (30)\nint-discolor = brown: brown-stem-rot (64)\nint-discolor = none\n|   leafspot-size = dna\n"+
+"|   |   canker-lesion = brown\n|   |   |   leaves = abnorm\n|   |   |   |   fruit-spots = absent: anthracnose (5)\n|   |   |   |   fruit-spots = brown-w/blk-specks: anthracnose (10)\n|   |   |   |   fruit-spots = colored: diaporthe-stem-canker (0)\n|   |   |   |   fruit-spots = dna: diaporthe-stem-canker (21/1)\n"+
+"|   |   |   leaves = norm: rhizoctonia-root-rot (29)\n|   |   canker-lesion = dk-brown-blk\n|   |   |   plant-growth = abnorm\n|   |   |   |   plant-stand = lt-normal\n|   |   |   |   |   fruiting-bodies = absent: phytophthora-rot (128)\n|   |   |   |   |   fruiting-bodies = present: anthracnose (4)\n|   |   |   |   plant-stand = normal: anthracnose (8)\n|   |   |   plant-growth = norm: anthracnose (37)\n|   |   canker-lesion = dna\n|   |   |   plant-growth = abnorm: diaporthe-stem-canker (20)\n|   |   |   plant-growth = norm\n|   |   |   |   leaves = abnorm: powdery-mildew (30)\n"+
+"|   |   |   |   leaves = norm: diaporthe-pod-&-stem-blight (21)\n|   |   canker-lesion = tan: purple-seed-stain (14)\n|   leafspot-size = gt-1/8\n|   |   leaf-mild = absent\n|   |   |   fruit-pods = diseased\n|   |   |   |   external-decay = absent\n|   |   |   |   |   canker-lesion = brown: brown-spot (2)\n|   |   |   |   |   canker-lesion = dk-brown-blk: frog-eye-leaf-spot (2)\n|   |   |   |   |   canker-lesion = dna: frog-eye-leaf-spot (2)\n|   |   |   |   |   canker-lesion = tan: frog-eye-leaf-spot (0)\n|   |   |   |   external-decay = firm-and-dry: frog-eye-leaf-spot (86)\n|   |   |   |   external-decay = watery: frog-eye-leaf-spot (0)\n|   |   |   fruit-pods = dna: brown-spot (0)\n|   |   |   fruit-pods = few-present: brown-spot (0)\n|   |   |   fruit-pods = norm\n"+
+"|   |   |   |   leaf-malf = absent\n|   |   |   |   |   fruiting-bodies = absent\n|   |   |   |   |   |   date = ?: alternarialeaf-spot (0)\n|   |   |   |   |   |   date = april: brown-spot (7)\n|   |   |   |   |   |   date = august\n|   |   |   |   |   |   |   plant-growth = abnorm: frog-eye-leaf-spot (3)\n|   |   |   |   |   |   |   plant-growth = norm\n|   |   |   |   |   |   |   |   leaf-shread = absent\n|   |   |   |   |   |   |   |   |   seed = abnorm: alternarialeaf-spot (3)\n|   |   |   |   |   |   |   |   |   seed = norm\n|   |   |   |   |   |   |   |   |   |   hail = no: frog-eye-leaf-spot (3)\n|   |   |   |   |   |   |   |   |   |   hail = yes\n|   |   |   |   |   |   |   |   |   |   |   plant-stand = lt-normal: alternarialeaf-spot (12/2)\n|   |   |   |   |   |   |   |   |   |   |   plant-stand = normal\n|   |   |   |   |   |   |   |   |   |   |   |   seed-tmt = fungicide: frog-eye-leaf-spot (9)\n|   |   |   |   |   |   |   |   |   |   |   |   seed-tmt = none\n|   |   |   |   |   |   |   |   |   |   |   |   |   germination = 80-89\n"+
+"|   |   |   |   |   |   |   |   |   |   |   |   |   |   crop-hist = diff-lst-year: alternarialeaf-spot (0)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-sev-yrs: alternarialeaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-two-yrs\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   area-damaged = ?: alternarialeaf-spot (0)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   area-damaged = low-areas: alternarialeaf-spot (0)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   area-damaged = scattered: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   area-damaged = upper-areas: alternarialeaf-spot (3)\n|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   area-damaged = whole-field: alternarialeaf-spot (0)\n"+
+"|   |   |   |   |   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-yr: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   |   |   germination = 90-100: alternarialeaf-spot (4)\n|   |   |   |   |   |   |   |   |   |   |   |   |   germination = lt-80: alternarialeaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   |   seed-tmt = other: frog-eye-leaf-spot (0)\n|   |   |   |   |   |   |   |   leaf-shread = present: alternarialeaf-spot (4)\n|   |   |   |   |   |   date = july\n|   |   |   |   |   |   |   precip = gt-norm\n|   |   |   |   |   |   |   |   area-damaged = ?: frog-eye-leaf-spot (0)\n|   |   |   |   |   |   |   |   area-damaged = low-areas: brown-spot (3/1)\n|   |   |   |   |   |   |   |   area-damaged = scattered\n|   |   |   |   |   |   |   |   |   crop-hist = diff-lst-year: alternarialeaf-spot (5/1)\n|   |   |   |   |   |   |   |   |   crop-hist = same-lst-sev-yrs: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   crop-hist = same-lst-two-yrs: frog-eye-leaf-spot (1)\n|   |   |   |   |   |   |   |   |   crop-hist = same-lst-yr: frog-eye-leaf-spot (1)\n|   |   |   |   |   |   |   |   area-damaged = upper-areas: frog-eye-leaf-spot (3)\n|   |   |   |   |   |   |   |   area-damaged = whole-field: brown-spot (2)\n|   |   |   |   |   |   |   precip = lt-norm: phyllosticta-leaf-spot (2)\n|   |   |   |   |   |   |   precip = norm: phyllosticta-leaf-spot (4)\n|   |   |   |   |   |   date = june\n|   |   |   |   |   |   |   precip = gt-norm: brown-spot (31)\n|   |   |   |   |   |   |   precip = lt-norm: phyllosticta-leaf-spot (6)\n|   |   |   |   |   |   |   precip = norm\n"+
+"|   |   |   |   |   |   |   |   hail = no: brown-spot (3)\n|   |   |   |   |   |   |   |   hail = yes: phyllosticta-leaf-spot (4/1)\n|   |   |   |   |   |   date = may: brown-spot (36/1)\n|   |   |   |   |   |   date = october: alternarialeaf-spot (44/1)\n|   |   |   |   |   |   date = september\n|   |   |   |   |   |   |   stem = abnorm: frog-eye-leaf-spot (3)\n|   |   |   |   |   |   |   stem = norm\n|   |   |   |   |   |   |   |   temp = gt-norm: alternarialeaf-spot (37)\n|   |   |   |   |   |   |   |   temp = lt-norm: alternarialeaf-spot (0)\n|   |   |   |   |   |   |   |   temp = norm\n|   |   |   |   |   |   |   |   |   leaf-shread = absent\n|   |   |   |   |   |   |   |   |   |   crop-hist = diff-lst-year: alternarialeaf-spot (5)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-sev-yrs: frog-eye-leaf-spot (4)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-two-yrs: alternarialeaf-spot (4)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-yr\n|   |   |   |   |   |   |   |   |   |   |   germination = 80-89: alternarialeaf-spot (1)\n|   |   |   |   |   |   |   |   |   |   |   germination = 90-100: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   germination = lt-80: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   leaf-shread = present: alternarialeaf-spot (8)\n|   |   |   |   |   fruiting-bodies = present: brown-spot (49)\n|   |   |   |   leaf-malf = present: phyllosticta-leaf-spot (14)\n|   |   leaf-mild = lower-surf: downy-mildew (30)\n|   |   leaf-mild = upper-surf: brown-spot (0)\n|   leafspot-size = lt-1/8\n|   |   canker-lesion = brown: bacterial-blight (0)\n|   |   canker-lesion = dk-brown-blk: bacterial-blight (0)\n|   |   canker-lesion = dna\n|   |   |   leafspots-marg = dna: bacterial-blight (0)\n|   |   |   leafspots-marg = no-w-s-marg: bacterial-pustule (26)\n|   |   |   leafspots-marg = w-s-marg\n|   |   |   |   seed-size = lt-norm: bacterial-pustule (3)\n|   |   |   |   seed-size = norm: bacterial-blight (31/1)\n|   |   canker-lesion = tan: purple-seed-stain (16)";
+		//getCurrentProcedure();
+		//var str:String="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+		cplusPluseCallBackFunction(str);
 	
-	}	
+	//}	
 }
 
 private function getCurrentProcedure():String
@@ -518,13 +538,23 @@ private function getCurrentProcedure():String
 			procedure+="classification";
 		}
 		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
-		{
-			procedure+="mysql";
-			procedurePara=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString();
+		{			
+			if(MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedIndex<0 && MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text=="" && MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text=="")
+			{
+				showError("Query not configured!\nEnter the query for MYSQL data source...");
+				return null;
+			}
+			else
+			{
+				procedure+="mysql";
+				var st:Array=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString().split("<name>");
+				var stt:Array=String(st[1]).split("</name>");
+				procedurePara=String(stt[0])+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text.toString()+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text.toString();
+			}
 		}
 		else if(Obj.type()==ActionObjectParent.XML_LOADER)
 		{
-			if(XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text=="" || XMLLoaderConfigPopUp(Obj.config).xml_data_location.text=="")
+			if(XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text=="" && XMLLoaderConfigPopUp(Obj.config).xml_data_location.text=="" && XMLLoaderConfigPopUp(Obj.config).xml_data_source.text=="")
 			{
 				showError("Paths not configured!\nEnter the paths of the XML files...");
 				return null;
@@ -542,6 +572,22 @@ private function getCurrentProcedure():String
 		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION_2)
 		{
 			procedure+="ewah";
+		}
+		else if(Obj.type()==ActionObjectParent.MSSQL_DATASOURCE)
+		{
+			procedure+="mssql";
+			/*if(MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedIndex<0 && MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text=="" && MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text=="")
+			{
+				showError("Query not configured!\nEnter the query for MYSQL data source...");
+				return null;
+			}
+			else
+			{
+				procedure+="mysql";
+				var st:Array=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString().split("<name>");
+				var stt:Array=String(st[1]).split("</name>");
+				procedurePara=String(stt[0])+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text.toString()+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text.toString();
+			}*/
 		}		
 		if(i+1!=actionObjectSequence.length)
 		{
@@ -707,6 +753,12 @@ private function mouseDownHandler(event:MouseEvent):void
     	rangeSplitter.image=dragInitiator;
     	actionObj=rangeSplitter;	
     }
+    else if(dragInitiator.id=="MSSQL_DataSource")
+    {
+    	var mssqldatasource:MsSqlDataSource=new MsSqlDataSource();
+    	mssqldatasource.image=dragInitiator;
+    	actionObj=mssqldatasource;	
+    }
 
     var imageProxy:Image = new Image();
     imageProxy.source = dragInitiator.source;
@@ -750,6 +802,18 @@ private function dragDropHandler(event:DragEvent):void
 			var itemId:String = actionObj.id;
     		getDataSourceList(itemId);
     	}
+    	else if(actionObj.type()==ActionObjectParent.MSSQL_DATASOURCE)
+    	{
+    		var mssqlListX:int=actionObj.vboxX+actionObj.vbox.width;
+    		var mssqlListY:int=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height-40;
+    		var mssqlsourcesPopUp:MsSQLDataSourcesSelectPopUp=MsSQLDataSourcesSelectPopUp(PopUpManager.createPopUp(this, MsSQLDataSourcesSelectPopUp , false));
+    		actionObj.configObj=mssqlsourcesPopUp; 
+    		mssqlObject=MsSqlDataSource(actionObj);        
+		    mssqlsourcesPopUp.x=mssqlListX;
+		    mssqlsourcesPopUp.y=mssqlListY;
+			var msitemId:String = actionObj.id;
+    		getMSDataSourceList(msitemId);
+    	}
     	else if(actionObj.type()==ActionObjectParent.CSV_DATASOURCE)
     	{
     		var csvPathEnterPopUp:CSVConfigPopUp=CSVConfigPopUp(PopUpManager.createPopUp(this, CSVConfigPopUp , false));
@@ -779,7 +843,7 @@ private function dragDropHandler(event:DragEvent):void
 
 private function getDataSourceList(itemId:String):void 
 {
-	trace("call");
+	//trace("call");
 	var ret:Object = new Object();
 	ret["flashId"] = __flashPlayerId;
 	ret["flashIndex"] = __flashPlayerIndex;
@@ -788,7 +852,22 @@ private function getDataSourceList(itemId:String):void
 	ret["eventType"] = "click";
 	ret["procedure"] = "getMySqlDataSourceList";
 	__callBackFunction.call(fabridge,ret);
-	//var str:String="sqlDataSourcesList##<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+	//var str:String="mysqlDataSourcesList##<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+	//cplusPluseCallBackFunction(str);
+}
+
+private function getMSDataSourceList(itemId:String):void 
+{
+	//trace("call");
+	var ret:Object = new Object();
+	ret["flashId"] = __flashPlayerId;
+	ret["flashIndex"] = __flashPlayerIndex;
+	ret["itemId"] = itemId;
+	ret["itemType"] = "Button";
+	ret["eventType"] = "click";
+	ret["procedure"] = "getMsSqlDataSourceList";
+	__callBackFunction.call(fabridge,ret);
+	//var str:String="mssqlDataSourcesList##<mssqlsource><name>Mssource1</name></mssqlsource><mssqlsource><name>Mssource2</name></mssqlsource>";
 	//cplusPluseCallBackFunction(str);
 }
 
