@@ -13,7 +13,9 @@
 #include "SaveDataSources.h"
 #include "LoadSavedDataSources.h"
 #include <iostream>
-
+#include <boost/exception/all.hpp>
+#include <boost/exception/info.hpp>
+#include <boost/exception/errinfo_errno.hpp>
 
 using namespace std;
 using namespace DBConnectionInfo;
@@ -26,14 +28,13 @@ void EncodeForAll();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	LoadSavedDataSources *lds = new LoadSavedDataSources(3,"zoo_data_data","zoo_metadata");
-	
-DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
-	WrapDataSource *wds = (*dss)("zoo_data");
-	cout<<wds->generateCSVStringofDecodedData();
-	delete wds;
-
-
+	DBConnection cCon("zoo_123","","");
+	try{
+		cCon.initiateConnectionToDB();
+	}
+	catch(boost::exception &ex){
+		cout<< boost::diagnostic_information(ex)<<endl;
+	}
 	return 0;
 }
 
