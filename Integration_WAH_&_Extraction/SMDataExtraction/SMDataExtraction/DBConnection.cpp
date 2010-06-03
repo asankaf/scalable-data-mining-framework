@@ -9,6 +9,7 @@
 #include <iostream>
 #include <wtypes.h>
 #include <vector>
+#include "exceptionreader.h"
 
 using namespace boost;
 
@@ -42,7 +43,9 @@ namespace DBConnectionInfo{
 		catch(CGOdbcEx *e)
 		{
 			string dsn_name(this->_DSN_Name);
-			string db_error = "SEEDMiner Exception: \nError in connecting to database: Possible error in DSN or database authentication info";
+			string err = "SM1001";
+			string db_error  = ExceptionReader::GetError(err);
+			//string db_error = "SEEDMiner Exception: \nError in connecting to database: Possible error in DSN or database authentication info";
 			db_error += "\nProvided DSN: " + dsn_name;
 			BOOST_THROW_EXCEPTION(error_db_connection(db_error));					
 		}
