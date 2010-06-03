@@ -2,6 +2,7 @@
 #include <stdhead.h>
 #include "DSNDriverInfo.h"
 #include "SMException.h"
+#include "SEEDMinerExceptions.h"
 #include <string>
 #include <wtypes.h>
 
@@ -26,7 +27,7 @@ namespace DBConnectionInfo{
 		__declspec(dllexport) ~DBConnection(void);
 
 		//Database Connection exportable methods for external activities.
-		__declspec(dllexport) bool initiateConnectionToDB();
+		__declspec(dllexport) bool initiateConnectionToDB() throw(error_db_connection);
 		__declspec(dllexport) bool closeConnectionWithDB();
 		__declspec(dllexport) char* getDBConnectionString(void);
 		__declspec(dllexport) CGOdbcConnect DBConnectionPtr(void);
