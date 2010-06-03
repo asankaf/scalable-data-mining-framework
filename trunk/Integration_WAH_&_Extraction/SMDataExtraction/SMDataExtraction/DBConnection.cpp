@@ -1,11 +1,16 @@
 #include "stdafx.h"
 #include "DBConnection.h"
+#include "SEEDMinerExceptions.h"
+#include <boost/exception/all.hpp>
+#include <boost/exception/info.hpp>
+#include <boost/exception/errinfo_errno.hpp>
 #include <stdexcept>
 #include <string>
 #include <iostream>
 #include <wtypes.h>
 #include <vector>
 
+using namespace boost;
 
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
@@ -15,12 +20,6 @@ namespace DBConnectionInfo{
 		this->_DSN_Name = DSN_Name;
 		this->_DB_UID = DB_UID;
 		this->_DB_PWD = DB_PWD;
-// 		this->_DB_Connection_String = "DSN = ";
-// 		this->_DB_Connection_String = strcpy(this->_DB_Connection_String,this->_DSN_Name);
-// 		this->_DB_Connection_String = strcat(this->_DB_Connection_String,"; UID = ");
-// 		this->_DB_Connection_String = strcat(this->_DB_Connection_String,this->_DB_UID);
-// 		this->_DB_Connection_String = strcat(this->_DB_Connection_String,"; PWD = ");
-// 		this->_DB_Connection_String = strcat(this->_DB_Connection_String,this->_DB_PWD);
 	}
 
 	DBConnectionInfo::DBConnection::DBConnection(char* DB_Connection_String){
@@ -35,17 +34,17 @@ namespace DBConnectionInfo{
 // 			}
 // 			else
 // 			{
-				this->_dbConPtr.connect(this->_DSN_Name,this->_DB_UID,this->_DB_PWD);
-			//}
+			this->_dbConPtr.connect(this->_DSN_Name,this->_DB_UID,this->_DB_PWD);
 			this->_dsnDriverInfo.setDSNDriverName(this->_dbConPtr.getDriver());
 			
 			return true;
 		}
 		catch(CGOdbcEx *e)
 		{
-			std::cerr<<"Error in connecting to database: Possible error in DSN or database authentication info"<<std::endl;
-			exit(1);
-			//TODO add logging method to record error condition.
+			string dsn_name(this->_DSN_Name);
+			string db_error = "SEEDMiner Exception: \nError in connecting to database: Possible error in DSN or database authentication info";
+			db_error += "\nProvided DSN: " + dsn_name;
+			BOOST_THROW_EXCEPTION(error_db_connection(db_error));			
 			return false;			
 		}
 	}
@@ -57,9 +56,11 @@ namespace DBConnectionInfo{
 			return true;
 		}
 		catch(CGOdbcEx *ex){
-			//TODO add logging method to record error condition.
-			std::cerr<<"Error in closing connection to Database."<<std::endl;
-			exit(4);
+			
+			string dsn_name(this->_DSN_Name);
+			string db_error = "SEEDMiner Exception: \nError in closing connection to Database.";
+			db_error += "\nProvided DSN: " + dsn_name;
+			BOOST_THROW_EXCEPTION(error_db_connection(db_error));	
 			return false;
 		}
 	}
@@ -227,6 +228,7 @@ namespace DBConnectionInfo{
 					{
 						string dest_str((char*)name);
 						dataSourceNames.push_back(dest_str);
+						//dataSourceNames.push_back("Test");
 					}
 				} 
 			}
