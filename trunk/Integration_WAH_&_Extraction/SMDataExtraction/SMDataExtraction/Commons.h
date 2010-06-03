@@ -62,14 +62,14 @@ public:
 	/** Creating the configuration file, given by the location _path*/
 	_declspec(dllexport) static void BuildFile(string & _path);
 
-
-	private :
-	static hash_map<string,string> m_map;
-
 	/** Tokenises the string and add to the hash map*/
 	static void Tokenise(string & _str,hash_map<string,string> & _map);
 
 	/** Method to read a file and populate it into a vector*/
 	static vector<string> ReadFile(string & _path);
+
+	private :
+	static hash_map<string,string> m_map;
+	
 	
 };

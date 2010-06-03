@@ -551,7 +551,6 @@ namespace CompressedStructure{
 		int left_operand_end_position  = 0;
 		int right_operand_start_position  = 0;
 		int right_operand_end_position  = 0;
-		//int compressed_word_value  = 0;
 		int left_operand_index  = 0;
 		int right_operand_index  = 0;
 		int compressed_word_index  = 0;
@@ -735,7 +734,6 @@ namespace CompressedStructure{
 					if (rightStartBit == ONE_GAP_WORD)
 					{
 						unsigned long int blockRun = right_operand_end_position  - left_operand_end_position ;
-						//unsigned long int gapRunBlocks = rightOperand[rightOperandIndex] - ONE_GAP_START_FLAG;
 						unsigned long int resultGap = ONE_GAP_START_FLAG + blockRun;
 						SetValueOnCompressedWord(resultGap,compressedResult);
 						vector<int> result = AlignLeftWithRight(right_operand_end_position ,left_operand_index ,left_operand_end_position ,left_operand ,compressedResult,ONE_GAP,OR,gap_extension  );
@@ -825,11 +823,7 @@ namespace CompressedStructure{
 		{
 			if (_longer == ONE_GAP && !_gap_extension_state)
 			{
-				/*int rightStartBit = getStartBitValue(rightOperand[rightOpIndex]);
-				if (rightStartBit == LITERAL_WORD)
-				{*/
 				SetValueOnCompressedWord(_right_operand[_right_op_index],_result_vector);
-				//}
 			}
 
 			while(_left_op_end_pos > _right_op_end_pos){
@@ -880,13 +874,7 @@ namespace CompressedStructure{
 			//result. This code block performs that. 
 			if ((_longer == ZERO_GAP) & !_gap_extension_state)
 			{
-				// 				int rightStartBit = getStartBitValue(rightOperand[rightOpIndex]);
-				// 				if (rightStartBit == LITERAL_WORD)
-				// 				{
 				SetValueOnCompressedWord(_right_operand[_right_op_index],_result_vector);
-				//				}
-
-
 			}
 
 			while(_left_op_end_pos > _right_op_end_pos){
@@ -953,13 +941,7 @@ namespace CompressedStructure{
 		{
 			if ((longer == ONE_GAP) & !gapExtensionState)
 			{
-				// 				int leftStartBit = getStartBitValue(leftoperand[leftOpIndex]);
-				// 				if (leftStartBit == LITERAL_WORD)
-				// 				{
 				SetValueOnCompressedWord(leftoperand[leftOpIndex],resultVector);
-				//}
-
-
 			}
 
 			while(leftOpEndPos < rightOpEndPos){
@@ -1227,36 +1209,6 @@ namespace CompressedStructure{
 		return resultBitset;
 	}
 
-	/*WAHStructure * WAHStructure::operator ~(){
-	WAHStructure * result = new WAHStructure();
-	vector<unsigned long int> newCompressedStream;
-	vector<unsigned long int>::iterator vectorIterator  = m_compressed_stream.begin();
-	while(vectorIterator != m_compressed_stream.end())
-	{
-	unsigned long int vectorValue = *(vectorIterator);
-	int startBitValue = GetStartBitValue(vectorValue);
-	if (startBitValue == LITERAL_WORD)
-	{
-	newCompressedStream.push_back((~vectorValue) & ONE_LITERAL);
-	}else if (startBitValue == ONE_GAP_WORD)
-	{
-	newCompressedStream.push_back((vectorValue - ONE_GAP_START_FLAG + ZERO_GAP_START_FLAG));
-	}else if(startBitValue == ZERO_GAP_WORD)
-	{
-	newCompressedStream.push_back((vectorValue - ZERO_GAP_START_FLAG + ONE_GAP_START_FLAG));
-	}
-	vectorIterator++;
-	}
-	result->SetCompressedStream(newCompressedStream);
-	result->OriginalStreamSize(m_iOriginalStreamSize);
-	if (m_iActiveWordSize > 0)
-	{
-	result->ActiveWordSize(m_iActiveWordSize);
-	result->ActiveWord(~m_ulActiveWord);
-	}
-	return result;
-	}
-	*/
 	BitStreamInfo * WAHStructure::operator ~(){
 		WAHStructure * result = new WAHStructure();
 		WAHStructure * current_structure = dynamic_cast<WAHStructure *>(this);

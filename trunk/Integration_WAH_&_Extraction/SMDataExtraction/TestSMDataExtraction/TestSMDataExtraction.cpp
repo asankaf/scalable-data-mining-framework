@@ -16,7 +16,8 @@
 #include <boost/exception/all.hpp>
 #include <boost/exception/info.hpp>
 #include <boost/exception/errinfo_errno.hpp>
-
+#include "ExceptionReader.h"
+#include "Init.h"
 using namespace std;
 using namespace DBConnectionInfo;
 //using namespace DBQueryExecutionInfo;
@@ -26,15 +27,28 @@ using namespace CsvDataExtraction;
 void AutomateEncoding(vector<string> & _vect);
 void EncodeForAll();
 
+
+/*
+static struct static_block {
+static_block() {		
+ExceptionReader::BuildFile(string("exception.exp"));		
+}
+} _STATIC_BLOCK_INSTANCE;*/
+
 int _tmain(int argc, _TCHAR* argv[])
 {
+
+	//ExceptionReader::BuildFile(string("exception.exp"));		
+	//cout << ExceptionReader::GetError("SM1001")<< endl;
+	
 	DBConnection cCon("zoo_123","","");
-	try{
-		cCon.initiateConnectionToDB();
-	}
-	catch(boost::exception &ex){
-		cout<< boost::diagnostic_information(ex)<<endl;
-	}
+		try{
+			cCon.initiateConnectionToDB();
+		}
+		catch(boost::exception &ex){
+			cout<< boost::diagnostic_information(ex)<<endl;
+		}
+	
 	return 0;
 }
 
