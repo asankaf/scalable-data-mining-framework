@@ -10,6 +10,7 @@
 #include <wtypes.h>
 #include <vector>
 #include "exceptionreader.h"
+#include "ExceptionCodes.h"
 
 using namespace boost;
 
@@ -40,14 +41,15 @@ namespace DBConnectionInfo{
 			
 			return true;
 		}
-		catch(CGOdbcEx *e)
+		catch(CGOdbcEx * e)
 		{
+			error_db_connection ex;
 			string dsn_name(this->_DSN_Name);
-			string err = "SM1001";
-			string db_error  = ExceptionReader::GetError(err);
-			//string db_error = "SEEDMiner Exception: \nError in connecting to database: Possible error in DSN or database authentication info";
+			string db_error  = ExceptionReader::GetError(DB_EXCEPTION);			
 			db_error += "\nProvided DSN: " + dsn_name;
-			BOOST_THROW_EXCEPTION(error_db_connection(db_error));					
+			ex << error_message(db_error);
+			ex<<error_code(DB_EXCEPTION);
+			BOOST_THROW_EXCEPTION(ex);			
 		}
 	}
 
@@ -57,13 +59,15 @@ namespace DBConnectionInfo{
 			this->_dbConPtr.close();
 			return true;
 		}
-		catch(CGOdbcEx *ex){
-			
+		catch(CGOdbcEx * e){
+			//throw enable_error_info(std::exception("Error!"));
+			error_db_connection ex;
 			string dsn_name(this->_DSN_Name);
-			string db_error = "SEEDMiner Exception: \nError in closing connection to Database.";
+			string db_error  = ExceptionReader::GetError(DB_EXCEPTION);			
 			db_error += "\nProvided DSN: " + dsn_name;
-			BOOST_THROW_EXCEPTION(error_db_connection(db_error));	
-			return false;
+			ex << error_message(db_error);
+			ex<<error_code(DB_EXCEPTION);
+			BOOST_THROW_EXCEPTION(ex);			
 		}
 	}
 

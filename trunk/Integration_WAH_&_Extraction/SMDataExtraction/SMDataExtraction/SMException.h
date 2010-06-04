@@ -1,6 +1,7 @@
 #include "stdhead.h"
 #include <stdexcept>
-class CGOdbcEx : public std::exception{
+#include "boost\exception\exception.hpp"
+class CGOdbcEx : virtual std::exception{
 public:
 	typedef enum
 	{
