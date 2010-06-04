@@ -11,24 +11,15 @@ using namespace std;
 	class: base_exception
 	Description: Base Class of All SEEDMiner Exception classes
 ///////////////////////////////////////////////////////////////////////*/
-class base_exception : public std::exception
+
+typedef boost::error_info<struct tag_error_message,std::string> error_message;
+typedef boost::error_info<struct tag_error_code,std::string> error_code;
+
+struct base_exception : virtual std::exception, virtual boost::exception
 {
-public: 
-	base_exception(std::string err_msg) 
-		: what_(err_msg) 
-	{ 
-	} 
 
-	virtual const char *what() const throw() 
-	{ 
-		return what_.c_str(); 
-	} 
-
-private: 
-	std::string what_; 
 };
 
-class error_db_connection : public base_exception{
-public:
-	error_db_connection(string db_error) : base_exception(db_error){}
+struct error_db_connection : virtual base_exception {
+
 };

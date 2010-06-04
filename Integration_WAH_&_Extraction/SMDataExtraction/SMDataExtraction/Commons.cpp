@@ -93,3 +93,13 @@ void Commons::Tokenise(string & _str,hash_map<string,string> & _map)
 	size_t i = 0 ;
 	_map[*iter++] = *iter;	
 }
+
+void Commons::Tokenise(string & _str,string _delimiter,hash_map<string,string> & _map)
+{
+	vector<string> result(2);
+	char_separator<char> sep(_delimiter.data());
+	tokenizer<char_separator<char>> tokens(_str, sep);
+	tokenizer<char_separator<char>>::iterator iter = tokens.begin();
+	size_t i = 0 ;
+	_map[*iter++] = *iter;	
+}

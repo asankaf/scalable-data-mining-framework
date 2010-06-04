@@ -46,7 +46,17 @@ int _tmain(int argc, _TCHAR* argv[])
 			cCon.initiateConnectionToDB();
 		}
 		catch(boost::exception &ex){
-			cout<< boost::diagnostic_information(ex)<<endl;
+			//cout<< boost::diagnostic_information(ex)<<endl;
+			cout <<"Error File : " << *get_error_info<throw_file>(ex)<< endl;
+			cout <<"Error Line : " << *get_error_info<throw_line>(ex)<< endl;
+			cout<<"Error Code : " << *get_error_info<error_code>(ex) << endl;
+			cout <<"Error Message : " << *get_error_info<error_message>(ex)<< endl;			
+		}catch(CGOdbcEx * ex)
+		{
+			cout<< "ODBC Eception : "<< ex->getMsg()<<endl;
+		}catch(...)
+		{
+		cout<< "Catching All"<<endl;
 		}
 	
 	return 0;
