@@ -349,7 +349,7 @@ public function cplusPluseCallBackFunction(str:String):void
 	    graphPopUp.x=canvasmain.width/2-graphPopUp.width/2;
 	    graphPopUp.y=canvasmain.height/2-graphPopUp.height/2;
 	}
-	else if(view=="noView")
+	else if(view=="errorProcedure")
 	{
 		showError("Invalid flaw! Please create a new valid flaw to execute...");
 		clearCanvas(new MouseEvent(Event.CHANGE));
@@ -522,26 +522,6 @@ private function getCurrentProcedure():String
 			}
 			
 		}
-		else if(Obj.type()==ActionObjectParent.ALGORITHM_APRIORY)
-		{
-			procedure+="apriory";
-		}
-		else if(Obj.type()==ActionObjectParent.TEXT_VIEWER)
-		{
-			procedure+="text";
-		}
-		else if(Obj.type()==ActionObjectParent.TREE_VIEWER)
-		{
-			procedure+="tree";
-		}
-		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
-		{
-			procedure+="classification";
-		}
-		else if(Obj.type()==ActionObjectParent.ALGORITHM_NAIVEBAYES)
-		{
-			procedure+="naiveBayes";
-		}
 		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
 		{			
 			if(MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedIndex<0 && MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text=="" && MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text=="")
@@ -570,30 +550,21 @@ private function getCurrentProcedure():String
 				procedurePara=XMLLoaderConfigPopUp(Obj.config).xml_metadata_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_location.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_source.text.toString()+"@@"+XMLLoaderConfigPopUp(Obj.config).xml_data_size.text.toString();
 			}
 		}
-		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION)
-		{
-			procedure+="wah";
-		}
-		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION_2)
-		{
-			procedure+="ewah";
-		}
 		else if(Obj.type()==ActionObjectParent.MSSQL_DATASOURCE)
 		{
-			procedure+="mssql";
-			/*if(MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedIndex<0 && MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text=="" && MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text=="")
+			if(MsSQLDataSourcesSelectPopUp(Obj.config).dg.selectedIndex<0 && MsSQLDataSourcesSelectPopUp(Obj.config).mssql_query.text=="" && MsSQLDataSourcesSelectPopUp(Obj.config).mssql_data_size.text=="")
 			{
-				showError("Query not configured!\nEnter the query for MYSQL data source...");
+				showError("Query not configured!\nEnter the query for MSSQL data source...");
 				return null;
 			}
 			else
 			{
-				procedure+="mysql";
-				var st:Array=MySqlDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString().split("<name>");
-				var stt:Array=String(st[1]).split("</name>");
-				procedurePara=String(stt[0])+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text.toString()+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text.toString();
-			}*/
-		}	
+				procedure+="mssql";
+				var sa:Array=MsSQLDataSourcesSelectPopUp(Obj.config).dg.selectedItem.toString().split("<name>");
+				var saa:Array=String(sa[1]).split("</name>");
+				procedurePara=String(saa[0])+"@@"+MsSQLDataSourcesSelectPopUp(Obj.config).mssql_query.text.toString()+"@@"+MsSQLDataSourcesSelectPopUp(Obj.config).mssql_data_size.text.toString();
+			}
+		}
 		else if(Obj.type()==ActionObjectParent.FILTER_RESAMPLE)
 		{
 			procedure+="removeNull";
@@ -606,6 +577,34 @@ private function getCurrentProcedure():String
 		{
 			procedure+="rangesplite";
 		}
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION)
+		{
+			procedure+="wah";
+		}
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION_2)
+		{
+			procedure+="ewah";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_APRIORY)
+		{
+			procedure+="apriory";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
+		{
+			procedure+="classification";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_NAIVEBAYES)
+		{
+			procedure+="naiveBayes";
+		}
+		else if(Obj.type()==ActionObjectParent.TEXT_VIEWER)
+		{
+			procedure+="text";
+		}
+		else if(Obj.type()==ActionObjectParent.TREE_VIEWER)
+		{
+			procedure+="tree";
+		}	
 		if(i+1!=actionObjectSequence.length)
 		{
 			procedure+="->";
