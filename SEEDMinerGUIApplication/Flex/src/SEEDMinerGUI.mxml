@@ -27,7 +27,7 @@
 				<mx:Canvas label="FILTERS" width="100%" height="100%">
 					<mx:HBox x="10" y="10" width="100%" height="74">
 						<mx:VBox width="125" height="73" styleName="actionIcons">
-							<mx:Image mouseDown="mouseDownHandler(event);" id="FILTER_Resample" source="@Embed('nullremoval.png')"/>
+							<mx:Image mouseDown="mouseDownHandler(event);" id="NULL_REMOVE" source="@Embed('nullremoval.png')"/>
 							<mx:Label text="Remove Null" textAlign="center"/>
 						</mx:VBox>
 						<mx:VBox width="125" height="73" styleName="actionIcons">
@@ -61,6 +61,10 @@
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('classification.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_Clasification"/>
 							<mx:Label text="Clasification"/>
+						</mx:VBox>
+						<mx:VBox width="125" height="73" styleName="actionIcons">
+							<mx:Image source="@Embed('classification.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_NAIVEBAYES"/>
+							<mx:Label text="Naive Bayes"/>
 						</mx:VBox>
 					</mx:HBox>
 				</mx:Canvas>
