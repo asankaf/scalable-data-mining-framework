@@ -3,6 +3,7 @@ import ActionClasses.ActionObject;
 import ActionClasses.ActionObjectParent;
 import ActionClasses.AlgorithmApriory;
 import ActionClasses.AlgorithmClassification;
+import ActionClasses.AlgorithmNaiveBayes;
 import ActionClasses.CSVDataSource;
 import ActionClasses.ClassificationDom;
 import ActionClasses.DiscretizeFilter;
@@ -429,7 +430,7 @@ private function showError(str:String):void
 
 private function executeFlow(event:Event):void
 {
-	/*if(1<actionObjectSequence.length)
+	if(1<actionObjectSequence.length)
 	{
 		showStatus(EXECUTING);
 		
@@ -485,7 +486,7 @@ private function executeFlow(event:Event):void
 			var str:String='graph##<items><item datasize=\"1000\" mysql=\"60\" /><item datasize=\"2000\" mysql=\"50\" /><item datasize="3000" mysql=".7" /><item datasize="4000" mysql="2.3" /><item datasize="5000" mysql="3.1" /></items>';
 		}*/
 		//var str:String="nullView##^&&3000^^5000^&&";
-		var str:String="treeViewer##int-discolor = absent\n|   plant-stand = lt-normal: herbicide-injury (12)\n|   plant-stand = normal\n|   |   leaf-malf = absent: cyst-nematode (20)\n|   |   leaf-malf = present: 2-4-d-injury (17)\nint-discolor = black: charcoal-rot (30)\nint-discolor = brown: brown-stem-rot (64)\nint-discolor = none\n|   leafspot-size = dna\n"+
+		/*var str:String="treeViewer##int-discolor = absent\n|   plant-stand = lt-normal: herbicide-injury (12)\n|   plant-stand = normal\n|   |   leaf-malf = absent: cyst-nematode (20)\n|   |   leaf-malf = present: 2-4-d-injury (17)\nint-discolor = black: charcoal-rot (30)\nint-discolor = brown: brown-stem-rot (64)\nint-discolor = none\n|   leafspot-size = dna\n"+
 "|   |   canker-lesion = brown\n|   |   |   leaves = abnorm\n|   |   |   |   fruit-spots = absent: anthracnose (5)\n|   |   |   |   fruit-spots = brown-w/blk-specks: anthracnose (10)\n|   |   |   |   fruit-spots = colored: diaporthe-stem-canker (0)\n|   |   |   |   fruit-spots = dna: diaporthe-stem-canker (21/1)\n"+
 "|   |   |   leaves = norm: rhizoctonia-root-rot (29)\n|   |   canker-lesion = dk-brown-blk\n|   |   |   plant-growth = abnorm\n|   |   |   |   plant-stand = lt-normal\n|   |   |   |   |   fruiting-bodies = absent: phytophthora-rot (128)\n|   |   |   |   |   fruiting-bodies = present: anthracnose (4)\n|   |   |   |   plant-stand = normal: anthracnose (8)\n|   |   |   plant-growth = norm: anthracnose (37)\n|   |   canker-lesion = dna\n|   |   |   plant-growth = abnorm: diaporthe-stem-canker (20)\n|   |   |   plant-growth = norm\n|   |   |   |   leaves = abnorm: powdery-mildew (30)\n"+
 "|   |   |   |   leaves = norm: diaporthe-pod-&-stem-blight (21)\n|   |   canker-lesion = tan: purple-seed-stain (14)\n|   leafspot-size = gt-1/8\n|   |   leaf-mild = absent\n|   |   |   fruit-pods = diseased\n|   |   |   |   external-decay = absent\n|   |   |   |   |   canker-lesion = brown: brown-spot (2)\n|   |   |   |   |   canker-lesion = dk-brown-blk: frog-eye-leaf-spot (2)\n|   |   |   |   |   canker-lesion = dna: frog-eye-leaf-spot (2)\n|   |   |   |   |   canker-lesion = tan: frog-eye-leaf-spot (0)\n|   |   |   |   external-decay = firm-and-dry: frog-eye-leaf-spot (86)\n|   |   |   |   external-decay = watery: frog-eye-leaf-spot (0)\n|   |   |   fruit-pods = dna: brown-spot (0)\n|   |   |   fruit-pods = few-present: brown-spot (0)\n|   |   |   fruit-pods = norm\n"+
@@ -495,9 +496,9 @@ private function executeFlow(event:Event):void
 "|   |   |   |   |   |   |   |   hail = no: brown-spot (3)\n|   |   |   |   |   |   |   |   hail = yes: phyllosticta-leaf-spot (4/1)\n|   |   |   |   |   |   date = may: brown-spot (36/1)\n|   |   |   |   |   |   date = october: alternarialeaf-spot (44/1)\n|   |   |   |   |   |   date = september\n|   |   |   |   |   |   |   stem = abnorm: frog-eye-leaf-spot (3)\n|   |   |   |   |   |   |   stem = norm\n|   |   |   |   |   |   |   |   temp = gt-norm: alternarialeaf-spot (37)\n|   |   |   |   |   |   |   |   temp = lt-norm: alternarialeaf-spot (0)\n|   |   |   |   |   |   |   |   temp = norm\n|   |   |   |   |   |   |   |   |   leaf-shread = absent\n|   |   |   |   |   |   |   |   |   |   crop-hist = diff-lst-year: alternarialeaf-spot (5)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-sev-yrs: frog-eye-leaf-spot (4)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-two-yrs: alternarialeaf-spot (4)\n|   |   |   |   |   |   |   |   |   |   crop-hist = same-lst-yr\n|   |   |   |   |   |   |   |   |   |   |   germination = 80-89: alternarialeaf-spot (1)\n|   |   |   |   |   |   |   |   |   |   |   germination = 90-100: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   |   |   germination = lt-80: frog-eye-leaf-spot (2)\n|   |   |   |   |   |   |   |   |   leaf-shread = present: alternarialeaf-spot (8)\n|   |   |   |   |   fruiting-bodies = present: brown-spot (49)\n|   |   |   |   leaf-malf = present: phyllosticta-leaf-spot (14)\n|   |   leaf-mild = lower-surf: downy-mildew (30)\n|   |   leaf-mild = upper-surf: brown-spot (0)\n|   leafspot-size = lt-1/8\n|   |   canker-lesion = brown: bacterial-blight (0)\n|   |   canker-lesion = dk-brown-blk: bacterial-blight (0)\n|   |   canker-lesion = dna\n|   |   |   leafspots-marg = dna: bacterial-blight (0)\n|   |   |   leafspots-marg = no-w-s-marg: bacterial-pustule (26)\n|   |   |   leafspots-marg = w-s-marg\n|   |   |   |   seed-size = lt-norm: bacterial-pustule (3)\n|   |   |   |   seed-size = norm: bacterial-blight (31/1)\n|   |   canker-lesion = tan: purple-seed-stain (16)";
 		//getCurrentProcedure();
 		//var str:String="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
-		cplusPluseCallBackFunction(str);
+		cplusPluseCallBackFunction(str);*/
 	
-	//}	
+	}	
 }
 
 private function getCurrentProcedure():String
@@ -536,6 +537,10 @@ private function getCurrentProcedure():String
 		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
 		{
 			procedure+="classification";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_NAIVEBAYES)
+		{
+			procedure+="naiveBayes";
 		}
 		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
 		{			
@@ -588,7 +593,19 @@ private function getCurrentProcedure():String
 				var stt:Array=String(st[1]).split("</name>");
 				procedurePara=String(stt[0])+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_query.text.toString()+"@@"+MySqlDataSourcesSelectPopUp(Obj.config).mysql_data_size.text.toString();
 			}*/
-		}		
+		}	
+		else if(Obj.type()==ActionObjectParent.FILTER_RESAMPLE)
+		{
+			procedure+="removeNull";
+		}	
+		else if(Obj.type()==ActionObjectParent.DESCRITIZE)
+		{
+			procedure+="descritize";
+		}
+		else if(Obj.type()==ActionObjectParent.RANGESPLITE)
+		{
+			procedure+="rangesplite";
+		}
 		if(i+1!=actionObjectSequence.length)
 		{
 			procedure+="->";
@@ -717,7 +734,7 @@ private function mouseDownHandler(event:MouseEvent):void
     	algorithmClassification.image=dragInitiator;
     	actionObj=algorithmClassification;	
     }
-    else if(dragInitiator.id=="FILTER_Resample")
+    else if(dragInitiator.id=="NULL_REMOVE")
     {
     	var filterResample:ActionObject = new FilterResample();
     	filterResample.image=dragInitiator;
@@ -758,6 +775,12 @@ private function mouseDownHandler(event:MouseEvent):void
     	var mssqldatasource:MsSqlDataSource=new MsSqlDataSource();
     	mssqldatasource.image=dragInitiator;
     	actionObj=mssqldatasource;	
+    }
+    else if(dragInitiator.id=="ALGORITHM_NAIVEBAYES")
+    {
+    	var naivebayes:AlgorithmNaiveBayes=new AlgorithmNaiveBayes();
+    	naivebayes.image=dragInitiator;
+    	actionObj=naivebayes;	
     }
 
     var imageProxy:Image = new Image();
