@@ -47,6 +47,8 @@ private:
 	
 	void MYSQL(string source_name,string mysql_query);
 
+	void MSSQL(string source_name,string mssql_query);
+
 	/**Loads data from a previously encoded file
 	@param _meta_file_name name of the meta file containing description of data
 	@param _data_file_name name of the file containing encoded data
@@ -62,6 +64,8 @@ private:
 
 	/**Eliminates NULL values and return the modified data source*/
 	void NullEliminator();
+	void Descritize();
+	void RangeSplite();
 
 	/**Runs Apriori Algorithm
 		@param _confidence confidence for the rules (0.9 is default)
