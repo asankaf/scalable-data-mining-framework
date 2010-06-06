@@ -1,0 +1,1 @@
+static string const DB_EXCEPTION = "SM1001";
