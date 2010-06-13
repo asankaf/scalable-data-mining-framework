@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "WAHStructure.h"
-
+#include "smcompressionexceptions.h"
+#include "ExceptionCodes.h"
 using namespace std;
 namespace CompressedStructure{
 	WAHStructure::WAHStructure(void)
@@ -268,6 +269,11 @@ namespace CompressedStructure{
 
 	WAHStructure * WAHStructure::operator &(WAHStructure & _structure)
 	{
+
+		if (_structure.OriginalStreamSize() != this->OriginalStreamSize())
+		{
+			BOOST_THROW_EXCEPTION(incompatible_operands_exception(SM2003));
+		}
 		int compressed_stream_length = m_iOriginalStreamSize;
 		vector<unsigned long int> right_operand = _structure.GetCompressedVector();
 		vector<unsigned long int> left_operand = m_compressed_stream;

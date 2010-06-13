@@ -20,7 +20,8 @@
 //#include "DBConnection.h"
 #include "testcompressionhandler.h"
 #include "testmemleaks.h"
-
+#include "testexceptions.h"
+#include "Init.h"
 
 using namespace std;
 using namespace boost;
@@ -29,6 +30,7 @@ using namespace CompressedStructure::TestStructure;
 using namespace CompressedStructure;
 //using namespace DBConnectionInfo;
 using namespace DBQueryExecutionInfo;
+void TestExcp();
 void randomBitStreamTester();
 void WAHStructureBecnhmarkAND();
 void WAHStructureBecnhmarkOR();
@@ -36,17 +38,23 @@ void MemoryLeakTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-MemoryLeakTest();
+	TestExcp();
 	return 0;
 }
 
 
 void MemoryLeakTest()
 {
-	
-		TestMemLeaks leaks;
-		leaks.TestSuite();
-	
+
+	TestMemLeaks leaks;
+	leaks.TestSuite();
+
+}
+
+void TestExcp()
+{
+	TestCompressionExceptions comp;
+	comp.TestSuite();
 }
 
 void WAHStructureBecnhmarkAND()
