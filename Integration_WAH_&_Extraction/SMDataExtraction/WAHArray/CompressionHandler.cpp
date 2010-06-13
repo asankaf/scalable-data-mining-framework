@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "CompressionHandler.h"
-
+#include "smcompressionexceptions.h"
+#include "ExceptionCodes.h"
 CompressionHandler::CompressionHandler(void)
 {
 }
@@ -8,8 +9,12 @@ CompressionHandler::CompressionHandler(void)
 CompressionHandler::~CompressionHandler(void)
 {
 }
-void CompressionHandler::ConvertTo( WrapDataSource * _pdata_source, BitStreamInfo::vertical_bit_type _end_type )
+void CompressionHandler::ConvertTo( WrapDataSource * _pdata_source, BitStreamInfo::vertical_bit_type _end_type ) throw(compression_exception)
 {
+	if (_pdata_source == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_operand_exception(SM2002));
+	}
 	vector<EncodedAttributeInfo * > attributes = _pdata_source->codedAttributes();
 	vector<EncodedAttributeInfo * >::iterator iter = attributes.begin();
 	while(iter != attributes.end())
@@ -19,30 +24,38 @@ void CompressionHandler::ConvertTo( WrapDataSource * _pdata_source, BitStreamInf
 		iter++;
 	}
 }
-void CompressionHandler::ConvertAttributeTo( EncodedAttributeInfo * _attribute,BitStreamInfo::vertical_bit_type _end_type )
+void CompressionHandler::ConvertAttributeTo( EncodedAttributeInfo * _attribute,BitStreamInfo::vertical_bit_type _end_type ) throw (compression_exception)
 {
+	if (_attribute == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_operand_exception(SM2002));
+	}
 	vector<BitStreamInfo *> bit_streams = _attribute->vBitStreams();
 	vector<BitStreamInfo *> new_bits;
 	vector<BitStreamInfo *>::iterator iter = bit_streams.begin();
 	while(iter != bit_streams.end())
 	{
-		
+
 		new_bits.push_back(ConvertBitStreamTo(*(iter),_end_type));
-			iter++;
+		iter++;
 	}
 	_attribute->setVBitStreams(new_bits);
 }
-BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_stream,BitStreamInfo::vertical_bit_type _end_type )
+BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_stream,BitStreamInfo::vertical_bit_type _end_type ) throw(compression_exception)
 {
+	if (_bit_stream == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_operand_exception(SM2002));
+	}
+
 	//Determine whether the old BitStreamInfo pointers needed to  be deleted
 	dynamic_bitset<> bit_stream = _bit_stream->Decompress();
 	BitStreamInfo * new_val = NULL;
-	//delete _bit_stream;
 	switch(_end_type)
 	{
 	case BitStreamInfo::WAH_COMPRESSION:
 		{
-			
+
 			new_val = new WAHStructure();
 			new_val->Type(BitStreamInfo::WAH_COMPRESSION);
 			break;
@@ -61,17 +74,16 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 		}
 
 	default:{
+		invalid_compression_type_exception comp(SM2001);
+		BOOST_THROW_EXCEPTION(comp);
 		break;
 			}
 	}
+	//Each bitstream is compressed by the format defined in the particular structure
 	new_val->CompressWords(bit_stream);	
+
+	//Information in the old bitstream is copied to the new bitstream
 	_bit_stream->Clone(new_val);
-//	new_val->Decompress();
-//	new_val->Print();
-// 	if (_end_type != BitStreamInfo::EWAH_COMPRESSION)
-// 	{
-// 		delete _bit_stream;
-// 	}
 	delete _bit_stream;
 	return new_val;
 }

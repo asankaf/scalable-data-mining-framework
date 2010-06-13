@@ -12,7 +12,10 @@ using namespace std;
 	Description: Base Class of All SEEDMiner Exception classes
 ///////////////////////////////////////////////////////////////////////*/
 
+/** Structure used to register an exception message in an exception*/
 typedef boost::error_info<struct tag_error_message,std::string> error_message;
+
+/** Structure used to register an exception code in an exception*/
 typedef boost::error_info<struct tag_error_code,std::string> error_code;
 
 struct base_exception : virtual std::exception, virtual boost::exception

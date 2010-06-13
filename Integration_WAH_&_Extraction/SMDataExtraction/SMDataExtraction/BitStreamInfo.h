@@ -12,7 +12,7 @@ using namespace std;
 
 class BitStreamInfo{
 public:
-	static enum vertical_bit_type{WAH_COMPRESSION,VERTICAL_STREAM_FORMAT,EWAH_COMPRESSION};
+	static enum vertical_bit_type{WAH_COMPRESSION,VERTICAL_STREAM_FORMAT,EWAH_COMPRESSION,NULL_COMP};
 	__declspec(dllexport) BitStreamInfo();
 	__declspec(dllexport) BitStreamInfo(int bitCount);
 	__declspec(dllexport) virtual ~BitStreamInfo();	

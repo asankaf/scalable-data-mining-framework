@@ -18,6 +18,7 @@
 #include <boost/exception/errinfo_errno.hpp>
 #include "ExceptionReader.h"
 #include "Init.h"
+#include "configurationreader.h"
 using namespace std;
 using namespace DBConnectionInfo;
 //using namespace DBQueryExecutionInfo;
@@ -40,24 +41,26 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//ExceptionReader::BuildFile(string("exception.exp"));		
 	//cout << ExceptionReader::GetError("SM1001")<< endl;
-	
-	DBConnection cCon("zoo_123","","");
-		try{
-			cCon.initiateConnectionToDB();
-		}
-		catch(boost::exception &ex){
-			//cout<< boost::diagnostic_information(ex)<<endl;
-			cout <<"Error File : " << *get_error_info<throw_file>(ex)<< endl;
-			cout <<"Error Line : " << *get_error_info<throw_line>(ex)<< endl;
-			cout<<"Error Code : " << *get_error_info<error_code>(ex) << endl;
-			cout <<"Error Message : " << *get_error_info<error_message>(ex)<< endl;			
-		}catch(CGOdbcEx * ex)
-		{
-			cout<< "ODBC Eception : "<< ex->getMsg()<<endl;
-		}catch(...)
-		{
-		cout<< "Catching All"<<endl;
-		}
+
+		
+		DBConnection cCon("zoo_123","","");
+			try{
+				cCon.initiateConnectionToDB();
+			}
+			catch(boost::exception &ex){
+				//cout<< boost::diagnostic_information(ex)<<endl;
+				cout <<"Error File : " << *get_error_info<throw_file>(ex)<< endl;
+				cout <<"Error Line : " << *get_error_info<throw_line>(ex)<< endl;
+				cout<<"Error Code : " << *get_error_info<error_code>(ex) << endl;
+				cout <<"Error Message : " << *get_error_info<error_message>(ex)<< endl;			
+			}catch(CGOdbcEx * ex)
+			{
+				cout<< "ODBC Eception : "<< ex->getMsg()<<endl;
+			}catch(...)
+			{
+			cout<< "Catching All"<<endl;
+			}
+		
 	
 	return 0;
 }
