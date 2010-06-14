@@ -14,7 +14,7 @@ using namespace CompressedStructure;
 class CompressionHandler
 {
 public:	
-	/**Compresses a data source to the compression format specified by _end_type*/
+	/** Compresses a data source to the compression format specified by _end_type*/
 	_declspec(dllexport) static void ConvertTo(WrapDataSource * _pdata_source, BitStreamInfo::vertical_bit_type _end_type) throw(compression_exception);
 	
 	_declspec(dllexport) CompressionHandler(void);

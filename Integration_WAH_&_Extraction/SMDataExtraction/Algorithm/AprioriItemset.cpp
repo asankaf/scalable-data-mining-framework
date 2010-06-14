@@ -81,51 +81,12 @@ hash_map<int,int> AprioriItemset::GetHashtable(vector<AprioriItemset *> & _items
 		item_set = _itemsets.at(i);
 		hash_val = item_set->HashCode();
 		//Check if [] operators are fast enough
-		result[hash_val] = item_set->Count();
-		//This deleting part has been put to compensate the effect of an
-		//inefficient hash function.
-		/*
-		if (item_set_result[hash_val] != 0)
-				{
-					delete item_set_result[hash_val]; 
-				}*/
-		
+		result[hash_val] = item_set->Count();		
 		item_set_result[hash_val] = item_set;		
 	}
 	_hash_itemset_vector.push_back(item_set_result);
 	return result;
 }
-
-/*
-hash_map<int,int> AprioriItemset::GetHashtable(vector<AprioriItemset *> & _itemsets,vector<hash_map<int,AprioriItemset *>> & _hash_itemset_vector,size_t _iteration,vector<vector<AprioriItemset() *>> & _large_itemsets)
-{
-	//In the java counterpart they have set size initially.
-	hash_map<int,int> result;
-	hash_map<int,AprioriItemset *> item_set_result;
-	AprioriItemset * item_set;
-	int hash_val = 0;
-
-	//Clearing previous itemset.
-	//ClearPreviousItemsSet(_hash_itemset_vector);
-	for (size_t i = 0; i < _itemsets.size() ; i++)
-	{
-		item_set = _itemsets.at(i);
-		hash_val = item_set->HashCode();
-		//Check if [] operators are fast enough
-		result[hash_val] = item_set->Count();
-		//This deleting part has been put to compensate the effect of an
-		//inefficient hash function.
-		if (item_set_result[hash_val] != 0)
-		{
-			delete item_set_result[hash_val]; 			
-			_large_itemsets[_iteration][]
-		}
-		item_set_result[hash_val] = item_set;		
-	}
-	_hash_itemset_vector.push_back(item_set_result);
-	return result;
-}
-*/
 
 void AprioriItemset::ClearPreviousItemsSet(vector<hash_map<int,AprioriItemset *>> & _int_item_set_vector)
 {

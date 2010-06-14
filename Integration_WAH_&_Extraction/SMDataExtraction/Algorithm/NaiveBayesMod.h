@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "wekainstances.h"
 #include "Commons.h"
+#include "smalgorithmexceptions.h"
 using namespace std;
 class NaiveBayesMod
 {
@@ -15,7 +16,7 @@ public:
 	_declspec(dllexport) ~NaiveBayesMod(void);
 
 	/**Generates the classifier. */
-	_declspec(dllexport) void buildClassifier(WekaInstances * instances,int class_index);
+	_declspec(dllexport) void buildClassifier(WekaInstances * instances,int class_index) throw (algorithm_exception);
 
 	/**Prints the value of m_count*/
 	_declspec(dllexport) void PrintCountArr(double *** array);

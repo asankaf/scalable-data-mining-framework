@@ -69,8 +69,8 @@ void TestNaiveBayes::TestSuite()
 		ds = Utils::CreateDataSource(m_file_name);
 	}
 	
-	TestClassifier(ds);
-	//PerformMemoryTest();
+	//TestClassifier(ds);
+	PerformMemoryTest();
 }
 void TestNaiveBayes::PerformMemoryTest()
 {
