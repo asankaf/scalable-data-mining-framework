@@ -59,10 +59,6 @@ BitStreamInfo * EWAH::operator &(BitStreamInfo & _right_op)
 
 BitStreamInfo * EWAH::operator |(BitStreamInfo & _right_op)
 {	
-	/*
-	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
-		WrappedBitVector * result_vect = m_bitvector | right_op->m_bitvector;	
-		return new EWAH(*(result_vect));;*/
 	EWAH * right_op = dynamic_cast<EWAH *>(&_right_op);
 	EWAH * result_vect = new EWAH(m_bitvector);
 	result_vect->m_bitvector |= right_op->m_bitvector;		

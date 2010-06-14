@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "smalgorithmexceptions.h"
 using namespace std;
 
 	class AssociateRule
@@ -31,7 +32,7 @@ using namespace std;
 		_declspec(dllexport) void Premise_count(int val) { m_premise_count = val; }
 		_declspec(dllexport) int Consequence_count() const { return m_consequence_count; }
 		_declspec(dllexport) void Consequence_count(int val) { m_consequence_count = val; }
-		_declspec(dllexport) double CalculateConfidence();
+		_declspec(dllexport) double CalculateConfidence() throw (algorithm_exception);
 
 	private:
 		vector<int> m_antecedant;		

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "classifiertestsource.h"
 #include "instances.h"
+#include "smalgorithmexceptions.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ public:
 	_declspec(dllexport) ~NaiveBayes(void);
 
 	/**Generates the classifier. */
-	_declspec(dllexport) void buildClassifier(WrapDataSource * instances,int class_index);
+	_declspec(dllexport) void buildClassifier(WrapDataSource * instances,int class_index) throw (algorithm_exception);
 
 	/**Prints the value of m_count*/
 	_declspec(dllexport) void PrintCountArr(double *** array);
@@ -23,7 +24,7 @@ public:
 	_declspec(dllexport) string toString();
 
 	/**	Classifies the supplied test set using the model created*/
-	_declspec(dllexport) void ClassifyInstances(ClassifierTestSource * _source);
+	_declspec(dllexport) void ClassifyInstances(ClassifierTestSource * _source) throw (algorithm_exception);
 
 protected:
 	/** All the counts for nominal attributes. */
@@ -50,5 +51,5 @@ private:
 	void Init();
 
 	/** Classifies a single instance*/
-	int ClassifyInstance(double * _inputs,size_t _no_of_atts,WrapDataSource * _header);
+	int ClassifyInstance(double * _inputs,size_t _no_of_atts,WrapDataSource * _header) throw (algorithm_exception);
 };

@@ -6,10 +6,10 @@
 #include "algoutils.h"
 #include "BitStreamInfo.h"
 #include "associaterule.h"
-//#include "boost/lexical_cast.hpp"
 #include <string>
 #include <algorithm>
-//using namespace Algorithm;
+#include "smalgorithmexceptions.h"
+
 class AprioriOpt
 {
 
@@ -21,7 +21,7 @@ public:
 	typedef vector<EncodedAttributeInfo *>::iterator attribute_iterator;
 	_declspec(dllexport) vector<AprioriItemset *> UniqueItems() const { return m_uniqueItems; }
 	_declspec(dllexport) void UniqueItems(vector<AprioriItemset *> val) { m_uniqueItems = val; }
-	_declspec(dllexport) void FindUniqueItemSets(WrapDataSource * _instances);
+	_declspec(dllexport) void FindUniqueItemSets(WrapDataSource * _instances) throw (algorithm_exception);
 	_declspec(dllexport) void FindLargeItemSets();	
 	_declspec(dllexport) vector<AprioriItemset *> DeleteItemSets(vector<AprioriItemset *> & _itemsets,int _nec_support, int _max_support,bool _not_initial_set);
 	_declspec(dllexport) vector<AprioriItemset *> MergeAllItemSets(vector<AprioriItemset *> & _itemSets, int size);
@@ -39,12 +39,9 @@ public:
 	_declspec(dllexport) void Cycles(int val) { m_cycles = val; }
 	_declspec(dllexport) double MinSupport() const { return m_minSupport; }
 	_declspec(dllexport) void MinSupport(double val) { m_minSupport = val; }
-	//	vector<AssociateRule *> GenerateRules(int numItemsInSet,vector<double> & _confidences, AprioriItemset * _itemset);
 	_declspec(dllexport) vector<AssociateRule *> GenerateRules( int numItemsInSet, AprioriItemset * _itemset );
-	//void PruneRules(vector<AssociateRule *> & _rules);
 	_declspec(dllexport) double Confidence() const { return m_confidence; }
 	_declspec(dllexport) void Confidence(double val) { m_confidence = val; }
-	//vector<AssociateRule *> PruneRules( vector<AssociateRule *> & _rules , vector<double> & _confidence);
 	_declspec(dllexport) vector<AssociateRule *> PruneRules( vector<AssociateRule *> & _rules);
 	_declspec(dllexport) void Clear();
 	_declspec(dllexport) void FindRulesQuickly(vector<AssociateRule *> & _rules);

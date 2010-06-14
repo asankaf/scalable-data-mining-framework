@@ -2,3 +2,11 @@ SM1001#SEEDMiner Exception: Error in connecting to database: Possible error in D
 SM2001#SMCompression Exception: Incompatible compression type
 SM2002#SMCompression Exception: Supplied operand is null
 SM2003#SMCompression Exception: Left and right operands are not of the same length
+SM3001#SMAlgorithm Exception: Supplied data source is empty
+SM3002#SMAlgorithm Exception: Some data fields contained by this algorithm contains incompatible datatypes.
+SM3003#SMAlgorithm Exception: Incorrect parameter values. Certain parameters cannot be handled by this algorithm.
+SM3004#SMAlgorithm Exception: Denominator is zero.
+SM3005#SMAlgorithm Exception: Class index out of range.
+SM3006#SMAlgorithm Exception: Classifier test source is empty.
+SM3007#SMAlgorithm Exception: Data source header is empty.
+SM3008#SMAlgorithm Exception: Classifier test instance error.

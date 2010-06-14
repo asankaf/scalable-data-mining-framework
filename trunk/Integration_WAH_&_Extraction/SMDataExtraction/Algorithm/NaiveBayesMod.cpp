@@ -11,16 +11,6 @@ NaiveBayesMod::~NaiveBayesMod(void)
 
 	if (m_Counts != NULL)
 	{
-		/*	for (size_t i = 0 ; i <  m_Instances->numClasses() ; i++)
-		{
-		for (size_t j = 0 ; j <m_Instances->numAttributes() - 1 ; j++)
-		{
-		delete m_Counts[i][j];
-		}
-		delete m_Counts[i];
-		}
-
-		*/
 		for (size_t attIndex = 0 ; attIndex < m_Instances->numClasses()  ; attIndex++)	
 		{			
 			for (int j = 0; j < m_Instances->numAttributes()-1; j++)
@@ -54,13 +44,7 @@ NaiveBayesMod::~NaiveBayesMod(void)
 	{
 		delete m_Priors;
 	}
-	/*
-	if (m_Instances != NULL)
-		{
-			delete m_Instances;
-		}*/
 	
-
 }
 
 void NaiveBayesMod::Init()
@@ -72,9 +56,17 @@ void NaiveBayesMod::Init()
 	m_Priors = NULL;
 }
 
-void NaiveBayesMod::buildClassifier(WekaInstances * instances,int class_index)
+void NaiveBayesMod::buildClassifier( WekaInstances * instances,int class_index ) throw (algorithm_exception)
 {
 
+	if (instances == NULL)
+	{
+		BOOST_THROW_EXCEPTION(empty_data_source_exception(SM3001));
+	}
+	if (class_index < 0)
+	{
+		BOOST_THROW_EXCEPTION(index_out_of_range_exception(SM3005));
+	}
 	int attIndex = 0;
 	double sum = 0;
 	m_class_index = class_index;
@@ -159,8 +151,6 @@ void NaiveBayesMod::buildClassifier(WekaInstances * instances,int class_index)
 		m_Priors[(int)m_Instances->classValueFor(row_id)]++;
 
 	}
-
-
 
 	// Compute means
 	//Enumeration enumAtts = instances.enumerateAttributes();
@@ -252,15 +242,6 @@ void NaiveBayesMod::buildClassifier(WekaInstances * instances,int class_index)
 		m_Priors[j] = (m_Priors[j] + 1) 
 			/ (sum + (double)m_Instances->numClasses());
 	}
-
-	/*
-	PrintCountArr(m_Counts);
-	cout << endl;
-	PrintPriors();
-	cout << endl;
-	PrintMeans();
-	cout << endl;
-	PrintDevs();*/
 
 }
 
@@ -366,35 +347,10 @@ void NaiveBayesMod::PrintCountArr(double *** arr)
 
 void NaiveBayesMod::ClassifyInstances( ClassifierTestSource * _source )
 {
-	/*
-	double * predict_vals = _source->Predicted_classes();
-	for (size_t i = 0 ; i < _source->Rows(); i++)
-	{
-	predict_vals[i] = ClassifyInstance(_source->Data_source()[i],_source->Headers()->codedAttributes().size() -1,_source->Headers());
-	}
-	*/
+	
 }
 
 int NaiveBayesMod::ClassifyInstance(double * _inputs,size_t _no_of_atts,WrapDataSource * _header)
-{/*
-
- int class_values = m_Instances->classAttribute()->numValues();
- double * classes = new double[class_values];
-
- for (size_t  i = 0; i < class_values ; i++)
- {
- classes[i] = m_Priors[i];
- }
-
- for (size_t j = 0 ; j < class_values ; j++)
- {
- for (size_t i = 0 ; i < _no_of_atts ; i++)
- {
- classes[j] *= m_Counts[j][i][(int)_inputs[i]];
- }
- }
- Utils::Normalize(classes,class_values);
- return Utils::MaxIndex(classes,class_values);*/
+{
 	return 0;
-
 }

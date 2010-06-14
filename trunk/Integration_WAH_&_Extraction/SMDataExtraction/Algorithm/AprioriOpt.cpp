@@ -3,6 +3,8 @@
 #include <math.h>
 #include <iosfwd>
 #include "utils.h"
+#include "smalgorithmexceptions.h"
+#include "AttributeType.h"
 
 
 using namespace std;
@@ -23,15 +25,23 @@ AprioriOpt::~AprioriOpt(void)
 	ClearAll();
 }
 
-void AprioriOpt::FindUniqueItemSets(WrapDataSource *_instances)
+void AprioriOpt::FindUniqueItemSets( WrapDataSource * _instances ) throw (algorithm_exception)
 {
 	m_instances = _instances;
+	if (_instances == NULL)
+	{
+		BOOST_THROW_EXCEPTION(empty_data_source_exception(SM3001));
+	}
 	vector<EncodedAttributeInfo *> attributes =  m_instances->codedAttributes();
 	m_numberOfAttributes = attributes.size();
 	AlgoUtils utils;
 	// at() is said to be more efficient than iterator. Try to measure this afterwards.
 	for (size_t attribute_index = 0; attribute_index < m_numberOfAttributes;attribute_index++)
 	{
+		if (attributes.at(attribute_index)->attributeType() != MULTICAT_VAL)
+		{
+			BOOST_THROW_EXCEPTION(incompatible_data_type_exception(SM3002));
+		}
 		EncodedMultiCatAttribute * multi_cat_attrib = static_cast<EncodedMultiCatAttribute *>(attributes.at(attribute_index));
 		vector<string> unique_vals = multi_cat_attrib->uniqueValList();
 		int max_number_of_bits = multi_cat_attrib->NoOfVBitStreams();
@@ -57,45 +67,22 @@ void AprioriOpt::FindUniqueItemSets(WrapDataSource *_instances)
 	}
 }
 
-//vector<AssociateRule *> AprioriOpt::MoreComplexRules(vector<AssociateRule *> rules, int numItemsInSet, int numItemsInConsequence,double minConfidence, vector<hash_map<int,int>> & hashtables) {
-//
-//	vector<AssociateRule *> more_rules;			
-//	hash_map<int,int> hashtable;
-//
-//	if (numItemsInSet > numItemsInConsequence + 1) {
-//		hashtable = hashtables.[numItemsInSet - numItemsInConsequence - 2];
-//		newConsequences = mergeAllItemSets(rules[1], numItemsInConsequence - 1,m_totalTransactions);
-//		Enumeration enu = newConsequences.elements();
-//		while (enu.hasMoreElements()) {
-//			AprioriItemSet current = (AprioriItemSet)enu.nextElement();
-//			current.m_counter = m_counter;
-//			newPremise = subtract(current);
-//			newPremise.m_counter = ((Integer)hashtable.get(newPremise)).intValue();
-//			newPremises.addElement(newPremise);
-//			newConf.addElement(new Double(confidenceForRule(newPremise, current)));
-//		}
-//		result = new FastVector[3];
-//		result[0] = newPremises;
-//		result[1] = newConsequences;
-//		result[2] = newConf;
-//		pruneRules(result, minConfidence);
-//		moreResults = moreComplexRules(result,numItemsInSet,numItemsInConsequence+1,
-//			minConfidence, hashtables);
-//		if (moreResults != null) 
-//			for (int i = 0; i < moreResults[0].size(); i++) {
-//				result[0].addElement(moreResults[0].elementAt(i));
-//				result[1].addElement(moreResults[1].elementAt(i));
-//				result[2].addElement(moreResults[2].elementAt(i));
-//			}
-//			return result;
-//	} else
-//		return null;
-//}
-
 void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 {
-	// 	double[] confidences, supports;
-	// 	int[] indices;
+
+	if (m_minSupport <= 0 || 
+	m_upperBoundMinSupport <= 0 ||
+	m_lowerBoundMinSupport <= 0 ||	
+	m_delta <= 0 ||
+	m_numRules < 0)
+	{
+		BOOST_THROW_EXCEPTION(invalid_parameter_exception(SM3003));
+	}
+
+	if (m_minSupport > 1 || m_delta > 1)
+	{
+		BOOST_THROW_EXCEPTION(invalid_parameter_exception(SM3003));
+	}
 	vector<AssociateRule *> sortedRuleSet;
 	double necSupport=0;	
 	m_cycles = 0;
@@ -109,7 +96,6 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 		(m_lowerBoundMinSupport * (double)_instances->noOfRows() < 1.0)
 		? 1.0 / (double)(_instances->noOfRows()) 
 		: m_lowerBoundMinSupport;	
-
 
 
 	// Decrease minimum support until desired number of rules found.
@@ -156,8 +142,6 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 void AprioriOpt::SortRules()
 {
 	multimap<float,int> conf_index_map;
-	// 	multimap<int,int> sup_index_map;
-	// 	pair<int,int> p2;
 	pair<float,int> p;
 
 	float sort_val = 0;
@@ -218,7 +202,7 @@ void AprioriOpt::FindLargeItemSets(){
 		kMinusOneSets = kSets;
 		kSets = MergeAllItemSets(kMinusOneSets, i);
 		hashtable = AprioriItemset::GetHashtable(kMinusOneSets,m_hashItemSets);
-		//hashtable = AprioriItemset::GetHashtable(kMinusOneSets,m_hashItemSets,i);
+		
 		// Find if this step is really necessary
 		m_hashTables.push_back(hashtable);
 		kSets = PruneItemSets(kSets, hashtable);
@@ -245,7 +229,6 @@ void AprioriOpt::UpdateCounters(vector<AprioriItemset *> & _ksets,int _kminusize
 {
 	// Logic is if a particular itemset is frequent then all of its sub sets should be frequent
 
-	//hash_map<int,int> kminus_itemset_count,unique_val_itemset_hash_table;
 	hash_map<int,AprioriItemset *> unique_val_itemset_hash_table = m_hashItemSets.at(0);
 	hash_map<int,AprioriItemset *> kminus_itemset_hash_table = m_hashItemSets.at(m_hashItemSets.size() - 1);
 
@@ -339,7 +322,7 @@ vector<AprioriItemset *> AprioriOpt::MergeAllItemSets(vector<AprioriItemset *> &
 
 	for (size_t i = 0; i < _itemSets.size(); i++) {
 		AprioriItemset * first = _itemSets.at(i);
-		//		out:
+	
 		for (int j = i+1; j < _itemSets.size(); j++) {
 			AprioriItemset * second = _itemSets.at(j);
 			result = new AprioriItemset();
@@ -362,15 +345,13 @@ vector<AprioriItemset *> AprioriOpt::MergeAllItemSets(vector<AprioriItemset *> &
 				} else 
 				{
 					external_for_break = true;
-					break;
-					//break out;
+					break;					
 				}
 				k++;
 			}
 			if (external_for_break)
 			{
 				delete result;
-				//delete[] m_items;
 				break;
 			}
 
@@ -456,16 +437,7 @@ vector<AssociateRule *> AprioriOpt::GenerateRules( int numItemsInSet, AprioriIte
 			rules.push_back(rule);						
 		}
 	}
-		rules = PruneRules(rules);
-
-		// Generate all the other rules
-		// 		moreResults = moreComplexRules(rules, numItemsInSet, 1, minConfidence,hashtables);
-		// 		if (moreResults != null) 
-		// 			for (int i = 0; i < moreResults[0].size(); i++) {
-		// 				rules[0].addElement(moreResults[0].elementAt(i));
-		// 				rules[1].addElement(moreResults[1].elementAt(i));
-		// 				rules[2].addElement(moreResults[2].elementAt(i));
-		// 			}
+		rules = PruneRules(rules);		
 		return rules;
 }
 
@@ -481,9 +453,7 @@ void AprioriOpt::FindRulesQuickly(vector<AssociateRule *> & _rules)
 		for (size_t index = 0; index < currentItemSets.size(); index++)
 		{			
 			AprioriItemset * currentItemSet = currentItemSets.at(index);
-			//AprioriItemSet currentItemSet = new AprioriItemSet((ItemSet)enumItemSets.nextElement());
-			rules = GenerateRules(j + 1,currentItemSet);
-			//AlgoUtils::CopyFirstToSecond<AssociateRule>(rules,_rules);		
+			rules = GenerateRules(j + 1,currentItemSet);			
 			AlgoUtils::CopyFirstToSecond(rules,_rules);		
 
 		}
@@ -499,8 +469,7 @@ void AprioriOpt::ClearAll()
 }
 
 void AprioriOpt::ClearlargeItemSets()
-{	
-	
+{		
 	// First element refers to unique itemset, which is cleaned by a seperate function.
 	size_t i = 1;
 	
@@ -508,7 +477,6 @@ void AprioriOpt::ClearlargeItemSets()
 	{
 		for (size_t j = 0 ; j < m_largeItemSets[i].size(); j++)
 		{
-
 			m_hashItemSets[i][m_largeItemSets[i][j]->HashCode()] = NULL;
 			delete m_largeItemSets[i][j];
 		}
@@ -545,8 +513,6 @@ void AprioriOpt::ClearHashTable()
 	}
 	m_hashTables.clear();
 	m_hashItemSets.clear();
-
-
 }
 
 void AprioriOpt::ClearRules()
@@ -605,8 +571,7 @@ void AprioriOpt::BuildStrings()
 			//Find if this operation is fast
 			consequence.erase((consequence.end()-1));
 			consequence.erase((consequence.end()-1));
-			consequence +="("+Utils::toStringVal(rule->Consequence_count())+")";
-			//	consequence += " ("+rule->Consequence_count()+") ";
+			consequence +="("+Utils::toStringVal(rule->Consequence_count())+")";			
 		}
 		consequence += " conf = " + Utils::toStringVal(rule->Confidence());
 		rule->Rule(premise + " => "+consequence);
@@ -616,7 +581,6 @@ void AprioriOpt::BuildStrings()
 void AprioriOpt::Clear()
 {
 	m_hashTables.clear();
-	//m_instances = NULL;
 	m_largeItemSets.clear();
 	m_numberOfAttributes = 0;
 	m_rules.clear();

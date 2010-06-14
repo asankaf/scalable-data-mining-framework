@@ -16,7 +16,8 @@
 #include <fstream>
 #include "testclassifiertestsource.h"
 #include "commons.h"
-
+#include "Init.h"
+#include "configurationreader.h"
 using namespace std;
 
 void TestAprioriAlgo();
@@ -31,7 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 		Commons::BuildFile(string("algorithm.cfg"));
 			
-			Commons::BuildFile(string("algorithm.cfg"));
+		//Commons::BuildFile(string("algorithm.cfg"));
 				if (Commons::ReadConfiguration(string("algorithm")) == "Apriori")
 				{
 					TestAprioriAlgo();
@@ -88,5 +89,4 @@ void MemleaksTest()
 /*
 TestMemLeaks leaks;
 leaks.TestSuite();*/
-
 }
