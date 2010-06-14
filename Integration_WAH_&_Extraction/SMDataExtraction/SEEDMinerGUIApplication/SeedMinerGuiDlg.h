@@ -13,6 +13,7 @@
 #include "nullpreprocessor.h"
 #include "CompressionHandler.h"
 #include "BitStreamInfo.h"
+#include "StringConst.h"
 //}}AFX_INCLUDES
 
 #if !defined(AFX_IntelliCheckersUIDLG_H__14D37E6D_A305_4612_A543_6DDA6BCCC9F0__INCLUDED_)
@@ -88,6 +89,46 @@ private:
 
 	/** Gives the space consumed by the Wrappeddatasource in Bytes*/
 	string MeasureSpace();
+
+	bool data_to_filter_to_apriory_to_textview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_classification_to_textview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_classification_to_treeview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_compression_to_apriory_to_textview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_compression_to_classification_to_textview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_compression_to_classification_to_treeview_procedures(vector<string>& procedureTokens);
+
+	
+
+	////combine
+	//string combine="->";
+	////data
+	//string data="data";
+	//string csv="csv";
+	//string xml="xml";
+	//string mysql="mysql";
+	//string mssql="mssql";
+	//
+	////filter
+	//string filter="filter";
+	//string removeNull="removeNull";
+	//string descritize="descritize";
+	//string rangesplite="rangesplite";
+	//
+	////algorithm
+	//string algorithm="algorithm";
+	//string apriory="apriory";
+	//string classification="classification";	
+	//string naiveBayes="naiveBayes";	
+	//
+	////compression
+	//string compression="compression";
+	//string wah="wah";
+	//string ewah="ewah";
+	//
+	////view
+	//string view="view";
+	//string text="text";
+	//string tree="tree";
 	
 public:
 	
