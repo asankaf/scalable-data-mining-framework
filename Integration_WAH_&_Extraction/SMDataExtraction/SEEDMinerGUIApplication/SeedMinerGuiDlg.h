@@ -64,6 +64,12 @@ private:
 	/**Eliminates NULL values and return the modified data source*/
 	void NullEliminator();
 
+	/**Discretize the continuous attributes and return the modified data source*/
+	void DiscretizeDataSource();
+
+	/**Range split all the numerical attributes into equal ranges provided*/
+	void SplitteRanges(int no_of_ranges);
+
 	/**Runs Apriori Algorithm
 		@param _confidence confidence for the rules (0.9 is default)
 		@param _min_suport minimum support of the rules to be found
@@ -168,6 +174,9 @@ protected:
 	DECLARE_EVENTSINK_MAP()
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+//	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 //{{AFX_INSERT_LOCATION}}

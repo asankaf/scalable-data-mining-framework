@@ -11,6 +11,8 @@
 #include "Utils.h"
 #include <wtypes.h>
 #include "DBConnection.h"
+#include "DiscretizeData.h"
+#include "RangeSplitter.h"
 
 
 #ifdef _DEBUG
@@ -325,6 +327,18 @@ void CIntelliCheckersUIDlg::NullEliminator()
 	NullPreProcessor eliminator(m_source);
 	eliminator.elimiateNullValues();
 	m_source = eliminator.NullEliminatedDatasource();
+}
+
+void CIntelliCheckersUIDlg::DiscretizeDataSource()
+{
+	DiscretizeData discreter(m_source);
+	discreter.DiscretizeAllCtsAttributes();
+}
+
+void CIntelliCheckersUIDlg::SplitteRanges(int no_of_ranges)
+{
+	 RangeSplitter splitter(m_source);
+	 splitter.SplitAllNumericalAttsIntoEualRanges(no_of_ranges);
 }
 
 void CIntelliCheckersUIDlg::Convert(BitStreamInfo::vertical_bit_type _type)
