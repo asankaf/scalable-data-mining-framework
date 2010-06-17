@@ -29,18 +29,18 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 protected:
 	//{{AFX_MSG(CAboutDlg)
 	//}}AFX_MSG
@@ -62,7 +62,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
-		// No message handlers
+	// No message handlers
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -70,10 +70,10 @@ END_MESSAGE_MAP()
 // CIntelliCheckersUIDlg dialog
 
 CIntelliCheckersUIDlg::CIntelliCheckersUIDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CIntelliCheckersUIDlg::IDD, pParent)
+: CDialog(CIntelliCheckersUIDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CIntelliCheckersUIDlg)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	InitAll();
@@ -94,8 +94,8 @@ BEGIN_MESSAGE_MAP(CIntelliCheckersUIDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
-//	ON_WM_SIZE()
-//ON_WM_SIZE()
+	//	ON_WM_SIZE()
+	//ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ BOOL CIntelliCheckersUIDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	
+
 	// TODO: Add extra initialization here
 
 	id_flash1 = CFlexCtrl::RegisterDefaultCallbacks (&m_Flash,this);
@@ -185,7 +185,7 @@ HCURSOR CIntelliCheckersUIDlg::OnQueryDragIcon()
 }
 
 BEGIN_EVENTSINK_MAP(CIntelliCheckersUIDlg, CDialog)
-    //{{AFX_EVENTSINK_MAP(CIntelliCheckersUIDlg)
+	//{{AFX_EVENTSINK_MAP(CIntelliCheckersUIDlg)
 	ON_EVENT(CIntelliCheckersUIDlg, IDC_SHOCKWAVEFLASH1, 197 /* FlashCall */, OnFlashCallShockwaveflash1, VTS_BSTR)
 	//}}AFX_EVENTSINK_MAP
 END_EVENTSINK_MAP()
@@ -200,7 +200,7 @@ void CIntelliCheckersUIDlg::OnOK()
 {
 	if(m_Flash.GetFocus())
 		m_Flash.SendMessageA(WM_KEYDOWN, VK_RETURN, 0);
-	
+
 }
 
 
@@ -211,21 +211,21 @@ void CIntelliCheckersUIDlg::OnFlexInit(int flashIndex)
 {
 	//flash->root.Call("gettxt1").Call("settext", "Grrrrrr");
 	//cout<<"hari"<<endl;
-	
+
 	if(flashIndex == id_flash1)
-		{
-			//Your initializations here.
-			flash = new CFlexObject(this, id_flash1);
-			//flash->AddEventListener("btn1", "mouseDown");
-			//flash->CallFunction("Grrr", "Modaya");
-			//flash->root.Call("Grrr", "Modayaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-			//flash->root.Call()
-	
-			
-		}
-	
+	{
+		//Your initializations here.
+		flash = new CFlexObject(this, id_flash1);
+		//flash->AddEventListener("btn1", "mouseDown");
+		//flash->CallFunction("Grrr", "Modaya");
+		//flash->root.Call("Grrr", "Modayaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		//flash->root.Call()
+
+
+	}
+
 	//Create one for each player
-	
+
 }
 
 void CIntelliCheckersUIDlg::OnFlexEvent(CFlexEvent *evt)
@@ -277,15 +277,15 @@ void CIntelliCheckersUIDlg::SavedDataLoader(string _meta_file_name,string _data_
 	/*
 	LoadSavedDataSources lsd(_meta_file_name,_data_file_name);	
 	DataSources *dsLoaded = lsd.loadSavedEncodedData();*/
-	
+
 	m_source =  (*dsLoaded)(_data_source_name);
 	//delete dsLoaded;
 }
 
 void CIntelliCheckersUIDlg::Bayesian( int _class )
 {
-m_bayesian = new NaiveBayes();
-m_bayesian->buildClassifier(m_source,_class);
+	m_bayesian = new NaiveBayes();
+	m_bayesian->buildClassifier(m_source,_class);
 }
 
 void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
@@ -350,8 +350,8 @@ void CIntelliCheckersUIDlg::DiscretizeDataSource()
 
 void CIntelliCheckersUIDlg::SplitteRanges(int no_of_ranges)
 {
-	 RangeSplitter splitter(m_source);
-	 splitter.SplitAllNumericalAttsIntoEualRanges(no_of_ranges);
+	RangeSplitter splitter(m_source);
+	splitter.SplitAllNumericalAttsIntoEualRanges(no_of_ranges);
 }
 
 void CIntelliCheckersUIDlg::Convert(BitStreamInfo::vertical_bit_type _type)
@@ -431,8 +431,8 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 			break;
 		}
 	}
-	
-		
+
+
 	return output;
 }
 
@@ -678,553 +678,562 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 
 void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
 {
-	static int flowSequenceNumber;
-	string procedure=evt->procedure;
-
-	//genaric procedures
-	string const DATA_FILTER=data+combine+filter;
-	string const DATA_ALGORITHM=data+combine+algorithm;	
-	string const DATA_COMPRESSION=data+combine+compression;		
-	string const DATA_TEXT=data+combine+text;
-
-	string const DATA_FILTER_ALGORITHM=data+combine+filter+combine+algorithm;		
-	string const DATA_FILTER_COMPRESSION=data+combine+filter+combine+compression;		
-	string const DATA_FILTER_TEXT=data+combine+filter+combine+text;			
-	string const DATA_APRIORY_TEXT=data+combine+apriory+combine+text;					
-	string const DATA_CLASSIFICATION_TEXT=data+combine+classification+combine+text;
-	string const DATA_CLASSIFICATION_TREE=data+combine+classification+combine+tree;
-	string const DATA_COMPRESSION_ALGORITHM=data+combine+compression+combine+algorithm;		
-	string const DATA_COMPRESSION_TEXT=data+combine+compression+combine+text;
-
-	string const DATA_FILTER_APRIORY_TEXT=data+combine+filter+combine+apriory+combine+text;
-	string const DATA_FILTER_CLASSIFICATION_TEXT=data+combine+filter+combine+classification+combine+text;
-	string const DATA_FILTER_CLASSIFICATION_TREE=data+combine+filter+combine+classification+combine+tree;
-	string const DATA_FILTER_COMPRESSION_TEXT=data+combine+filter+combine+compression+combine+text;		
-	string const DATA_COMPRESSION_APRIORY_TEXT=data+combine+compression+combine+apriory+combine+text;		
-	string const DATA_COMPRESSION_CLASSIFICATION_TEXT=data+combine+compression+combine+classification+combine+text;
-	string const DATA_COMPRESSION_CLASSIFICATION_TREE=data+combine+compression+combine+classification+combine+tree;
-
-	string const DATA_FILTER_COMPRESSION_APRIORY_TEXT=data+combine+filter+combine+compression+combine+apriory+combine+text;	
-	string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT=data+combine+filter+combine+compression+combine+classification+combine+text;	
-	string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE=data+combine+filter+combine+compression+combine+classification+combine+tree;	
-
-
-	string const csv_text="csv->text";
-	string const xml_text="xml->text";
-	string const mysql_text="mysql->text";
-
-	string const csv_wah="csv->wah";
-	string const xml_wah="xml->wah";
-	string const mysql_wah="mysql->wah";
-	string const csv_ewah="csv->ewah";
-	string const xml_ewah="xml->ewah";
-	string const mysql_ewah="mysql->ewah";
-
-	string const csv_wah_text="csv->wah->text";
-	string const xml_wah_text="xml->wah->text";
-	string const mysql_wah_text="mysql->wah->text";
-	string const mssql_wah_text="mssql->wah->text";
-	string const csv_ewah_text="csv->ewah->text";
-	string const xml_ewah_text="xml->ewah->text";
-	string const mysql_ewah_text="mysql->ewah->text";
-	string const mssql_ewah_text="mssql->ewah->text";
-
-	string const csv_apriory="csv->apriory";
-	string const csv_classification="csv->classification";
-	string const xml_apriory="xml->apriory";
-	string const xml_classification="xml->classification";	
-	string const mysql_apriory="mysql->apriory";
-	string const mysql_classification="mysql->classification";
-
-	string const csv_apriory_text="csv->apriory->text";
-	string const csv_classification_text="csv->classification->text";
-	string const csv_classification_tree="csv->classification->tree";	
-	string const xml_apriory_text="xml->apriory->text";
-	string const xml_classification_text="xml->classification->text";	
-	string const xml_classification_tree="xml->classification->tree";
-	string const mysql_apriory_text="mysql->apriory->text";
-	string const mysql_classification_text="mysql->classification->text";	
-	string const mysql_classification_tree="mysql->classification->tree";
-	string const mssql_apriory_text="mssql->apriory->text";
-	string const mssql_classification_text="mssql->classification->text";	
-	string const mssql_classification_tree="mssql->classification->tree";
-
-	string const csv_wah_apriory_text="csv->wah->apriory->text";
-	string const csv_wah_classification_text="csv->wah->classification->text";
-	string const csv_wah_classification_tree="csv->wah->classification->tree";	
-	string const xml_wah_apriory_text="xml->wah->apriory->text";
-	string const xml_wah_classification_text="xml->wah->classification->text";	
-	string const xml_wah_classification_tree="xml->wah->classification->tree";
-	string const mysql_wah_apriory_text="mysql->wah->apriory->text";
-	string const mysql_wah_classification_text="mysql->wah->classification->text";	
-	string const mysql_wah_classification_tree="mysql->wah->classification->tree";
-	string const mssql_wah_apriory_text="mssql->wah->apriory->text";
-	string const mssql_wah_classification_text="mssql->wah->classification->text";	
-	string const mssql_wah_classification_tree="mssql->wah->classification->tree";
-
-	string const csv_ewah_apriory_text="csv->ewah->apriory->text";
-	string const csv_ewah_classification_text="csv->ewah->classification->text";
-	string const csv_ewah_classification_tree="csv->ewah->classification->tree";	
-	string const xml_ewah_apriory_text="xml->ewah->apriory->text";
-	string const xml_ewah_classification_text="xml->ewah->classification->text";	
-	string const xml_ewah_classification_tree="xml->ewah->classification->tree";
-	string const mysql_ewah_apriory_text="mysql->ewah->apriory->text";
-	string const mysql_ewah_classification_text="mysql->ewah->classification->text";	
-	string const mysql_ewah_classification_tree="mysql->ewah->classification->tree";
-	string const mssql_ewah_apriory_text="mssql->ewah->apriory->text";
-	string const mssql_ewah_classification_text="mssql->ewah->classification->text";	
-	string const mssql_ewah_classification_tree="mssql->ewah->classification->tree";
-
-	string const csv_wah_apriory="csv->wah->apriory";
-	string const csv_wah_classification="csv->wah->classification";
-	string const xml_wah_apriory="xml->wah->apriory";
-	string const xml_wah_classification="xml->wah->classification";
-	string const mysql_wah_apriory="mysql->wah->apriory";
-	string const mysql_wah_classification="mysql->wah->classification";
-
-	string const csv_ewah_apriory="csv->ewah->apriory";
-	string const csv_ewah_classification="csv->ewah->classification";
-	string const xml_ewah_apriory="xml->ewah->apriory";
-	string const xml_ewah_classification="xml->ewah->classification";	
-	string const mysql_ewah_apriory="mysql->ewah->apriory";
-	string const mysql_ewah_classification="mysql->ewah->classification";	
-
-	bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
-
-	bool data_to_algorithm_procedures = procedure==csv_apriory || procedure==csv_classification || procedure==xml_apriory || procedure==xml_classification || procedure==mysql_apriory || procedure==mysql_classification;
-
-	bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text || procedure==mysql_apriory_text || procedure==mssql_apriory_text;
-	bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text || procedure==mysql_classification_text;
-	bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree || procedure==mysql_classification_tree;
-	bool data_to_algorithm_to_textview_procedures = data_to_apriory_to_textview_procedures || data_to_classification_to_textview_procedures;		
-
-	bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah || procedure==csv_ewah || procedure==xml_ewah || procedure==mysql_ewah;
-	bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text || procedure==mssql_wah_text || procedure==csv_ewah_text || procedure==xml_ewah_text || procedure==mysql_ewah_text || procedure==mssql_ewah_text;				
-
-	bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text || procedure==mysql_ewah_apriory_text || procedure==mysql_wah_apriory_text || procedure==mssql_ewah_apriory_text || procedure==mssql_wah_apriory_text;
-	bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text || procedure==mysql_ewah_classification_text || procedure==mysql_wah_classification_text || procedure==mssql_ewah_classification_text || procedure==mssql_wah_classification_text;
-	bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
-	bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
-
-	//bool data_to_filter_to_apriory_to_textview_procedures = procedure==csv_removeNull_apriory_text || procedure==csv_descritize_apriory_text ||procedure==csv_rangesplite_apriory_text;
-	//bool data_to_filter_to_classification_to_textview_procedures = procedure==csv_removeNull_classification_text || procedure==csv_descritize_classification_text ||procedure==csv_rangesplite_classification_text;
-	//bool data_to_filter_to_classification_to_treeview_procedures = procedure==csv_removeNull_classification_tree || procedure==csv_descritize_classification_tree ||procedure==csv_rangesplite_classification_tree;
-
-	//bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory || procedure==mysql_wah_apriory || procedure==mysql_ewah_apriory;
-	//bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification || procedure==mysql_wah_classification || procedure==mysql_ewah_classification;
-	//bool data_to_compression_to_algorithm_procedures = data_to_compression_to_apriory_procedures || data_to_compression_to_classification_procedures;
-
-	//bool data_to_filter_to_compression_to_apriory_to_textview_procedures = procedure==csv_removeNull_wah_apriory_text || procedure==csv_descritize_wah_apriory_text ||procedure==csv_rangesplite_wah_apriory_text || procedure==csv_removeNull_ewah_apriory_text || procedure==csv_descritize_ewah_apriory_text ||procedure==csv_rangesplite_ewah_apriory_text;
-	//bool data_to_filter_to_compression_to_classification_to_textview_procedures = procedure==csv_removeNull_wah_classification_text || procedure==csv_descritize_wah_classification_text ||procedure==csv_rangesplite_wah_classification_text || procedure==csv_removeNull_ewah_classification_text || procedure==csv_descritize_ewah_classification_text ||procedure==csv_rangesplite_ewah_classification_text;
-	//bool data_to_filter_to_compression_to_classification_to_treeview_procedures = procedure==csv_removeNull_wah_classification_tree || procedure==csv_descritize_wah_classification_tree ||procedure==csv_rangesplite_wah_classification_tree || procedure==csv_removeNull_ewah_classification_tree || procedure==csv_descritize_ewah_classification_tree ||procedure==csv_rangesplite_ewah_classification_tree;
-
-	if (procedure=="getMySqlDataSourceList")
+	try
 	{
-		DBConnectionInfo::DBConnection nrw_con("");
-		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
-		string formattedOutPut="mysqlDataSourcesList##";
-	    //get the real mysql data sources list as below
-		
-		for (int i = 0 ; i < source_names.size() ; i++)
-		{
-			formattedOutPut+="<mysqlsource>";
-			formattedOutPut+="<name>" + source_names[i] + "</name>";
-			formattedOutPut+="</mysqlsource>";
-		}
-		
-		//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
-		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		static int flowSequenceNumber;
+		string procedure=evt->procedure;
 
-	}
-	else if (procedure=="getMsSqlDataSourceList")
-	{
-		DBConnectionInfo::DBConnection nrw_con("");
-		vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::SQL_SERVER);
-		string formattedOutPut="mssqlDataSourcesList##";
-	    //get the real mysql data sources list as below
-		
-		for (int i = 0 ; i < source_names.size() ; i++)
-		{
-			formattedOutPut+="<mssqlsource>";
-			formattedOutPut+="<name>" + source_names[i] + "</name>";
-			formattedOutPut+="</mssqlsource>";
-		}
-		//string formattedOutPut="mssqlDataSourcesList##<mssqlsource><name>Mssource1</name></mssqlsource><mssqlsource><name>Mssource2</name></mssqlsource>";
-		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		//genaric procedures
+		string const DATA_FILTER=data+combine+filter;
+		string const DATA_ALGORITHM=data+combine+algorithm;	
+		string const DATA_COMPRESSION=data+combine+compression;		
+		string const DATA_TEXT=data+combine+text;
 
-	}
-	else
-	{	
-		vector<string> procedureTokens;
-		Tokenize(procedure, procedureTokens, "->");
-		string genericProcedure="";
+		string const DATA_FILTER_ALGORITHM=data+combine+filter+combine+algorithm;		
+		string const DATA_FILTER_COMPRESSION=data+combine+filter+combine+compression;		
+		string const DATA_FILTER_TEXT=data+combine+filter+combine+text;			
+		string const DATA_APRIORY_TEXT=data+combine+apriory+combine+text;					
+		string const DATA_CLASSIFICATION_TEXT=data+combine+classification+combine+text;
+		string const DATA_CLASSIFICATION_TREE=data+combine+classification+combine+tree;
+		string const DATA_COMPRESSION_ALGORITHM=data+combine+compression+combine+algorithm;		
+		string const DATA_COMPRESSION_TEXT=data+combine+compression+combine+text;
 
-		if(data_to_apriory_to_textview_procedures)
+		string const DATA_FILTER_APRIORY_TEXT=data+combine+filter+combine+apriory+combine+text;
+		string const DATA_FILTER_CLASSIFICATION_TEXT=data+combine+filter+combine+classification+combine+text;
+		string const DATA_FILTER_CLASSIFICATION_TREE=data+combine+filter+combine+classification+combine+tree;
+		string const DATA_FILTER_COMPRESSION_TEXT=data+combine+filter+combine+compression+combine+text;		
+		string const DATA_COMPRESSION_APRIORY_TEXT=data+combine+compression+combine+apriory+combine+text;		
+		string const DATA_COMPRESSION_CLASSIFICATION_TEXT=data+combine+compression+combine+classification+combine+text;
+		string const DATA_COMPRESSION_CLASSIFICATION_TREE=data+combine+compression+combine+classification+combine+tree;
+
+		string const DATA_FILTER_COMPRESSION_APRIORY_TEXT=data+combine+filter+combine+compression+combine+apriory+combine+text;	
+		string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT=data+combine+filter+combine+compression+combine+classification+combine+text;	
+		string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE=data+combine+filter+combine+compression+combine+classification+combine+tree;	
+
+
+		string const csv_text="csv->text";
+		string const xml_text="xml->text";
+		string const mysql_text="mysql->text";
+
+		string const csv_wah="csv->wah";
+		string const xml_wah="xml->wah";
+		string const mysql_wah="mysql->wah";
+		string const csv_ewah="csv->ewah";
+		string const xml_ewah="xml->ewah";
+		string const mysql_ewah="mysql->ewah";
+
+		string const csv_wah_text="csv->wah->text";
+		string const xml_wah_text="xml->wah->text";
+		string const mysql_wah_text="mysql->wah->text";
+		string const mssql_wah_text="mssql->wah->text";
+		string const csv_ewah_text="csv->ewah->text";
+		string const xml_ewah_text="xml->ewah->text";
+		string const mysql_ewah_text="mysql->ewah->text";
+		string const mssql_ewah_text="mssql->ewah->text";
+
+		string const csv_apriory="csv->apriory";
+		string const csv_classification="csv->classification";
+		string const xml_apriory="xml->apriory";
+		string const xml_classification="xml->classification";	
+		string const mysql_apriory="mysql->apriory";
+		string const mysql_classification="mysql->classification";
+
+		string const csv_apriory_text="csv->apriory->text";
+		string const csv_classification_text="csv->classification->text";
+		string const csv_classification_tree="csv->classification->tree";	
+		string const xml_apriory_text="xml->apriory->text";
+		string const xml_classification_text="xml->classification->text";	
+		string const xml_classification_tree="xml->classification->tree";
+		string const mysql_apriory_text="mysql->apriory->text";
+		string const mysql_classification_text="mysql->classification->text";	
+		string const mysql_classification_tree="mysql->classification->tree";
+		string const mssql_apriory_text="mssql->apriory->text";
+		string const mssql_classification_text="mssql->classification->text";	
+		string const mssql_classification_tree="mssql->classification->tree";
+
+		string const csv_wah_apriory_text="csv->wah->apriory->text";
+		string const csv_wah_classification_text="csv->wah->classification->text";
+		string const csv_wah_classification_tree="csv->wah->classification->tree";	
+		string const xml_wah_apriory_text="xml->wah->apriory->text";
+		string const xml_wah_classification_text="xml->wah->classification->text";	
+		string const xml_wah_classification_tree="xml->wah->classification->tree";
+		string const mysql_wah_apriory_text="mysql->wah->apriory->text";
+		string const mysql_wah_classification_text="mysql->wah->classification->text";	
+		string const mysql_wah_classification_tree="mysql->wah->classification->tree";
+		string const mssql_wah_apriory_text="mssql->wah->apriory->text";
+		string const mssql_wah_classification_text="mssql->wah->classification->text";	
+		string const mssql_wah_classification_tree="mssql->wah->classification->tree";
+
+		string const csv_ewah_apriory_text="csv->ewah->apriory->text";
+		string const csv_ewah_classification_text="csv->ewah->classification->text";
+		string const csv_ewah_classification_tree="csv->ewah->classification->tree";	
+		string const xml_ewah_apriory_text="xml->ewah->apriory->text";
+		string const xml_ewah_classification_text="xml->ewah->classification->text";	
+		string const xml_ewah_classification_tree="xml->ewah->classification->tree";
+		string const mysql_ewah_apriory_text="mysql->ewah->apriory->text";
+		string const mysql_ewah_classification_text="mysql->ewah->classification->text";	
+		string const mysql_ewah_classification_tree="mysql->ewah->classification->tree";
+		string const mssql_ewah_apriory_text="mssql->ewah->apriory->text";
+		string const mssql_ewah_classification_text="mssql->ewah->classification->text";	
+		string const mssql_ewah_classification_tree="mssql->ewah->classification->tree";
+
+		string const csv_wah_apriory="csv->wah->apriory";
+		string const csv_wah_classification="csv->wah->classification";
+		string const xml_wah_apriory="xml->wah->apriory";
+		string const xml_wah_classification="xml->wah->classification";
+		string const mysql_wah_apriory="mysql->wah->apriory";
+		string const mysql_wah_classification="mysql->wah->classification";
+
+		string const csv_ewah_apriory="csv->ewah->apriory";
+		string const csv_ewah_classification="csv->ewah->classification";
+		string const xml_ewah_apriory="xml->ewah->apriory";
+		string const xml_ewah_classification="xml->ewah->classification";	
+		string const mysql_ewah_apriory="mysql->ewah->apriory";
+		string const mysql_ewah_classification="mysql->ewah->classification";	
+
+		bool data_to_textview_procedures = procedure==csv_text || procedure==xml_text || procedure==mysql_text;
+
+		bool data_to_algorithm_procedures = procedure==csv_apriory || procedure==csv_classification || procedure==xml_apriory || procedure==xml_classification || procedure==mysql_apriory || procedure==mysql_classification;
+
+		bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text || procedure==mysql_apriory_text || procedure==mssql_apriory_text;
+		bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text || procedure==mysql_classification_text|| procedure==mssql_classification_text;
+		bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree || procedure==mysql_classification_tree|| procedure==mssql_classification_tree;
+		bool data_to_algorithm_to_textview_procedures = data_to_apriory_to_textview_procedures || data_to_classification_to_textview_procedures;		
+
+		bool data_to_compression_procedures = procedure==csv_wah || procedure==xml_wah || procedure==mysql_wah || procedure==csv_ewah || procedure==xml_ewah || procedure==mysql_ewah;
+		bool data_to_comression_to_textview_procedures = procedure==csv_wah_text || procedure==xml_wah_text || procedure==mysql_wah_text || procedure==mssql_wah_text || procedure==csv_ewah_text || procedure==xml_ewah_text || procedure==mysql_ewah_text || procedure==mssql_ewah_text;				
+
+		bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text || procedure==mysql_ewah_apriory_text || procedure==mysql_wah_apriory_text || procedure==mssql_ewah_apriory_text || procedure==mssql_wah_apriory_text;
+		bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text || procedure==mysql_ewah_classification_text || procedure==mysql_wah_classification_text || procedure==mssql_ewah_classification_text || procedure==mssql_wah_classification_text;
+		bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
+		bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
+
+		//bool data_to_filter_to_apriory_to_textview_procedures = procedure==csv_removeNull_apriory_text || procedure==csv_descritize_apriory_text ||procedure==csv_rangesplite_apriory_text;
+		//bool data_to_filter_to_classification_to_textview_procedures = procedure==csv_removeNull_classification_text || procedure==csv_descritize_classification_text ||procedure==csv_rangesplite_classification_text;
+		//bool data_to_filter_to_classification_to_treeview_procedures = procedure==csv_removeNull_classification_tree || procedure==csv_descritize_classification_tree ||procedure==csv_rangesplite_classification_tree;
+
+		//bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory || procedure==mysql_wah_apriory || procedure==mysql_ewah_apriory;
+		//bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification || procedure==mysql_wah_classification || procedure==mysql_ewah_classification;
+		//bool data_to_compression_to_algorithm_procedures = data_to_compression_to_apriory_procedures || data_to_compression_to_classification_procedures;
+
+		//bool data_to_filter_to_compression_to_apriory_to_textview_procedures = procedure==csv_removeNull_wah_apriory_text || procedure==csv_descritize_wah_apriory_text ||procedure==csv_rangesplite_wah_apriory_text || procedure==csv_removeNull_ewah_apriory_text || procedure==csv_descritize_ewah_apriory_text ||procedure==csv_rangesplite_ewah_apriory_text;
+		//bool data_to_filter_to_compression_to_classification_to_textview_procedures = procedure==csv_removeNull_wah_classification_text || procedure==csv_descritize_wah_classification_text ||procedure==csv_rangesplite_wah_classification_text || procedure==csv_removeNull_ewah_classification_text || procedure==csv_descritize_ewah_classification_text ||procedure==csv_rangesplite_ewah_classification_text;
+		//bool data_to_filter_to_compression_to_classification_to_treeview_procedures = procedure==csv_removeNull_wah_classification_tree || procedure==csv_descritize_wah_classification_tree ||procedure==csv_rangesplite_wah_classification_tree || procedure==csv_removeNull_ewah_classification_tree || procedure==csv_descritize_ewah_classification_tree ||procedure==csv_rangesplite_ewah_classification_tree;
+
+		if (procedure=="getMySqlDataSourceList")
 		{
-			genericProcedure=DATA_APRIORY_TEXT;
+			DBConnectionInfo::DBConnection nrw_con("");
+			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
+			string formattedOutPut="mysqlDataSourcesList##";
+			//get the real mysql data sources list as below
+
+			for (int i = 0 ; i < source_names.size() ; i++)
+			{
+				formattedOutPut+="<mysqlsource>";
+				formattedOutPut+="<name>" + source_names[i] + "</name>";
+				formattedOutPut+="</mysqlsource>";
+			}
+
+			//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
 		}
-		else if(data_to_classification_to_textview_procedures)
+		else if (procedure=="getMsSqlDataSourceList")
 		{
-			genericProcedure=DATA_CLASSIFICATION_TEXT;
-		}
-		else if(data_to_classification_to_textview_procedures)
-		{
-			genericProcedure=DATA_CLASSIFICATION_TREE;
-		}
-		else if(data_to_comression_to_textview_procedures)
-		{
-			genericProcedure=DATA_COMPRESSION_TEXT;
-		}
-		else if(data_to_compression_to_apriory_to_textview_procedures)
-		{
-			genericProcedure=DATA_COMPRESSION_APRIORY_TEXT;
-		}
-		else if(data_to_compression_to_classification_to_textview_procedures)
-		{
-			genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TEXT;
-		}
-		else if(data_to_compression_to_classification_to_treeview_procedures)
-		{
-			genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TREE;
-		}
-		else if(data_to_filter_to_apriory_to_textview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_APRIORY_TEXT;
-		}
-		else if(data_to_filter_to_classification_to_textview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_CLASSIFICATION_TEXT;
-		}
-		else if(data_to_filter_to_classification_to_treeview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_CLASSIFICATION_TREE;
-		}
-		else if(data_to_filter_to_compression_to_apriory_to_textview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_COMPRESSION_APRIORY_TEXT;
-		}
-		else if(data_to_filter_to_compression_to_classification_to_textview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT;
-		}
-		else if(data_to_filter_to_compression_to_classification_to_treeview_procedures(procedureTokens))
-		{
-			genericProcedure=DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE;
+			DBConnectionInfo::DBConnection nrw_con("");
+			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::SQL_SERVER);
+			string formattedOutPut="mssqlDataSourcesList##";
+			//get the real mysql data sources list as below
+
+			for (int i = 0 ; i < source_names.size() ; i++)
+			{
+				formattedOutPut+="<mssqlsource>";
+				formattedOutPut+="<name>" + source_names[i] + "</name>";
+				formattedOutPut+="</mssqlsource>";
+			}
+			//string formattedOutPut="mssqlDataSourcesList##<mssqlsource><name>Mssource1</name></mssqlsource><mssqlsource><name>Mssource2</name></mssqlsource>";
+			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+
 		}
 		else
-		{
-			for (int m=0;m<procedureTokens.size();m++)
+		{	
+			vector<string> procedureTokens;
+			Tokenize(procedure, procedureTokens, "->");
+			string genericProcedure="";
+
+			if(data_to_apriory_to_textview_procedures)
 			{
-				if(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql)
-				{
-					genericProcedure+=data;				
-				}
-				else if(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite)
-				{
-					genericProcedure+=filter;				
-				}
-				else if(procedureTokens[m]==apriory || procedureTokens[m]==classification || procedureTokens[m]==naiveBayes)
-				{
-					genericProcedure+=algorithm;				
-				}
-				else if(procedureTokens[m]==wah || procedureTokens[m]==ewah)
-				{
-					genericProcedure+=compression;				
-				}
-				else if(procedureTokens[m]==text)
-				{
-					genericProcedure+=text;				
-				}
-				else if(procedureTokens[m]==tree)
-				{
-					genericProcedure+=tree;				
-				}
-
-				if(m+1!=procedureTokens.size())
-				{
-					genericProcedure+=combine;
-				}
+				genericProcedure=DATA_APRIORY_TEXT;
 			}
-		}
-
-		bool validProcedure=genericProcedure==DATA_FILTER||genericProcedure==DATA_ALGORITHM||genericProcedure==DATA_COMPRESSION||genericProcedure==DATA_TEXT||genericProcedure==DATA_FILTER_ALGORITHM
-						||genericProcedure==DATA_FILTER_COMPRESSION||genericProcedure==DATA_FILTER_TEXT||genericProcedure==DATA_APRIORY_TEXT||genericProcedure==DATA_CLASSIFICATION_TEXT||genericProcedure==DATA_CLASSIFICATION_TREE||genericProcedure==DATA_COMPRESSION_ALGORITHM
-						||genericProcedure==DATA_COMPRESSION_TEXT||genericProcedure==DATA_FILTER_APRIORY_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TREE||genericProcedure==DATA_FILTER_COMPRESSION_TEXT||genericProcedure==DATA_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TREE
-						||genericProcedure==DATA_FILTER_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE;
-
-		if(validProcedure)
-		{
-			string measureTime=evt->measureTime;
-			string loopInformation=evt->runInALoop;
-			int loopCount = 1;
-			int increment = 0;
-			string runInALoop = "";		
-
-			
-			string graph_procedure="";
-
-			int k=0;
-			for (;k<procedureTokens.size()-1;k++)
+			else if(data_to_classification_to_textview_procedures)
 			{
-				graph_procedure+=procedureTokens[k]+"_";
+				genericProcedure=DATA_CLASSIFICATION_TEXT;
 			}
-			stringstream flowSequenceSS;
-			flowSequenceSS<<flowSequenceNumber;
-			graph_procedure+=procedureTokens[k]+"_"+flowSequenceSS.str();
-			flowSequenceNumber++;
-
-			string viewer=procedureTokens[procedureTokens.size()-1];
-
-			vector<string> loopTokens;
-			
-			Tokenize(loopInformation, loopTokens, "@@");
-			runInALoop=loopTokens[0];
-			loopCount=atoi( loopTokens[1].c_str());
-			increment=atoi( loopTokens[2].c_str());
-			
-			
-			time_t start,end;
-			time_t startGraphTime,endGraphTime;
-			string timeUnit=" s";
-
-			string paths=evt->procedurePara;
-			vector<string> pathsTokens;
-			Tokenize(paths, pathsTokens, "@@");
-
-			string csv_data_location;
-			int csv_data_size;
-			string xml_metadata_location;
-			string xml_data_location;
-			string xml_data_source;
-			int xml_data_size;
-			string mysql_source_name;
-			string mysql_query;
-			string mysql_data_size;
-			string mssql_source_name;
-			string mssql_query;
-			string mssql_data_size;
-
-			string formattedOutPut="";
-			string graphData="";
-			if(runInALoop=="false")
+			else if(data_to_classification_to_treeview_procedures)
 			{
-				if(viewer=="text")
-				{
-					formattedOutPut="textViewer##";
-				}
-				else if(viewer=="tree")
-				{
-					formattedOutPut="treeViewer##";
-				}
-				else
-				{
-					formattedOutPut="nullView##";
-				}
+				genericProcedure=DATA_CLASSIFICATION_TREE;
 			}
-			else {
-				formattedOutPut="graph##<items>";
-			}
-			string timeStamps="$$"+procedure;
-
-			for(int i=0;i<loopCount;i++)
+			else if(data_to_comression_to_textview_procedures)
 			{
-				stringstream tempstream;
-				graphData+="<item datasize=\"";
-				tempstream<<increment*(i+1);
-				graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
-
-				time (&startGraphTime);
-
-				for(int j=0;j<procedureTokens.size();j++)
+				genericProcedure=DATA_COMPRESSION_TEXT;
+			}
+			else if(data_to_compression_to_apriory_to_textview_procedures)
+			{
+				genericProcedure=DATA_COMPRESSION_APRIORY_TEXT;
+			}
+			else if(data_to_compression_to_classification_to_textview_procedures)
+			{
+				genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TEXT;
+			}
+			else if(data_to_compression_to_classification_to_treeview_procedures)
+			{
+				genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TREE;
+			}
+			else if(data_to_filter_to_apriory_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_APRIORY_TEXT;
+			}
+			else if(data_to_filter_to_classification_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_CLASSIFICATION_TEXT;
+			}
+			else if(data_to_filter_to_classification_to_treeview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_CLASSIFICATION_TREE;
+			}
+			else if(data_to_filter_to_compression_to_apriory_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_COMPRESSION_APRIORY_TEXT;
+			}
+			else if(data_to_filter_to_compression_to_classification_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT;
+			}
+			else if(data_to_filter_to_compression_to_classification_to_treeview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE;
+			}
+			else
+			{
+				for (int m=0;m<procedureTokens.size();m++)
 				{
-					if(procedureTokens[j]!=text && procedureTokens[j]!=tree)
+					if(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql)
 					{
-						time (&start);
+						genericProcedure+=data;				
+					}
+					else if(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite)
+					{
+						genericProcedure+=filter;				
+					}
+					else if(procedureTokens[m]==apriory || procedureTokens[m]==classification || procedureTokens[m]==naiveBayes)
+					{
+						genericProcedure+=algorithm;				
+					}
+					else if(procedureTokens[m]==wah || procedureTokens[m]==ewah)
+					{
+						genericProcedure+=compression;				
+					}
+					else if(procedureTokens[m]==text)
+					{
+						genericProcedure+=text;				
+					}
+					else if(procedureTokens[m]==tree)
+					{
+						genericProcedure+=tree;				
+					}
 
-						if (procedureTokens[j]==csv)
-						{
-							csv_data_location=pathsTokens[0];
-							csv_data_size=atoi( pathsTokens[1].c_str());
-							if(loopCount==1)
-							{
-								CSV(csv_data_location,csv_data_size);
-							}
-							else
-							{
-								CSV(csv_data_location,increment*(i+1));
-							}
-						}
-						else if (procedureTokens[j]==mysql)
-						{
-							mysql_source_name=pathsTokens[0];
-							mysql_query=pathsTokens[1];
-							mysql_data_size=pathsTokens[2];
-							if(loopCount==1)
-							{
-								MYSQL(mysql_source_name,mysql_query+" LIMIT "+mysql_data_size);
-							}
-							else
-							{
-								int rowcount=atoi( mysql_data_size.c_str())*(i+1);
-								stringstream rowcountstream;							
-								rowcountstream<<rowcount;
-								MYSQL(mysql_source_name,mysql_query+" LIMIT "+rowcountstream.str());
-							}
-						}
-						else if (procedureTokens[j]==xml)
-						{
-							xml_metadata_location=pathsTokens[0];
-							xml_data_location=pathsTokens[1];
-							xml_data_source=pathsTokens[2];
-							xml_data_size=atoi( pathsTokens[3].c_str());
-							if(loopCount==1)
-							{
-								SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,xml_data_size);
-							}
-							else
-							{
-								SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
-							}
-						}						
-						else if (procedureTokens[j]==mssql)
-						{
-							mssql_source_name=pathsTokens[0];
-							mssql_query=pathsTokens[1];
-							mssql_data_size=pathsTokens[2];
-							if(loopCount==1)
-							{
-								MSSQL(mssql_source_name,mssql_query+" LIMIT "+mssql_data_size);
-							}
-							else
-							{
-								int rowcount=atoi( mssql_data_size.c_str())*(i+1);
-								stringstream rowcountstream;							
-								rowcountstream<<rowcount;
-								MSSQL(mssql_source_name,mssql_query+" LIMIT "+rowcountstream.str());
-							}
-						}
-						else if (procedureTokens[j]==removeNull)
-						{
-							NullEliminator();
-						}
-						else if (procedureTokens[j]==descritize)
-						{
-							DiscretizeDataSource();
-						}
-						else if (procedureTokens[j]==rangesplite)
-						{
-							SplitteRanges(10);//TODO get from UI
-						}
-						else if (procedureTokens[j]==wah)
-						{
-							if(runInALoop=="false")
-							{
-								formattedOutPut += "^&&"+MeasureSpace()+"^^";
-							}					
-							Convert(BitStreamInfo::WAH_COMPRESSION);
-							if(runInALoop=="false")
-							{
-								formattedOutPut += MeasureSpace()+"^&&";
-							}						
-						}
-						else if (procedureTokens[j]==ewah && runInALoop=="false")
-						{
-							if(runInALoop=="false")
-							{
-								formattedOutPut += "^&&"+MeasureSpace()+"^^";
-							}						
-							Convert(BitStreamInfo::EWAH_COMPRESSION);
-							if(runInALoop=="false")
-							{
-								formattedOutPut += MeasureSpace()+"^&&";
-							}						
-						}	
-						else if (procedureTokens[j]==apriory)
-						{
-							Aprior(0.9,0.01,10);
-						}
-						else if (procedureTokens[j]==classification)
-						{
-							Classifier();
-						}
-						else if (procedureTokens[j]==naiveBayes)
-						{
-							Bayesian(100);//TODO get this value from gui???
-						}
-
-						time (&end);
-
-						stringstream timeStream;
-						timeStream << difftime (end,start);	
-						timeStamps+="@@";
-						timeStamps+=timeStream.str()+timeUnit;
-
-					}				
+					if(m+1!=procedureTokens.size())
+					{
+						genericProcedure+=combine;
+					}
 				}
-				
-				time (&endGraphTime);
+			}
 
-				stringstream timeStreamGraph;
-				timeStreamGraph << difftime (endGraphTime,startGraphTime);
-				graphData+=timeStreamGraph.str()+"\"/>";
+			bool validProcedure=genericProcedure==DATA_FILTER||genericProcedure==DATA_ALGORITHM||genericProcedure==DATA_COMPRESSION||genericProcedure==DATA_TEXT||genericProcedure==DATA_FILTER_ALGORITHM
+				||genericProcedure==DATA_FILTER_COMPRESSION||genericProcedure==DATA_FILTER_TEXT||genericProcedure==DATA_APRIORY_TEXT||genericProcedure==DATA_CLASSIFICATION_TEXT||genericProcedure==DATA_CLASSIFICATION_TREE||genericProcedure==DATA_COMPRESSION_ALGORITHM
+				||genericProcedure==DATA_COMPRESSION_TEXT||genericProcedure==DATA_FILTER_APRIORY_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TREE||genericProcedure==DATA_FILTER_COMPRESSION_TEXT||genericProcedure==DATA_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TREE
+				||genericProcedure==DATA_FILTER_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE;
 
+			if(validProcedure)
+			{
+				string measureTime=evt->measureTime;
+				string loopInformation=evt->runInALoop;
+				int loopCount = 1;
+				int increment = 0;
+				string runInALoop = "";		
+
+
+				string graph_procedure="";
+
+				int k=0;
+				for (;k<procedureTokens.size()-1;k++)
+				{
+					graph_procedure+=procedureTokens[k]+"_";
+				}
+				stringstream flowSequenceSS;
+				flowSequenceSS<<flowSequenceNumber;
+				graph_procedure+=procedureTokens[k]+"_"+flowSequenceSS.str();
+				flowSequenceNumber++;
+
+				string viewer=procedureTokens[procedureTokens.size()-1];
+
+				vector<string> loopTokens;
+
+				Tokenize(loopInformation, loopTokens, "@@");
+				runInALoop=loopTokens[0];
+				loopCount=atoi( loopTokens[1].c_str());
+				increment=atoi( loopTokens[2].c_str());
+
+
+				time_t start,end;
+				time_t startGraphTime,endGraphTime;
+				string timeUnit=" s";
+
+				string paths=evt->procedurePara;
+				vector<string> pathsTokens;
+				Tokenize(paths, pathsTokens, "@@");
+
+				string csv_data_location;
+				int csv_data_size;
+				string xml_metadata_location;
+				string xml_data_location;
+				string xml_data_source;
+				int xml_data_size;
+				string mysql_source_name;
+				string mysql_query;
+				string mysql_data_size;
+				string mssql_source_name;
+				string mssql_query;
+				string mssql_data_size;
+
+				string formattedOutPut="";
+				string graphData="";
 				if(runInALoop=="false")
 				{
-					if(genericProcedure==DATA_TEXT || data_to_comression_to_textview_procedures || genericProcedure==DATA_FILTER_COMPRESSION_TEXT || genericProcedure==DATA_FILTER_TEXT)//
+					if(viewer=="text")
 					{
-						formattedOutPut += Text(WRAPPED_SOURCE,100);
+						formattedOutPut="textViewer##";
 					}
-					else if(genericProcedure==DATA_FILTER_COMPRESSION_APRIORY_TEXT || data_to_apriory_to_textview_procedures || data_to_compression_to_apriory_to_textview_procedures || genericProcedure==DATA_FILTER_APRIORY_TEXT)//
+					else if(viewer=="tree")
 					{
-						formattedOutPut += Text(APRIORI_SOURCE,0);
+						formattedOutPut="treeViewer##";
 					}
-					else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT || data_to_classification_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT)//
+					else
 					{
-						formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
-					}
-					else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE || data_to_classification_to_treeview_procedures || data_to_compression_to_classification_to_treeview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TREE)//
-					{
-						formattedOutPut += Text(CLASSIFIER_SOURCE,0);
-					}
-					else if(genericProcedure==DATA_COMPRESSION || genericProcedure==DATA_ALGORITHM || genericProcedure==DATA_COMPRESSION_ALGORITHM || genericProcedure==DATA_FILTER || genericProcedure==DATA_FILTER_ALGORITHM || genericProcedure==DATA_FILTER_COMPRESSION)//
-					{
-						//keep empty
+						formattedOutPut="nullView##";
 					}
 				}
-				DeleteAll();
+				else {
+					formattedOutPut="graph##<items>";
+				}
+				string timeStamps="$$"+procedure;
+
+				for(int i=0;i<loopCount;i++)
+				{
+					stringstream tempstream;
+					graphData+="<item datasize=\"";
+					tempstream<<increment*(i+1);
+					graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
+
+					time (&startGraphTime);
+
+					for(int j=0;j<procedureTokens.size();j++)
+					{
+						if(procedureTokens[j]!=text && procedureTokens[j]!=tree)
+						{
+							time (&start);
+
+							if (procedureTokens[j]==csv)
+							{
+								csv_data_location=pathsTokens[0];
+								csv_data_size=atoi( pathsTokens[1].c_str());
+								if(loopCount==1)
+								{
+									CSV(csv_data_location,csv_data_size);
+								}
+								else
+								{
+									CSV(csv_data_location,increment*(i+1));
+								}
+							}
+							else if (procedureTokens[j]==mysql)
+							{
+								mysql_source_name=pathsTokens[0];
+								mysql_query=pathsTokens[1];
+								mysql_data_size=pathsTokens[2];
+								if(loopCount==1)
+								{
+									MYSQL(mysql_source_name,mysql_query+" LIMIT "+mysql_data_size);
+								}
+								else
+								{
+									int rowcount=atoi( mysql_data_size.c_str())*(i+1);
+									stringstream rowcountstream;							
+									rowcountstream<<rowcount;
+									MYSQL(mysql_source_name,mysql_query+" LIMIT "+rowcountstream.str());
+								}
+							}
+							else if (procedureTokens[j]==xml)
+							{
+								xml_metadata_location=pathsTokens[0];
+								xml_data_location=pathsTokens[1];
+								xml_data_source=pathsTokens[2];
+								xml_data_size=atoi( pathsTokens[3].c_str());
+								if(loopCount==1)
+								{
+									SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,xml_data_size);
+								}
+								else
+								{
+									SavedDataLoader(xml_metadata_location,xml_data_location,xml_data_source,increment*(i+1));
+								}
+							}						
+							else if (procedureTokens[j]==mssql)
+							{
+								mssql_source_name=pathsTokens[0];
+								mssql_query=pathsTokens[1];
+								mssql_data_size=pathsTokens[2];
+								if(loopCount==1)
+								{
+									MSSQL(mssql_source_name,mssql_query/*+" LIMIT "+mssql_data_size*/);
+								}
+								else
+								{
+									int rowcount=atoi( mssql_data_size.c_str())*(i+1);
+									stringstream rowcountstream;							
+									rowcountstream<<rowcount;
+									MSSQL(mssql_source_name,mssql_query/*+" LIMIT "+rowcountstream.str()*/);
+								}
+							}
+							else if (procedureTokens[j]==removeNull)
+							{
+								NullEliminator();
+							}
+							else if (procedureTokens[j]==descritize)
+							{
+								DiscretizeDataSource();
+							}
+							else if (procedureTokens[j]==rangesplite)
+							{
+								SplitteRanges(10);//TODO get from UI
+							}
+							else if (procedureTokens[j]==wah)
+							{
+								if(runInALoop=="false")
+								{
+									formattedOutPut += "^&&"+MeasureSpace()+"^^";
+								}					
+								Convert(BitStreamInfo::WAH_COMPRESSION);
+								if(runInALoop=="false")
+								{
+									formattedOutPut += MeasureSpace()+"^&&";
+								}						
+							}
+							else if (procedureTokens[j]==ewah && runInALoop=="false")
+							{
+								if(runInALoop=="false")
+								{
+									formattedOutPut += "^&&"+MeasureSpace()+"^^";
+								}						
+								Convert(BitStreamInfo::EWAH_COMPRESSION);
+								if(runInALoop=="false")
+								{
+									formattedOutPut += MeasureSpace()+"^&&";
+								}						
+							}	
+							else if (procedureTokens[j]==apriory)
+							{
+								Aprior(0.9,0.01,10);
+							}
+							else if (procedureTokens[j]==classification)
+							{
+								Classifier();
+							}
+							else if (procedureTokens[j]==naiveBayes)
+							{
+								Bayesian(100);//TODO get this value from gui???
+							}
+
+							time (&end);
+
+							stringstream timeStream;
+							timeStream << difftime (end,start);	
+							timeStamps+="@@";
+							timeStamps+=timeStream.str()+timeUnit;
+
+						}				
+					}
+
+					time (&endGraphTime);
+
+					stringstream timeStreamGraph;
+					timeStreamGraph << difftime (endGraphTime,startGraphTime);
+					graphData+=timeStreamGraph.str()+"\"/>";
+
+					if(runInALoop=="false")
+					{
+						if(genericProcedure==DATA_TEXT || data_to_comression_to_textview_procedures || genericProcedure==DATA_FILTER_COMPRESSION_TEXT || genericProcedure==DATA_FILTER_TEXT)//
+						{
+							formattedOutPut += Text(WRAPPED_SOURCE,100);
+						}
+						else if(genericProcedure==DATA_FILTER_COMPRESSION_APRIORY_TEXT || data_to_apriory_to_textview_procedures || data_to_compression_to_apriory_to_textview_procedures || genericProcedure==DATA_FILTER_APRIORY_TEXT)//
+						{
+							formattedOutPut += Text(APRIORI_SOURCE,0);
+						}
+						else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT || data_to_classification_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT)//
+						{
+							formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+						}
+						else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE || data_to_classification_to_treeview_procedures || data_to_compression_to_classification_to_treeview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TREE)//
+						{
+							formattedOutPut += Text(CLASSIFIER_SOURCE,0);
+						}
+						else if(genericProcedure==DATA_COMPRESSION || genericProcedure==DATA_ALGORITHM || genericProcedure==DATA_COMPRESSION_ALGORITHM || genericProcedure==DATA_FILTER || genericProcedure==DATA_FILTER_ALGORITHM || genericProcedure==DATA_FILTER_COMPRESSION)//
+						{
+							//keep empty
+						}
+					}
+					DeleteAll();
+				}
+				if(runInALoop=="true")
+				{
+					formattedOutPut+=graphData+"</items>";
+				}
+				if(measureTime=="true")
+				{
+					formattedOutPut+=timeStamps;
+				}		
+				flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 			}
-			if(runInALoop=="true")
+			else
 			{
-				formattedOutPut+=graphData+"</items>";
+				string formattedOutPut="errorProcedure##";
+				flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 			}
-			if(measureTime=="true")
-			{
-				formattedOutPut+=timeStamps;
-			}		
-			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-		}
-		else
-		{
-			string formattedOutPut="errorProcedure##";
-			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
 	}
+	catch(boost::exception &e)
+	{
+		string s = boost::diagnostic_information(e);	
+		string formattedOutPut="exceptionThrown##"+s;
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}	
 }
 
 void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
 {
-    // Skip delimiters at beginning.
-    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    // Find first "non-delimiter".
-    string::size_type pos     = str.find_first_of(delimiters, lastPos);
+	// Skip delimiters at beginning.
+	string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+	// Find first "non-delimiter".
+	string::size_type pos     = str.find_first_of(delimiters, lastPos);
 
-    while (string::npos != pos || string::npos != lastPos)
-    {
-        // Found a token, add it to the vector.
-        tokens.push_back(str.substr(lastPos, pos - lastPos));
-        // Skip delimiters.  Note the "not_of"
-        lastPos = str.find_first_not_of(delimiters, pos);
-        // Find next "non-delimiter"
-        pos = str.find_first_of(delimiters, lastPos);
-    }
+	while (string::npos != pos || string::npos != lastPos)
+	{
+		// Found a token, add it to the vector.
+		tokens.push_back(str.substr(lastPos, pos - lastPos));
+		// Skip delimiters.  Note the "not_of"
+		lastPos = str.find_first_not_of(delimiters, pos);
+		// Find next "non-delimiter"
+		pos = str.find_first_of(delimiters, lastPos);
+	}
 }
