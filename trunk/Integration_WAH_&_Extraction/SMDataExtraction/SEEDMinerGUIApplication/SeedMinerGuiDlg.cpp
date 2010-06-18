@@ -466,7 +466,7 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vec
 		{
 			result=true;
 		}
-		if(m!=4)
+		if(m!=3)
 		{
 			result=false;
 		}
@@ -504,7 +504,45 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_textview_procedu
 		{
 			result=true;
 		}
-		if(m!=4)
+		if(m!=3)
+		{
+			result=false;
+		}
+	}
+	return result;
+}
+
+bool CIntelliCheckersUIDlg::data_to_filter_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens)
+{
+	bool result=false;
+	for (int m=0;m<procedureTokens.size();m++)
+	{
+		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
+		{
+			result=true;				
+		}
+		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
+		{
+			result=true;				
+		}
+		else if(m==2&&(procedureTokens[m]==naiveBayes))
+		{
+			result=true;				
+		}
+		else if(m==3&&(procedureTokens[m]==text))
+		{
+			result=true;			
+		}
+		else
+		{
+			result=false;
+		}
+
+		if(m+1!=procedureTokens.size())
+		{
+			result=true;
+		}
+		if(m!=3)
 		{
 			result=false;
 		}
@@ -542,7 +580,7 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_treeview_procedu
 		{
 			result=true;
 		}
-		if(m!=4)
+		if(m!=3)
 		{
 			result=false;
 		}
@@ -584,7 +622,7 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_apriory_to_textview
 		{
 			result=true;
 		}
-		if(m!=5)
+		if(m!=4)
 		{
 			result=false;
 		}
@@ -626,7 +664,49 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 		{
 			result=true;
 		}
-		if(m!=5)
+		if(m!=4)
+		{
+			result=false;
+		}
+	}
+	return result;
+}
+
+bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens)
+{
+	bool result=false;
+	for (int m=0;m<procedureTokens.size();m++)
+	{
+		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
+		{
+			result=true;				
+		}
+		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
+		{
+			result=true;				
+		}
+		else if(m==2&&(procedureTokens[m]==wah || procedureTokens[m]==ewah))
+		{
+			result=true;				
+		}
+		else if(m==3&&(procedureTokens[m]==naiveBayes))
+		{
+			result=true;				
+		}
+		else if(m==4&&(procedureTokens[m]==text))
+		{
+			result=true;			
+		}
+		else
+		{
+			result=false;
+		}
+
+		if(m+1!=procedureTokens.size())
+		{
+			result=true;
+		}
+		if(m!=4)
 		{
 			result=false;
 		}
@@ -668,7 +748,7 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 		{
 			result=true;
 		}
-		if(m!=5)
+		if(m!=4)
 		{
 			result=false;
 		}
@@ -694,21 +774,26 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string const DATA_FILTER_TEXT=data+combine+filter+combine+text;			
 		string const DATA_APRIORY_TEXT=data+combine+apriory+combine+text;					
 		string const DATA_CLASSIFICATION_TEXT=data+combine+classification+combine+text;
+		string const DATA_BAYESIAN_TEXT=data+combine+naiveBayes+combine+text;
 		string const DATA_CLASSIFICATION_TREE=data+combine+classification+combine+tree;
 		string const DATA_COMPRESSION_ALGORITHM=data+combine+compression+combine+algorithm;		
 		string const DATA_COMPRESSION_TEXT=data+combine+compression+combine+text;
 
 		string const DATA_FILTER_APRIORY_TEXT=data+combine+filter+combine+apriory+combine+text;
 		string const DATA_FILTER_CLASSIFICATION_TEXT=data+combine+filter+combine+classification+combine+text;
+		string const DATA_FILTER_BAYESIAN_TEXT=data+combine+filter+combine+naiveBayes+combine+text;
 		string const DATA_FILTER_CLASSIFICATION_TREE=data+combine+filter+combine+classification+combine+tree;
 		string const DATA_FILTER_COMPRESSION_TEXT=data+combine+filter+combine+compression+combine+text;		
 		string const DATA_COMPRESSION_APRIORY_TEXT=data+combine+compression+combine+apriory+combine+text;		
 		string const DATA_COMPRESSION_CLASSIFICATION_TEXT=data+combine+compression+combine+classification+combine+text;
+		string const DATA_COMPRESSION_BAYESIAN_TEXT=data+combine+compression+combine+naiveBayes+combine+text;
 		string const DATA_COMPRESSION_CLASSIFICATION_TREE=data+combine+compression+combine+classification+combine+tree;
 
 		string const DATA_FILTER_COMPRESSION_APRIORY_TEXT=data+combine+filter+combine+compression+combine+apriory+combine+text;	
 		string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT=data+combine+filter+combine+compression+combine+classification+combine+text;	
-		string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE=data+combine+filter+combine+compression+combine+classification+combine+tree;	
+		string const DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE=data+combine+filter+combine+compression+combine+classification+combine+tree;
+
+		string const DATA_FILTER_COMPRESSION_BAYESIAN_TEXT=data+combine+filter+combine+compression+combine+naiveBayes+combine+text;
 
 
 		string const csv_text="csv->text";
@@ -764,6 +849,20 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string const mssql_wah_classification_text="mssql->wah->classification->text";	
 		string const mssql_wah_classification_tree="mssql->wah->classification->tree";
 
+		string const csv_wah_naiveBayes_text="csv->wah->naiveBayes->text";
+		string const csv_ewah_naiveBayes_text="csv->ewah->naiveBayes->text";
+		string const xml_wah_naiveBayes_text="xml->wah->naiveBayes->text";
+		string const xml_ewah_naiveBayes_text="xml->ewah->naiveBayes->text";
+		string const mysql_ewah_naiveBayes_text="mysql->ewah->naiveBayes->text";
+		string const mysql_wah_naiveBayes_text="mysql->wah->naiveBayes->text";
+		string const mssql_ewah_naiveBayes_text="mssql->ewah->naiveBayes->text";
+		string const mssql_wah_naiveBayes_text="mssql->wah->naiveBayes->text";
+
+		string const csv_naiveBayes_text="csv->naiveBayes->text";
+		string const xml_naiveBayes_text="xml->naiveBayes->text";
+		string const mysql_naiveBayes_text="mysql->naiveBayes->text";
+		string const mssql_naiveBayes_text="mysql->naiveBayes->text";
+
 		string const csv_ewah_apriory_text="csv->ewah->apriory->text";
 		string const csv_ewah_classification_text="csv->ewah->classification->text";
 		string const csv_ewah_classification_tree="csv->ewah->classification->tree";	
@@ -797,6 +896,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 		bool data_to_apriory_to_textview_procedures = procedure==csv_apriory_text || procedure==xml_apriory_text || procedure==mysql_apriory_text || procedure==mssql_apriory_text;
 		bool data_to_classification_to_textview_procedures = procedure==csv_classification_text || procedure==xml_classification_text || procedure==mysql_classification_text|| procedure==mssql_classification_text;
+		bool data_to_naiveBayes_to_textview_procedures = procedure==csv_naiveBayes_text || procedure==xml_naiveBayes_text || procedure==mysql_naiveBayes_text|| procedure==mssql_naiveBayes_text;
 		bool data_to_classification_to_treeview_procedures = procedure==csv_classification_tree || procedure==xml_classification_tree || procedure==mysql_classification_tree|| procedure==mssql_classification_tree;
 		bool data_to_algorithm_to_textview_procedures = data_to_apriory_to_textview_procedures || data_to_classification_to_textview_procedures;		
 
@@ -805,6 +905,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 		bool data_to_compression_to_apriory_to_textview_procedures = procedure==csv_wah_apriory_text || procedure==csv_ewah_apriory_text || procedure==xml_wah_apriory_text || procedure==xml_ewah_apriory_text || procedure==mysql_ewah_apriory_text || procedure==mysql_wah_apriory_text || procedure==mssql_ewah_apriory_text || procedure==mssql_wah_apriory_text;
 		bool data_to_compression_to_classification_to_textview_procedures = procedure==csv_wah_classification_text || procedure==csv_ewah_classification_text || procedure==xml_wah_classification_text || procedure==xml_ewah_classification_text || procedure==mysql_ewah_classification_text || procedure==mysql_wah_classification_text || procedure==mssql_ewah_classification_text || procedure==mssql_wah_classification_text;
+		bool data_to_compression_to_naiveBayes_to_textview_procedures = procedure==csv_wah_naiveBayes_text || procedure==csv_ewah_naiveBayes_text || procedure==xml_wah_naiveBayes_text || procedure==xml_ewah_naiveBayes_text || procedure==mysql_ewah_naiveBayes_text || procedure==mysql_wah_naiveBayes_text || procedure==mssql_ewah_naiveBayes_text || procedure==mssql_wah_naiveBayes_text;
 		bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
 		bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
 
@@ -869,6 +970,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			{
 				genericProcedure=DATA_CLASSIFICATION_TEXT;
 			}
+			else if(data_to_naiveBayes_to_textview_procedures)
+			{
+				genericProcedure=DATA_BAYESIAN_TEXT;
+			}
 			else if(data_to_classification_to_treeview_procedures)
 			{
 				genericProcedure=DATA_CLASSIFICATION_TREE;
@@ -885,6 +990,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			{
 				genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TEXT;
 			}
+			else if(data_to_compression_to_naiveBayes_to_textview_procedures)
+			{
+				genericProcedure=DATA_COMPRESSION_BAYESIAN_TEXT;
+			}
 			else if(data_to_compression_to_classification_to_treeview_procedures)
 			{
 				genericProcedure=DATA_COMPRESSION_CLASSIFICATION_TREE;
@@ -897,6 +1006,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			{
 				genericProcedure=DATA_FILTER_CLASSIFICATION_TEXT;
 			}
+			else if(data_to_filter_to_naiveBayes_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_BAYESIAN_TEXT;
+			}
 			else if(data_to_filter_to_classification_to_treeview_procedures(procedureTokens))
 			{
 				genericProcedure=DATA_FILTER_CLASSIFICATION_TREE;
@@ -908,6 +1021,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			else if(data_to_filter_to_compression_to_classification_to_textview_procedures(procedureTokens))
 			{
 				genericProcedure=DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT;
+			}
+			else if(data_to_filter_to_compression_to_naiveBayes_to_textview_procedures(procedureTokens))
+			{
+				genericProcedure=DATA_FILTER_COMPRESSION_BAYESIAN_TEXT;
 			}
 			else if(data_to_filter_to_compression_to_classification_to_treeview_procedures(procedureTokens))
 			{
@@ -951,6 +1068,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 			bool validProcedure=genericProcedure==DATA_FILTER||genericProcedure==DATA_ALGORITHM||genericProcedure==DATA_COMPRESSION||genericProcedure==DATA_TEXT||genericProcedure==DATA_FILTER_ALGORITHM
 				||genericProcedure==DATA_FILTER_COMPRESSION||genericProcedure==DATA_FILTER_TEXT||genericProcedure==DATA_APRIORY_TEXT||genericProcedure==DATA_CLASSIFICATION_TEXT||genericProcedure==DATA_CLASSIFICATION_TREE||genericProcedure==DATA_COMPRESSION_ALGORITHM
+				||genericProcedure==DATA_BAYESIAN_TEXT||genericProcedure==DATA_COMPRESSION_BAYESIAN_TEXT||genericProcedure==DATA_FILTER_BAYESIAN_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_BAYESIAN_TEXT
 				||genericProcedure==DATA_COMPRESSION_TEXT||genericProcedure==DATA_FILTER_APRIORY_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_CLASSIFICATION_TREE||genericProcedure==DATA_FILTER_COMPRESSION_TEXT||genericProcedure==DATA_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_COMPRESSION_CLASSIFICATION_TREE
 				||genericProcedure==DATA_FILTER_COMPRESSION_APRIORY_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE;
 
@@ -985,8 +1103,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				increment=atoi( loopTokens[2].c_str());
 
 
-				time_t start,end;
-				time_t startGraphTime,endGraphTime;
+				//time_t start,end;
+				//time_t startGraphTime,endGraphTime;
+				clock_t start,end;
+				clock_t startGraphTime,endGraphTime;
 				string timeUnit=" s";
 
 				string paths=evt->procedurePara;
@@ -1035,13 +1155,14 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					tempstream<<increment*(i+1);
 					graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
 
-					time (&startGraphTime);
+					
 
 					for(int j=0;j<procedureTokens.size();j++)
 					{
 						if(procedureTokens[j]!=text && procedureTokens[j]!=tree)
 						{
-							time (&start);
+							//time (&start);
+							start=clock();
 
 							if (procedureTokens[j]==csv)
 							{
@@ -1140,8 +1261,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 								{
 									formattedOutPut += MeasureSpace()+"^&&";
 								}						
-							}	
-							else if (procedureTokens[j]==apriory)
+							}
+							//time (&startGraphTime);
+							startGraphTime=clock();
+							if (procedureTokens[j]==apriory)
 							{
 								Aprior(0.9,0.01,10);
 							}
@@ -1151,24 +1274,31 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 							}
 							else if (procedureTokens[j]==naiveBayes)
 							{
-								Bayesian(100);//TODO get this value from gui???
+								Bayesian(m_source->codedAttributes().size()-1);//TODO get this value from gui???
 							}
+							//time (&endGraphTime);
+							endGraphTime=clock();
 
-							time (&end);
+							//time (&end);
+							end=clock();
 
-							stringstream timeStream;
-							timeStream << difftime (end,start);	
+							//stringstream timeStream;
+							//timeStream << difftime (end,start);	
+							string tempstring=boost::lexical_cast<string>(end - start);
 							timeStamps+="@@";
-							timeStamps+=timeStream.str()+timeUnit;
+							//timeStamps+=timeStream.str()+timeUnit;
+							timeStamps+=tempstring+"ms";
 
 						}				
 					}
 
-					time (&endGraphTime);
+					
 
-					stringstream timeStreamGraph;
-					timeStreamGraph << difftime (endGraphTime,startGraphTime);
-					graphData+=timeStreamGraph.str()+"\"/>";
+					//stringstream timeStreamGraph;
+					//timeStreamGraph << difftime (endGraphTime,startGraphTime);
+					string tempstring1=boost::lexical_cast<string>(endGraphTime - startGraphTime);
+					//graphData+=timeStreamGraph.str()+"\"/>";
+					graphData+=tempstring1+"\"/>";
 
 					if(runInALoop=="false")
 					{
@@ -1183,6 +1313,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 						else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TEXT || data_to_classification_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TEXT)//
 						{
 							formattedOutPut += Text(CLASSIFIER_TEXT_SOURCE,0);
+						}
+						else if(genericProcedure==DATA_FILTER_COMPRESSION_BAYESIAN_TEXT || data_to_naiveBayes_to_textview_procedures || data_to_compression_to_naiveBayes_to_textview_procedures || genericProcedure==DATA_FILTER_BAYESIAN_TEXT)//
+						{
+							formattedOutPut += Text(BAYESIAN_SOURCE,0);
 						}
 						else if(genericProcedure==DATA_FILTER_COMPRESSION_CLASSIFICATION_TREE || data_to_classification_to_treeview_procedures || data_to_compression_to_classification_to_treeview_procedures || genericProcedure==DATA_FILTER_CLASSIFICATION_TREE)//
 						{

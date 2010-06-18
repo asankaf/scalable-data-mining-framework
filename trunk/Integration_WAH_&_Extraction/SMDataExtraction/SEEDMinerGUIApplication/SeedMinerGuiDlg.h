@@ -103,6 +103,8 @@ private:
 	bool data_to_filter_to_compression_to_apriory_to_textview_procedures(vector<string>& procedureTokens);
 	bool data_to_filter_to_compression_to_classification_to_textview_procedures(vector<string>& procedureTokens);
 	bool data_to_filter_to_compression_to_classification_to_treeview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_compression_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens);
+	bool data_to_filter_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens);
 
 	
 
