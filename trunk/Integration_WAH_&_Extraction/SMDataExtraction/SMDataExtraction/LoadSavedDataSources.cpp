@@ -1,7 +1,12 @@
+#pragma once
 #include "StdAfx.h"
 #include "LoadSavedDataSources.h"
 #include "tinyxml.h"
 #include "EncodedDoubleAttribute.h"
+#include "ConfigurationReader.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
+#include <direct.h>
 
 LoadSavedDataSources::LoadSavedDataSources(string metaDataFile,string dataFile)
 {
@@ -24,9 +29,20 @@ LoadSavedDataSources::~LoadSavedDataSources(void)
 
 DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */){
 	DataSources *dss = new DataSources();
-	string metaDataFile = "../Reports/" + this->_metaFile + ".xml";
-	string encodedDataFile = "../Reports/" + this->_fileName + ".xml";
-	this->_fileName=encodedDataFile;
+	
+	if (chdir(ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER).c_str()) == -1)
+	{
+		error_folder_not_exist ex;
+		string err = ExceptionReader::GetError(SM1015);
+		err += "-> Saved data folder provided in config file is missing";
+		ex << error_message(err);
+		ex << error_code(SM1015);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+
+	string metaDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_metaFile + ".xml";
+	string encodedDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_fileName + ".xml";
+	this->_fileName = encodedDataFile;
 
 	TiXmlDocument doc(metaDataFile.c_str());
 	bool loaded = doc.LoadFile();
@@ -347,179 +363,204 @@ vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributes(string d
 DataSources* LoadSavedDataSources::loadSavedEncodedDataFromMultipleFiles( bool limit /*= false*/ )
 {
 	DataSources *dss = new DataSources();
-	string metaDataFile = "../Reports/" + this->_saved_folder + "/" + this->_metaFile + ".xml";
+	string metaDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_saved_folder + "\\" + this->_metaFile + ".xml";
+	if (chdir(ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER).c_str()) == -1)
+	{
+		error_folder_not_exist ex;
+		string err = ExceptionReader::GetError(SM1015);
+		err += "-> Saved data folder provided in config file is missing";
+		ex << error_message(err);
+		ex << error_code(SM1015);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+	
+	//string metaDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_saved_folder + "/" + this->_metaFile + ".xml";
 	//string encodedDataFile = "../Reports/" + this->_fileName + ".xml";
 	//this->_fileName=encodedDataFile;
-
-	TiXmlDocument doc(metaDataFile.c_str());
-	bool loaded = doc.LoadFile();
-	TiXmlHandle handler( &doc );
-	if (loaded)
+	//string metaDataFile = "..\\Reports\\" + this->_metaFile + ".xml";
+	try
 	{
-		TiXmlElement *root = handler.FirstChild("DataSources").ToElement();
-		int dataSources = root->FirstAttribute()->IntValue();
-		for (int i = 0 ; i < dataSources ; i++)
+		TiXmlDocument doc(metaDataFile.c_str());
+		bool loaded = doc.LoadFile();
+		TiXmlHandle handler( &doc );
+		if (loaded)
 		{
-			TiXmlElement *dsElement = root->FirstChildElement("DataSource");
-			string dsName = dsElement->FirstAttribute()->Value();
-			dsElement = dsElement->FirstChildElement("noOfAttributes");
-			int noAtts = atoi(dsElement->GetText());
-
-			//position where attributes from multiple attribute files are loaded.
-			dsElement = dsElement->NextSiblingElement("AttributeFiles");
-			TiXmlElement* saved_file_att_element = dsElement->FirstChildElement("att_file");
-			this->saved_file_names.resize(noAtts);
-			int count_att = 0;
-			while (saved_file_att_element)
+			TiXmlElement *root = handler.FirstChild("DataSources").ToElement();
+			int dataSources = root->FirstAttribute()->IntValue();
+			for (int i = 0 ; i < dataSources ; i++)
 			{
-				this->saved_file_names[count_att++] = saved_file_att_element->GetText();
-				saved_file_att_element = saved_file_att_element->NextSiblingElement("att_file");
-			}
+				TiXmlElement *dsElement = root->FirstChildElement("DataSource");
+				string dsName = dsElement->FirstAttribute()->Value();
+				dsElement = dsElement->FirstChildElement("noOfAttributes");
+				int noAtts = atoi(dsElement->GetText());
 
-			dsElement = dsElement->NextSiblingElement("noOfRows");
-			int noRows = atoi(dsElement->GetText());
-			//Following two lines will load the existance bitmap from the saved file.
-			//For older versions of saved data files, this won't be working.
-			//So for old data file loading, just comment the following two lines.
-			//And also make sure to comment the place where the existance_map is added to wrapdatasource object.
-			//string existanceMap = dsElement->NextSiblingElement("existanceBitMap")->GetText();
-			//dynamic_bitset<> existance_map(existanceMap);
-
-			vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributesFromMultipleFiles(dsName,noRows,limit);
-			if (limit)
-			{
-				if (this->_rowLimit > noRows)
+				//position where attributes from multiple attribute files are loaded.
+				dsElement = dsElement->NextSiblingElement("AttributeFiles");
+				TiXmlElement* saved_file_att_element = dsElement->FirstChildElement("att_file");
+				this->saved_file_names.resize(noAtts);
+				int count_att = 0;
+				while (saved_file_att_element)
 				{
-					this->_rowLimit = noRows;
+					this->saved_file_names[count_att++] = saved_file_att_element->GetText();
+					saved_file_att_element = saved_file_att_element->NextSiblingElement("att_file");
 				}
-				noRows = this->_rowLimit;
-			}
 
-			dsElement = dsElement->NextSiblingElement("DataSourceType");
-			WrapDataSource::DATASOURCE sourceType = getDataSourceType(atoi(dsElement->GetText()));
-			WrapDataSource *ds = new WrapDataSource();
-			ds->setDSName(dsName);
-			ds->noOfAttributes(noAtts);
-			ds->noOfRows(noRows);
-			ds->setSourceType(sourceType);
-			//comment this for loading old saved files. 
-			//ds->ExistanceDatabitMap(existance_map);
-			dsElement = dsElement->NextSiblingElement("CodedAttributes");
-			TiXmlElement *attElement = dsElement->FirstChildElement("Attribute");
-			int counter = 0;
-			while (attElement && (counter <= noAtts))
-			{
-				int attType = attElement->LastAttribute()->IntValue();
-				int attID = attElement->FirstAttribute()->IntValue();
-				switch(attType)
+				dsElement = dsElement->NextSiblingElement("noOfRows");
+				int noRows = atoi(dsElement->GetText());
+				//Following two lines will load the existance bitmap from the saved file.
+				//For older versions of saved data files, this won't be working.
+				//So for old data file loading, just comment the following two lines.
+				//And also make sure to comment the place where the existance_map is added to wrapdatasource object.
+				//string existanceMap = dsElement->NextSiblingElement("existanceBitMap")->GetText();
+				//dynamic_bitset<> existance_map(existanceMap);
+
+				vector<EncodedAttributeInfo*> codedAtts = loadCodedAttributesFromMultipleFiles(dsName,noRows,limit);
+				if (limit)
 				{
-				case 0:
+					if (this->_rowLimit > noRows)
 					{
-						EncodedIntAttribute* intAtt = static_cast<EncodedIntAttribute*>(codedAtts[counter]);
-						TiXmlElement *attEl = attElement->FirstChildElement("maxval");
-						intAtt->setMaxVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("minval");
-						intAtt->setMinVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("SignBitSet");
-						//attEl = attElement->FirstChildElement("SignMapVal");
-						// 						vector<bool> signMap;
-						// 						if (atol(attEl->GetText()) == 0)
-						// 						{						
-						// 							signMap.resize(noRows);
-						// 						}
-						// 						//Set sign Bit Map for negative vals.
-						// 						else
-						// 						{
-						// 							signMap.resize(noRows);
-						// 						}
-						// 						intAtt->setSignBitMap(signMap);
-
-						dynamic_bitset<> signSet((string)attEl->GetText());
-						intAtt->setSignBitSet(signSet);
-						EncodedAttributeInfo* atts = intAtt;
-						codedAtts[counter] = atts;
-						break;
+						this->_rowLimit = noRows;
 					}
-				case 1:
-					{
-						EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(codedAtts[counter]);
-						TiXmlElement *attEl = attElement->FirstChildElement("maxval");
-						doubleAtt->setMaxVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("minval");
-						doubleAtt->setMinVal(atol(attEl->GetText()));
-						attEl = attElement->FirstChildElement("SignBitSet");
-						//attEl = attElement->FirstChildElement("SignMapVal");
-						// 						vector<bool> signMap;
-						// 						if (atol(attEl->GetText()) == 0)
-						// 						{						
-						// 							signMap.resize(noRows);
-						// 						}
-						// 						//Set sign Bit Map for negative vals.
-						// 						else
-						// 						{
-						// 							signMap.resize(noRows);
-						// 						}
-						// 						doubleAtt->SignBitMap(signMap);
+					noRows = this->_rowLimit;
+				}
 
-						dynamic_bitset<> signSet((string)attEl->GetText());
-						doubleAtt->setSignBitSet(signSet);
-						attEl = attElement->FirstChildElement("PrecisionVal");
-						doubleAtt->Precision(atol(attEl->GetText()));
-						EncodedAttributeInfo* atts = doubleAtt;
-						codedAtts[counter] = atts;
-						break;
-					}
-				case 3:
+				dsElement = dsElement->NextSiblingElement("DataSourceType");
+				WrapDataSource::DATASOURCE sourceType = getDataSourceType(atoi(dsElement->GetText()));
+				WrapDataSource *ds = new WrapDataSource();
+				ds->setDSName(dsName);
+				ds->noOfAttributes(noAtts);
+				ds->noOfRows(noRows);
+				ds->setSourceType(sourceType);
+				//comment this for loading old saved files. 
+				//ds->ExistanceDatabitMap(existance_map);
+				dsElement = dsElement->NextSiblingElement("CodedAttributes");
+				TiXmlElement *attElement = dsElement->FirstChildElement("Attribute");
+				int counter = 0;
+				while (attElement && (counter <= noAtts))
+				{
+					int attType = attElement->LastAttribute()->IntValue();
+					int attID = attElement->FirstAttribute()->IntValue();
+					switch(attType)
 					{
-						EncodedMultiCatAttribute* catAtt = static_cast<EncodedMultiCatAttribute*>(codedAtts[counter]);
-						TiXmlElement *uniqueElement = attElement->FirstChildElement("UniqueValues");
-						int noUniques = uniqueElement->LastAttribute()->IntValue();
-						vector<string> uniqueVals;
-						uniqueVals.resize(noUniques);
-						uniqueElement = uniqueElement->FirstChildElement("Val");
-						for (int k = 0 ; k < noUniques ; k++)
+					case 0:
 						{
-							string val = uniqueElement->GetText();
-							uniqueVals[k] = val;
-							uniqueElement = uniqueElement->NextSiblingElement("Val");
-						}
-						catAtt->setUniqueValList(uniqueVals);
-						EncodedAttributeInfo *atts = catAtt;
-						codedAtts[counter] = atts;
-						break;
-					}
-				}
-				attElement = attElement->NextSiblingElement("Attribute");
-				counter++;
-			}
-			ds->CodedAtts(codedAtts);
-			dss->insertDataSources(ds);
-		}
-	}
+							EncodedIntAttribute* intAtt = static_cast<EncodedIntAttribute*>(codedAtts[counter]);
+							TiXmlElement *attEl = attElement->FirstChildElement("maxval");
+							intAtt->setMaxVal(atol(attEl->GetText()));
+							attEl = attElement->FirstChildElement("minval");
+							intAtt->setMinVal(atol(attEl->GetText()));
+							attEl = attElement->FirstChildElement("SignBitSet");
+							//attEl = attElement->FirstChildElement("SignMapVal");
+							// 						vector<bool> signMap;
+							// 						if (atol(attEl->GetText()) == 0)
+							// 						{						
+							// 							signMap.resize(noRows);
+							// 						}
+							// 						//Set sign Bit Map for negative vals.
+							// 						else
+							// 						{
+							// 							signMap.resize(noRows);
+							// 						}
+							// 						intAtt->setSignBitMap(signMap);
 
+							dynamic_bitset<> signSet((string)attEl->GetText());
+							intAtt->setSignBitSet(signSet);
+							EncodedAttributeInfo* atts = intAtt;
+							codedAtts[counter] = atts;
+							break;
+						}
+					case 1:
+						{
+							EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(codedAtts[counter]);
+							TiXmlElement *attEl = attElement->FirstChildElement("maxval");
+							doubleAtt->setMaxVal(atol(attEl->GetText()));
+							attEl = attElement->FirstChildElement("minval");
+							doubleAtt->setMinVal(atol(attEl->GetText()));
+							attEl = attElement->FirstChildElement("SignBitSet");
+							//attEl = attElement->FirstChildElement("SignMapVal");
+							// 						vector<bool> signMap;
+							// 						if (atol(attEl->GetText()) == 0)
+							// 						{						
+							// 							signMap.resize(noRows);
+							// 						}
+							// 						//Set sign Bit Map for negative vals.
+							// 						else
+							// 						{
+							// 							signMap.resize(noRows);
+							// 						}
+							// 						doubleAtt->SignBitMap(signMap);
+
+							dynamic_bitset<> signSet((string)attEl->GetText());
+							doubleAtt->setSignBitSet(signSet);
+							attEl = attElement->FirstChildElement("PrecisionVal");
+							doubleAtt->Precision(atol(attEl->GetText()));
+							EncodedAttributeInfo* atts = doubleAtt;
+							codedAtts[counter] = atts;
+							break;
+						}
+					case 3:
+						{
+							EncodedMultiCatAttribute* catAtt = static_cast<EncodedMultiCatAttribute*>(codedAtts[counter]);
+							TiXmlElement *uniqueElement = attElement->FirstChildElement("UniqueValues");
+							int noUniques = uniqueElement->LastAttribute()->IntValue();
+							vector<string> uniqueVals;
+							uniqueVals.resize(noUniques);
+							uniqueElement = uniqueElement->FirstChildElement("Val");
+							for (int k = 0 ; k < noUniques ; k++)
+							{
+								string val = uniqueElement->GetText();
+								uniqueVals[k] = val;
+								uniqueElement = uniqueElement->NextSiblingElement("Val");
+							}
+							catAtt->setUniqueValList(uniqueVals);
+							EncodedAttributeInfo *atts = catAtt;
+							codedAtts[counter] = atts;
+							break;
+						}
+					}
+					attElement = attElement->NextSiblingElement("Attribute");
+					counter++;
+				}
+				ds->CodedAtts(codedAtts);
+				dss->insertDataSources(ds);
+			}
+		}		
+	}
+	catch(...)
+	{
+		error_loading_encoded_data ex;
+		string err = ExceptionReader::GetError(SM1017);
+		err += "-> Try to load from a single attribute data file";
+		ex << error_message(err);
+		ex << error_code(SM1017);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+	
 	return dss;
 }
 
 vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributesFromMultipleFiles( string dsName,int rowCount,bool limit )
 {
 	vector<EncodedAttributeInfo*> codedAtts;
-	for (int j = 0 ; j < this->saved_file_names.size() ; j++)
+	try
 	{
-		this->_fileName = "../Reports/" + this->_saved_folder + "/" + this->saved_file_names[j];
-		TiXmlDocument *doc_1 = new TiXmlDocument(this->_fileName.c_str());
-		doc_1->LoadFile();
-		TiXmlHandle handler(doc_1);
-		TiXmlElement *dsElement = handler.FirstChild("DataSources").ToElement();
-		dsElement = dsElement->FirstChildElement("DataSource");
-		if (strcmp(dsElement->Attribute("Name"),dsName.c_str()) == 0)
+		for (int j = 0 ; j < this->saved_file_names.size() ; j++)
 		{
-			dsElement = dsElement->FirstChildElement("CodedAttribute");
-			int attID = dsElement->FirstAttribute()->IntValue();
-			int attType = atoi(dsElement->Attribute("Type"));
-			string attName = dsElement->Attribute("Name");
-			int noVStreams = dsElement->LastAttribute()->IntValue();
-			EncodedAttributeInfo* attr;
-			switch(attType){
+			this->_fileName = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_saved_folder + "\\" + this->saved_file_names[j];
+			TiXmlDocument *doc_1 = new TiXmlDocument(this->_fileName.c_str());
+			doc_1->LoadFile();
+			TiXmlHandle handler(doc_1);
+			TiXmlElement *dsElement = handler.FirstChild("DataSources").ToElement();
+			dsElement = dsElement->FirstChildElement("DataSource");
+			if (strcmp(dsElement->Attribute("Name"),dsName.c_str()) == 0)
+			{
+				dsElement = dsElement->FirstChildElement("CodedAttribute");
+				int attID = dsElement->FirstAttribute()->IntValue();
+				int attType = atoi(dsElement->Attribute("Type"));
+				string attName = dsElement->Attribute("Name");
+				int noVStreams = dsElement->LastAttribute()->IntValue();
+				EncodedAttributeInfo* attr;
+				switch(attType){
 					case 0:
 						{
 							EncodedIntAttribute *intAtt = new EncodedIntAttribute();
@@ -625,9 +666,19 @@ vector<EncodedAttributeInfo*> LoadSavedDataSources::loadCodedAttributesFromMulti
 							codedAtts.push_back(attr);
 							break;
 						}
+				}
 			}
+			delete doc_1;
 		}
-		delete doc_1;
+	}
+	catch(...)
+	{
+		error_loading_encoded_data ex;
+		string err = ExceptionReader::GetError(SM1017);
+		err += "-> Try to load from a multiple attribute data files";
+		ex << error_message(err);
+		ex << error_code(SM1017);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	return codedAtts;
 }

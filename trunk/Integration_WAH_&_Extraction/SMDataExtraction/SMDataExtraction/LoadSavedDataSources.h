@@ -3,6 +3,7 @@
 #include "WrapDataSource.h"
 #include "AttributeType.h"
 #include <string>
+#include "SEEDMinerExceptions.h"
 
 using namespace std;
 
@@ -11,9 +12,14 @@ class LoadSavedDataSources
 public:
 	__declspec(dllexport) LoadSavedDataSources(string metaDataFile,string dataFile);
 	__declspec(dllexport) LoadSavedDataSources::LoadSavedDataSources(string metaDataFile,string dataFile,long limit);
-	__declspec(dllexport) LoadSavedDataSources(long limit,string directory_name,string meta_file){this->_saved_folder = directory_name; this->_metaFile = meta_file;this->_rowLimit = limit;}
-	__declspec(dllexport) DataSources* loadSavedEncodedData(bool limit = false);
-	__declspec(dllexport) DataSources* loadSavedEncodedDataFromMultipleFiles(bool limit = false);
+	__declspec(dllexport) LoadSavedDataSources(long limit,string directory_name,string meta_file)
+	{
+		this->_saved_folder = directory_name; 
+		this->_metaFile = meta_file;
+		this->_rowLimit = limit;
+	}
+	__declspec(dllexport) DataSources* loadSavedEncodedData(bool limit = false) throw(error_folder_not_exist,error_loading_encoded_data);
+	__declspec(dllexport) DataSources* loadSavedEncodedDataFromMultipleFiles(bool limit = false) throw(error_folder_not_exist,error_loading_encoded_data);
 	__declspec(dllexport) ~LoadSavedDataSources(void);
 	WrapDataSource::DATASOURCE getDataSourceType(int sourceType);
 	ATT_TYPE getAttType(int attType);

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "EncodedDoubleAttribute.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 
 EncodedDoubleAttribute::EncodedDoubleAttribute(void)
 {
@@ -13,16 +15,28 @@ double EncodedDoubleAttribute::decodeTheTuple(int tupleID,bool asAnInteger){
 	dynamic_bitset<> temp(this->NoOfVBitStreams());
 	int val=0;
 
-	for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
+	try
 	{
-		temp[i] = this->vBitStreams()[i]->Decompress()[tupleID - 1];
+		for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
+		{
+			temp[i] = this->vBitStreams()[i]->Decompress()[tupleID - 1];
+		}
+
+		val = temp.to_ulong();
+
+		if (this->_signBitSet[tupleID - 1] == 1)
+		{
+			val *= -1;
+		}
 	}
-
-	val = temp.to_ulong();
-
-	if (this->_signBitSet[tupleID - 1] == 1)
+	catch(...)
 	{
-		val *= -1;
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @Decoding a double tuple.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 
 	if (asAnInteger)
@@ -37,9 +51,13 @@ int EncodedDoubleAttribute::getTheSignOf(int tupleID){
 	try{
 		return (int)this->_signBitMap.at(tupleID - 1);
 	}
-	catch(std::exception &e){
-		cerr<<"Error in retrieving sign data of int attributes : "<<e.what()<<endl;
-		exit(6);
+	catch(...){
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @Retrieving bits from the signbitmap.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
@@ -53,8 +71,12 @@ void EncodedDoubleAttribute::setTheSignBitMap(vector<double> values,int valSet){
 			else {this->_signBitMap[i] = true; this->_signBitSet[i] = true;}
 		}
 	}
-	catch(std::exception &e){
-		std::cerr<<"Error in setting the sign map : "<<e.what()<<endl;
-		exit(7);
+	catch(...){
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @Setting the signbitmap and signbitset.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }

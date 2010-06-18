@@ -48,7 +48,7 @@ namespace DBConnectionInfo{
 			string db_error  = ExceptionReader::GetError(DB_EXCEPTION);			
 			db_error += "\nProvided DSN: " + dsn_name;
 			ex << error_message(db_error);
-			ex<<error_code(DB_EXCEPTION);
+			ex << error_code(DB_EXCEPTION);
 			BOOST_THROW_EXCEPTION(ex);			
 		}
 	}
@@ -60,13 +60,12 @@ namespace DBConnectionInfo{
 			return true;
 		}
 		catch(CGOdbcEx * e){
-			//throw enable_error_info(std::exception("Error!"));
 			error_db_connection ex;
 			string dsn_name(this->_DSN_Name);
-			string db_error  = ExceptionReader::GetError(DB_EXCEPTION);			
+			string db_error  = ExceptionReader::GetError(SM1002);			
 			db_error += "\nProvided DSN: " + dsn_name;
 			ex << error_message(db_error);
-			ex<<error_code(DB_EXCEPTION);
+			ex << error_code(SM1002);
 			BOOST_THROW_EXCEPTION(ex);			
 		}
 	}
@@ -84,15 +83,15 @@ namespace DBConnectionInfo{
 	}
 
 	DBConnectionInfo::DBConnection::~DBConnection(){
-		this->closeConnectionWithDB();
-		//default destructor.
-		std::cout<<"DBConnection destructor calls"<<std::endl;
+		this->closeConnectionWithDB();		
 	}
 
 	vector<string> DBConnectionInfo::DBConnection::getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE _sourcetype){
-		HKEY hTestKey;
-		string dsName;
-		switch((int) _sourcetype){
+		try
+		{
+			HKEY hTestKey;
+			string dsName;
+			switch((int) _sourcetype){
 		case 0:
 			{
 				dsName = "MySQL";
@@ -118,19 +117,28 @@ namespace DBConnectionInfo{
 				dsName = "skip";
 				break;
 			}
-		}
+			}
 
-		if( RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-			TEXT("SOFTWARE\\ODBC\\ODBC.INI\\ODBC Data Sources"),
-			0,
-			KEY_READ,
-			&hTestKey) == ERROR_SUCCESS
-			)
+			if( RegOpenKeyEx( HKEY_LOCAL_MACHINE,
+				TEXT("SOFTWARE\\ODBC\\ODBC.INI\\ODBC Data Sources"),
+				0,
+				KEY_READ,
+				&hTestKey) == ERROR_SUCCESS
+				)
+			{
+				return QueryKey(hTestKey,dsName);
+			}
+			else
+				throw new std::exception();
+			RegCloseKey(hTestKey);
+		}
+		catch(...)
 		{
-			return QueryKey(hTestKey,dsName);
+			error_odbc_reg_access ex;
+			ex << error_message(ExceptionReader::GetError(SM1003));
+			ex << error_code(SM1003);
+			BOOST_THROW_EXCEPTION(ex);
 		}
-
-		RegCloseKey(hTestKey);
 	}
 
 	vector<string> DBConnectionInfo::DBConnection::QueryKey(HKEY hKey,string ds_string) 

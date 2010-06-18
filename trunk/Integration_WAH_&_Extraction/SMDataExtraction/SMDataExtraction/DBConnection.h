@@ -28,11 +28,11 @@ namespace DBConnectionInfo{
 
 		//Database Connection exportable methods for external activities.
 		__declspec(dllexport) bool initiateConnectionToDB() throw(error_db_connection);
-		__declspec(dllexport) bool closeConnectionWithDB();
+		__declspec(dllexport) bool closeConnectionWithDB()throw(error_db_connection);
 		__declspec(dllexport) char* getDBConnectionString(void);
 		__declspec(dllexport) CGOdbcConnect DBConnectionPtr(void);
 		__declspec(dllexport) DSNDriverInfo DSNDriver(void);
-		__declspec(dllexport) vector<string> getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE _sourcetype);
+		__declspec(dllexport) vector<string> getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE _sourcetype) throw(error_odbc_reg_access);
 		__declspec(dllexport) vector<string> QueryKey(HKEY hKey,string ds_string);
 
 

@@ -3,6 +3,9 @@
 #include "BitStreamInfo.h"
 #include <iostream>
 #include "commons.h"
+#include "seedminerexceptions.h"
+#include "exceptionreader.h"
+#include "ExceptionCodes.h"
 
 using namespace std;
 
@@ -42,33 +45,46 @@ int EncodedAttributeInfo::NoOfVBitStreams(){
 size_t EncodedAttributeInfo::SpaceUtilisation()
 {
 	size_t space = sizeof(this);
-	//typedef vector<BitStreamInfo *>::const_iterator bit_iter;
-	for (size_t index = 0; index < _vBitStreams.size(); index++)
+	try
 	{
-		space += _vBitStreams.at(index)->SpaceUtilisation();
+		for (size_t index = 0; index < _vBitStreams.size(); index++)
+		{
+			space += _vBitStreams.at(index)->SpaceUtilisation();
+		}
+	}
+	catch(...)
+	{
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> Retrieving bits from bitstream @ space utilization.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	return space;
 }
 
 BitStreamInfo* EncodedAttributeInfo::bitStreamAt(int bitStreamID){
-	return this->_vBitStreams[bitStreamID];
+	return this->_vBitStreams.at(bitStreamID);
 }
 
 
 BitStreamInfo* EncodedAttributeInfo::operator ()(const int bitStreamID){
-	try{
-	return this->bitStreamAt(bitStreamID);
-}
-	catch(std::exception &e){
-		std::cerr<<"Error in retrieving bit stream : "<<e.what()<<endl;
-		exit(0);
+	try
+	{
+		return this->bitStreamAt(bitStreamID);
+	}
+	catch(...){
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> Retrieving BitStream from EncodedAttribute";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
-void EncodedAttributeInfo::setVBitStreamSize(int newSize){
-	//this->_vBitStreams.clear();
-	//this->_vBitStreams.resize(newSize);
-}
+void EncodedAttributeInfo::setVBitStreamSize(int newSize){}
 
 void EncodedAttributeInfo::setAttID(int attID){
 	this->_attID = attID;
@@ -83,17 +99,7 @@ void EncodedAttributeInfo::setAttType(ATT_TYPE type){
 }
 
 void EncodedAttributeInfo::setNoOfVBitStreams(int novBitsets, int rows){
-	try{
-		this->_noOfVBitStreams = novBitsets;
-// 		for (int i = 0 ; i < rows ; i++)
-// 		{
-// 			this->_vBStreams[i] = new VBitStream(rows);
-// 		}
-	}
-	catch(std::exception &e){
-		cerr<<"Error in creating vertical bit streams for a given # of bit stream"<<endl;
-		exit(5);
-	}
+	this->_noOfVBitStreams = novBitsets;
 }
 
 void EncodedAttributeInfo::setVBitStreams(BitStreamInfo **VBitStreams){

@@ -5,180 +5,200 @@
 #include <sstream>
 #include <winbase.h>
 #include "..\dll\const.h"
+#include "ConfigurationReader.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 
 using namespace std;
 
-bool DataSourceSerialization::serializeDataSource(){
+bool DataSourceSerialization::serializeDataSource(bool saveAttsInDifferentFiles /* = false */){
 	string xmlFile = this->_xmlFileName + ".xml";
 
-	TiXmlDocument doc;
-	TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","");
-	doc.LinkEndChild(decl);
-
-	TiXmlElement *rootNode = new TiXmlElement("DataSources");
-	rootNode->SetAttribute("noOfdataSources",this->_dataSources->noOfdataSources());
-	doc.LinkEndChild(rootNode);
-
-	TiXmlComment *comments = new TiXmlComment(" Meta Information in Data Sources ");
-	rootNode->LinkEndChild(comments);
-
-	for(int l = 0 ; l < this->_dataSources->noOfdataSources() ; l++)
+	try
 	{
-		TiXmlElement *dsNode = new TiXmlElement("DataSource");
-		rootNode->LinkEndChild(dsNode);
 
-		vector<string> dsNames = this->_dataSources->dsNames();
-		WrapDataSource *ds = (*this->_dataSources)(dsNames[l]);
-		dsNode->SetAttribute("Name",ds->DataSourceName().c_str());
+		TiXmlDocument doc;
+		TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","");
+		doc.LinkEndChild(decl);
 
-		TiXmlElement *attNo = new TiXmlElement("noOfAttributes");
-		attNo->LinkEndChild(new TiXmlText(itoa(ds->noOfAttributes(),new char[1024],10)));
-		dsNode->LinkEndChild(attNo);
+		TiXmlElement *rootNode = new TiXmlElement("DataSources");
+		rootNode->SetAttribute("noOfdataSources",this->_dataSources->noOfdataSources());
+		doc.LinkEndChild(rootNode);
 
-		vector<string> att_file_names = getAttributeFileNames(ds->DataSourceName());
-		TiXmlElement *attFiles = new TiXmlElement("AttributeFiles");
-		
-		for (int j = 0 ; j < att_file_names.size() ; j++)
+		TiXmlComment *comments = new TiXmlComment(" Meta Information in Data Sources ");
+		rootNode->LinkEndChild(comments);
+
+		for(int l = 0 ; l < this->_dataSources->noOfdataSources() ; l++)
 		{
-			TiXmlElement *att = new TiXmlElement("att_file");
-			att->LinkEndChild(new TiXmlText(att_file_names[j].c_str()));
-			attFiles->LinkEndChild(att);
-		}
+			TiXmlElement *dsNode = new TiXmlElement("DataSource");
+			rootNode->LinkEndChild(dsNode);
 
-		dsNode->LinkEndChild(attFiles);
+			vector<string> dsNames = this->_dataSources->dsNames();
+			WrapDataSource *ds = (*this->_dataSources)(dsNames[l]);
+			dsNode->SetAttribute("Name",ds->DataSourceName().c_str());
 
-		TiXmlElement *noRows = new TiXmlElement("noOfRows");
-		noRows->LinkEndChild(new TiXmlText(itoa(ds->noOfRows(),new char[1024],10)));
-		dsNode->LinkEndChild(noRows);
+			TiXmlElement *attNo = new TiXmlElement("noOfAttributes");
+			attNo->LinkEndChild(new TiXmlText(itoa(ds->noOfAttributes(),new char[1024],10)));
+			dsNode->LinkEndChild(attNo);
 
-		TiXmlElement *existanceBitMap = new TiXmlElement("existanceBitMap");
-		string mapString;
-		to_string(ds->ExistanceDatabitMap(),mapString);
-		existanceBitMap->LinkEndChild(new TiXmlText(mapString.c_str()));
-		dsNode->LinkEndChild(existanceBitMap);
-
-		TiXmlElement *dsType = new TiXmlElement("DataSourceType");
-		dsType->LinkEndChild(new TiXmlText(itoa((int)ds->SourceType(),new char[1024],10)));
-		dsNode->LinkEndChild(dsType);
-		// 
-		// 	TiXmlElement *qryData = new TiXmlElement("QueryDataInfo");
-		// 	qryData->LinkEndChild(new TiXmlText(ds->queryExecPointer().queryStmt()));
-		// 	dsNode->LinkEndChild(qryData);
-
-		TiXmlElement *codedAtts = new TiXmlElement("CodedAttributes");
-		dsNode->LinkEndChild(codedAtts);
-
-		for (int i = 0 ; i < ds->noOfAttributes() ; i++)
-		{
-			if(ds->codedAttributes()[i]->attributeType() == ATT_TYPE::SIGNEDINT_VAL){
-				EncodedIntAttribute *intAtt = static_cast<EncodedIntAttribute*>(ds->codedAttributes()[i]);
-				TiXmlElement *att = new TiXmlElement("Attribute");
-				att->SetAttribute("ID",intAtt->attributeID()); 
-				att->SetAttribute("Name",intAtt->attributeName().c_str());
-				att->SetAttribute("Type",(int)intAtt->attributeType());
-
-
-				TiXmlElement *noVBitStreams = new TiXmlElement("noOfVBitStreams");
-				noVBitStreams->LinkEndChild(new TiXmlText(itoa(intAtt->NoOfVBitStreams(),new char[1024],10)));
-				att->LinkEndChild(noVBitStreams);
-
-				TiXmlElement *maxVal = new TiXmlElement("maxval");
-				maxVal->LinkEndChild(new TiXmlText(ltoa(intAtt->maxAttVal(),new char[1024],10)));
-				att->LinkEndChild(maxVal);
-
-				TiXmlElement *minVal = new TiXmlElement("minval");
-				minVal->LinkEndChild(new TiXmlText(ltoa(intAtt->minAttVal(),new char[1024],10)));
-				att->LinkEndChild(minVal);
-
-// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
-// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(intAtt->SignBitMap()).to_ulong(),new char[1024],10)));
-// 				att->LinkEndChild(signMap);
-
-				TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
-				string s;
-				to_string(intAtt->SignBitSet(),s);
-				signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
-				att->LinkEndChild(signBitSet);
-
-				codedAtts->LinkEndChild(att);
-
-			}
-			else if (ds->codedAttributes()[i]->attributeType() == ATT_TYPE::MULTICAT_VAL)
+			vector<string> att_file_names = getAttributeFileNames(ds->DataSourceName());
+			if (saveAttsInDifferentFiles)
 			{
-				EncodedMultiCatAttribute *catVal = static_cast<EncodedMultiCatAttribute*>(ds->codedAttributes()[i]);
-				TiXmlElement *att = new TiXmlElement("Attribute");
-				att->SetAttribute("ID",catVal->attributeID()); 
-				att->SetAttribute("Name",catVal->attributeName().c_str());
-				att->SetAttribute("Type",(int)catVal->attributeType());
+				TiXmlElement *attFiles = new TiXmlElement("AttributeFiles");
 
-				TiXmlElement *uniVals = new TiXmlElement("UniqueValues");
-				uniVals->SetAttribute("noOfUniqueVals",catVal->noOfUniqueValues());
-				for (int j = 0 ; j < catVal->noOfUniqueValues() ; j++)
+				for (int j = 0 ; j < att_file_names.size() ; j++)
 				{
-					TiXmlElement *val = new TiXmlElement("Val");
-					val->SetAttribute("ID",j);
-					val->LinkEndChild(new TiXmlText(catVal->uniqueValList()[j].c_str()));
-					uniVals->LinkEndChild(val);
+					TiXmlElement *att = new TiXmlElement("att_file");
+					att->LinkEndChild(new TiXmlText(att_file_names[j].c_str()));
+					attFiles->LinkEndChild(att);
 				}
-				att->LinkEndChild(uniVals);
 
-				codedAtts->LinkEndChild(att);
+				dsNode->LinkEndChild(attFiles);
 			}
-			else if (ds->codedAttributes()[i]->attributeType() == ATT_TYPE::DOUBLE_VAL)
+
+
+			TiXmlElement *noRows = new TiXmlElement("noOfRows");
+			noRows->LinkEndChild(new TiXmlText(itoa(ds->noOfRows(),new char[1024],10)));
+			dsNode->LinkEndChild(noRows);
+
+			TiXmlElement *existanceBitMap = new TiXmlElement("existanceBitMap");
+			string mapString;
+			to_string(ds->ExistanceDatabitMap(),mapString);
+			existanceBitMap->LinkEndChild(new TiXmlText(mapString.c_str()));
+			dsNode->LinkEndChild(existanceBitMap);
+
+			TiXmlElement *dsType = new TiXmlElement("DataSourceType");
+			dsType->LinkEndChild(new TiXmlText(itoa((int)ds->SourceType(),new char[1024],10)));
+			dsNode->LinkEndChild(dsType);
+
+			TiXmlElement *codedAtts = new TiXmlElement("CodedAttributes");
+			dsNode->LinkEndChild(codedAtts);
+
+			for (int i = 0 ; i < ds->noOfAttributes() ; i++)
 			{
-				EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(ds->codedAttributes()[i]);
-				TiXmlElement *att=new TiXmlElement("Attribute");
-				att->SetAttribute("ID",doubleAtt->attributeID());
-				att->SetAttribute("Name",doubleAtt->attributeName().c_str());
-				att->SetAttribute("Type",(int)doubleAtt->attributeType());
+				if(ds->codedAttributes()[i]->attributeType() == ATT_TYPE::SIGNEDINT_VAL){
+					EncodedIntAttribute *intAtt = static_cast<EncodedIntAttribute*>(ds->codedAttributes()[i]);
+					TiXmlElement *att = new TiXmlElement("Attribute");
+					att->SetAttribute("ID",intAtt->attributeID()); 
+					att->SetAttribute("Name",intAtt->attributeName().c_str());
+					att->SetAttribute("Type",(int)intAtt->attributeType());
 
-				TiXmlElement *noVBitStreams = new TiXmlElement("noOfVBitStreams");
-				noVBitStreams->LinkEndChild(new TiXmlText(itoa(doubleAtt->NoOfVBitStreams(),new char[1024],10)));
-				att->LinkEndChild(noVBitStreams);
 
-				std::ostringstream oss;
-				oss<<doubleAtt->maxAttVal();
-				string maxv = oss.str();
-				TiXmlElement *maxVal = new TiXmlElement("maxval");
-				maxVal->LinkEndChild(new TiXmlText(maxv.c_str()));
-				att->LinkEndChild(maxVal);
+					TiXmlElement *noVBitStreams = new TiXmlElement("noOfVBitStreams");
+					noVBitStreams->LinkEndChild(new TiXmlText(itoa(intAtt->NoOfVBitStreams(),new char[1024],10)));
+					att->LinkEndChild(noVBitStreams);
 
-				std::ostringstream oss_1;
-				oss_1<<doubleAtt->minAttVal();
-				string minv = oss_1.str();
-				TiXmlElement *minVal = new TiXmlElement("minval");
-				minVal->LinkEndChild(new TiXmlText(minv.c_str()));
-				att->LinkEndChild(minVal);
+					TiXmlElement *maxVal = new TiXmlElement("maxval");
+					maxVal->LinkEndChild(new TiXmlText(ltoa(intAtt->maxAttVal(),new char[1024],10)));
+					att->LinkEndChild(maxVal);
 
-// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
-// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(doubleAtt->SignBitMap()).to_ulong(),new char[1024],10)));
-// 				att->LinkEndChild(signMap);
+					TiXmlElement *minVal = new TiXmlElement("minval");
+					minVal->LinkEndChild(new TiXmlText(ltoa(intAtt->minAttVal(),new char[1024],10)));
+					att->LinkEndChild(minVal);
 
-				TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
-				string s;
-				to_string(doubleAtt->signBitSet(),s);
-				signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
-				att->LinkEndChild(signBitSet);
-				
-				TiXmlElement *precision = new TiXmlElement("PrecisionVal");
-				precision->LinkEndChild(new TiXmlText(ltoa(doubleAtt->Precision(),new char[1024],10)));
-				att->LinkEndChild(precision);
+					// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
+					// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(intAtt->SignBitMap()).to_ulong(),new char[1024],10)));
+					// 				att->LinkEndChild(signMap);
 
-				codedAtts->LinkEndChild(att);
+					TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
+					string s;
+					to_string(intAtt->SignBitSet(),s);
+					signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
+					att->LinkEndChild(signBitSet);
+
+					codedAtts->LinkEndChild(att);
+
+				}
+				else if (ds->codedAttributes()[i]->attributeType() == ATT_TYPE::MULTICAT_VAL)
+				{
+					EncodedMultiCatAttribute *catVal = static_cast<EncodedMultiCatAttribute*>(ds->codedAttributes()[i]);
+					TiXmlElement *att = new TiXmlElement("Attribute");
+					att->SetAttribute("ID",catVal->attributeID()); 
+					att->SetAttribute("Name",catVal->attributeName().c_str());
+					att->SetAttribute("Type",(int)catVal->attributeType());
+
+					TiXmlElement *uniVals = new TiXmlElement("UniqueValues");
+					uniVals->SetAttribute("noOfUniqueVals",catVal->noOfUniqueValues());
+					for (int j = 0 ; j < catVal->noOfUniqueValues() ; j++)
+					{
+						TiXmlElement *val = new TiXmlElement("Val");
+						val->SetAttribute("ID",j);
+						val->LinkEndChild(new TiXmlText(catVal->uniqueValList()[j].c_str()));
+						uniVals->LinkEndChild(val);
+					}
+					att->LinkEndChild(uniVals);
+
+					codedAtts->LinkEndChild(att);
+				}
+				else if (ds->codedAttributes()[i]->attributeType() == ATT_TYPE::DOUBLE_VAL)
+				{
+					EncodedDoubleAttribute* doubleAtt = static_cast<EncodedDoubleAttribute*>(ds->codedAttributes()[i]);
+					TiXmlElement *att=new TiXmlElement("Attribute");
+					att->SetAttribute("ID",doubleAtt->attributeID());
+					att->SetAttribute("Name",doubleAtt->attributeName().c_str());
+					att->SetAttribute("Type",(int)doubleAtt->attributeType());
+
+					TiXmlElement *noVBitStreams = new TiXmlElement("noOfVBitStreams");
+					noVBitStreams->LinkEndChild(new TiXmlText(itoa(doubleAtt->NoOfVBitStreams(),new char[1024],10)));
+					att->LinkEndChild(noVBitStreams);
+
+					std::ostringstream oss;
+					oss<<doubleAtt->maxAttVal();
+					string maxv = oss.str();
+					TiXmlElement *maxVal = new TiXmlElement("maxval");
+					maxVal->LinkEndChild(new TiXmlText(maxv.c_str()));
+					att->LinkEndChild(maxVal);
+
+					std::ostringstream oss_1;
+					oss_1<<doubleAtt->minAttVal();
+					string minv = oss_1.str();
+					TiXmlElement *minVal = new TiXmlElement("minval");
+					minVal->LinkEndChild(new TiXmlText(minv.c_str()));
+					att->LinkEndChild(minVal);
+
+					// 				TiXmlElement *signMap = new TiXmlElement("SignMapVal");
+					// 				signMap->LinkEndChild(new TiXmlText(ltoa(signMapAsLong(doubleAtt->SignBitMap()).to_ulong(),new char[1024],10)));
+					// 				att->LinkEndChild(signMap);
+
+					TiXmlElement *signBitSet = new TiXmlElement("SignBitSet");
+					string s;
+					to_string(doubleAtt->signBitSet(),s);
+					signBitSet->LinkEndChild(new TiXmlText(s.c_str()));
+					att->LinkEndChild(signBitSet);
+
+					TiXmlElement *precision = new TiXmlElement("PrecisionVal");
+					precision->LinkEndChild(new TiXmlText(ltoa(doubleAtt->Precision(),new char[1024],10)));
+					att->LinkEndChild(precision);
+
+					codedAtts->LinkEndChild(att);
+				}
+			}
+			if (saveAttsInDifferentFiles)
+			{
+				mkdir(this->_dataFileName.c_str(),7777);
+				doc.SaveFile((this->_dataFileName + "\\" + xmlFile).c_str());
+				saveCodedDataInDifferentFiles(att_file_names);
+			}
+			else
+			{
+				doc.SaveFile((ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + xmlFile).c_str());
+				saveCodedData();
 			}
 		}
-		mkdir(this->_dataFileName.c_str(),7777);
-		//doc.SaveFile("../Reports/" + xmlFile.c_str());
-		doc.SaveFile(("../Reports/" + this->_dataFileName + "/" + xmlFile).c_str());
-		//saveCodedData();
-		saveCodedDataInDifferentFiles(att_file_names);
+
 	}
-	
+	catch(...)
+	{
+		error_saving_encoded_data ex;
+		ex << error_message(ExceptionReader::GetError(SM1016));
+		ex << error_code(SM1016);
+		BOOST_THROW_EXCEPTION(ex);
+	}
 	return true;
 }
 
 void DataSourceSerialization::saveCodedData(){
-	string fileName = "../Reports/" + this->_dataFileName + ".xml";
+	string fileName = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_attDataFileName + ".xml";
 	TiXmlDocument doc;
 	TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","");
 	doc.LinkEndChild(decl);
@@ -266,9 +286,8 @@ vector<string> DataSourceSerialization::getAttributeFileNames(string dsName)
 
 void DataSourceSerialization::saveCodedDataInDifferentFiles(vector<string> attFiles)
 {	
-	string direct = "../Reports/" + this->_dataFileName;
-	//mkdir(direct.c_str(),7777);
-	//CreateDirectory((WCHAR*)direct.c_str(),NULL);
+	string direct =  this->_dataFileName;
+
 	for (int i = 0 ; i < attFiles.size() ; i++)
 	{
 		string fileName = direct + "/" + attFiles[i];

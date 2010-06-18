@@ -2,6 +2,8 @@
 #include "MultiCatDataInfo.h"
 #include <math.h>
 #include <iostream>
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 
 MultiCatDataInfo::MultiCatDataInfo(std::set<string> uniqueDataList)
 {
@@ -22,13 +24,19 @@ int* MultiCatDataInfo::getAssignedEncodedNumberList(){
 			this->_assignedEncodedNumbers[temp] = temp;
 		}
 	}
-	catch(std::exception &e){
-		std::cerr<<"Error in assigning encoded numbers : "<<e.what()<<endl;
-		exit(8);
+	catch(...){
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @Retrieving assigned number list for multicat values.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	return this->_assignedEncodedNumbers;
 }
 
 MultiCatDataInfo::~MultiCatDataInfo(void)
 {
+	delete this->_assignedEncodedNumbers;
+	this->_uniqueStrings.clear();
 }

@@ -5,6 +5,7 @@
 #include "boost/dynamic_bitset.hpp"
 
 #include <vector>
+#include "seedminerexceptions.h"
 
 using namespace std;
 using namespace boost;
@@ -26,8 +27,8 @@ public:
 	__declspec(dllexport) void setAttID(int attID);
 	__declspec(dllexport) void setVBitStreamSize(int newSize);
 	__declspec(dllexport) BitStreamInfo* bitStreamAt(int bitStreamID);
-	__declspec(dllexport) BitStreamInfo* operator()(const int bitStreamID);
-	__declspec(dllexport) size_t SpaceUtilisation();
+	__declspec(dllexport) BitStreamInfo* operator()(const int bitStreamID) throw(error_vector_out_of_range);
+	__declspec(dllexport) size_t SpaceUtilisation() throw(error_vector_out_of_range);
 	__declspec(dllexport) void DeleteVBitStreams();
 	
 	template<typename T>

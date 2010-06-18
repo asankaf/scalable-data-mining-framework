@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <string>
 #include "commons.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 
 using namespace std;
 
@@ -52,20 +54,16 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 	cout<<"Time to assign the set to a vector : "<<(end - start)<<endl;
 
 	int maxUniqueIndex = _uniqueValList.size();
-	int temp=0;
+	int temp = 0;
 
-	if (maxUniqueIndex == 1)
-	{
-		temp = 1;
-	}
-	else 
-	{
-		temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
-	}
+	if (maxUniqueIndex == 1)	temp = 1;
+	else temp = (int)(ceil(log10((double)maxUniqueIndex)/log10(2.0)));
+
 	this->setNoOfVBitStreams(temp,noOfRows);
 	this->_noOfUniqueVals = _uniqueValList.size();
 
 	int no_v_bitStreams = this->NoOfVBitStreams();
+	
 	for (int i = 0 ; i < noOfRows ; i++)
 	{
 		//int pos = std::find(_uniqueValList.begin(),_uniqueValList.end(),_valueList[i]) - _uniqueValList.begin();
@@ -77,31 +75,6 @@ dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(vector<str
 	return this->_mappedVals;
 }
 
-dynamic_bitset<>* EncodedMultiCatAttribute::mapStringDataToCategories(TempStringObjects* _tempStrs,int noRows,int NoUniqueVals){
-	vector<TempStringObjects> tempObjs(_tempStrs,_tempStrs + noRows);
-	int tempMax = (int)(ceil(log10((double)NoUniqueVals)/log10(2.0)));
-	this->setNoOfVBitStreams(tempMax,noRows);
-	std::sort(tempObjs.begin(),tempObjs.end());
-	string temp;
-	int tempCount = 0;
-	if (noRows > 0)
-	{
-		temp = tempObjs[0].Val();
-	}
-	for (int i = 0 ; i < tempObjs.size() ; i++)
-	{
-		TempStringObjects obj = tempObjs[i];
-		obj.Index(obj.Index() - i);
-		if (strcmp(obj.Val().c_str(),temp.c_str()) != 0)
-		{
-			tempCount++;
-			temp = obj.Val();
-		}
-		dynamic_bitset<> bitSet(this->NoOfVBitStreams(),(unsigned long)(obj.Index() + tempCount));
-		this->_mappedVals[i] = bitSet;		
-	}
-	return this->_mappedVals;
-}
 
 void EncodedMultiCatAttribute::setMappedValList(vector<dynamic_bitset<>> & _mapped_vals)
 {
@@ -120,14 +93,27 @@ string EncodedMultiCatAttribute::decodeTheTuple(int tupleID){
 
 	dynamic_bitset<> temp(this->NoOfVBitStreams());
 	int val=0;
-
-	for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
+	string _value;
+	try
 	{
-		temp[i] = this->vBitStreams()[i]->Decompress()[tupleID - 1];
-	}
+		for (int i=0 ; i < this->NoOfVBitStreams() ;i++)
+		{
+			temp[i] = this->vBitStreams()[i]->Decompress()[tupleID - 1];
+		}
 
-	val = (int)temp.to_ulong();
-	return this->_uniqueValList[val];
+		val = (int)temp.to_ulong();
+		_value =  this->_uniqueValList[val];
+	}
+	catch(...)
+	{
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @Decoding a multi-category tuple.";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+	return _value;
 }
 
 int EncodedMultiCatAttribute::binarySearch(vector<string> arr, std::string value, int left, int right){

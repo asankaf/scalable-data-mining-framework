@@ -1,6 +1,7 @@
 #pragma once
 #include "EncodedAttributeInfo.h"
 #include <vector>
+#include "SEEDMinerExceptions.h"
 
 using namespace std;
 
@@ -19,10 +20,10 @@ public:
 	__declspec(dllexport) void setMinVal(double val){this->_minVal = val;}
 	__declspec(dllexport) long Precision() const { return precision; }
 	__declspec(dllexport) void Precision(long val) { precision = val; }
-	__declspec(dllexport) double decodeTheTuple(int tupleID,bool asAnInteger=false);
-	__declspec(dllexport) int getTheSignOf(int tupleID);
+	__declspec(dllexport) double decodeTheTuple(int tupleID,bool asAnInteger=false) throw(error_vector_out_of_range);
+	__declspec(dllexport) int getTheSignOf(int tupleID) throw(error_vector_out_of_range);
 	__declspec(dllexport) dynamic_bitset<> signMapAsInt();
-	__declspec(dllexport) void setTheSignBitMap(vector<double> values,int valSet);
+	__declspec(dllexport) void setTheSignBitMap(vector<double> values,int valSet) throw(error_vector_out_of_range);
 
 private:
 	long precision;

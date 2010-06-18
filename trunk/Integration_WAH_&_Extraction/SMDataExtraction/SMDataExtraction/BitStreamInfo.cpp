@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "BitStreamInfo.h"
+#include "SEEDMinerExceptions.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 
 BitStreamInfo::BitStreamInfo(){
 
@@ -47,9 +50,21 @@ BitStreamInfo::vertical_bit_type BitStreamInfo::Type()
 
 vector<int> BitStreamInfo::getActiveBitIDs(){
 	vector<int> activeIDs;
-	for (int i = 0 ; i < this->_decompressedVBitStream.size() ; i++)
+	try
 	{
-		if ((int)this->_decompressedVBitStream[i] == 1) activeIDs.push_back(i);
+		for (int i = 0 ; i < this->_decompressedVBitStream.size() ; i++)
+		{
+			if ((int)this->_decompressedVBitStream[i] == 1) activeIDs.push_back(i);
+		}
+	}
+	catch(...)
+	{
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> Retrieving Active Bit ID's from bitstream";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	return activeIDs;
 }

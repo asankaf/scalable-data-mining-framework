@@ -6,6 +6,7 @@
 #include "PureDoubleAttInfo.h"
 #include "PureStringAttInfo.h"
 #include <vector>
+#include "SEEDMinerExceptions.h"
 
 /************************************************************************/
 /*    Class  :DBQueryExecution.h
@@ -23,12 +24,12 @@ namespace DBQueryExecutionInfo{
 			__declspec(dllexport) DBQueryExecution(const char* statement);
 			__declspec(dllexport) DBQueryExecution();
 			__declspec(dllexport) ~DBQueryExecution();
-			__declspec(dllexport) bool ExecuteQueryAndBindData(CGOdbcConnect &cCon);
+			__declspec(dllexport) bool ExecuteQueryAndBindData(CGOdbcConnect &cCon) throw(error_db_query_execution,error_db_unhandled_datatype,error_binding_pure_data);
 			__declspec(dllexport) CGOdbcStmt* DBStatementPtr();
 			__declspec(dllexport) std::vector<PureIntAttInfo*> RetievedIntData();
 			__declspec(dllexport) std::vector<PureDoubleAttInfo*> RetrievedDoubleData();
 			__declspec(dllexport) std::vector<PureStringAttInfo*> RetrievedStringData();
-			__declspec(dllexport) int RowCount();
+			__declspec(dllexport) int RowCount() throw(error_object_null);
 			__declspec(dllexport) void setRowCount();
 			__declspec(dllexport) const char* queryStmt(){return this->_query_stmt;}
 
