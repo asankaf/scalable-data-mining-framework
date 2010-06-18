@@ -10,6 +10,7 @@
 #include "EncodedAttributeInfo.h"
 #include "StringSpecAssignVals.h"
 #include "boost/dynamic_bitset.hpp";
+#include "SEEDMinerExceptions.h"
 
 using namespace boost;
 using namespace std;
@@ -25,9 +26,8 @@ public:
 	__declspec(dllexport) int* getMappedIntVals();
 	__declspec(dllexport) int noOfUniqueValues();
 	__declspec(dllexport) void setUniqueValList(vector<string> uniques){this->_uniqueValList = uniques;this->_noOfUniqueVals = uniques.size();}
-	__declspec(dllexport) string decodeTheTuple(int tupleID);
+	__declspec(dllexport) string decodeTheTuple(int tupleID) throw(error_vector_out_of_range);
 	__declspec(dllexport) dynamic_bitset<>* mapStringDataToCategories(vector<string> _valueList,std::set<string> _uniqueValList,int noOfRows);
-	__declspec(dllexport) dynamic_bitset<>* mapStringDataToCategories(TempStringObjects* _tempStrs,int NoRows,int NoUniqueVals);
 	int binarySearch(vector<string> arr, string value, int left, int right);
 	void Init();
 	void setUniqueMap();

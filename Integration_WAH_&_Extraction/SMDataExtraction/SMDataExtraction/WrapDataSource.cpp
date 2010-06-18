@@ -12,6 +12,9 @@
 #include <xutility>
 #include "encodeddoubleattribute.h"
 #include "commons.h"
+#include "seedminerexceptions.h"
+#include "exceptionreader.h"
+#include "ExceptionCodes.h"
 
 using namespace std;
 using namespace boost;
@@ -90,9 +93,21 @@ void WrapDataSource::Init()
 size_t WrapDataSource::SpaceUtilsation()
 {
 	size_t space = sizeof(this);
-	for (size_t index = 0; index < this->_codedAtts.size(); index++)
+	try
 	{
-		space += _codedAtts[index]->SpaceUtilisation();
+		for (size_t index = 0; index < this->_codedAtts.size(); index++)
+		{
+			space += _codedAtts[index]->SpaceUtilisation();
+		}
+	}
+	catch(...)
+	{
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> @calculating space utilization";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	return space;
 }
@@ -132,99 +147,92 @@ void WrapDataSource::CodedAtts(vector<EncodedAttributeInfo *> _coded_atts )
 void WrapDataSource::encodeIntAttributes(vector<PureIntAttInfo*> intAtts){
 	int i = 0;
 	try{
-	for (; i< intAtts.size() ; i++)
-	{
-		PureIntAttInfo* pureIntAtt = intAtts[i];
-		EncodedIntAttribute *encodedIntAtt = new EncodedIntAttribute();
-		encodedIntAtt->setAttName(pureIntAtt->attName);
-		encodedIntAtt->setAttType(ATT_TYPE::SIGNEDINT_VAL);
-		encodedIntAtt->setAttID(pureIntAtt->attID);
-		
-		int upperNum = pureIntAtt->Upper();
-		encodedIntAtt->setMaxVal(upperNum);
-		encodedIntAtt->setMinVal(pureIntAtt->Lower());
-		int no_v_bitStreams = 0;
-		if (upperNum == 0)
+		for (; i< intAtts.size() ; i++)
 		{
-			no_v_bitStreams = 1;
-		}
-		else 
-		{
-			no_v_bitStreams = (int)ceil(log10((double)upperNum)/log10(2.0));
-			if (pow(2.0,(double)no_v_bitStreams) == (double)upperNum)
+			PureIntAttInfo* pureIntAtt = intAtts[i];
+			EncodedIntAttribute *encodedIntAtt = new EncodedIntAttribute();
+			encodedIntAtt->setAttName(pureIntAtt->attName);
+			encodedIntAtt->setAttType(ATT_TYPE::SIGNEDINT_VAL);
+			encodedIntAtt->setAttID(pureIntAtt->attID);
+
+			int upperNum = pureIntAtt->Upper();
+			encodedIntAtt->setMaxVal(upperNum);
+			encodedIntAtt->setMinVal(pureIntAtt->Lower());
+
+			int no_v_bitStreams = 0;
+			if (upperNum == 0)
 			{
-				no_v_bitStreams++;
+				no_v_bitStreams = 1;
 			}
-		}
-		encodedIntAtt->setNoOfVBitStreams(no_v_bitStreams,this->_noOfRows);
-		vector<long int> values = pureIntAtt->valList();
-		encodedIntAtt->setTheSignBitMap(values,this->_noOfRows);
-		int j = 0;
-		
-		//array to hold converted bit representations of the actual row data.
-		dynamic_bitset<> *convertdBitArray = new dynamic_bitset<>[this->_noOfRows];
-
-		time_t start_1,end_1;
-		start_1 = clock();
-		for (; j < this->_noOfRows ; j++)
-		{
-			dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)abs(values[j]));
-			convertdBitArray[j] = bitSet;
-		}		
-		
-		end_1 = clock();
-		cout<<"Time to convert each data item to its corresponding bit representation : " << (end_1 - start_1)<<endl;
-
-		int temp = this->_noOfRows;
-
-		time_t start,end;
-		start = clock();
-
-		BitStreamInfo **bitStreams = new BitStreamInfo*[no_v_bitStreams];
-		for (int k = 0 ; k < no_v_bitStreams ; k++)
-		{
-			BitStreamInfo* temp_bitStream = new VBitStream();
-			dynamic_bitset<> temp_bitSet(temp);
-			for (int l = 0 ; l < temp ; l++)
+			else 
 			{
-				bool val = convertdBitArray[l][k];
-				temp_bitSet[l] = val;
+				no_v_bitStreams = (int)ceil(log10((double)upperNum)/log10(2.0));
+				if (pow(2.0,(double)no_v_bitStreams) == (double)upperNum)
+				{
+					no_v_bitStreams++;
+				}
 			}
-			temp_bitStream->convert(temp_bitSet);
-			temp_bitStream->setBitStreamAllocAttID(pureIntAtt->attID);
-			temp_bitStream->setBitStreamAllocAttName(pureIntAtt->attName);
-			bitStreams[k] = temp_bitStream;
+			encodedIntAtt->setNoOfVBitStreams(no_v_bitStreams,this->_noOfRows);
+			vector<long int> values = pureIntAtt->valList();
+			encodedIntAtt->setTheSignBitMap(values,this->_noOfRows);
+			int j = 0;
+
+			//array to hold converted bit representations of the actual row data.
+			dynamic_bitset<> *convertdBitArray = new dynamic_bitset<>[this->_noOfRows];
+
+			time_t start_1,end_1;
+			start_1 = clock();
+			for (; j < this->_noOfRows ; j++)
+			{
+				dynamic_bitset<> bitSet(no_v_bitStreams,(unsigned long)abs(values[j]));
+				convertdBitArray[j] = bitSet;
+			}		
+
+			end_1 = clock();
+			cout<<"Time to convert each data item to its corresponding bit representation : " << (end_1 - start_1)<<endl;
+
+			int temp = this->_noOfRows;
+
+			time_t start,end;
+			start = clock();
+
+			BitStreamInfo **bitStreams = new BitStreamInfo*[no_v_bitStreams];
+			for (int k = 0 ; k < no_v_bitStreams ; k++)
+			{
+				BitStreamInfo* temp_bitStream = new VBitStream();
+				dynamic_bitset<> temp_bitSet(temp);
+				for (int l = 0 ; l < temp ; l++)
+				{
+					bool val = convertdBitArray[l][k];
+					temp_bitSet[l] = val;
+				}
+				temp_bitStream->convert(temp_bitSet);
+				temp_bitStream->setBitStreamAllocAttID(pureIntAtt->attID);
+				temp_bitStream->setBitStreamAllocAttName(pureIntAtt->attName);
+				bitStreams[k] = temp_bitStream;
+			}
+			vector<BitStreamInfo*> vBitStreams(bitStreams,bitStreams + no_v_bitStreams);
+			encodedIntAtt->setVBitStreams(vBitStreams);
+
+			end = clock();
+			cout<<endl<<"Time to encode Int data : "<<(end - start) << endl;
+
+			this->_codedIntAtts.push_back(encodedIntAtt);
+			this->_codedAtts[encodedIntAtt->attributeID()] = encodedIntAtt;	
+
+			start = clock();
+			delete []convertdBitArray;
+			end = clock();
+			//cout<<"Time to delete temporary attributes : "<<(end - start)<<endl;
 		}
-		vector<BitStreamInfo*> vBitStreams(bitStreams,bitStreams + no_v_bitStreams);
-		encodedIntAtt->setVBitStreams(vBitStreams);
-
-// 		for (int j = 0 ; j < no_v_bitStreams ; j++)
-// 		{
-// 			delete bitStreams[j];
-// 		}
-// 		delete []bitStreams;
-
-		end = clock();
-		cout<<endl<<"Time to encode Int data : "<<(end - start) << endl;
-		
-		this->_codedIntAtts.push_back(encodedIntAtt);
-		this->_codedAtts[encodedIntAtt->attributeID()] = encodedIntAtt;
-// 		if (encodedIntAtt->attributeID() == 0)
-// 		{
-// 			this->_codedAtts.insert(this->_codedAtts.begin(),encodedIntAtt);
-// 		}
-// 		else this->_codedAtts.insert(this->_codedAtts.end(),encodedIntAtt->attributeID(),encodedIntAtt);
-// 		
-		
-		start = clock();
-		delete []convertdBitArray;
-		end = clock();
-		//cout<<"Time to delete temporary attributes : "<<(end - start)<<endl;
 	}
-}
-	catch(std::exception &e){
-		cerr<<"Error in encoding int attributes : " << e.what()<<endl;
-		exit(9);
+	catch(...){
+		error_encoding_int_atts ex;
+		string err = ExceptionReader::GetError(SM1008);
+		err += "-> possible error in creating the vertical structure from raw data";
+		ex << error_message(err);
+		ex << error_code(SM1008);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
@@ -244,17 +252,6 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 			dynamic_bitset<> *convertedBitSet = multiCatAtt->mapStringDataToCategories(stringAtt->ValueList(),stringAtt->uniqueValueSet(),this->_noOfRows);
 			end = clock();
 			cout<<"Time for mapping data to ints : "<<(end - start)<<endl;
-
-// 			start = clock();
-// 			dynamic_bitset<> *convertedBitSet_1 = multiCatAtt->mapStringDataToCategories(stringAtt->ValObjects(),this->_noOfRows,stringAtt->uniqueValueSet().size());
-// 			end = clock();
-// 			cout<<"Time for mapping data to ints using new method : "<<(end - start)<<endl;
-
-// 			for (int j = 0 ; j < this->_noOfRows ; j++)
-// 			{
-// 				cout<<"Using Old Method : "<<convertedBitSet[j]<<" : ";
-// 				cout<<"Using New Method : "<<convertedBitSet_1[j]<<endl;
-// 			}
 
 			int temp = this->_noOfRows;
 			start = clock();
@@ -279,29 +276,22 @@ void WrapDataSource::encodeStringAttributes(vector<PureStringAttInfo*> stringAtt
 			vector<BitStreamInfo*> vBitStreams(bitStreams,bitStreams + no_v_streams);
 			multiCatAtt->setVBitStreams(vBitStreams);
 
-// 			for (int j = 0 ; j < no_v_streams ; j++)
-// 			{
-// 				delete bitStreams[j];
-// 			}
-// 			delete []bitStreams;
-
 
 			end = clock();
 			cout<<"Time to encode converted data : "<<(end - start) << endl;
 			this->_codedStringAtts.push_back(multiCatAtt);
 
 			this->_codedAtts[multiCatAtt->attributeID()] = multiCatAtt;
-// 			if (multiCatAtt->attributeID() == 0)
-// 			{
-// 				this->_codedAtts.insert(this->_codedAtts.begin(),multiCatAtt);
-// 			}
-// 			else this->_codedAtts.insert(this->_codedAtts.end(),multiCatAtt->attributeID(),multiCatAtt);
 		}
 
 	}
-	catch(std::exception &e){
-		cerr<<"Error in encoding multi category attribute values : "<<e.what()<<endl;
-		exit(10);
+	catch(...){
+		error_encoding_string_atts ex;
+		string err = ExceptionReader::GetError(SM1009);
+		err += "-> possible error in creating the vertical structure from raw data";
+		ex << error_message(err);
+		ex << error_code(SM1009);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
@@ -370,27 +360,20 @@ void WrapDataSource::encodeDoubleAttributes(vector<PureDoubleAttInfo*> doubleAtt
 			vector<BitStreamInfo*> vBitStreams(bitStreams,bitStreams + no_v_bitstreams);
 			encodedDoubleAtt->setVBitStreams(vBitStreams);
 
-// 			for (int j = 0 ; j < no_v_bitstreams ; j++)
-// 			{
-// 				delete bitStreams[j];
-// 			}
-// 			delete []bitStreams;
-
 			this->_codedDoubleAtts.push_back(encodedDoubleAtt);
 			this->_codedAtts[encodedDoubleAtt->attributeID()] = encodedDoubleAtt;
-// 			if (encodedDoubleAtt->attributeID() == 0)
-// 			{
-// 				this->_codedAtts.insert(this->_codedAtts.begin(),encodedDoubleAtt);
-// 			}
-// 			else this->_codedAtts.insert(this->_codedAtts.end(),encodedDoubleAtt->attributeID(),encodedDoubleAtt);
 
 			delete []convertedBitArray;			
 
 		}
 
-	}catch(std::exception &ex){
-		cerr<<"Error in encoding multi category attribute values : "<<ex.what()<<endl;
-		exit(11);
+	}catch(...){
+		error_encoding_double_atts ex;
+		string err = ExceptionReader::GetError(SM1010);
+		err += "-> possible error in creating the vertical structure from raw data";
+		ex << error_message(err);
+		ex << error_code(SM1010);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
@@ -410,73 +393,53 @@ Tuple* WrapDataSource::DecodeTheTuple(int tupleID){
 	vector<PureStringAttInfo*> stringTuples;
 	vector<PureDoubleAttInfo*> doubleTuples;
 
-	try
+	for (int i=0 ; i < this->_codedIntAtts.size() ; i++)
 	{
-		for (int i=0 ; i < this->_codedIntAtts.size() ; i++)
-		{
-			PureIntAttInfo* intAtt = new PureIntAttInfo();
-			int val = this->_codedIntAtts[i]->decodeTheTuple(tupleID);
-			long int *vals = new long int[1];
-			vals[0] = val;
-			intAtt->setValueList(vals);
-			intAtt->setLower(val);
-			intAtt->setUpper(val);
-			intAtt->attID = this->_codedIntAtts[i]->attributeID();
-			intAtt->attName = this->_codedIntAtts[i]->attributeName();
-			intAtt->type =  this->_codedIntAtts[i]->attributeType();
+		PureIntAttInfo* intAtt = new PureIntAttInfo();
+		int val = this->_codedIntAtts[i]->decodeTheTuple(tupleID);
+		long int *vals = new long int[1];
+		vals[0] = val;
+		intAtt->setValueList(vals);
+		intAtt->setLower(val);
+		intAtt->setUpper(val);
+		intAtt->attID = this->_codedIntAtts[i]->attributeID();
+		intAtt->attName = this->_codedIntAtts[i]->attributeName();
+		intAtt->type =  this->_codedIntAtts[i]->attributeType();
 
-			intTuples.push_back(intAtt);
-		}
-	}
-	catch(std::exception &e){
-		cerr<<"Error in decoding integer values : "<<e.what()<<endl;
-		exit(11);
+		intTuples.push_back(intAtt);
 	}
 
-
-	try{
-		for (int j=0 ; j < this->_codedStringAtts.size() ; j++)
-		{
-			PureStringAttInfo* strAtt=new PureStringAttInfo();
-			string val = this->_codedStringAtts[j]->decodeTheTuple(tupleID);
-			string* vals = new string[1];
-			vals[0] = val;
-			strAtt->setValueList(vals,1);
-			strAtt->attID =  this->_codedStringAtts[j]->attributeID();
-			strAtt->attName =  this->_codedStringAtts[j]->attributeName();
-			strAtt->type =  this->_codedStringAtts[j]->attributeType();
-
-			stringTuples.push_back(strAtt);
-		}
-	}
-	catch(std::exception &e){
-		cerr<<"Error in decoding string values : "<<e.what()<<endl;
-		exit(12);
-	}
-
-	try{
-		for (int i = 0 ; i < this->_codedDoubleAtts.size(); i++)
-		{
-			PureDoubleAttInfo* doubleAtt = new PureDoubleAttInfo();
-			double val = this->_codedDoubleAtts[i]->decodeTheTuple(tupleID);
-			double* vals = new double[1];
-			vals[0] = val;
-			doubleAtt->setValueList(vals);
-			doubleAtt->setUpper(val);
-			doubleAtt->setLower(val);
-
-			doubleAtt->attID = this->_codedDoubleAtts[i]->attributeID();
-			doubleAtt->attName = this->_codedDoubleAtts[i]->attributeName();
-			doubleAtt->type =  this->_codedDoubleAtts[i]->attributeType();
-
-			doubleTuples.push_back(doubleAtt);
-		}
-	}
-	catch(std::exception& ex)
+	for (int j=0 ; j < this->_codedStringAtts.size() ; j++)
 	{
-		cerr<<"Error in decoding double values : "<<ex.what()<<endl;
-		exit(12);
+		PureStringAttInfo* strAtt=new PureStringAttInfo();
+		string val = this->_codedStringAtts[j]->decodeTheTuple(tupleID);
+		string* vals = new string[1];
+		vals[0] = val;
+		strAtt->setValueList(vals,1);
+		strAtt->attID =  this->_codedStringAtts[j]->attributeID();
+		strAtt->attName =  this->_codedStringAtts[j]->attributeName();
+		strAtt->type =  this->_codedStringAtts[j]->attributeType();
+
+		stringTuples.push_back(strAtt);
 	}
+
+	for (int i = 0 ; i < this->_codedDoubleAtts.size(); i++)
+	{
+		PureDoubleAttInfo* doubleAtt = new PureDoubleAttInfo();
+		double val = this->_codedDoubleAtts[i]->decodeTheTuple(tupleID);
+		double* vals = new double[1];
+		vals[0] = val;
+		doubleAtt->setValueList(vals);
+		doubleAtt->setUpper(val);
+		doubleAtt->setLower(val);
+
+		doubleAtt->attID = this->_codedDoubleAtts[i]->attributeID();
+		doubleAtt->attName = this->_codedDoubleAtts[i]->attributeName();
+		doubleAtt->type =  this->_codedDoubleAtts[i]->attributeType();
+
+		doubleTuples.push_back(doubleAtt);
+	}
+
 	decodedTuple->setDecodedInts(intTuples);
 	decodedTuple->setDecodedStrings(stringTuples);
 	decodedTuple->DecodedDoubleAtts(doubleTuples);
@@ -491,12 +454,17 @@ vector<EncodedAttributeInfo*> WrapDataSource::codedAttributes(){
 }
 
 EncodedAttributeInfo* WrapDataSource::operator ()(const int attID){
-	try{
+	try
+	{
 		return this->_codedAtts.at(attID);
 	}
-	catch(std::exception &e){
-		cerr<<"Error in retrieving attribute info from a given attribute ID : "<<e.what()<<endl;
-		exit(13);
+	catch(...){
+		error_vector_out_of_range ex;
+		string err = ExceptionReader::GetError(SM1007);
+		err += "-> Retrieving Encoded Attribute from WrappedDataSource";
+		ex << error_message(err);
+		ex << error_code(SM1007);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 }
 
@@ -528,7 +496,19 @@ std::string WrapDataSource::decodeTheTupleAsString( int tupleID )
 	string tuple;	
 	for (int i=0 ; i< this->_codedAtts.size() ;i++)
 	{
-		int tupleType = this->_codedAtts[i]->attributeType();
+		int tupleType = -1;
+		try{
+			tupleType = this->_codedAtts[i]->attributeType();
+		}
+		catch(...)
+		{
+			error_object_null ex;
+			string err = ExceptionReader::GetError(SM1011);
+			err += "-> retrieving coded attributes.";
+			ex << error_message(err);
+			ex << error_code(SM1011);
+			BOOST_THROW_EXCEPTION(ex);
+		}
 		switch(tupleType)
 		{
 		case 0:
@@ -566,10 +546,22 @@ std::string WrapDataSource::decodeTheTupleAsString( int tupleID )
 std::string WrapDataSource::generateCSVStringofDecodedData(int _no_of_rows)
 {
 	string attVals;
-	for (int i = 0 ; i < this->_codedAtts.size() ; i++)
+	try
 	{
-		attVals += this->_codedAtts[i]->attributeName();
-		attVals += ",";
+		for (int i = 0 ; i < this->_codedAtts.size() ; i++)
+		{
+			attVals += this->_codedAtts[i]->attributeName();
+			attVals += ",";
+		}
+	}
+	catch(...)
+	{
+		error_object_null ex;
+		string err = ExceptionReader::GetError(SM1011);
+		err += "-> retrieving coded attributes.";
+		ex << error_message(err);
+		ex << error_code(SM1011);
+		BOOST_THROW_EXCEPTION(ex);
 	}
 	string lineBreak = "\n";
 	attVals.replace((attVals.size() -1),lineBreak.size(),lineBreak);
@@ -585,6 +577,5 @@ std::string WrapDataSource::generateCSVStringofDecodedData(int _no_of_rows)
 
 std::string WrapDataSource::generateCSVStringofDecodedData()
 {
-
 	return generateCSVStringofDecodedData(this->_noOfRows);
 }

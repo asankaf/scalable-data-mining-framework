@@ -42,9 +42,10 @@ vector<string> PureStringAttInfo::uniqueValueList(){
 void PureStringAttInfo::setUniqueValueList(int noRows){
 	
 	int temp;
+	this->_uniqueValList.resize(noRows);
 	for (temp = 0 ; temp < noRows ; temp++)
 	{
-		this->_uniqueValList.push_back(this->_valueList[temp]);
+		this->_uniqueValList[temp] = (this->_valueList[temp]);
 	}
 
 	std::sort(this->_uniqueValList.begin(),this->_uniqueValList.end());

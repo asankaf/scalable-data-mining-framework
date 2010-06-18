@@ -6,6 +6,16 @@
 #include "PureDoubleAttInfo.h"
 #include "Commons.h"
 
+/************************************************************************/
+/*    Class  :extractedCsvDTO.h
+/*	  Started:11.03.2010 13:51:02
+/*    Updated:18.04.2010 18:48:51
+/*    Author :SEEDMiner
+/*    Subj   :Simple Data Transfer Object(DTO) class to store the necessary
+/*			  details regarding CSV driven data into the internal framework. 
+/*    Version: 
+/************************************************************************/
+
 namespace CsvDataExtraction{
 	class ExtractedCsvDTO{
 	public:

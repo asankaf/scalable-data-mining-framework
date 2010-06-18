@@ -16,7 +16,8 @@ public:
 		LOAD_TYPE ,
 		LOAD_TYPE_MULTI,
 		LOAD_TYPE_SINGLE,
-		LOAD_TYPE_CSV	};
+		LOAD_TYPE_CSV,
+		SAVE_DATA_FOLDER	};
 
 	_declspec(dllexport) ConfigurationReader(void);
 
@@ -48,5 +49,5 @@ private :
 	static string LOAD_TYPE_MULTI_VAL;
 	static string LOAD_TYPE_SINGLE_VAL;
 	static string LOAD_TYPE_CSV_VAL;
-
+	static string SAVE_XML_FILE_FOLDER;
 };

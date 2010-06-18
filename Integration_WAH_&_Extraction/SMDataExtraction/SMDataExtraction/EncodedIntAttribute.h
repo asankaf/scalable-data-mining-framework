@@ -4,6 +4,7 @@
 #include "AttributeType.h"
 #include "EncodedAttributeInfo.h"
 #include "boost/dynamic_bitset.hpp"
+#include "SEEDMinerExceptions.h"
 
 using namespace std;
 
@@ -18,9 +19,9 @@ public:
 	__declspec(dllexport) long minAttVal(){return this->_minVal;}
 	__declspec(dllexport) void setMaxVal(long val){this->_maxVal = val;}
 	__declspec(dllexport) void setMinVal(long val){this->_minVal = val;}
-	__declspec(dllexport) int decodeTheTuple(int tupleID);
-	__declspec(dllexport) int getTheSignOf(int tupleID);
-	__declspec(dllexport) void setTheSignBitMap(vector<long int> values,int valSet);
+	__declspec(dllexport) int decodeTheTuple(int tupleID) throw(error_vector_out_of_range);
+	__declspec(dllexport) int getTheSignOf(int tupleID) throw(error_vector_out_of_range);
+	__declspec(dllexport) void setTheSignBitMap(vector<long int> values,int valSet) throw(error_vector_out_of_range);
 	__declspec(dllexport) void setSignBitMap(vector<bool> bitMap){this->_signBitMap = bitMap;}
 	__declspec(dllexport) void setSignBitSet(dynamic_bitset<> bitSet){this->_signBitSet = bitSet;}
 	__declspec(dllexport) dynamic_bitset<> signMapAsBitSet();

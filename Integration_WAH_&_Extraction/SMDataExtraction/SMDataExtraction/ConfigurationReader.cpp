@@ -11,12 +11,13 @@ ConfigurationReader::ConfigurationReader(string & _path)
 	COMPRESSION_VAL ="compression";
 	METAFILE_NAME_VAL ="metafile";
 	DATAFILE_NAME_VAL ="datafile",
-		FILE_NAME_VAL = "filename";
+	FILE_NAME_VAL = "filename";
 	FOLDER_NAME_VAL = "datafolder";
 	LOAD_TYPE_VAL = "loadtype";
 	LOAD_TYPE_MULTI_VAL = "multiple";
 	LOAD_TYPE_SINGLE_VAL = "single";
 	LOAD_TYPE_CSV_VAL = "csv";
+	SAVE_XML_FILE_FOLDER = "savedatafolder";
 }
 
 hash_map<string,string> ConfigurationReader::m_map;
@@ -88,6 +89,10 @@ string ConfigurationReader::getMapping(ConfigurationReader::configutation &_conf
 		{
 			return LOAD_TYPE_CSV_VAL;
 		}
+	case SAVE_DATA_FOLDER:
+		{
+			return SAVE_XML_FILE_FOLDER;
+		}
 		break;
 	}	
 }
@@ -109,6 +114,8 @@ string ConfigurationReader::LOAD_TYPE_MULTI_VAL = "multiple";
 string ConfigurationReader::LOAD_TYPE_SINGLE_VAL = "single";
 
 string ConfigurationReader::LOAD_TYPE_CSV_VAL = "csv";
+
+string ConfigurationReader::SAVE_XML_FILE_FOLDER = "savedatafolder";
 
 void ConfigurationReader::BuildFile( string & _path )
 {

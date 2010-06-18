@@ -6,6 +6,7 @@
 #include<fstream>
 #include <vector>
 #include "AttributeType.h"
+#include "seedminerexceptions.h"
 
 using namespace std;
 using namespace CsvDataExtraction;
@@ -24,14 +25,14 @@ using namespace CsvDataExtraction;
 namespace CSVConnectionInfo{
 	class CsvConnection{
 	public:
-		__declspec(dllexport) CsvConnection(const char* file_name,const char field_terminator,const char line_terminator,const char enclosure_char);
-		__declspec(dllexport) CsvConnection(const char* file_name,const char field_terminator,const char line_terminator);
+		__declspec(dllexport) CsvConnection(const char* file_name,const char field_terminator,const char line_terminator,const char enclosure_char) throw(error_csv_file_reader);
+		__declspec(dllexport) CsvConnection(const char* file_name,const char field_terminator,const char line_terminator) throw(error_csv_file_reader);
 		__declspec(dllexport) ~CsvConnection();
-		__declspec(dllexport) ExtractedCsvDTO* extractData();
-		__declspec(dllexport) ExtractedCsvDTO* readCSV(vector<int> order);
+		__declspec(dllexport) ExtractedCsvDTO* extractData() throw(error_pure_data_conversion);
+		__declspec(dllexport) ExtractedCsvDTO* readCSV(vector<int> order) throw(error_csv_file_reader,error_pure_data_conversion);
 
 		vector<AttributeProps> getAttributeNames(int attType,vector<int> order);
-		
+		static bool file_exists(const char *fileName);
 		
 		
 	private:

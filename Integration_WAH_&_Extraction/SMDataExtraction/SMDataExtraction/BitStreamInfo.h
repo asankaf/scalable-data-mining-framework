@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "SEEDMinerExceptions.h"
 
 #ifndef BIT_STREAM_HOLDER_H
 #define BIT_STREAM_HOLDER_H
@@ -29,7 +30,7 @@ public:
 	__declspec(dllexport) unsigned long long count(){return this->_decompressedVBitStream.count();}
 	__declspec(dllexport) void convert(dynamic_bitset<> bitStream);
 	__declspec(dllexport) void setBitValue(int pos,bool val) {this->_decompressedVBitStream[pos] = val;}
-	__declspec(dllexport) vector<int> getActiveBitIDs();
+	__declspec(dllexport) vector<int> getActiveBitIDs() throw (error_vector_out_of_range);
 	__declspec(dllexport) int BitCount() {return this->_bitCount;}
 	__declspec(dllexport) void setBitCount(int bitCount){this->_bitCount = bitCount;
 							//this->_decompressedVBitStream.resize(bitCount);

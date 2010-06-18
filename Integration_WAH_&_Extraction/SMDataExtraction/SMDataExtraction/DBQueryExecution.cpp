@@ -18,6 +18,8 @@
 #include <stack>
 #include <list>
 #include "Commons.h"
+#include "ExceptionReader.h"
+#include "ExceptionCodes.h"
 using namespace std;
 
 
@@ -38,31 +40,35 @@ namespace DBQueryExecutionInfo{
 
 	bool DBQueryExecutionInfo::DBQueryExecution::ExecuteQueryAndBindData(CGOdbcConnect &cCon){
 		clock_t start,end;
+
 		try{
-			try{
-				this->_stmtPtr = cCon.createStatement();
-				start = clock();
-				this->_stmtPtr->execute(this->_query_stmt);
-				this->_stmtPtr->bindAuto();
-				setRowCount();
-				end = clock();
-				cout<<"Time to execute and bind data : "<<(end - start)<<endl;
-			}
-			catch(CGOdbcEx *e){
-				cerr<<"Error in executing the query Specified : Possible error in query parsing"<<endl;
-				exit(2);
-			}
+			this->_stmtPtr = cCon.createStatement();
+			start = clock();
+			this->_stmtPtr->execute(this->_query_stmt);
+			this->_stmtPtr->bindAuto();
+			setRowCount();
+			end = clock();
+			cout<<"Time to execute and bind data : "<<(end - start)<<endl;
+		}
+		catch(CGOdbcEx *e){
+			error_db_query_execution ex;
+			ex << error_message(ExceptionReader::GetError(SM1012));
+			ex << error_code(SM1012);
+			BOOST_THROW_EXCEPTION(ex);
+		}
 
-			CGOdbcStmt *pCur= this->_stmtPtr;
-			bool BRC;
-			int colCount = pCur->getColCount();
-			PureAttInfo::existanceBitSet.resize(this->_rowCount);
+		CGOdbcStmt *pCur= this->_stmtPtr;
+		bool BRC;
+		int colCount = pCur->getColCount();
+		PureAttInfo::existanceBitSet.resize(this->_rowCount);
 
+		try
+		{
 			for (int it=0 ; it < colCount ; it++)
 			{				
 				BRC=false;
 				int columnType=pCur->getColumn(it)->iSqlType;
-				
+
 				//start = clock();
 				if ((columnType == SQL_BIT) || (columnType == SQL_TINYINT) || (columnType == SQL_SMALLINT) || (columnType == SQL_INTEGER))
 				{
@@ -104,10 +110,10 @@ namespace DBQueryExecutionInfo{
 					//end = clock();
 					//cout<<"Time to Retrieve & bind INT Data : "<< (end - start) <<endl;
 				}
-				
+
 				else if ((columnType == SQL_DOUBLE) || (columnType == SQL_FLOAT) || (columnType == SQL_NUMERIC) || (columnType == SQL_REAL) || (columnType == SQL_DECIMAL))
 				{
-					
+
 					//start = clock();
 					PureDoubleAttInfo *doubleAtt=new PureDoubleAttInfo();
 
@@ -153,7 +159,7 @@ namespace DBQueryExecutionInfo{
 
 				else if ((columnType == SQL_CHAR) || (columnType == SQL_VARCHAR) || (columnType == SQL_LONGVARCHAR) || (columnType < 0))
 				{
-					
+
 					//start = clock();
 					PureStringAttInfo *stringAtt = new PureStringAttInfo();
 					stringAtt->type = Type.MULTI_CAT;
@@ -184,7 +190,7 @@ namespace DBQueryExecutionInfo{
 					//stringAtt->setValObjects(tempVals);
 					stringAtt->setValList(vals);
 					this->_stringData.push_back(stringAtt);
-					
+
 					//end = clock();
 					//cout<<"Time to retrieve & bind STRING Data  : "<<(end  - start)<<endl;
 				}
@@ -192,7 +198,7 @@ namespace DBQueryExecutionInfo{
 
 				else if ((columnType == SQL_DATE) || (columnType == SQL_DATETIME) || (columnType == SQL_TYPE_DATE) || (columnType == SQL_TIMESTAMP))
 				{
-					
+
 					//start = clock();
 					PureIntAttInfo *intAtt = new PureIntAttInfo();
 					intAtt->type=Type.TYPE_DATE;
@@ -243,18 +249,28 @@ namespace DBQueryExecutionInfo{
 					//end = clock();
 					//cout<<"Time to retrieve & bind DATE Data  : "<<(end  - start)<<endl;
 				}
+				else
+				{
+					error_db_unhandled_datatype ex;
+					ex << error_message(ExceptionReader::GetError(SM1013));
+					ex << error_code(SM1013);
+					BOOST_THROW_EXCEPTION(ex);
+				}
 
 			}
-			end = clock();
-			cout<<"Total time to bind data : "<<(end - start)<<endl;
-
 		}
-		catch(std::exception &ex){
-			//TODO add logging details here.
+		catch(...)
+		{
+			error_binding_pure_data ex;
+			ex << error_message(ExceptionReader::GetError(SM1014));
+			ex << error_code(SM1014);
+			BOOST_THROW_EXCEPTION(ex);
 		}
-
+		end = clock();
+		cout<<"Total time to bind data : "<<(end - start)<<endl;
 		return true;
 	}
+
 
 	CGOdbcStmt* DBQueryExecutionInfo::DBQueryExecution::DBStatementPtr(){
 		return this->_stmtPtr;
@@ -284,8 +300,18 @@ namespace DBQueryExecutionInfo{
 	}
 
 	void DBQueryExecution::setRowCount(){
-		CGOdbcStmt *pCur = this->_stmtPtr;
-		pCur->last();
-		this->_rowCount = pCur->getRowNo();
+		try
+		{
+			CGOdbcStmt *pCur = this->_stmtPtr;
+			pCur->last();
+			this->_rowCount = pCur->getRowNo();
+		}
+		catch(...)
+		{
+			error_object_null ex;
+			ex << error_message(ExceptionReader::GetError(SM1011));
+			ex << error_code(SM1011);
+			BOOST_THROW_EXCEPTION(ex);
+		}
 	}
 }

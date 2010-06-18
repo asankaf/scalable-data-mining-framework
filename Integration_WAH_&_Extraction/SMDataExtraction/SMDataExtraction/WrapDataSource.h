@@ -8,6 +8,7 @@
 #include "boost/dynamic_bitset.hpp"
 #include <vector>
 #include "encodeddoubleattribute.h"
+#include "seedminerexceptions.h"
 
 using namespace DBQueryExecutionInfo;
 using namespace CsvDataExtraction;
@@ -24,15 +25,15 @@ public:
 	__declspec(dllexport) void noOfRows(int rows){this->_noOfRows = rows;}
 	__declspec(dllexport) int noOfAttributes();
 	__declspec(dllexport) void noOfAttributes(int noAtts){this->_noOfAttributes = noAtts;}
-	__declspec(dllexport) void encodeAtrributes();
+	__declspec(dllexport) void encodeAtrributes() throw(error_encoding_int_atts,error_encoding_string_atts,error_encoding_double_atts);
 	__declspec(dllexport) vector<EncodedIntAttribute*> codedIntAtts();
 	__declspec(dllexport) vector<EncodedMultiCatAttribute*> codedStringAtts();
 	__declspec(dllexport) vector<EncodedAttributeInfo*> codedAttributes();
-	__declspec(dllexport) Tuple* DecodeTheTuple(int tupleID);
-	__declspec(dllexport) EncodedAttributeInfo* operator()(const int attID);
-	__declspec(dllexport) BitStreamInfo* operator()(const int attID,const int bitStreamID);
+	__declspec(dllexport) Tuple* DecodeTheTuple(int tupleID) throw(error_vector_out_of_range);
+	__declspec(dllexport) EncodedAttributeInfo* operator()(const int attID) throw(error_vector_out_of_range);
+	__declspec(dllexport) BitStreamInfo* operator()(const int attID,const int bitStreamID) throw(error_vector_out_of_range);
 	__declspec(dllexport) void CodedAtts(vector<EncodedAttributeInfo *> _coded_atts );
-	__declspec(dllexport) size_t SpaceUtilsation();
+	__declspec(dllexport) size_t SpaceUtilsation() throw(error_vector_out_of_range);
 	__declspec(dllexport) DBQueryExecution* queryExecPointer();
 	__declspec(dllexport) void queryExecPointer(DBQueryExecution* cExec){this->_queryDataInfo = cExec;}
 	__declspec(dllexport) ExtractedCsvDTO * CsvExtractedDatainfo() const { return _csvExtractedDatainfo; }
@@ -45,14 +46,14 @@ public:
 	__declspec(dllexport) void setDSName(string _sName){this->_dsName = _sName;}
 	__declspec(dllexport) boost::dynamic_bitset<> ExistanceDatabitMap() const { return _existanceDatabitMap; }
 	__declspec(dllexport) void ExistanceDatabitMap(boost::dynamic_bitset<> val) { _existanceDatabitMap = val; }
-	__declspec(dllexport) string decodeTheTupleAsString(int tupleID);
-	__declspec(dllexport) string generateCSVStringofDecodedData();
-	__declspec(dllexport) string generateCSVStringofDecodedData(int _no_of_rows);
+	__declspec(dllexport) string decodeTheTupleAsString(int tupleID) throw(error_vector_out_of_range,error_object_null);
+	__declspec(dllexport) string generateCSVStringofDecodedData() throw(error_vector_out_of_range,error_object_null);
+	__declspec(dllexport) string generateCSVStringofDecodedData(int _no_of_rows) throw(error_vector_out_of_range,error_object_null);
 
-	void encodeIntAttributes(vector<PureIntAttInfo*> intAtts);
-	void encodeStringAttributes(vector<PureStringAttInfo*> stringAtts);
-	void encodeDoubleAttributes(vector<PureDoubleAttInfo*> doubleAtts);
-	void encodeCSVStringAttributes(PureStringAttInfo** stringAtts,int arrLength);
+	void encodeIntAttributes(vector<PureIntAttInfo*> intAtts) throw(error_encoding_int_atts);
+	void encodeStringAttributes(vector<PureStringAttInfo*> stringAtts) throw(error_encoding_string_atts);
+	void encodeDoubleAttributes(vector<PureDoubleAttInfo*> doubleAtts) throw(error_encoding_double_atts);
+	void encodeCSVStringAttributes(PureStringAttInfo** stringAtts,int arrLength) throw(error_encoding_string_atts);
 	void encodeCSVAttributes();
 	long getPrecision(vector<PureDoubleAttInfo*> doubleVals);
 	void discretizeCtsAtts(vector<EncodedIntAttribute*> intAtts){
