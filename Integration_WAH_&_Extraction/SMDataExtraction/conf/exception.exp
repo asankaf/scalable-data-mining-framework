@@ -1,4 +1,20 @@
-SM1001#SEEDMiner Exception: Error in connecting to database: Possible error in DSN or database authentication info
+SM1001#SMExtraction Exception: Error in connecting to database: Possible error in DSN or database authentication info
+SM1002#SMExtraction Exception: Error in closing connection to database->Connection to database may not be initialized
+SM1003#SMExtraction Exception: Error in retrieving ODBC Data Source Names->Possible error in registry access info
+SM1004#SMExtraction Exception: Error in locating the file specified->Path or the file may not exist or locked
+SM1005#SMExtraction Exception: Error in creating PureDataAttributes from CSV data
+SM1006#SMExtraction Exception: Error in data from file specified->Data may not be in the correct format
+SM1007#SMExtraction Exception: Vector subscription out of range exception
+SM1008#SMExtraction Exception: Error encoding Int Attributes
+SM1009#SMExtraction Exception: Error encoding String Attributes
+SM1010#SMExtraction Exception: Error encoding double Attributes
+SM1011#SMExtraction Exception: NULL pointer exception
+SM1012#SMExtraction Exception: Error in executing the query Specified->Possible error in query parsing
+SM1013#SMExtraction Exception: Error in identify the data type in database->Possible unhandled data type
+SM1014#SMExtraction Exception: Error binding pure data from database
+SM1015#SMExtraction Exception: Provided folder doesnot exist
+SM1016#SMExtraction Exception: Error Saving Data to XML files
+SM1017#SMExtraction Exception: Error Loading Data from XML files
 SM2001#SMCompression Exception: Incompatible compression type
 SM2002#SMCompression Exception: Supplied operand is null
 SM2003#SMCompression Exception: Left and right operands are not of the same length
