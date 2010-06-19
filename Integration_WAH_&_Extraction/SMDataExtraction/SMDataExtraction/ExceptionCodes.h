@@ -1,3 +1,4 @@
+#pragma  once
 static string const DB_EXCEPTION = "SM1001";
 static string const SM1002 = "SM1002";
 static string const SM1003 = "SM1003";
@@ -26,3 +27,6 @@ static string const SM3005 = "SM3005";
 static string const SM3006 = "SM3006";
 static string const SM3007 = "SM3007";
 static string const SM3008 = "SM3008";
+static string const SM3009 = "SM3009";
+static string const SM3010 = "SM3010";
+static string const SM3011 = "SM3011";

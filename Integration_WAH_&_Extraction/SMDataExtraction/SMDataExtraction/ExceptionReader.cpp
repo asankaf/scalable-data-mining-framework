@@ -36,4 +36,5 @@ void ExceptionReader::BuildFile( string & _path )
 			Commons::Tokenise(temp[i],"#",m_map);
 		}
 	}	
+	
 }
