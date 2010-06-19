@@ -26,3 +26,6 @@ SM3005#SMAlgorithm Exception: Class index out of range.
 SM3006#SMAlgorithm Exception: Classifier test source is empty.
 SM3007#SMAlgorithm Exception: Data source header is empty.
 SM3008#SMAlgorithm Exception: Classifier test instance error.
+SM3009#SMAlgorithm Exception: A supplied parameter is null.
+SM3010#SMAlgorithm Exception: Invalid pattern size.
+SM3011#SMAlgorithm Exception: Invalid operand. This operation cannot be applied on the specified data type.
