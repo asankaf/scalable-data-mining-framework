@@ -439,7 +439,8 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -447,37 +448,30 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vec
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;				
 		}
 		else if(m==2&&(procedureTokens[m]==apriory))
 		{
-			result=true;				
+			result&=true;				
 		}
 		else if(m==3&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;			
 		}
 		else
 		{
 			result=false;
-		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=3)
-		{
-			result=false;
-		}
+		}	
 	}
+	result = m==4&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -485,37 +479,30 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_textview_procedu
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;				
 		}
 		else if(m==2&&(procedureTokens[m]==classification))
 		{
-			result=true;				
+			result&=true;				
 		}
 		else if(m==3&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;		
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=3)
-		{
-			result=false;
-		}
 	}
+	result = m==4&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -523,37 +510,30 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_naiveBayes_to_textview_procedures(
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==2&&(procedureTokens[m]==naiveBayes))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==3&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=3)
-		{
-			result=false;
-		}
 	}
+	result = m==4&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_treeview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -561,37 +541,30 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_treeview_procedu
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==2&&(procedureTokens[m]==classification))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==3&&(procedureTokens[m]==tree))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=3)
-		{
-			result=false;
-		}
 	}
+	result = m==4&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_apriory_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -599,41 +572,34 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_apriory_to_textview
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==2&&(procedureTokens[m]==wah || procedureTokens[m]==ewah))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==3&&(procedureTokens[m]==apriory))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==4&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=4)
-		{
-			result=false;
-		}
 	}
+	result = m==5&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -641,41 +607,34 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==2&&(procedureTokens[m]==wah || procedureTokens[m]==ewah))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==3&&(procedureTokens[m]==classification))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==4&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=4)
-		{
-			result=false;
-		}
 	}
+	result = m==5&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_naiveBayes_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -683,41 +642,34 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_naiveBayes_to_textv
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==2&&(procedureTokens[m]==wah || procedureTokens[m]==ewah))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==3&&(procedureTokens[m]==naiveBayes))
 		{
-			result=true;				
+			result&=true;	
 		}
 		else if(m==4&&(procedureTokens[m]==text))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=4)
-		{
-			result=false;
-		}
 	}
+	result = m==5&&result;
 	return result;
 }
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_treeview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
-	for (int m=0;m<procedureTokens.size();m++)
+	int m;
+	for (m=0;m<procedureTokens.size();m++)
 	{
 		if(m==0&&(procedureTokens[m]==csv || procedureTokens[m]==xml || procedureTokens[m]==mysql || procedureTokens[m]==mssql))
 		{
@@ -725,34 +677,26 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 		}
 		else if(m==1&&(procedureTokens[m]==removeNull || procedureTokens[m]==descritize || procedureTokens[m]==rangesplite))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==2&&(procedureTokens[m]==wah || procedureTokens[m]==ewah))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==3&&(procedureTokens[m]==classification))
 		{
-			result=true;				
+			result&=true;
 		}
 		else if(m==4&&(procedureTokens[m]==tree))
 		{
-			result=true;			
+			result&=true;
 		}
 		else
 		{
 			result=false;
 		}
-
-		if(m+1!=procedureTokens.size())
-		{
-			result=true;
-		}
-		if(m!=4)
-		{
-			result=false;
-		}
 	}
+	result = m==5&&result;
 	return result;
 }
 
@@ -909,24 +853,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
 		bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
 
-		//bool data_to_filter_to_apriory_to_textview_procedures = procedure==csv_removeNull_apriory_text || procedure==csv_descritize_apriory_text ||procedure==csv_rangesplite_apriory_text;
-		//bool data_to_filter_to_classification_to_textview_procedures = procedure==csv_removeNull_classification_text || procedure==csv_descritize_classification_text ||procedure==csv_rangesplite_classification_text;
-		//bool data_to_filter_to_classification_to_treeview_procedures = procedure==csv_removeNull_classification_tree || procedure==csv_descritize_classification_tree ||procedure==csv_rangesplite_classification_tree;
-
-		//bool data_to_compression_to_apriory_procedures = procedure==csv_wah_apriory || procedure==csv_ewah_apriory || procedure==xml_wah_apriory || procedure==xml_ewah_apriory || procedure==mysql_wah_apriory || procedure==mysql_ewah_apriory;
-		//bool data_to_compression_to_classification_procedures = procedure==csv_wah_classification || procedure==csv_ewah_classification || procedure==xml_wah_classification || procedure==xml_ewah_classification || procedure==mysql_wah_classification || procedure==mysql_ewah_classification;
-		//bool data_to_compression_to_algorithm_procedures = data_to_compression_to_apriory_procedures || data_to_compression_to_classification_procedures;
-
-		//bool data_to_filter_to_compression_to_apriory_to_textview_procedures = procedure==csv_removeNull_wah_apriory_text || procedure==csv_descritize_wah_apriory_text ||procedure==csv_rangesplite_wah_apriory_text || procedure==csv_removeNull_ewah_apriory_text || procedure==csv_descritize_ewah_apriory_text ||procedure==csv_rangesplite_ewah_apriory_text;
-		//bool data_to_filter_to_compression_to_classification_to_textview_procedures = procedure==csv_removeNull_wah_classification_text || procedure==csv_descritize_wah_classification_text ||procedure==csv_rangesplite_wah_classification_text || procedure==csv_removeNull_ewah_classification_text || procedure==csv_descritize_ewah_classification_text ||procedure==csv_rangesplite_ewah_classification_text;
-		//bool data_to_filter_to_compression_to_classification_to_treeview_procedures = procedure==csv_removeNull_wah_classification_tree || procedure==csv_descritize_wah_classification_tree ||procedure==csv_rangesplite_wah_classification_tree || procedure==csv_removeNull_ewah_classification_tree || procedure==csv_descritize_ewah_classification_tree ||procedure==csv_rangesplite_ewah_classification_tree;
-
 		if (procedure=="getMySqlDataSourceList")
 		{
 			DBConnectionInfo::DBConnection nrw_con("");
 			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
 			string formattedOutPut="mysqlDataSourcesList##";
-			//get the real mysql data sources list as below
 
 			for (int i = 0 ; i < source_names.size() ; i++)
 			{
@@ -934,17 +865,13 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				formattedOutPut+="<name>" + source_names[i] + "</name>";
 				formattedOutPut+="</mysqlsource>";
 			}
-
-			//formattedOutPut+="<mysqlsource><name>source1</name></mysqlsource><mysqlsource><name>source2</name></mysqlsource>";
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-
 		}
 		else if (procedure=="getMsSqlDataSourceList")
 		{
 			DBConnectionInfo::DBConnection nrw_con("");
 			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::SQL_SERVER);
 			string formattedOutPut="mssqlDataSourcesList##";
-			//get the real mysql data sources list as below
 
 			for (int i = 0 ; i < source_names.size() ; i++)
 			{
@@ -952,9 +879,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				formattedOutPut+="<name>" + source_names[i] + "</name>";
 				formattedOutPut+="</mssqlsource>";
 			}
-			//string formattedOutPut="mssqlDataSourcesList##<mssqlsource><name>Mssource1</name></mssqlsource><mssqlsource><name>Mssource2</name></mssqlsource>";
 			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-
 		}
 		else
 		{	
@@ -1113,6 +1038,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				vector<string> pathsTokens;
 				Tokenize(paths, pathsTokens, "@@");
 
+				string algoPara=evt->algoPara;
+				vector<string> algoParaTokens;
+				Tokenize(algoPara, algoParaTokens, "@@");
+
 				string csv_data_location;
 				int csv_data_size;
 				string xml_metadata_location;
@@ -1125,6 +1054,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				string mssql_source_name;
 				string mssql_query;
 				string mssql_data_size;
+				string support;
+				string confidence;
+				string number_of_rules;
 
 				string formattedOutPut="";
 				string graphData="";
@@ -1155,7 +1087,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					tempstream<<increment*(i+1);
 					graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
 
-					
+
 
 					for(int j=0;j<procedureTokens.size();j++)
 					{
@@ -1266,7 +1198,10 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 							startGraphTime=clock();
 							if (procedureTokens[j]==apriory)
 							{
-								Aprior(0.9,0.01,10);
+								support=algoParaTokens[0];
+								confidence=algoParaTokens[1];
+								number_of_rules=algoParaTokens[2];
+								Aprior(atof(support.c_str()),atof(confidence.c_str()),atof(number_of_rules.c_str()));
 							}
 							else if (procedureTokens[j]==classification)
 							{
@@ -1292,7 +1227,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 						}				
 					}
 
-					
+
 
 					//stringstream timeStreamGraph;
 					//timeStreamGraph << difftime (endGraphTime,startGraphTime);

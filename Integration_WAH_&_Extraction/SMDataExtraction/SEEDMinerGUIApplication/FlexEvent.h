@@ -20,6 +20,7 @@ public:
 	CString eventType;
 	CString procedure;
 	CString procedurePara;
+	CString algoPara;
 	CString measureTime;
 	CString runInALoop;
 
