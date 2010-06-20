@@ -24,7 +24,7 @@
 	    <mx:VBox height="100%" horizontalAlign="right" width="70%" paddingRight="5">
 	        <mx:HBox width="100%" horizontalAlign="right">
 	            <mx:Label text="mssql query" textAlign="right" width="80"/>
-	            <mx:TextInput width="80%" id="mssql_query" change="okbutton.enabled=true"/>
+	            <mx:TextInput width="80%" id="mssql_query" change="okbutton.enabled=true" creationComplete="focusManager.setFocus(mssql_query)"/>
 	        </mx:HBox>
 	        <mx:HBox horizontalAlign="right" width="100%">
 	            <mx:Label text="data size" textAlign="right" width="80"/>

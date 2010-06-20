@@ -4,8 +4,8 @@ package ActionClasses.VisualTreeElements
 	public class Element
 	{
 		public static var rootElementHeight:int=25;
-		public static var nodeTextCharacterWidth:int=9;
-		public static var linkLableCharacterWidth:int=13;
+		public static var nodeTextCharacterWidth:int=10;
+		public static var linkLableCharacterWidth:int=15;
 		public static var nodeDistance:int=150;
 		
 		public static function estimateStringPixelLength(str:String):int
