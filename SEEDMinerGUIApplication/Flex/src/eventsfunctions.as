@@ -242,19 +242,27 @@ public function cplusPluseCallBackFunction(str:String):void
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
-					else if(actionObject.type()==ActionObjectParent.ALGORITHM_APRIORY && currentProcedure=="apriory")
-					{
-						addTimeStamp(actionObject,strings2[i+1]);
-					}
 					else if(actionObject.type()==ActionObjectParent.MySQL_DATASOURCE && currentProcedure=="mysql")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
-					else if(actionObject.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION && currentProcedure=="classification")
+					else if(actionObject.type()==ActionObjectParent.XML_LOADER && currentProcedure=="xml")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
-					else if(actionObject.type()==ActionObjectParent.XML_LOADER && currentProcedure=="xml")
+					else if(actionObject.type()==ActionObjectParent.MSSQL_DATASOURCE && currentProcedure=="mssql")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.FILTER_RESAMPLE && currentProcedure=="removeNull")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.DESCRITIZE && currentProcedure=="descritize")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.RANGESPLITE && currentProcedure=="rangesplite")
 					{
 						addTimeStamp(actionObject,strings2[i+1]);
 					}
@@ -266,6 +274,18 @@ public function cplusPluseCallBackFunction(str:String):void
 					{
 						addTimeStamp(actionObject,strings2[i+1]);					
 					}
+					else if(actionObject.type()==ActionObjectParent.ALGORITHM_APRIORY && currentProcedure=="apriory")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}				
+					else if(actionObject.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION && currentProcedure=="classification")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}
+					else if(actionObject.type()==ActionObjectParent.ALGORITHM_NAIVEBAYES && currentProcedure=="naiveBayes")
+					{
+						addTimeStamp(actionObject,strings2[i+1]);
+					}					
 				}
 			}	
 		}
@@ -353,6 +373,11 @@ public function cplusPluseCallBackFunction(str:String):void
 	{
 		showError("Invalid flaw! Please create a new valid flaw to execute...");
 		clearCanvas(new MouseEvent(Event.CHANGE));
+	}
+	else if(view=="exceptionThrown")
+	{
+		showError("Exception occured!"+strings[1]);
+		//clearCanvas(new MouseEvent(Event.CHANGE));
 	}
 	else if(view=="nullView")
 	{

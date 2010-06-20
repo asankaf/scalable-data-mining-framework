@@ -19,7 +19,7 @@
             <mx:CategoryAxis title="DATA SIZE (number of rows)" categoryField="datasize" />
         </mx:horizontalAxis>
         <mx:verticalAxis>
-            <mx:LinearAxis title="TIME (seconds)"/>
+            <mx:LinearAxis title="TIME (mili seconds)"/>
         </mx:verticalAxis>
 	</mx:LineChart>
 	<mx:Legend dataProvider="{graphLineChart}" width="136"/>

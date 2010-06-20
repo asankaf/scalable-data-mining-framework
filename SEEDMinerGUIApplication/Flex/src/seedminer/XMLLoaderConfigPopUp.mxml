@@ -18,12 +18,12 @@
     </mx:Script>
     <mx:VBox height="100%" width="100%" horizontalAlign="right">
         <mx:HBox width="100%" horizontalAlign="right">
-            <mx:Label width="110" text="xml meta file path" textAlign="right"/>
+            <mx:Label width="110" text="xml meta file" textAlign="right"/>
             <mx:TextInput width="452" id="xml_metadata_location" creationComplete="focusManager.setFocus(xml_metadata_location)"/>
             
         </mx:HBox>
         <mx:HBox width="100%" horizontalAlign="right">
-            <mx:Label width="110" text="xml data file path" textAlign="right"/>
+            <mx:Label width="110" text="xml data file" textAlign="right"/>
             <mx:TextInput width="452" id="xml_data_location"/>
             
         </mx:HBox>

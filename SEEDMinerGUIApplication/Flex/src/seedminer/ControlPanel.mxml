@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" alpha=".4" layout="absolute" width="47" height="192" cornerRadius="4" headerHeight="8" borderThickness="1" borderStyle="solid" borderColor="#EEEEEE" roundedBottomCorners="true" clipContent="false" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" alpha=".4" layout="absolute" width="47" height="160" cornerRadius="4" headerHeight="8" borderThickness="1" borderStyle="solid" borderColor="#EEEEEE" roundedBottomCorners="true" clipContent="false" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}">
 <mx:Script>
         <![CDATA[
         import mx.effects.Effect;
@@ -62,9 +62,8 @@
         }
         ]]>
     </mx:Script>
-	<mx:VBox x="-1.75" y="3" width="48.5" height="189" verticalAlign="middle" horizontalAlign="center">
+	<mx:VBox x="0" y="4" width="48.5" height="153" verticalAlign="middle" horizontalAlign="center">
 		<mx:Button id="executeButton" width="30" height="30" icon="@Embed(source='../execute.png')" toolTip="execute flow"/>
-		<mx:Button id="saveButton" width="30" height="30" icon="@Embed(source='../save.png')" toolTip="save created flaw"/>
 		<mx:Button id="createLoopButton" width="30" height="30" icon="{loop}" toolTip="create a loop for this flaw"/>
 		<mx:Button id="measureTimeButton" width="30" height="30" icon="{no_time}" toolTip="show time stamps"/>
 		<mx:Button id="clearCanvasButton" width="30" height="30" icon="@Embed(source='../clear.png')" toolTip="clear canvas"/>
