@@ -40,6 +40,7 @@ import mx.managers.DragManager;
 import mx.managers.PopUpManager;
 import mx.utils.ObjectProxy;
 
+import seedminer.AprioryConfigPopUp;
 import seedminer.ControlPanel;
 import seedminer.ExecutingMarkPopUp;
 import seedminer.GraphViewObject;
@@ -66,6 +67,7 @@ private var arrowColour:uint=0x919191;
 private var fillColour:uint=0xdad8d8;
 private static var ok:Boolean=false;
 private var procedurePara:String;
+private var algoPara:String;
 private var DONE:String="Done";
 private var EXECUTING:String="Executing Flow";
 private var timeStampsOnCanvas:Dictionary = new Dictionary();
@@ -82,8 +84,9 @@ private var executingMask:ExecutingMarkPopUp;
 private var progress_Bar:ProgressBar;
 private var sequenceNumber:int=0;
 private var rowsToLoad:int=10000;
-private var compress_unit:String="KB";
-private var small_compress_unit:String="B";
+private var compress_unit_KB:String="KB";
+private var small_compress_unit_B:String="B";
+private var compress_unit_MB:String="MB";
 
 
 public function startUp(event:Event):void
@@ -182,13 +185,17 @@ private function addSpaceStamps(actionObject:ActionObjectParent,spaceValues:Stri
 	}	
 	var strs:Array=spaceValues.split("^^");
 	var numbers_:int=String(strs[0]).length;
-	if(4<numbers_)
+	if(8<numbers_)
 	{
-		spaceStamp.space_before_compression.text=(int(parseInt(strs[0])/1024)).toString()+" "+compress_unit+" → "+(int(parseInt(strs[1])/1024)).toString()+" "+compress_unit;
+		spaceStamp.space_compression.text=(int(parseInt(strs[0])/(1024*1024))).toString()+" "+compress_unit_MB+" → "+(int(parseInt(strs[1])/(1024*1024))).toString()+" "+compress_unit_MB;
+	}
+	else if(4<numbers_)
+	{
+		spaceStamp.space_compression.text=(int(parseInt(strs[0])/1024)).toString()+" "+compress_unit_KB+" → "+(int(parseInt(strs[1])/1024)).toString()+" "+compress_unit_KB;
 	}
 	else
 	{
-		spaceStamp.space_before_compression.text=strs[0]+" "+small_compress_unit+" → "+strs[1]+" "+small_compress_unit;
+		spaceStamp.space_compression.text=strs[0]+" "+small_compress_unit_B+" → "+strs[1]+" "+small_compress_unit_B;
 	}
 }
 
@@ -478,6 +485,7 @@ private function executeFlow(event:Event):void
 			
 		ret["procedure"] = getCurrentProcedure();
 		ret["procedurePara"] = procedurePara;
+		ret["algoPara"] = algoPara;
 		
 		ret["measureTime"] = controlPanel.measuretime.toString();
 		if(!controlPanel.loopFlaw)
@@ -544,8 +552,7 @@ private function getCurrentProcedure():String
 			{
 				procedure+="csv";
 				procedurePara=CSVConfigPopUp(Obj.config).location.text.toString()+"@@"+CSVConfigPopUp(Obj.config).csv_data_size.text.toString();
-			}
-			
+			}			
 		}
 		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
 		{			
@@ -611,8 +618,9 @@ private function getCurrentProcedure():String
 			procedure+="ewah";
 		}
 		else if(Obj.type()==ActionObjectParent.ALGORITHM_APRIORY)
-		{
+		{					
 			procedure+="apriory";
+			algoPara=AprioryConfigPopUp(Obj.config).support_combo.selectedLabel+"@@"+AprioryConfigPopUp(Obj.config).confidence_combo.selectedLabel+"@@"+AprioryConfigPopUp(Obj.config).number_of_rules_input.text;			
 		}
 		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
 		{
@@ -827,7 +835,6 @@ private function dragEnterHandler(event:DragEvent):void
 
 private function dragDropHandler(event:DragEvent):void
 { 
-	trace("dorp");
 	if (event.dragSource.hasFormat("img"))
     {
     	actionObj.vboxX=event.localX-correctionX-((actionObj.vbox.width/2)-(actionObj.image.measuredWidth/2));
@@ -865,15 +872,22 @@ private function dragDropHandler(event:DragEvent):void
     	{
     		var csvPathEnterPopUp:CSVConfigPopUp=CSVConfigPopUp(PopUpManager.createPopUp(this, CSVConfigPopUp , false));
     		actionObj.configObj=csvPathEnterPopUp;               
-            csvPathEnterPopUp.x=200;
-            csvPathEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height;
+            csvPathEnterPopUp.x=((drawingcanvas.x+drawingcanvas.width)<(actionObj.vboxX+csvPathEnterPopUp.width))?(drawingcanvas.x+drawingcanvas.width-csvPathEnterPopUp.width):(drawingcanvas.x+actionObj.vboxX);;
+            csvPathEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+(actionObj.vbox.height/4)*3;
     	}
     	else if(actionObj.type()==ActionObjectParent.XML_LOADER)
     	{
     		var xmlPathsEnterPopUp:XMLLoaderConfigPopUp=XMLLoaderConfigPopUp(PopUpManager.createPopUp(this, XMLLoaderConfigPopUp , false));
     		actionObj.configObj=xmlPathsEnterPopUp;               
-            xmlPathsEnterPopUp.x=200;
-            xmlPathsEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+actionObj.vbox.height;
+            xmlPathsEnterPopUp.x=((drawingcanvas.x+drawingcanvas.width)<(actionObj.vboxX+xmlPathsEnterPopUp.width))?(drawingcanvas.x+drawingcanvas.width-xmlPathsEnterPopUp.width):(drawingcanvas.x+actionObj.vboxX);
+            xmlPathsEnterPopUp.y=drawingcanvas.y+actionObj.vboxY+(actionObj.vbox.height/4)*3;
+    	}
+    	else if(actionObj.type()==ActionObjectParent.ALGORITHM_APRIORY)
+    	{
+    		var aprioryConfigPopUp:AprioryConfigPopUp=AprioryConfigPopUp(PopUpManager.createPopUp(this, AprioryConfigPopUp , false));
+    		actionObj.configObj=aprioryConfigPopUp;               
+            aprioryConfigPopUp.x=((drawingcanvas.x+drawingcanvas.width)<(actionObj.vboxX+aprioryConfigPopUp.width))?(drawingcanvas.x+drawingcanvas.width-aprioryConfigPopUp.width):(drawingcanvas.x+actionObj.vboxX);
+            aprioryConfigPopUp.y=drawingcanvas.y+actionObj.vboxY+(actionObj.vbox.height/4)*3;
     	}
     	
     	actionObj=null;

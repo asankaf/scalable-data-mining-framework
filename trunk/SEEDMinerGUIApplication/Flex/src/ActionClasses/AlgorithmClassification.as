@@ -5,7 +5,7 @@ package ActionClasses
 
 		public function AlgorithmClassification()
 		{
-			super("Clasification");
+			super("C4.5");
 		}
 
 		override public function type():Number

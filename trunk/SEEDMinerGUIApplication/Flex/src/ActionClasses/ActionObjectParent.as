@@ -9,6 +9,7 @@ package ActionClasses
 	import mx.managers.DragManager;
 	import mx.managers.PopUpManager;
 	
+	import seedminer.AprioryConfigPopUp;
 	import seedminer.MsSQLDataSourcesSelectPopUp;
 	import seedminer.SpacePopUp;
 	import seedminer.TimePopUp;
@@ -134,7 +135,18 @@ package ActionClasses
 				}
 				else
 				{
-					PopUpManager.addPopUp(MySqlDataSourcesSelectPopUp(config),this.vbox,false);
+					PopUpManager.addPopUp(MsSQLDataSourcesSelectPopUp(config),this.vbox,false);
+				}
+			}
+			else if(this.type()==ActionObjectParent.ALGORITHM_APRIORY)
+			{ 
+				if(config==null)
+				{
+					config=AprioryConfigPopUp(PopUpManager.createPopUp(this.vbox, AprioryConfigPopUp , false));
+				}
+				else
+				{
+					PopUpManager.addPopUp(AprioryConfigPopUp(config),this.vbox,false);
 				}
 			}
 		}

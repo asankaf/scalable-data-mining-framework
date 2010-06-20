@@ -60,10 +60,10 @@
 						</mx:VBox>
 						<mx:VBox width="125" height="73" styleName="actionIcons">
 							<mx:Image source="@Embed('classification.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_Clasification"/>
-							<mx:Label text="Clasification"/>
+							<mx:Label text="C4.5"/>
 						</mx:VBox>
 						<mx:VBox width="125" height="73" styleName="actionIcons">
-							<mx:Image source="@Embed('classification.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_NAIVEBAYES"/>
+							<mx:Image source="@Embed('naive.png')" mouseDown="mouseDownHandler(event);" id="ALGORITHM_NAIVEBAYES"/>
 							<mx:Label text="Naive Bayes"/>
 						</mx:VBox>
 					</mx:HBox>
