@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="170" height="218" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" borderThicknessTop="5" borderThicknessRight="5" borderThicknessLeft="5" borderThicknessBottom="5" borderColor="#9E9E9E" cornerRadius="2" headerHeight="8">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="196" height="294" alpha=".4" rollOverEffect="{fadeIn}" rollOutEffect="{fadeOut}" borderThicknessTop="5" borderThicknessRight="5" borderThicknessLeft="5" borderThicknessBottom="5" borderColor="#9E9E9E" cornerRadius="2" headerHeight="8">
 	<mx:Script>
 		<![CDATA[
 			import mx.containers.Canvas;
@@ -11,6 +11,15 @@
 			public var graphs:ArrayCollection=new ArrayCollection();
 			public var graphNames:Array=new Array();
 			public var canvas_Main:Canvas;
+			
+			
+			public function clearFlows(e:MouseEvent):void
+			{
+				//if(saveFlaws_box.)
+				//{
+					saveFlaws_box.removeAllChildren();
+				//}
+			}
 			
 			public function clearGraphs(e:MouseEvent):void
 			{
@@ -105,8 +114,14 @@
 		]]>
 	</mx:Script>
 	<mx:VBox x="0" y="0" width="100%" height="100%">
+		<mx:Canvas width="100%" height="50%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
+			<mx:Button id="clearSavedFlaws" x="120" y="72" width="18" height="25" toolTip="clear" icon="@Embed(source='../clearbin.png')" right="5" bottom="5"/>
+			<mx:VBox id="saveFlaws_box" x="0" y="19" width="100%" height="54" top="20" bottom="35" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
+			</mx:VBox>
+			<mx:Label text="SAVED FLAWS" paddingLeft="2" paddingBottom="2" paddingRight="2" paddingTop="2" top="0" width="100%" color="#858585" fontWeight="bold"/>
+		</mx:Canvas>
 		<mx:HRule width="100%"/>
-		<mx:Canvas width="100%" height="100%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
+		<mx:Canvas width="100%" height="50%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1">
 			<mx:Label text="SAVED GRAPHS" paddingLeft="2" paddingBottom="2" paddingRight="2" paddingTop="2" top="0" width="100%" color="#858585" fontWeight="bold"/>
 			<mx:Canvas x="0" y="30" width="100%" height="43" top="20" bottom="35">
 				<mx:VBox id="saveGraphs" x="0" y="0" width="100%" height="100%" borderColor="#EBEBEB" borderStyle="solid" borderThickness="1" paddingTop="4" paddingRight="4" paddingLeft="4" paddingBottom="4" verticalGap="1" verticalPageScrollSize="2">

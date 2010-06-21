@@ -27,6 +27,7 @@ import com.dncompute.graphics.GraphicsUtil;
 import flash.display.Shape;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.utils.Dictionary;
 
 import mx.charts.series.LineSeries;
 import mx.collections.ArrayCollection;
@@ -48,6 +49,8 @@ import seedminer.GraphViewPop;
 import seedminer.LoopConfigure;
 import seedminer.MsSQLDataSourcesSelectPopUp;
 import seedminer.ProgressBarComponent;
+import seedminer.SaveFlowButtonObject;
+import seedminer.SavedFlow;
 import seedminer.Sink;
 import seedminer.SpacePopUp;
 import seedminer.TimePopUp;
@@ -59,9 +62,11 @@ include "bridge/FlexVCBridge.as";
 private var actionObj:ActionObject;
 private var correctionX:Number;
 private var correctionY:Number;
+
 private var actionObjectsOnCanvas:Dictionary = new Dictionary();
 private var actionObjectSequence:Array = new Array();
 private var arrowsOnCanvas:Array = new Array();
+
 private var tempLine:Shape;
 private var arrowColour:uint=0x919191;
 private var fillColour:uint=0xdad8d8;
@@ -88,6 +93,9 @@ private var compress_unit_KB:String="KB";
 private var small_compress_unit_B:String="B";
 private var compress_unit_MB:String="MB";
 
+private var flowID:int=0;
+private var savedFlows:ArrayCollection=new ArrayCollection();
+
 
 public function startUp(event:Event):void
 {
@@ -99,6 +107,7 @@ public function createControlPanel(event:Event):void
 	controlPanel.x=this.drawingcanvas.x+6;
 	controlPanel.y=this.drawingcanvas.y+70;
 	controlPanel.executeButton.addEventListener(MouseEvent.CLICK,executeFlow);
+	controlPanel.saveButton.addEventListener(MouseEvent.CLICK,saveCurrentFlow);
 	controlPanel.clearCanvasButton.addEventListener(MouseEvent.CLICK,clearCanvas);
 	controlPanel.createLoopButton.addEventListener(MouseEvent.CLICK,showLoopConfigureWindow);
 	controlPanel.measureTimeButton.addEventListener(MouseEvent.CLICK,measureTime);
@@ -106,9 +115,117 @@ public function createControlPanel(event:Event):void
 	sink=Sink(PopUpManager.createPopUp(this, Sink , false));
 	sink.canvas_Main=canvasmain;
 	sink.clearSavedGraphs.addEventListener(MouseEvent.CLICK,sink.clearGraphs);
+	sink.clearSavedFlaws.addEventListener(MouseEvent.CLICK,sink.clearFlows);
 	sink.comparegraphs.addEventListener(MouseEvent.CLICK,sink.compareAllGraphsInOneGraph);
 	sink.x=this.drawingcanvas.width-sink.width-8;
 	sink.y=this.drawingcanvas.y+70;
+}
+
+private function saveCurrentFlow(event:MouseEvent):void
+{
+	var actionObjects:Array = new Array();
+    for (var actionObj:Object in actionObjectsOnCanvas)
+    {
+        actionObjects.push(actionObj);
+    }
+    var numberOfActionObjects:int = actionObjects.length;
+    
+	if(0<numberOfActionObjects)
+	{
+		var saveFlow:SavedFlow=new SavedFlow(actionObjectsOnCanvas,actionObjectSequence,arrowsOnCanvas);
+		var saveFlowButton:SaveFlowButtonObject=new SaveFlowButtonObject();
+		saveFlowButton.label=getNameOfSavingFlow(actionObjectsOnCanvas);
+		saveFlowButton.addEventListener(MouseEvent.CLICK,recreateFlow);
+		saveFlowButton.flow=saveFlow;
+		saveFlowButton.flowID=flowID;
+		sink.saveFlaws_box.addChild(saveFlowButton);
+		flowID++;
+	}
+}
+
+private function getNameOfSavingFlow(actionObjectsOnCanvas_:Dictionary):String
+{
+	var nameOfFlow:String="";
+	var actionObjects:Array = new Array();
+    for (var actionObj:Object in actionObjectsOnCanvas_)
+    {
+        actionObjects.push(actionObj);
+    }
+    var numberOfActionObjects:int = actionObjects.length;
+    
+    for(var j:int=0;j<numberOfActionObjects;j++)
+	{
+		var Obj:ActionObject=ActionObject(actionObjectsOnCanvas_[actionObjects[j]]);
+		if(Obj.type()==ActionObjectParent.CSV_DATASOURCE)
+		{			
+			nameOfFlow+="csv";		
+		}
+		else if(Obj.type()==ActionObjectParent.MySQL_DATASOURCE)
+		{					
+			nameOfFlow+="mysql";
+		}
+		else if(Obj.type()==ActionObjectParent.XML_LOADER)
+		{			
+			nameOfFlow+="xml";
+		}
+		else if(Obj.type()==ActionObjectParent.MSSQL_DATASOURCE)
+		{
+			nameOfFlow+="mssql";
+		}
+		else if(Obj.type()==ActionObjectParent.FILTER_RESAMPLE)
+		{
+			nameOfFlow+="removeNull";
+		}	
+		else if(Obj.type()==ActionObjectParent.DESCRITIZE)
+		{
+			nameOfFlow+="descritize";
+		}
+		else if(Obj.type()==ActionObjectParent.RANGESPLITE)
+		{
+			nameOfFlow+="rangesplite";
+		}
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION)
+		{
+			nameOfFlow+="wah";
+		}
+		else if(Obj.type()==ActionObjectParent.WAH_COMPRESSTION_2)
+		{
+			nameOfFlow+="ewah";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_APRIORY)
+		{					
+			nameOfFlow+="apriory";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_CLASSIFICATION)
+		{
+			nameOfFlow+="classification";
+		}
+		else if(Obj.type()==ActionObjectParent.ALGORITHM_NAIVEBAYES)
+		{
+			nameOfFlow+="naiveBayes";
+		}
+		else if(Obj.type()==ActionObjectParent.TEXT_VIEWER)
+		{
+			nameOfFlow+="text";
+		}
+		else if(Obj.type()==ActionObjectParent.TREE_VIEWER)
+		{
+			nameOfFlow+="tree";
+		}	
+		if(j+1!=numberOfActionObjects)
+		{
+			nameOfFlow+="->";
+		}
+	}
+	return nameOfFlow;
+}
+
+private function recreateFlow(event:MouseEvent):void
+{
+	clearCanvas(null);
+	var sf:SavedFlow=SaveFlowButtonObject(event.currentTarget).flow;
+	//trace(SaveFlowButtonObject(event.currentTarget).flow);
+	createFlow(sf);
 }
 
 private function measureTime(event:MouseEvent):void
@@ -680,6 +797,37 @@ private function showStatus(status:String):void
 	 }
 }
 
+private function createFlow(flow:SavedFlow):void
+{
+	var _actionObjectsOnCanvas:Dictionary=flow.actionObjectsOnCanvas;
+	var _actionObjectSequence:Array=flow.actionObjectSequence;
+	var _arrowsOnCanvas:Array=flow.arrowsOnCanvas;
+	
+    var actionObjects:Array = new Array();
+    for (var actionObj:Object in _actionObjectsOnCanvas)
+    {
+        actionObjects.push(actionObj);
+    }
+    var numberOfActionObjects:int = actionObjects.length;
+    
+    for(var j:int=0;j<numberOfActionObjects;j++)
+	{
+		var id:String=actionObjects[j];
+		drawingcanvas.addChild(ActionObject(_actionObjectsOnCanvas[id]).vbox);
+	}
+	
+	for(var k:int=0;k<_actionObjectSequence.length-1;k++)
+    {
+    	var shotestPath:Path=Util.getShortestPath(ActionObject(_actionObjectsOnCanvas[_actionObjectSequence[k]]),ActionObject(_actionObjectsOnCanvas[_actionObjectSequence[k+1]]));
+		var line:Shape = getArrow(1,arrowColour, 1,shotestPath.startX,shotestPath.startY,shotestPath.endX,shotestPath.endY);
+		drawingcanvas.rawChildren.addChild(line);
+		_arrowsOnCanvas.push(line);
+    }
+    actionObjectsOnCanvas=_actionObjectsOnCanvas;
+    actionObjectSequence=_actionObjectSequence;
+    arrowsOnCanvas=_arrowsOnCanvas;
+}
+
 private function clearCanvas(event:MouseEvent):void 
 {
 	var actionObjects:Array = new Array();
@@ -698,26 +846,21 @@ private function clearCanvas(event:MouseEvent):void
 		}
 		
 		var seq:int = actionObjectSequence.length;
-		for(var k:int=0;k<seq;k++)
-		{
-			actionObjectSequence.pop();
-		}
+		//for(var k:int=0;k<seq;k++)
+		//{
+		//	actionObjectSequence.pop();
+		//}
 		
 		for(var j:int=0;j<numberOfActionObjects;j++)
 		{
 			var id:String=String(actionObjects.pop());
 			drawingcanvas.removeChild(ActionObject(actionObjectsOnCanvas[id]).vbox);
-			delete actionObjectsOnCanvas[id];
+			//delete actionObjectsOnCanvas[id];
 		}
 	}
-	/*var times:int=timeStamps.length;
-	if(0<times)
-	{
-		for(var i:int=0;i<times;i++)
-		{
-			drawingcanvas.removeChild(TimePopUp(timeStampsOnCanvas[timeStamps[i]]));
-		}
-	}*/
+	actionObjectsOnCanvas=new Dictionary();
+	actionObjectSequence=new Array();
+	arrowsOnCanvas=new Array();
 }
 
 private function mouseDownHandler(event:MouseEvent):void 
