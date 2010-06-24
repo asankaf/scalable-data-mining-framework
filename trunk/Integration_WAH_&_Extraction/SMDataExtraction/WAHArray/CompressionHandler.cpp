@@ -2,6 +2,7 @@
 #include "CompressionHandler.h"
 #include "smcompressionexceptions.h"
 #include "ExceptionCodes.h"
+#include "nullcomp.h"
 CompressionHandler::CompressionHandler(void)
 {
 }
