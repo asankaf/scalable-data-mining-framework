@@ -13,7 +13,7 @@
 #include "DBConnection.h"
 #include "DiscretizeData.h"
 #include "RangeSplitter.h"
-
+#include "Init.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1281,12 +1281,36 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 			}
 		}
 	}
+	catch(compression_exception & e)
+	{
+		string s = e.toString();	
+		string formattedOutPut="exceptionThrown##"+s;
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}
+	catch(algorithm_exception & e)
+	{
+		string s = e.toString();	
+		string formattedOutPut="exceptionThrown##"+s;
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}
+	catch(base_exception &e)
+	{
+		string s = boost::diagnostic_information(e);	
+		string formattedOutPut="exceptionThrown##"+s;
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}
 	catch(boost::exception &e)
 	{
 		string s = boost::diagnostic_information(e);	
 		string formattedOutPut="exceptionThrown##"+s;
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 	}	
+	catch(...)
+	{
+		string s = "Unknown error!!";	
+		string formattedOutPut="exceptionThrown##"+s;
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+	}
 }
 
 void CIntelliCheckersUIDlg::Tokenize(const string& str,vector<string>& tokens,const string& delimiters)
