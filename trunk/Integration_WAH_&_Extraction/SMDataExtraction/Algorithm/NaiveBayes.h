@@ -7,11 +7,26 @@
 
 using namespace std;
 
+/************************************************************************
+*    Class  :NaiveBayes	  
+*    Author :Amila De Silva
+*    Subj   :
+* Class for building and using a simple Naive Bayes classifier.
+* Numeric attributes are modelled by a normal distribution.
+*
+*    Version: 1
+************************************************************************/
 class NaiveBayes
 {
 public:
+	/***
+	* Constructor
+	*/
 	_declspec(dllexport) NaiveBayes(void);
 
+	/***
+	* Destructor
+	*/
 	_declspec(dllexport) ~NaiveBayes(void);
 
 	/**Generates the classifier. */
