@@ -1,4 +1,3 @@
-//#pragma once
 #ifndef APRIOIRI_ITEMSET_H
 #define APRIOIRI_ITEMSET_H
 #include "BitStreamInfo.h"

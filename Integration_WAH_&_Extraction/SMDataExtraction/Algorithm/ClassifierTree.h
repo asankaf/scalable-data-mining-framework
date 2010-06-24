@@ -5,15 +5,34 @@
 #include "datasource.h"
 #include <xstring>
 using namespace std;
+
+/************************************************************************
+*    Class  :ClassifierTree	  
+*    Author :Amila De Silva
+*    Subj   :
+* Class for handling a tree structure used for
+* classification.
+*    Version: 1
+************************************************************************/
 class ClassifierTree
 {
 public:
 	
+	/**
+	* Constructor. 
+	*/
 	_declspec(dllexport) ClassifierTree(void);
 	
+	/**
+	* Destructor. 
+	*/
 	_declspec(dllexport) virtual ~ClassifierTree(void);
-	
-	_declspec(dllexport) ClassifierTree(ModelSelection * toSelectLocModel);
+
+
+	/**
+	* Constructor. 
+	*/
+	_declspec(dllexport) ClassifierTree(ModelSelection * _to_select_locModel);
 	
 	/**
 	* Method for building a classifier tree.
@@ -32,6 +51,9 @@ public:
 	*/
 	string toString();
 	
+	/**
+	* Return the number of children for the current node.
+	*/
 	int SonsLength() const { return m_sonsLength; }
 
 	/**
@@ -49,6 +71,9 @@ public:
 	*/
 	string toGraph();
 
+	/**
+	* Sets the number of children for the current node.
+	*/
 	void SonsLength(int val) { m_sonsLength = val; }
 
 	/**
@@ -61,6 +86,9 @@ public:
 	*/
 	int numLeaves();
 
+	/**
+	* Method to initialize all the variables to NULL.
+	*/
 	void init();
 	
 protected:

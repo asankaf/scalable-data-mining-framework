@@ -31,9 +31,9 @@ C45PruneableClassifierTree::C45PruneableClassifierTree(ModelSelection * toSelect
 	m_collapseTheTree = collapseTree;
 }
 
-C45PruneableClassifierTree * C45PruneableClassifierTree::son(int index)
+C45PruneableClassifierTree * C45PruneableClassifierTree::son( int _index )
 {
-	return dynamic_cast<C45PruneableClassifierTree *>(m_sons[index]);
+	return dynamic_cast<C45PruneableClassifierTree *>(m_sons[_index]);
 }
 
 void C45PruneableClassifierTree::collapse()
@@ -84,7 +84,6 @@ double C45PruneableClassifierTree::getTrainingErrors()
 		return errors;
 	}
 }
-
 void C45PruneableClassifierTree::buildClassifier(DataSource * _source, BitStreamInfo * _existence_map) {
 
  	buildTree(_source, _existence_map,m_subtreeRaising);

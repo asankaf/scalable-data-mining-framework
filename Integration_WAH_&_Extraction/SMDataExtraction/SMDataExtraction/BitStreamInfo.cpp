@@ -52,10 +52,10 @@ vector<int> BitStreamInfo::getActiveBitIDs(){
 	vector<int> activeIDs;
 	try
 	{
-		for (int i = 0 ; i < this->_decompressedVBitStream.size() ; i++)
-		{
-			if ((int)this->_decompressedVBitStream[i] == 1) activeIDs.push_back(i);
-		}
+	for (int i = 0 ; i < this->_decompressedVBitStream.size() ; i++)
+	{
+		if ((int)this->_decompressedVBitStream[i] == 1) activeIDs.push_back(i);
+	}
 	}
 	catch(...)
 	{

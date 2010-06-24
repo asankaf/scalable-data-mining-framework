@@ -1,19 +1,54 @@
 #pragma once
 #include "classifiertree.h"
 #include "nosplit.h"
+
+/************************************************************************
+*    Class  :C45PruneableClassifierTree	  
+*    Author :Amila De Silva
+*    Subj   :
+* Class for handling a tree structure used for
+* classification.
+*    Version: 1
+************************************************************************/
 class C45PruneableClassifierTree :
 	public ClassifierTree
 {
 public:
+	/**
+	* Constructor. 
+	*/
 	_declspec(dllexport) C45PruneableClassifierTree(void);
+
+	/**
+	* Destructor. 
+	*/
 	_declspec(dllexport) virtual ~C45PruneableClassifierTree(void);
-	_declspec(dllexport) C45PruneableClassifierTree(ModelSelection * toSelectLocModel,
-		bool pruneTree,
-		float cf,
-		bool raiseTree,
-		bool cleanup,
-		bool collapseTree);
+
+	/**
+	* Constructor for pruneable tree structure. Stores reference
+	* to associated training data at each node.
+	*
+	* toSelectLocModel selection method for local splitting model
+	* pruneTree true if the tree is to be pruned
+	* cf the confidence factor for pruning
+	* raiseTree 
+	* cleanup 
+	*/
+	_declspec(dllexport) C45PruneableClassifierTree(ModelSelection * _to_select_locModel,
+		bool _prune_tree,
+		float _cf,
+		bool _raise_tree,
+		bool _cleanup,
+		bool _collapse_tree);
+
+	/**
+	* Method for building a pruneable classifier tree.
+	*/
 	_declspec(dllexport) void buildClassifier(DataSource * _source, BitStreamInfo * _existence_map);
+
+	/**
+	* Returns a newly created tree.	
+	*/
 	ClassifierTree * getNewTree(DataSource * _data, BitStreamInfo * _existence_map);
 	
 	/**
@@ -58,10 +93,10 @@ private:
 	/**
 	* Method just exists to make program easier to read.
 	*/
-	C45PruneableClassifierTree * son(int index);
+	C45PruneableClassifierTree * son(int _index);
 
 	/**
 	* Computes estimated errors for one branch.
 	*/
-	double getEstimatedErrorsForBranch(DataSource * data, BitStreamInfo * _existence); 
+	double getEstimatedErrorsForBranch(DataSource * _data, BitStreamInfo * _existence); 
 };

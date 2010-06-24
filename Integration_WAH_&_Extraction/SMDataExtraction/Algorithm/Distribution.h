@@ -4,22 +4,47 @@
 #include "Utils.h"
 #include <vector>
 
-
+/************************************************************************
+*    Class  :Distribution	  
+*    Author :Amila De Silva
+*    Subj   :
+* Class for handling a distribution of class values.
+*    Version: 1
+************************************************************************/
 class Distribution
 {
 public:
 
+	/***
+	* Constructor
+	*/
 	Distribution(void);
 
-	/** Creates and initializes a new distribution.*/
+	/***
+	* Creates and initializes a new distribution.
+	*/
 	Distribution(int numBags,int numClasses);
 
+	/**
+	* Creates distribution with only one bag by merging all
+	* bags of given distribution.
+	*/
 	Distribution(Distribution * toMerge);
 
+	/**
+	* Creates distribution with only one bag by merging all
+	* bags of given distribution.
+	*/
 	Distribution(DataSource * source, BitStreamInfo * _existence_map);
 
+	/***
+	* Prints the values of the distribution to the console.
+	*/
 	_declspec(dllexport) void Print();
 
+	/***
+	* Destructor
+	*/
 	~Distribution(void);
 
 	/**
@@ -42,10 +67,17 @@ public:
 
 	/**Public getters and setters*/
 
+	/***
+	* Returns the Total weights of the instances
+	*/
 	double Total() const { return totaL; }
 
+	/***
+	* Sets the Total weights of the instances
+	*/
 	void Total(double val) { totaL = val; }
 
+	
 	int numClasses() const { return m_perClassLength; }
 
 	void numClasses(int val) { m_perClassLength = val; }

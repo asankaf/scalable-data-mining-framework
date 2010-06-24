@@ -70,8 +70,8 @@ void TestNaiveBayes::PerformMemoryTest()
 	WrapDataSource * ds = Utils::CreateDataSource(m_data_file_name,m_meta_file_name,m_file_name);
 	cout <<"Finished Creating Data Source : "  << time(NULL)<< endl;	
 	CompressionHandler::ConvertTo(ds,m_compression);
-	cout <<"Starting To Execute Algorithm : " << time(NULL)<< endl;
-	
+	cout <<"Starting To Execute Algorithm : " << time(NULL)<< endl;		
+
 	for (size_t i = 0 ; i < m_no_of_loops ; i++)
 	{
 		SingleExecution(ds);

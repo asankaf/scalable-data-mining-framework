@@ -18,7 +18,7 @@ using namespace std;
 
 	BitStreamInfo * AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<BitStreamInfo *> & _container) throw (algorithm_exception)
 	{
-			size_t pattern_size = _pattern.size();
+		size_t pattern_size = _pattern.size();
 		pattern_size > 0 && pattern_size == _container.size();
 
 		if(pattern_size > 0 && pattern_size != _container.size())
@@ -82,7 +82,7 @@ using namespace std;
 				//A new BitStreamInfo object is obtained via clone
 				left_op = left_op->Clone();
 			}
-		}
+		}	
 		
 		return left_op;
 	}
@@ -97,7 +97,7 @@ using namespace std;
 		BitStreamInfo * inf = *(left_op) & *(right_op);
 		result = inf->Count();
 		delete inf;
-			return result;
+		return result;
 	}
 
 	void AlgoUtils::PrintRules(vector<AssociateRule *> & _rules)
@@ -151,7 +151,7 @@ using namespace std;
 	  }
 
 	BitStreamInfo * AlgoUtils::BitStreamGenerator( EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream ) throw (algorithm_exception)
-	   {
+	{
 
 		if (attribute == NULL)
 		{
@@ -175,10 +175,10 @@ using namespace std;
 			   {
 				   new_stream = new EWAH();
 			   }
-			   break;
+			   break;		   
 		   }
 		   new_stream->CompressWords(_bit_stream);
-		   return new_stream;
+		    return new_stream;
 	   }
 
 	   BitStreamInfo * AlgoUtils::UEq( EncodedAttributeInfo * attribute, double value, int rows )
@@ -249,7 +249,7 @@ using namespace std;
 		   BitStreamInfo * prev = less_or_eq;
 		   less_or_eq = ~(*(less_or_eq));
 		   delete prev;
-		   return less_or_eq;  
+		   return less_or_eq;		   
 	   }
 
 	   BitStreamInfo * AlgoUtils::ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows)

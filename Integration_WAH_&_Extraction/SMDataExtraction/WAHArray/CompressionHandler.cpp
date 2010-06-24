@@ -62,7 +62,7 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 			break;
 		}
 	case BitStreamInfo::VERTICAL_STREAM_FORMAT:
-		{
+		{		
 			new_val = new VBitStream();
 			new_val->Type(BitStreamInfo::VERTICAL_STREAM_FORMAT);
 			break;
@@ -73,7 +73,7 @@ BitStreamInfo * CompressionHandler::ConvertBitStreamTo( BitStreamInfo * _bit_str
 			new_val->Type(BitStreamInfo::EWAH_COMPRESSION);
 			break;
 		}
-
+	
 	default:{
 		invalid_compression_type_exception comp(SM2001);
 		BOOST_THROW_EXCEPTION(comp);
