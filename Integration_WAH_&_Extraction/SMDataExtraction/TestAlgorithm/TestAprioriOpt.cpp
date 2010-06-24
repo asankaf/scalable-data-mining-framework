@@ -93,7 +93,7 @@ void TestAprioriOpt::RunAlgorithm()
 		clock_t begin,end;
 		begin = clock();
 		TestBuildAssociations(ds,opt);
-		cout << opt.toString() << endl;
+		cout << opt.ToString() << endl;
 		end = clock();
 		cout<< (end - begin) << " ";
 	}

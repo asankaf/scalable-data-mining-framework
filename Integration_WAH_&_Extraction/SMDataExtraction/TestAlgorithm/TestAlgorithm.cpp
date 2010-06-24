@@ -44,11 +44,6 @@ int _tmain(int argc, _TCHAR* argv[])
 					TestC45Algo();
 				}
 		
-		
-		//TestC45Algo();
-//	TestNaiveBayesAlgo();
-	
-	
 	return 0;
 }
 
