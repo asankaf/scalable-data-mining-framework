@@ -16,21 +16,7 @@ LOAD_TYPE_MULTI("multiple"),
 LOAD_TYPE_SINGLE("single"),
 LOAD_TYPE_CSV("csv")
 {
-	/*
-LOOP_COUNT = "loops";
-	COMPRESSION = "compression";
-	METAFILE_NAME = "metafile";
-	DATAFILE_NAME = "datafile";
-	FILE_NAME = "filename";
-	FOLDER_NAME = "datafolder";
-	LOAD_TYPE = "loadtype";
 
-	LOAD_TYPE_MULTI = "multiple";
-	LOAD_TYPE_SINGLE = "single";
-	LOAD_TYPE_CSV = "csv";
-*/
-
-	//Commons::BuildFile(m_execution_config);
 	m_no_of_loops = boost::lexical_cast<int>(Commons::ReadConfiguration(LOOP_COUNT));
 	if (Commons::ReadConfiguration(COMPRESSION) == "NO")
 	{
@@ -59,7 +45,7 @@ void TestNaiveBayes::TestSuite()
 	WrapDataSource * ds = NULL;
 	if (Commons::ReadConfiguration(LOAD_TYPE) == LOAD_TYPE_SINGLE)
 	{
-		ds = Utils::CreateDataSource(m_data_file_name,m_meta_file_name,m_file_name);
+		ds = Utils::CreateDataSource(m_data_file_name,m_meta_file_name,m_file_name,1000);
 	} else if (Commons::ReadConfiguration(LOAD_TYPE) == LOAD_TYPE_MULTI)
 	{
 		ds = Utils::CreateDataSourceFromMultipleFiles(m_folder_name,m_meta_file_name,m_file_name);
@@ -85,7 +71,7 @@ void TestNaiveBayes::PerformMemoryTest()
 	cout <<"Finished Creating Data Source : "  << time(NULL)<< endl;	
 	CompressionHandler::ConvertTo(ds,m_compression);
 	cout <<"Starting To Execute Algorithm : " << time(NULL)<< endl;
-	//cin >>ii;
+	
 	for (size_t i = 0 ; i < m_no_of_loops ; i++)
 	{
 		SingleExecution(ds);
