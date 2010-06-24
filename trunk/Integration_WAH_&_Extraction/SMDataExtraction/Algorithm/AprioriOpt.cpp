@@ -11,7 +11,6 @@ using namespace std;
 
 AprioriOpt::AprioriOpt(void)
 {
-	//m_minimumSupport = 0.1;
 	m_minSupport = 0.1;
 	m_upperBoundMinSupport = 1.0;
 	m_lowerBoundMinSupport = 0.1;
@@ -103,7 +102,6 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 	m_minSupport = (m_minSupport < lower_bound_min_support_to_use) 
 		? lower_bound_min_support_to_use 
 		: m_minSupport;
-	//FindUniqueItemSets(_instances);
 
 	do {			
 		//Clearing Results generated from previous iterations.
@@ -113,8 +111,7 @@ void AprioriOpt::BuildAssociations(WrapDataSource * _instances)
 		ClearRules();
 
 		// Find large itemsets and rules
-		FindLargeItemSets();
-		//findRulesQuickly();
+		FindLargeItemSets();		
 		FindRulesQuickly(m_rules);
 
 
@@ -173,9 +170,9 @@ void AprioriOpt::SortRules()
 
 }
 
-int AprioriOpt::Compare(const void * arg1, const void * arg2)
+int AprioriOpt::Compare( const void * _arg1, const void * _arg2 )
 {
-	return (int)(*static_cast<const float *>(arg1) - *static_cast<const float *>(arg2));
+	return (int)(*static_cast<const float *>(_arg1) - *static_cast<const float *>(_arg2));
 }
 
 void AprioriOpt::FindLargeItemSets(){
@@ -213,7 +210,7 @@ void AprioriOpt::FindLargeItemSets(){
 }
 
 
-string AprioriOpt::toString()
+string AprioriOpt::ToString()
 {
 	string output = "";
 	
@@ -431,8 +428,7 @@ vector<AssociateRule *> AprioriOpt::GenerateRules( int numItemsInSet, AprioriIte
 			premise_m_items[i] = -1;
 
 			consequence_m_items[i] = current_m_items[i];
-			rule->Premise_count(hashtable[AprioriItemset::GetHashValue(m_items_length,premise_m_items)]);
-			//_confidences.push_back(rule->CalculateConfidence());
+			rule->Premise_count(hashtable[AprioriItemset::GetHashValue(m_items_length,premise_m_items)]);			
 			rule->CalculateConfidence();
 			rules.push_back(rule);						
 		}

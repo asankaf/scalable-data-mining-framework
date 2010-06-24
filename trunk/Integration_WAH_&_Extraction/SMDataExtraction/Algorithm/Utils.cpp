@@ -2,7 +2,6 @@
 #include "Utils.h"
 #include <limits.h>
 
-
 using namespace boost;
 Utils::~Utils(void)
 {
@@ -65,7 +64,8 @@ WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string
 }
 
 WrapDataSource * Utils::CreateDataSourceFromMultipleFiles(string _data_folder,string _meta_File,string _source_name)
-{LoadSavedDataSources *lds = new LoadSavedDataSources(0,_data_folder,_meta_File);
+{
+	LoadSavedDataSources *lds = new LoadSavedDataSources(0,_data_folder,_meta_File);
 DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
 return (*dss)(_source_name);
 }
@@ -255,8 +255,12 @@ string Utils::toStringVal(double val, int precission)
 }
 
 
-void Utils::Normalize(double * doubles,size_t _length)
+void Utils::Normalize(double * doubles,size_t _length) throw (algorithm_exception)
 {
+	if (doubles == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_parameter_exception(SM3009));
+	}
 	double sum = 0;
 	for (int i = 0; i < _length; i++) {
 		sum += doubles[i];
@@ -264,9 +268,12 @@ void Utils::Normalize(double * doubles,size_t _length)
 	Normalize(doubles, sum,_length);
 }
 
-int Utils::MaxIndex(double * _doubles,size_t _length)
+int Utils::MaxIndex(double * _doubles,size_t _length) throw (algorithm_exception)
 {
-
+	if (_doubles == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_parameter_exception(SM3009));
+	}
 	double maximum = 0;
 	int maxIndex = 0;
 
@@ -280,12 +287,18 @@ int Utils::MaxIndex(double * _doubles,size_t _length)
 	return maxIndex;
 }
 
-void Utils::Normalize(double * doubles, double sum,size_t _length)
+
+void Utils::Normalize(double * doubles, double sum,size_t _length) throw (algorithm_exception)
 {
 
 	if (sum == 0)
 	{
 		return;
+	}
+
+	if (doubles == NULL)
+	{
+		BOOST_THROW_EXCEPTION(null_parameter_exception(SM3009));
 	}
 	for (int i = 0; i < _length; i++) {
 		doubles[i] /= sum;

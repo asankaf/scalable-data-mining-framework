@@ -73,7 +73,7 @@ private:
 	int m_classIndex;
 
 	/** Build Data source object from the instances*/
-	void buildDataSource(WrapDataSource * _source); 
+	void buildDataSource(WrapDataSource * _source) throw (invalid_parameter_exception); 
 
 	/** Holds different weights assigned for each attribute*/
 	vector<double> m_weights;

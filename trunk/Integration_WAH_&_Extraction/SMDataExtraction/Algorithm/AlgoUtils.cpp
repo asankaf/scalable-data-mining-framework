@@ -16,12 +16,15 @@ using namespace std;
 	{
 	}
 
-	BitStreamInfo * AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<BitStreamInfo *> & _container)
+	BitStreamInfo * AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<BitStreamInfo *> & _container) throw (algorithm_exception)
 	{
-		// Replace This with an exception
-		size_t pattern_size = _pattern.size();
+			size_t pattern_size = _pattern.size();
 		pattern_size > 0 && pattern_size == _container.size();
-		assert(pattern_size > 0 && pattern_size == _container.size());
+
+		if(pattern_size > 0 && pattern_size != _container.size())
+		{
+			BOOST_THROW_EXCEPTION(invalid_pattern_exception());
+		}
 		BitStreamInfo * left_op = NULL;
 		BitStreamInfo * right_op = NULL;
 		BitStreamInfo * left_op_prev = NULL;
@@ -81,12 +84,15 @@ using namespace std;
 			}
 		}
 		
-		//cout << "Bit map : "<< left_op->Decompress() << endl;
 		return left_op;
 	}
 
-	double AlgoUtils::ANDCount(BitStreamInfo * left_op, BitStreamInfo * right_op)
+	double AlgoUtils::ANDCount( BitStreamInfo * left_op, BitStreamInfo * right_op ) throw (algorithm_exception)
 	{
+		if (left_op == NULL || right_op == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
 		double result = 0;
 		BitStreamInfo * inf = *(left_op) & *(right_op);
 		result = inf->Count();
@@ -111,7 +117,7 @@ using namespace std;
 		cout << endl;
 	}
 
-	BitStreamInfo * AlgoUtils::UGreaterThan( EncodedAttributeInfo * attribute, double value,int rows )
+	BitStreamInfo * AlgoUtils::UGreaterThan( EncodedAttributeInfo * attribute, double value,int rows ) throw(algorithm_exception)
 	{
 		BitStreamInfo * info = NULL;	
 		switch(attribute->attributeType())
@@ -132,21 +138,25 @@ using namespace std;
 			}
 		case DATE_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				
 			}
 		case MULTICAT_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				
 			}
 		}
 		return info;
 	  }
 
-	   BitStreamInfo * AlgoUtils::BitStreamGenerator(EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream)
+	BitStreamInfo * AlgoUtils::BitStreamGenerator( EncodedAttributeInfo * attribute,dynamic_bitset<> & _bit_stream ) throw (algorithm_exception)
 	   {
 
+		if (attribute == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
 		   BitStreamInfo::vertical_bit_type type = attribute->bitStreamAt(0)->Type();		   
 			BitStreamInfo * new_stream = NULL;
 		   switch(type)
@@ -239,40 +249,7 @@ using namespace std;
 		   BitStreamInfo * prev = less_or_eq;
 		   less_or_eq = ~(*(less_or_eq));
 		   delete prev;
-		   return less_or_eq;
-		   
-
-		 /*
-		     BitStreamInfo * info = NULL;	
-		   		   switch(attribute->attributeType())
-		   		   {
-		   		   case SIGNEDINT_VAL:
-		   			   {
-		   				   unsigned long max_value = static_cast<EncodedIntAttribute *>(attribute)->maxAttVal();
-		   				   info = ULessThanInt(attribute,(unsigned long long)value,rows,max_value);
-		   				   break;
-		   			   }
-		   		   case DOUBLE_VAL:
-		   			   {
-		   				   EncodedDoubleAttribute * double_att =  static_cast<EncodedDoubleAttribute *>(attribute);
-		   				   long precission = double_att->Precision();
-		   					unsigned long long max_value = double_att->maxAttVal() * precission;
-		   				   info = ULessThanInt(attribute,(unsigned long long)(value * precission) , rows,max_value);
-		   				   break;
-		   			   }
-		   		   case DATE_VAL:
-		   			   {
-		   				   assert(false);
-		   
-		   			   }
-		   		   case MULTICAT_VAL:
-		   			   {
-		   				   assert(false);
-		   
-		   			   }
-		   		   }
-		   		   return info;*/
-		   
+		   return less_or_eq;  
 	   }
 
 	   BitStreamInfo * AlgoUtils::ULessThanOrEq(EncodedAttributeInfo * attribute, unsigned long value,int rows)
@@ -284,8 +261,12 @@ using namespace std;
 		   return info;
 	   }
 
-	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows)
+	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long input_value,int noOfRows) throw (null_parameter_exception)
 	   {
+		   if (attribute == NULL)
+		   {
+			   BOOST_THROW_EXCEPTION(null_parameter_exception());
+		   }
 		   dynamic_bitset<> bit_set(noOfRows);
 		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
 		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
@@ -319,8 +300,12 @@ using namespace std;
 	 
 	   }
 
-	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long _max_value)
+	   BitStreamInfo * AlgoUtils::UGreaterThanInt(EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long _max_value) throw (null_parameter_exception)
 	   {
+		   if (attribute == NULL)
+		   {
+			   BOOST_THROW_EXCEPTION(null_parameter_exception());
+		   }
 		   dynamic_bitset<> bit_set(noOfRows);
 		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
 		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
@@ -359,8 +344,12 @@ using namespace std;
 
 	   }
 
-	   BitStreamInfo * AlgoUtils::ULessThanInt( EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long max_value )
+	   BitStreamInfo * AlgoUtils::ULessThanInt( EncodedAttributeInfo * attribute,unsigned long long input_value,int noOfRows,unsigned long long max_value ) throw(null_parameter_exception)
 	   {
+		   if (attribute == NULL)
+		   {
+			   BOOST_THROW_EXCEPTION(null_parameter_exception());
+		   }
 		   dynamic_bitset<> bit_set(noOfRows);
 		   BitStreamInfo * bit_stream = BitStreamGenerator(attribute,bit_set);
 		   dynamic_bitset<> value_pattern((int)attribute->NoOfVBitStreams(),input_value);
@@ -432,9 +421,13 @@ using namespace std;
 //return unique_val_map;
 	}
 
-	vector<BitStreamInfo *> AlgoUtils::FindDistinctValues(EncodedMultiCatAttribute * _attribute)
+	vector<BitStreamInfo *> AlgoUtils::FindDistinctValues( EncodedMultiCatAttribute * _attribute ) throw(null_parameter_exception)
 	{		
 		// at() is said to be more efficient than iterator. Try to measure this afterwards.		
+		if (_attribute == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
 		vector<string> unique_vals = _attribute->uniqueValList();
 		int max_number_of_bits = _attribute->NoOfVBitStreams();
 		vector<BitStreamInfo *> result_bitstreams(unique_vals.size());
@@ -451,6 +444,10 @@ using namespace std;
 	
 	double AlgoUtils::USum(EncodedAttributeInfo * attribute)
 	{
+		if (attribute == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
 		switch(attribute->attributeType())
 		{
 		case SIGNEDINT_VAL:
@@ -468,19 +465,19 @@ using namespace std;
 		}
 		case DATE_VAL:
 		{
-			assert(false);
+			BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 			return 0;
 		}
 		case MULTICAT_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		}
 		
 	}
 
-	double AlgoUtils::USum(EncodedAttributeInfo * attribute, BitStreamInfo * _existence)
+	double AlgoUtils::USum(EncodedAttributeInfo * attribute, BitStreamInfo * _existence) throw (null_parameter_exception,incompatible_operand_exception)
 	{
 		switch(attribute->attributeType())
 		{
@@ -499,20 +496,25 @@ using namespace std;
 			}
 		case DATE_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		case MULTICAT_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		}
 
 	}
 
-	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute)
+	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute) throw (null_parameter_exception,incompatible_operand_exception)
 	{
+
+		if (attribute == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
 		switch(attribute->attributeType())
 		{
 		case SIGNEDINT_VAL:
@@ -532,31 +534,36 @@ using namespace std;
 			}
 		case DATE_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		case MULTICAT_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		}
 	}
 
-	double AlgoUtils::Variance(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)
+	double AlgoUtils::Variance( EncodedAttributeInfo * attribute,BitStreamInfo * _existence ) throw (division_by_zero_exception)
 	{
 		unsigned long count = _existence->Count();
 		if (!count)
 		{
-			assert(false);
+			BOOST_THROW_EXCEPTION(division_by_zero_exception());
 		}
 		double sum = USum(attribute,_existence);
 		double val = SumSquare(attribute,_existence) - ( sum * sum )/_existence->Count();
 		return val/_existence->Count();
 	}
 
-	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)
+	double AlgoUtils::SumSquare(EncodedAttributeInfo * attribute,BitStreamInfo * _existence)throw (null_parameter_exception,incompatible_operand_exception)
 	{
+		if (attribute == NULL)
+		{
+			BOOST_THROW_EXCEPTION(null_parameter_exception());
+		}
+
 		switch(attribute->attributeType())
 		{
 		case SIGNEDINT_VAL:
@@ -576,12 +583,12 @@ using namespace std;
 			}
 		case DATE_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		case MULTICAT_VAL:
 			{
-				assert(false);
+				BOOST_THROW_EXCEPTION(incompatible_operand_exception());
 				return 0;
 			}
 		}
@@ -805,16 +812,13 @@ using namespace std;
 
 	}
 
-// 	BitStreamHolder * AlgoUtils::MergeHolder(BitStreamHolder * _holder,vector<BitStreamHolder *> _index_holder_map)
-// 	{
-// 		BitStreamHolder * result_holder = new BitStreamHolder();
-// 
-// 	}
-
-	dynamic_bitset<> AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<dynamic_bitset<>> & _container)
+	dynamic_bitset<> AlgoUtils::FindPattern(dynamic_bitset<> & _pattern,vector<dynamic_bitset<>> & _container) throw (algorithm_exception)
 	{
 		size_t pattern_size = _pattern.size();
-		assert(pattern_size > 0 && pattern_size == _container.size());
+		if(pattern_size > 0 && pattern_size != _container.size())
+		{
+			BOOST_THROW_EXCEPTION(invalid_pattern_exception());
+		}
 		dynamic_bitset<> left_op;
 		dynamic_bitset<> right_op;
 		size_t index = 0;

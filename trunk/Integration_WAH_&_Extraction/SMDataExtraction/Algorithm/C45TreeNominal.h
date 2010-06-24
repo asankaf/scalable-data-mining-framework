@@ -5,6 +5,7 @@
 #include "ewah.h"
 #include "boost/dynamic_bitset.hpp"
 #include "WAHStructure.h"
+#include "smalgorithmexceptions.h"
 
 using namespace CompressedStructure;
 class C45TreeNominal :
@@ -18,7 +19,7 @@ public:
 	*
 	* @param _data set of instances serving as training data		
 	*/
-	_declspec(dllexport) virtual void buildClassifier(WrapDataSource * _data);
+	_declspec(dllexport) virtual void buildClassifier(WrapDataSource * _data) throw (invalid_parameter_exception);
 
 	_declspec(dllexport) string toString();
 
@@ -72,6 +73,6 @@ public:
 	int m_classIndex;	
 
 	/**Creates a dumy existence bitmap*/
-	void CreateExistenceBitMap();
+	void CreateExistenceBitMap() throw(empty_data_source_exception);
 	
 };
