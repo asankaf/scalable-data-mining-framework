@@ -5,9 +5,21 @@
 
 using namespace std;
 using namespace stdext;
+
+/************************************************************************/
+/*    Class  :ConfigurationReader.h
+/*	  Started:11.03.2010 13:51:02
+/*    Updated:28.05.2010 21:18:51
+/*    Author :SEEDMiner
+/*    Subj   :Common utility class to read configuration values
+/*    Version: 
+/************************************************************************/
+
 class ConfigurationReader
 {
 public:
+
+	/** enum to hold the available configuration keys available*/
 	static enum configutation{	COMPRESSION,
 		METAFILE_NAME,
 		DATAFILE_NAME,
@@ -17,13 +29,19 @@ public:
 		LOAD_TYPE_MULTI,
 		LOAD_TYPE_SINGLE,
 		LOAD_TYPE_CSV,
-		SAVE_DATA_FOLDER	};
+		SAVE_DATA_FOLDER,
+		DOUBLE_PRECISION,
+		CSV_NULL	};
+
+	#pragma region Constructors & Destructor
 
 	_declspec(dllexport) ConfigurationReader(void);
 
 	_declspec(dllexport) ConfigurationReader(string & _path);
 
 	_declspec(dllexport) ~ConfigurationReader(void);
+
+	#pragma endregion Constructors & Destructor
 
 	/** Gives the Configuration indicated by _property*/
 	_declspec(dllexport)static  string ReadConfiguration(string & _property);
@@ -50,4 +68,6 @@ private :
 	static string LOAD_TYPE_SINGLE_VAL;
 	static string LOAD_TYPE_CSV_VAL;
 	static string SAVE_XML_FILE_FOLDER;
+	static string DOUBLE_PRECISION_VAL;
+	static string CSV_NULL_VAL;
 };

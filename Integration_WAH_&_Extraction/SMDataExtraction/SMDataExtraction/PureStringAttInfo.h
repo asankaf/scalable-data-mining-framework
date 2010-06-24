@@ -2,19 +2,36 @@
 
 #include "PureAttInfo.h"
 #include "StringSpecAssignVals.h"
+#include "Commons.h"
+
 #include <cstring>
 #include <string>
 #include <vector>
 #include <set>
-#include "Commons.h"
 
 using namespace std;
+
+/************************************************************************/
+/*    Class  :DecodedTuple.h
+/*	  Started:11.03.2010 13:51:02
+/*    Updated:28.03.2010 21:18:51
+/*    Author :SEEDMiner
+/*    Subj   :DTO Class to hold the String attribute properties
+/*    Version: 
+/************************************************************************/
 
 class PureStringAttInfo : public PureAttInfo
 {
 public:
+
+	#pragma region Constructor & Destructor
+
 	__declspec(dllexport) PureStringAttInfo(void);
 	__declspec(dllexport) ~PureStringAttInfo(void);
+
+	#pragma endregion Constructor & Destructor
+
+	#pragma region Getters & Setters
 
 	__declspec(dllexport) vector<string> ValueList();
 	__declspec(dllexport) TempStringObjects* ValObjects(){return this->_valObjects;}
@@ -26,6 +43,9 @@ public:
 	__declspec(dllexport) void setUniqueValSet(std::set<string> _uniqueSet){this->_uniqueSet = _uniqueSet;}
 	void setUniqueValueList(int noRows);
 
+	#pragma endregion Getters & Setters
+
+	/**	Method to initialize vectors in the class*/
 	void Init(){
 		_valueList = NULL;
 		//Commons::InitVector(_valList.begin(),_valList.end());

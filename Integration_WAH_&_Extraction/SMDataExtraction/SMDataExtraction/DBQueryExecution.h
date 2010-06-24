@@ -1,11 +1,12 @@
 #pragma once
 
+#include <vector>
+
 #include "stdhead.h"
 #include "PureAttInfo.h"
 #include "PureIntAttInfo.h"
 #include "PureDoubleAttInfo.h"
 #include "PureStringAttInfo.h"
-#include <vector>
 #include "SEEDMinerExceptions.h"
 
 /************************************************************************/
@@ -22,16 +23,31 @@ namespace DBQueryExecutionInfo{
 	class DBQueryExecution{
 		public:
 			__declspec(dllexport) DBQueryExecution(const char* statement);
+
 			__declspec(dllexport) DBQueryExecution();
+
 			__declspec(dllexport) ~DBQueryExecution();
+
+			/** Method to execute the query statement specified in the constructor*/
+			/*  and bind the retrieved data to CGOdbcStmt pointer*/
 			__declspec(dllexport) bool ExecuteQueryAndBindData(CGOdbcConnect &cCon) throw(error_db_query_execution,error_db_unhandled_datatype,error_binding_pure_data);
+			
+			/** Getters and Setters*/
+			#pragma region Getters & Setters
+
 			__declspec(dllexport) CGOdbcStmt* DBStatementPtr();
 			__declspec(dllexport) std::vector<PureIntAttInfo*> RetievedIntData();
+
 			__declspec(dllexport) std::vector<PureDoubleAttInfo*> RetrievedDoubleData();
+
 			__declspec(dllexport) std::vector<PureStringAttInfo*> RetrievedStringData();
+
 			__declspec(dllexport) int RowCount() throw(error_object_null);
 			__declspec(dllexport) void setRowCount();
+
 			__declspec(dllexport) const char* queryStmt(){return this->_query_stmt;}
+
+			#pragma endregion Getters & Setters
 
 		private:
 			void Init();

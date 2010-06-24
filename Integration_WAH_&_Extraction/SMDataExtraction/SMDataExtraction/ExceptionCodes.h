@@ -1,4 +1,12 @@
 #pragma  once
+/************************************************************************/
+/*    ExceptionCodes.h
+/*	  Started:11.03.2010 13:51:02
+/*    Updated:28.05.2010 21:18:51
+/*    Author :SEEDMiner
+/*    Subj   :Common Exception Code class to hold the Exception codes
+/*    Version: 
+/************************************************************************/
 static string const DB_EXCEPTION = "SM1001";
 static string const SM1002 = "SM1002";
 static string const SM1003 = "SM1003";

@@ -1,10 +1,12 @@
 #include <vector>
 #include <stdhead.h>
+#include <string>
+#include <wtypes.h>
+
 #include "DSNDriverInfo.h"
 #include "SMException.h"
 #include "SEEDMinerExceptions.h"
-#include <string>
-#include <wtypes.h>
+
 
 using namespace DSNInfo;
 using namespace std;
@@ -23,15 +25,31 @@ namespace DBConnectionInfo{
 	class DBConnection{
 	public:
 		__declspec(dllexport) DBConnection(char* DSN_Name,char* DB_UID,char* DB_PWD);
+		
 		__declspec(dllexport) DBConnection(char* DB_Connection_String);
+		
 		__declspec(dllexport) ~DBConnection(void);
 
 		//Database Connection exportable methods for external activities.
+
+		/** Method to initiate the connection with the database server which is specified*/
+		/*  as a ODBC DSN name is one of the constructors*/
 		__declspec(dllexport) bool initiateConnectionToDB() throw(error_db_connection);
+
+		/** Method to terminate the connection with the database server*/
 		__declspec(dllexport) bool closeConnectionWithDB()throw(error_db_connection);
+
+		/** Getters and Setters*/
+		#pragma region Getters & Setters
+
 		__declspec(dllexport) char* getDBConnectionString(void);
 		__declspec(dllexport) CGOdbcConnect DBConnectionPtr(void);
 		__declspec(dllexport) DSNDriverInfo DSNDriver(void);
+
+		#pragma endregion Getters & Setters
+
+		/** Methods to retrieve Data Source names from the windows registry*/
+		/*  Input should be the ODBC driver types which are provided as an Enum*/
 		__declspec(dllexport) vector<string> getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE _sourcetype) throw(error_odbc_reg_access);
 		__declspec(dllexport) vector<string> QueryKey(HKEY hKey,string ds_string);
 
