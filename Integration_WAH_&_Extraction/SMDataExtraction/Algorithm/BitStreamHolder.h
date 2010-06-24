@@ -8,17 +8,11 @@
 #include <map>
 using namespace std;
 
-	/*
-	 * Holds the bit streams needed for the Apriori algorithm. This class 
-	 * gives the ability to merge all the bit streams needed to merge
-	 */
 	class BitStreamHolder
 	{
 	public:
 		_declspec(dllexport) BitStreamHolder(void);
 		_declspec(dllexport) ~BitStreamHolder(void);
-
-
 		_declspec(dllexport) BitStreamInfo * Bit_stream() const { return m_bit_stream; }
 		_declspec(dllexport) void Bit_stream(BitStreamInfo * val) { m_bit_stream = val; }
 		_declspec(dllexport) void AddAttributeID(int _att_id);
@@ -33,13 +27,11 @@ using namespace std;
 		_declspec(dllexport) void DeleteBitStream();
 		_declspec(dllexport) int Hash();
 		_declspec(dllexport) void Print();
-
-		/*
-		 * Merging bit streams to get the candidate sets
-		 */
 		_declspec(dllexport) BitStreamHolder * Merge(BitStreamHolder * _holder,map<int,int> & _index_attribute_map,vector<BitStreamHolder *> & _index_holder);
-
 		_declspec(dllexport) vector<BitStreamHolder *> Difference(BitStreamHolder * _holder,map<int,int> & _index_attribute_map);
+		//map<int,int> Index_attribute_map() const { return m_index_attribute_map; }
+		//void Index_attribute_map(map<int,int> val) { m_index_attribute_map = val; }
+		//int GetAttNoForIndex(int _index){return m[_index];}		
 
 	private:
 		vector<int> m_attribute_no;		

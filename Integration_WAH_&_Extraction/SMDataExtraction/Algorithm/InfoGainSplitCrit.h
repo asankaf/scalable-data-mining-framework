@@ -3,11 +3,28 @@
 #include <float.h>
 #include "distribution.h"
 
+
+/************************************************************************
+*    Class  :InfoGainSplitCrit	  
+*    Author :Amila De Silva
+*    Subj   :
+* Class for computing the information gain for a given distribution.
+*
+*    Version: 1
+************************************************************************/
+
 class InfoGainSplitCrit :
 	public EntropyBasedSplitCrit
 {
 public:
+	/***
+	* Constructor
+	*/
 	InfoGainSplitCrit(void);
+
+	/***
+	* Destructor
+	*/
 	virtual ~InfoGainSplitCrit(void);
 
 	/**
