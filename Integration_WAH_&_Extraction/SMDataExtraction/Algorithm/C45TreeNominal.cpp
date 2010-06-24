@@ -32,9 +32,12 @@ C45TreeNominal::~C45TreeNominal(void)
 	}	
 }
 
-void C45TreeNominal::CreateExistenceBitMap()
+void C45TreeNominal::CreateExistenceBitMap() throw(empty_data_source_exception)
 {
-	assert(m_source != NULL);
+	if(m_source == NULL)
+	{
+		BOOST_THROW_EXCEPTION(empty_data_source_exception());
+	}
 	dynamic_bitset<> temp(m_source->numInstances());
 	temp.flip();
 	if (m_source->Type() == BitStreamInfo::EWAH_COMPRESSION)
@@ -62,33 +65,28 @@ string C45TreeNominal::toString()
 		return "No classifier built";
 	}
 	if (m_unpruned){
-		return "C45 unpruned tree\n------------------\n" + m_root->toString();
+		return "C4.5 unpruned tree\n------------------\n" + m_root->toString();
 		return m_root->toString();
 	}
 	else{
-		return "J48 pruned tree\n------------------\n" + m_root->toString();
+		return "C4.5  pruned tree\n------------------\n" + m_root->toString();
 		return m_root->toString();
 	}
 }
 
-void C45TreeNominal::buildClassifier(WrapDataSource * instances)
+void C45TreeNominal::buildClassifier( WrapDataSource * instances ) throw (invalid_parameter_exception)
 {
 	ModelSelection  * modSelection;	 	
 	//Sets the source to be used
 	m_source = new DataSource(instances,m_classIndex);
-//	delete instances;
-	//m_source->Print();
 	if (m_existence_map == NULL)
 	{
 		CreateExistenceBitMap();	
 	}
 
-	
-
 	if (m_binarySplits)
 	{
-		//modSelection = new BinC45ModelSelection(m_minNumObj, instances, m_useMDLcorrection);
-		int i = 0;
+				int i = 0;
 	}
 	else{
 		modSelection = new C45ModelSelection(m_minNumObj, m_source,m_existence_map, m_useMDLcorrection);
@@ -102,10 +100,5 @@ void C45TreeNominal::buildClassifier(WrapDataSource * instances)
 	
 	cout << m_root->toString() << endl;
 	cout << "Time Spent for Mining : " << (end - begin) << endl;
-// 	if (m_binarySplits) {
-// 		((BinC45ModelSelection)modSelection).cleanup();
-// 	} else {
-// 		((C45ModelSelection)modSelection).cleanup();
-// 	}
 }
 

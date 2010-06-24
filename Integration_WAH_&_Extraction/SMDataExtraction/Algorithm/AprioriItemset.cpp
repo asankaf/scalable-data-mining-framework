@@ -50,7 +50,7 @@ int AprioriItemset::HashCode()
 }
 
 
-string AprioriItemset::toString()
+std::string AprioriItemset::ToString()
 {
 	string temp = "\n{";
 	for (size_t i = 0 ; i < m_attribute_no ; i++)

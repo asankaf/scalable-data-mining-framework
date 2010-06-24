@@ -40,7 +40,7 @@ Attribute * DataSource::attribute(int _index)
 	return m_attributes[_index];
 }
 
-void DataSource::buildDataSource(WrapDataSource *_source)
+void DataSource::buildDataSource( WrapDataSource * _source ) throw (invalid_parameter_exception)
 {
 	//throw and exception if all the attributes are not nominal
 	vector<EncodedAttributeInfo *> original_atts = _source->codedAttributes();
@@ -52,7 +52,10 @@ void DataSource::buildDataSource(WrapDataSource *_source)
 	m_type = _info->Type();
 	for (size_t i = 0 ; i < attributes.size(); i++)
 	{
-		assert(original_atts[i]->attributeType() == MULTICAT_VAL);
+		if(original_atts[i]->attributeType() != MULTICAT_VAL)
+		{
+			BOOST_THROW_EXCEPTION(invalid_parameter_exception());
+		}
 		attributes[i] = new Attribute(m_weights[i],getDistinctValues(original_atts[i]));
 		attributes[i]->name(original_atts[i]->attributeName());
 	}

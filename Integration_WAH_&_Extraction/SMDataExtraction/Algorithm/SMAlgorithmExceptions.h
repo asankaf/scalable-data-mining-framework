@@ -63,6 +63,11 @@ struct empty_data_source_exception:virtual algorithm_exception
 	{
 
 	}
+
+	empty_data_source_exception(void):algorithm_exception(SM3001)
+	{
+
+	}
 };
 
 struct invalid_parameter_exception : virtual algorithm_exception
@@ -71,11 +76,20 @@ struct invalid_parameter_exception : virtual algorithm_exception
 	{
 
 	}
+	invalid_parameter_exception(void) : algorithm_exception(SM3003)
+	{
+
+	}
 };
 
 struct division_by_zero_exception : virtual algorithm_exception
 {
 	division_by_zero_exception(string _exception_code) : algorithm_exception(_exception_code)
+	{
+
+	}
+	
+	division_by_zero_exception(void) : algorithm_exception(SM3004)
 	{
 
 	}
@@ -100,6 +114,45 @@ struct classifier_test_source_exception : virtual algorithm_exception
 struct classifier_test_exception : virtual algorithm_exception
 {
 	classifier_test_exception(string _exception_code) : algorithm_exception(_exception_code)
+	{
+
+	}
+};
+
+struct null_parameter_exception : virtual algorithm_exception
+{
+	null_parameter_exception(string _exception_code) : algorithm_exception(_exception_code)
+	{
+
+	}
+	
+	null_parameter_exception(void) : algorithm_exception(SM3009)
+	{
+
+	}
+};
+
+struct invalid_pattern_exception : virtual algorithm_exception
+{
+	invalid_pattern_exception(string _exception_code) : algorithm_exception(_exception_code)
+	{
+
+	}
+
+	invalid_pattern_exception(void):algorithm_exception(SM3010)
+	{
+
+	}
+};
+
+struct incompatible_operand_exception : virtual algorithm_exception
+{
+	incompatible_operand_exception(string _exception_code) : algorithm_exception(_exception_code)
+	{
+
+	}
+
+	incompatible_operand_exception(void):algorithm_exception(SM3011)
 	{
 
 	}

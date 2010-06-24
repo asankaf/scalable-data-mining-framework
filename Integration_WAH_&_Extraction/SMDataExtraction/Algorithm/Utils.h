@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <psapi.h>
+#include "smalgorithmexceptions.h"
 #pragma comment(lib,"psapi.lib")
 
 using namespace std;
@@ -65,13 +66,13 @@ public:
 	/**
 	* Normalizes the doubles in the array using the given value.	
 	*/
-	static void Normalize(double * doubles, double sum,size_t _length);
+	static void Normalize(double * doubles, double sum,size_t _length) throw (algorithm_exception);
 
 	/**
 	* Returns index of maximum element in a given
 	* array of doubles. First maximum is returned.	
 	*/
-	_declspec(dllexport) static int MaxIndex(double * doubles,size_t _length); 
+	_declspec(dllexport) static int MaxIndex(double * doubles,size_t _length) throw (algorithm_exception); 
 
 	/**
 	* Converts a double value to a string	
@@ -86,7 +87,7 @@ public:
 	/**
 	* Normalizes the doubles in the array by their sum.	
 	*/
-	_declspec(dllexport) static void Utils::Normalize(double * doubles,size_t _length);
+	_declspec(dllexport) static void Utils::Normalize(double * doubles,size_t _length) throw (algorithm_exception);
 
 	/**
 	* Rounds a double and converts it into a formatted decimal-justified String.

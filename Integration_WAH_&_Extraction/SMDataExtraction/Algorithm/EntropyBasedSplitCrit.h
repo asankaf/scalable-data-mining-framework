@@ -34,5 +34,3 @@ protected:
 	 static double log2 ;
 };
 
-//double EntropyBasedSplitCrit::log2 = log10((double)2); 
-
