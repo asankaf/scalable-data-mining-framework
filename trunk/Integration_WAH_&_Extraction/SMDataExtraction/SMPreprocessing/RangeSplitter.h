@@ -24,22 +24,40 @@
 class RangeSplitter
 {
 public:
+
+	#pragma region Constructors & Destructor
+
 	__declspec(dllexport) RangeSplitter(void);
 	__declspec(dllexport) RangeSplitter(EncodedAttributeInfo* attribute,long rowCount){this->_attribute=attribute;this->_rowCount=rowCount;}
 	__declspec(dllexport) RangeSplitter(EncodedAttributeInfo* attribute,vector<double> rangeVals,long rowCount){this->_attribute = attribute;this->_rangeVals = rangeVals;this->_rowCount = rowCount;this->_maxValAssigned = 0;}
 	__declspec(dllexport) RangeSplitter(WrapDataSource* ds){this->_ds = ds;this->_rowCount = ds->noOfRows();this->_attribute = NULL;}
-	__declspec(dllexport) EncodedMultiCatAttribute* SplitRangesInNumericAtts();
-	__declspec(dllexport) EncodedMultiCatAttribute* SplitRanges();
-	__declspec(dllexport) EncodedMultiCatAttribute* SplitIntoEqualRanges(int no_of_ranges);
-	__declspec(dllexport) void SplitAllNumericalAttsIntoEualRanges(int no_of_ranges);
-	__declspec(dllexport) vector<double> RangeVals() const { return _rangeVals; }
-	__declspec(dllexport) void RangeVals(vector<double> val) { _rangeVals = val; }
 	__declspec(dllexport) ~RangeSplitter(void);
 
-	/**Example illustrating how range queries are used for range splitting*/
+	#pragma endregion Constructors & Destructor
+
+	/**	Split ranges provided in the constructor*/
+	__declspec(dllexport) EncodedMultiCatAttribute* SplitRangesInNumericAtts();
+
+	/**	Splitting the ranges here is provided only for a single numeric attribute*/
+	__declspec(dllexport) EncodedMultiCatAttribute* SplitRanges();
+
+	/**	Split the ranges into equal number of ranges*/
+	__declspec(dllexport) EncodedMultiCatAttribute* SplitIntoEqualRanges(int no_of_ranges);
+
+	/**	Split the ranges in all numeric attribute, into equal number of ranges*/
+	__declspec(dllexport) void SplitAllNumericalAttsIntoEualRanges(int no_of_ranges);
+
+	/** Getter and setter for the instance variable _rangeVals*/
+	__declspec(dllexport) vector<double> RangeVals() const { return _rangeVals; }
+	__declspec(dllexport) void RangeVals(vector<double> val) { _rangeVals = val; }
+	
+	/** Example illustrating how range queries are used for range splitting*/
 	__declspec(dllexport) vector<BitStreamInfo *> Splitter(EncodedAttributeInfo * _attribute,int _rows);
 
+	/**	Convert an integer value to a dyamic_bitset*/
 	boost::dynamic_bitset<> convertInt(int val,int no_v_bitstreams);
+
+	/**	Prepare the unique value list from ranges provided*/
 	vector<string> prepareUniqueValList(bool isDoubleAtt=false,long precision = 0);
 
 
