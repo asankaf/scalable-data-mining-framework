@@ -162,6 +162,7 @@ boost::dynamic_bitset<> RangeSplitter::convertInt(int val,int no_v_bitstreams){
 	boost::dynamic_bitset<> bitConverted(no_v_bitstreams,valAssign);
 	return bitConverted;
 }
+
 vector<BitStreamInfo *> RangeSplitter::Splitter(EncodedAttributeInfo * _attribute,int _rows)
 {
 	//Suppose we are splitting to following three ranges [0,1],(1,2],(2,3]
