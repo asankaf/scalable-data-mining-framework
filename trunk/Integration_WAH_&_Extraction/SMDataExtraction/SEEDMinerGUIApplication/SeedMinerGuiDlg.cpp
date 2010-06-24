@@ -461,7 +461,7 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vec
 		else
 		{
 			result=false;
-		}	
+		}
 	}
 	result = m==4&result;
 	return result;
@@ -853,19 +853,19 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
 		bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
 
-		if (procedure=="getMySqlDataSourceList")
+			if (procedure=="getMySqlDataSourceList")
 		{
 			DBConnectionInfo::DBConnection nrw_con("");
 			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
 			string formattedOutPut="mysqlDataSourcesList##";
-
+	
 			for (int i = 0 ; i < source_names.size() ; i++)
 			{
 				formattedOutPut+="<mysqlsource>";
 				formattedOutPut+="<name>" + source_names[i] + "</name>";
 				formattedOutPut+="</mysqlsource>";
 			}
-			flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
+		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
 		}
 		else if (procedure=="getMsSqlDataSourceList")
 		{
@@ -1087,7 +1087,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					tempstream<<increment*(i+1);
 					graphData+=tempstream.str()+"\" "+graph_procedure+"=\"";
 
-
+					
 
 					for(int j=0;j<procedureTokens.size();j++)
 					{
@@ -1201,7 +1201,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 								support=algoParaTokens[0];
 								confidence=algoParaTokens[1];
 								number_of_rules=algoParaTokens[2];
-								Aprior(atof(support.c_str()),atof(confidence.c_str()),atof(number_of_rules.c_str()));
+								Aprior(atof(confidence.c_str()),atof(support.c_str()),atof(number_of_rules.c_str()));
 							}
 							else if (procedureTokens[j]==classification)
 							{
@@ -1227,7 +1227,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 						}				
 					}
 
-
+					
 
 					//stringstream timeStreamGraph;
 					//timeStreamGraph << difftime (endGraphTime,startGraphTime);
@@ -1304,7 +1304,7 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		string s = boost::diagnostic_information(e);	
 		string formattedOutPut="exceptionThrown##"+s;
 		flash->root.Call("cplusPluseCallBackFunction", formattedOutPut);
-	}	
+	}
 	catch(...)
 	{
 		string s = "Unknown error!!";	

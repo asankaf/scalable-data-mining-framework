@@ -11,7 +11,7 @@ ConfigurationReader::ConfigurationReader(string & _path)
 	COMPRESSION_VAL ="compression";
 	METAFILE_NAME_VAL ="metafile";
 	DATAFILE_NAME_VAL ="datafile",
-	FILE_NAME_VAL = "filename";
+		FILE_NAME_VAL = "filename";
 	FOLDER_NAME_VAL = "datafolder";
 	LOAD_TYPE_VAL = "loadtype";
 	LOAD_TYPE_MULTI_VAL = "multiple";

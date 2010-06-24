@@ -7,16 +7,39 @@
 #include <xstring>
 
 using namespace std;
+
+/************************************************************************
+*    Class  :C45Split	  
+*    Author :Amila De Silva
+*    Subj   :
+*	Class implementing a C4.5-type split on an attribute.
+*
+*    Version: 1
+************************************************************************/
 class C45Split :
 	public ClassifierSplitModel
+
 {
 public:
+	/***
+	* Constructor
+	*/
 	C45Split(void);
 
+	/**
+	* Initializes the split model.
+	*/
 	C45Split(int attIndex,int minNoObj, double sumOfWeights,bool useMDLcorrection);
 
+	/***
+	* Destructor
+	*/
 	~C45Split(void);
 
+	/**
+	* Creates a C4.5-type split on the given data. Assumes that none of
+	* the class values is missing.	
+	*/
 	void buildClassifier(DataSource * _source, BitStreamInfo * _existence);
 
 	/**
@@ -26,12 +49,24 @@ public:
 
 	/** Public getters and setters*/
 
+	/**
+	* Returns (C4.5-type) information gain for the generated split.
+	*/
 	double infoGain() const { return m_infoGain; }
 
+	/**
+	* Sets (C4.5-type) information gain for the generated split.
+	*/
 	void infoGain(double val) { m_infoGain = val; }
 
+	/**
+	* Returns (C4.5-type) gain ratio for the generated split.
+	*/
 	double gainRatio() const { return m_gainRatio; }
 
+	/**
+	* Sets (C4.5-type) gain ratio for the generated split.
+	*/
 	void gainRatio(double val) { m_gainRatio = val; }
 
 	/**
@@ -82,5 +117,3 @@ private:
 	*/
 	void handleEnumeratedAttribute(DataSource * trainInstances, BitStreamInfo * _existence_map);
 };
-// InfoGainSplitCrit * C45Split::infoGainCrit = new InfoGainSplitCrit();
-// GainRatioSplitCrit * C45Split::gainRatioCrit = new GainRatioSplitCrit();

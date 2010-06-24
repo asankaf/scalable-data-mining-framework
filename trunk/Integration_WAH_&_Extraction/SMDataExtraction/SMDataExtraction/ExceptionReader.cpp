@@ -30,11 +30,11 @@ void ExceptionReader::BuildFile( string & _path )
 {
 	if (m_map.empty())
 	{
-		vector<string> temp = Commons::ReadFile(_path);		
+		vector<string> temp = Commons::ReadFile(_path);
 		for (size_t i = 0 ; i < temp.size() ; i++)
 		{
 			Commons::Tokenise(temp[i],"#",m_map);
 		}
-	}	
+	}
 	
 }

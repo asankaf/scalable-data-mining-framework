@@ -49,9 +49,9 @@ void C45TreeNominal::CreateExistenceBitMap() throw(empty_data_source_exception)
 	}
 	else if (m_source->Type() == BitStreamInfo::VERTICAL_STREAM_FORMAT)
 	{
-		m_existence_map = new VBitStream();
-	}	
-	m_existence_map->CompressWords(temp);
+		m_existence_map = new VBitStream();		
+	}		
+	m_existence_map->CompressWords(temp);	
 }
 
 string C45TreeNominal::toGraph()
@@ -78,7 +78,7 @@ void C45TreeNominal::buildClassifier( WrapDataSource * instances ) throw (invali
 {
 	ModelSelection  * modSelection;	 	
 	//Sets the source to be used
-	m_source = new DataSource(instances,m_classIndex);
+	m_source = new DataSource(instances,m_classIndex);	
 	if (m_existence_map == NULL)
 	{
 		CreateExistenceBitMap();	
@@ -86,7 +86,7 @@ void C45TreeNominal::buildClassifier( WrapDataSource * instances ) throw (invali
 
 	if (m_binarySplits)
 	{
-				int i = 0;
+		int i = 0;
 	}
 	else{
 		modSelection = new C45ModelSelection(m_minNumObj, m_source,m_existence_map, m_useMDLcorrection);

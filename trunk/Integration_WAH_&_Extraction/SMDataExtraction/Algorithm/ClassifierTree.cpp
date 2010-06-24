@@ -15,10 +15,10 @@ void ClassifierTree::init()
 	m_exitec = NULL;
 }
 
-ClassifierTree::ClassifierTree(ModelSelection * toSelectLocModel)
+ClassifierTree::ClassifierTree(ModelSelection * _to_select_loc_odel)
 {
 	init();
-	m_toSelectModel = toSelectLocModel;
+	m_toSelectModel = _to_select_loc_odel;
 }
 
 ClassifierTree::~ClassifierTree(void)
@@ -39,10 +39,7 @@ ClassifierTree::~ClassifierTree(void)
 	if (m_exitec != NULL)
 	{
 		delete m_exitec;
-	}
-// 	delete m_localModel;
-// 	m_localModel = NULL;
-	
+	}	
 }
 
 int ClassifierTree::numNodes()
@@ -83,9 +80,7 @@ string ClassifierTree::toGraph()
 		text.append(": ");
 		text.append(m_localModel->dumpLabel(0,m_train));
 	}else
-		dumpTree(0,text);
-	//text.append("\n\nNumber of Leaves  : \t"+ Utils::toStringVal(numLeaves()) +"\n");
-	//text.append("\nSize of the tree : \t"+ Utils::toStringVal(numNodes()) +"\n");
+		dumpTree(0,text);	
 	text.erase(text.begin());
 	return text;
 }
@@ -132,7 +127,7 @@ int ClassifierTree::numLeaves()
 
 void ClassifierTree::buildClassifier( DataSource * data,BitStreamInfo * _existence_bitmap )
 {
-	//buildTree(data, false);
+	
 }
 
 ClassifierTree * ClassifierTree::getNewTree(DataSource * _data, BitStreamInfo * _existence_map)
@@ -143,13 +138,13 @@ ClassifierTree * ClassifierTree::getNewTree(DataSource * _data, BitStreamInfo * 
 	return newTree;
 }
 
-void ClassifierTree::buildTree(DataSource * data, BitStreamInfo * _existence_map,boolean keepData )
+void ClassifierTree::buildTree(DataSource * _data, BitStreamInfo * _existence_map,boolean _keep_data )
 {
 
 	vector<BitStreamInfo *> localInstances;
 
-	if (keepData) {
-		m_train = data;
+	if (_keep_data) {
+		m_train = _data;
 	}
 	
 	m_exitec = _existence_map;
@@ -158,15 +153,15 @@ void ClassifierTree::buildTree(DataSource * data, BitStreamInfo * _existence_map
 	m_isLeaf = false;
 	m_isEmpty = false;
 	m_sons = NULL;
-	m_localModel = m_toSelectModel->selectModel(data,_existence_map);
-	//m_localModel->Print();
+	m_localModel = m_toSelectModel->selectModel(_data,_existence_map);
+	
  	if (m_localModel->NumSubsets() > 1) {
 		localInstances = m_localModel->Existence_maps();
 		m_sons = new ClassifierTree * [m_localModel->NumSubsets()];
 		m_sonsLength = m_localModel->NumSubsets();
 		for (int i = 0; i < m_sonsLength; i++) 
 		{
-			m_sons[i] = getNewTree(data,localInstances[i]);
+			m_sons[i] = getNewTree(_data,localInstances[i]);
 			localInstances[i] = NULL;
 		}
 		m_sons_vect = vector<ClassifierTree *>(m_sons,m_sons+m_sonsLength);
@@ -178,6 +173,6 @@ void ClassifierTree::buildTree(DataSource * data, BitStreamInfo * _existence_map
 		{
 			m_isEmpty = true;
 		}
-		//data = NULL;
+		
 	}
 }

@@ -43,7 +43,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					TestC45Algo();
 				}
-		
+	
 	return 0;
 }
 

@@ -66,8 +66,8 @@ WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string
 WrapDataSource * Utils::CreateDataSourceFromMultipleFiles(string _data_folder,string _meta_File,string _source_name)
 {
 	LoadSavedDataSources *lds = new LoadSavedDataSources(0,_data_folder,_meta_File);
-DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
-return (*dss)(_source_name);
+	DataSources *dss = lds->loadSavedEncodedDataFromMultipleFiles(true);
+	return (*dss)(_source_name);
 }
 
 WrapDataSource * Utils::CreateDataSource(string datafile,string metadFile,string filename,int _limit)

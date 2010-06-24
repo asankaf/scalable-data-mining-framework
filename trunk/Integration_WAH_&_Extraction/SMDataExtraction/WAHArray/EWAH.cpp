@@ -19,6 +19,7 @@ EWAH::EWAH(WrappedBitVector & _vect)
 {	
 //	this(void);
 	m_bitvector.copy(_vect);
+	m_bitvector.compress();
 }
 
 BitStreamInfo * EWAH::operator ~()
