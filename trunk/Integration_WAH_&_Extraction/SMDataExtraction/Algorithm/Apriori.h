@@ -7,7 +7,9 @@
 #include "algoutils.h"
 #include "associaterule.h"
 
-	/*** Apriori Algorithm which generates the Association Rules ***/
+	/*
+	 * Apriori Algorithm which generates the Association Rules 
+	 */
 
 	class Apriori
 	{
@@ -67,7 +69,7 @@
 		_declspec(dllexport) vector<int> GenerateAntedecent(int _index,vector<int> & _frequent_indices);
 		_declspec(dllexport) int CalculateHash(vector<int> & _vector);
 
-		/* Generating associate rules */
+		/* Generating association rules */
 		_declspec(dllexport) vector<AssociateRule *> Rules() const { return m_rules; }
 		_declspec(dllexport) void Rules(vector<AssociateRule *> val) { m_rules = val; }
 		_declspec(dllexport) void GenerateRules();
@@ -85,7 +87,7 @@
 		_declspec(dllexport) bool ContainsRule(int _hash);
 
 	private:
-		/* Variables related with association rules*/
+		/* Association measures */
 		int m_support;
 		float m_confidence;
 		int m_no_of_rules;		
