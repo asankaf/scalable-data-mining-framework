@@ -1,5 +1,16 @@
 #pragma once
 
+/************************************************************************/
+/*    AttributeType.h
+/*	  Started:28.03.2010 21:45:12
+/*    Updated:18.05.2010 21:45:12
+/*    Author :SEEDMiner
+/*    Subj   :Storage class to store widely using enums and other struts
+/*    Version: 
+/************************************************************************/
+
+
+// struct to represent the attribute type
 struct Type 
 {
 	static const int UNSIGNED_INT = 0;
@@ -11,6 +22,7 @@ struct Type
 	
 };
 
+//An enum to represent attribute type
 __declspec(dllexport) static enum ATT_TYPE{
 
 	SIGNEDINT_VAL = 0,
@@ -21,6 +33,7 @@ __declspec(dllexport) static enum ATT_TYPE{
 
 };
 
+//struct to represent attribute properties
 struct AttributeProps{
 	string Name;
 	int ID;

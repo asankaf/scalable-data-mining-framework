@@ -1,23 +1,38 @@
 #pragma once
 #include "BitStreamInfo.h"
-#include <hash_map>
 #include "EncodedAttributeInfo.h"
 #include "boost\dynamic_bitset\dynamic_bitset.hpp"
-#include <iostream>
 #include "EncodedDoubleAttribute.h"
-#include <fstream>
 #include "boost/tokenizer.hpp"
+
+#include <fstream>
+#include <iostream>
+#include <hash_map>
 
 using namespace stdext;
 using namespace std;
 
+/************************************************************************/
+/*    Class  :Commons.h
+/*	  Started:11.03.2010 13:51:02
+/*    Updated:28.05.2010 21:18:51
+/*    Author :SEEDMiner
+/*    Subj   :Common utility class
+/*    Version: 
+/************************************************************************/
 
 class Commons
 {
 public:
+
+	#pragma region Constructors & Destructor
+
 	Commons(void);
 	~Commons(void);
+
+	#pragma endregion Constructors & Destructor
 	
+	/**	Template method to delete a vector*/
 	template <typename iter_type>
 	static void DeleteVector(iter_type first, iter_type last)
 	{
@@ -31,6 +46,7 @@ public:
 		}
 	}
 
+	/** Template method to initialize a vector*/
 	template <typename iter_type>
 	static void InitVector(iter_type first, iter_type last)
 	{

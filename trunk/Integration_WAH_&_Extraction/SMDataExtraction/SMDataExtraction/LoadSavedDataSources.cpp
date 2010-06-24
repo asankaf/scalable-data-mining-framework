@@ -7,6 +7,7 @@
 #include "ExceptionReader.h"
 #include "ExceptionCodes.h"
 #include <direct.h>
+#include "CsvConnection.h"
 
 LoadSavedDataSources::LoadSavedDataSources(string metaDataFile,string dataFile)
 {
@@ -42,6 +43,26 @@ DataSources* LoadSavedDataSources::loadSavedEncodedData(bool limit /* = false */
 
 	string metaDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_metaFile + ".xml";
 	string encodedDataFile = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::SAVE_DATA_FOLDER) + this->_fileName + ".xml";
+	if (!CSVConnectionInfo::CsvConnection::file_exists(metaDataFile.c_str()))
+	{
+		error_csv_file_reader ex;
+		string err = ExceptionReader::GetError(SM1006);
+		err += "-> MetaData file provided is not found";
+		ex << error_message(err);
+		ex << error_code(SM1006);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+	
+	if (!CSVConnectionInfo::CsvConnection::file_exists(encodedDataFile.c_str()))
+	{
+		error_csv_file_reader ex;
+		string err = ExceptionReader::GetError(SM1006);
+		err += "-> Encoded Data file provided is not found";
+		ex << error_message(err);
+		ex << error_code(SM1006);
+		BOOST_THROW_EXCEPTION(ex);
+	}
+
 	this->_fileName = encodedDataFile;
 
 	TiXmlDocument doc(metaDataFile.c_str());

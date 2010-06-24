@@ -3,18 +3,20 @@
 #include "PureIntAttInfo.h"
 #include "EncodedIntAttribute.h"
 #include "boost/dynamic_bitset.hpp"
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <math.h>
-#include <time.h>
 #include "AttributeType.h"
-#include <xutility>
 #include "encodeddoubleattribute.h"
 #include "commons.h"
 #include "seedminerexceptions.h"
 #include "exceptionreader.h"
 #include "ExceptionCodes.h"
+#include "ConfigurationReader.h"
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <math.h>
+#include <time.h>
+#include <xutility>
 
 using namespace std;
 using namespace boost;
@@ -484,12 +486,11 @@ void WrapDataSource::encodeCSVStringAttributes(PureStringAttInfo** stringAtts,in
 long WrapDataSource::getPrecision(vector<PureDoubleAttInfo*> doubleVals){
 	//return the precision point max length.
 	//TODO implement precision feature.
-	return 100;
+	int val = atoi(ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::DOUBLE_PRECISION).c_str());
+	return val;
 }
 
-void WrapDataSource::encodeCSVAttributes(){
-	
-}
+void WrapDataSource::encodeCSVAttributes(){}
 
 std::string WrapDataSource::decodeTheTupleAsString( int tupleID )
 {

@@ -1,6 +1,19 @@
 #include "stdhead.h"
-#include <stdexcept>
 #include "boost\exception\exception.hpp"
+
+#include <stdexcept>
+
+//-[stdhead]-------------------------------------------------------
+//Project:
+//File   :excpt.h
+//Started:19.09.02 12:30:50
+//Updated:24.09.02 15:51:11
+//Author :GehtSoft
+//Subj   :
+//Version:
+//Require:
+//-----------------------------------------------------------------
+
 class CGOdbcEx : virtual std::exception{
 public:
 	typedef enum

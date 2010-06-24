@@ -11,6 +11,7 @@
 #include "seedminerexceptions.h"
 #include "exceptionreader.h"
 #include "ExceptionCodes.h"
+#include "ConfigurationReader.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ CSVConnectionInfo::CsvConnection::CsvConnection(const char* file_name,const char
 	this->_file_parser.set_enclosed_char(this->_enclosure_char,ENCLOSURE_OPTIONAL);
 	this->_file_parser.set_field_term_char(this->_field_termiator);
 	this->_file_parser.set_line_term_char(this->_line_terminator);
+	this->_null_val = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::CSV_NULL);
 }
 CSVConnectionInfo::CsvConnection::CsvConnection(const char* file_name,const char field_terminator,const char line_terminator) :_file_source(file_name),_field_termiator(field_terminator),_line_terminator(line_terminator),_enclosure_char('""'){
 	std::fstream *file = new fstream(file_name);
@@ -43,6 +45,7 @@ CSVConnectionInfo::CsvConnection::CsvConnection(const char* file_name,const char
 	}
 	this->_inputfile = file;
 	this->isnamesset = false;
+	this->_null_val = ConfigurationReader::ReadConfiguration(ConfigurationReader::configutation::CSV_NULL);
 }
 
 CSVConnectionInfo::CsvConnection::~CsvConnection(){
@@ -89,7 +92,7 @@ ExtractedCsvDTO* CSVConnectionInfo::CsvConnection::extractData(){
 			{
 				string val = rowSets[j][i];	
 				vals[j - 1] = val;	
-				if (strcmp(val.c_str(),"?") == 0)
+				if (strcmp(val.c_str(),this->_null_val.c_str()) == 0)
 				{
 					PureAttInfo::existanceBitSet[j - 1] = false;
 				}
@@ -169,80 +172,29 @@ ExtractedCsvDTO* CSVConnectionInfo::CsvConnection::readCSV(vector<int> readOrder
 				tempBuffer = strtok((char*)tempBuffer,field_term.c_str());
 				while (tempBuffer != NULL) {
 
-					//	increment end counter
-					//end++;
-
-
-					//	check if position of 'end' in the string a comma, past the end of 
-					//	the string, or just another character.  if at a non-comma character,
-					//	skip to the start of the next loop
-					// 			if (end<buffer.size() && buffer[end]!=',') {
-					// 				continue;
-					// 			}
-
-					//	assign comma-free token to a temporary string
-					//temp.assign(buffer,start,end-start);
-					//tempCount++;
 					int index = readOrder[(tempCount % orderSize)];
 					switch (index)
 					{
 					case 0:
 						{
 							longArray.push_back(atoi(tempBuffer));
-							if (strcmp(tempBuffer,"?") == 0) nullRow = true;
+							if (strcmp(tempBuffer,this->_null_val.c_str()) == 0) nullRow = true;
 							break;
 						}
 					case 1:
 						{
 							doubleArray.push_back(atof(tempBuffer));
-							if (strcmp(tempBuffer,"?") == 0) nullRow = true;
+							if (strcmp(tempBuffer,this->_null_val.c_str()) == 0) nullRow = true;
 							break;
 						}
 					case 2:
 						{
 							stringArray.push_back(tempBuffer);
-							if (strcmp(tempBuffer,"?") == 0) nullRow = true;
+							if (strcmp(tempBuffer,this->_null_val.c_str()) == 0) nullRow = true;
 							break;
 						}
 					}
-
-					// 				run through each character of the token to determine if it is a 
-					// 			//	string, floating-point, or integer, based on number of periods and
-					// 			//	presence of non-numeric characters
-					// 			int containsPeriod=0;
-					// 			int containsAlpha=0;
-					// 
-					// 			for (long i=0; i<(long)temp.size(); ++i) {
-					// 				if (temp[i]=='.') {
-					// 					//	token contains a '.' character - either a string or a floating point
-					// 					containsPeriod++;
-					// 				} else if ( temp[i]<48 || 57<temp[i] ) {
-					// 					//	token contains non-numeric characters - string (sorry no hex)
-					// 					containsAlpha++;
-					// 				}
-					// 			}
-					// 
-					// 			
-					// 
-					// 			//	based on alphabetical/numerical content and the presence of period/
-					// 			//	decimals, determine whether the entry is an integer, floating-point
-					// 			//	number, or a string
-					// 			if (containsAlpha==0 && containsPeriod==0) {
-					// 				longArray.push_back(atoi(temp.c_str()));
-					// 				order.push_back(0);
-					// 
-					// 			} else if (containsPeriod==1 && containsAlpha==0) {
-					// 				doubleArray.push_back(atof(temp.c_str()));
-					// 				order.push_back(1);
-					// 			} else {
-					// 				stringArray.push_back(temp);
-					// 				order.push_back(2);
-					// 			}
-					// 
-
-					//	set the start and end to the proper next position
-					//end++;
-					//start=end;
+					
 					tempBuffer = strtok(NULL,field_term.c_str());
 					tempCount++;
 

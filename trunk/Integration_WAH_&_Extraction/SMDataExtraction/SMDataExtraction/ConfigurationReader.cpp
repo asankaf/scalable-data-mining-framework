@@ -18,6 +18,8 @@ ConfigurationReader::ConfigurationReader(string & _path)
 	LOAD_TYPE_SINGLE_VAL = "single";
 	LOAD_TYPE_CSV_VAL = "csv";
 	SAVE_XML_FILE_FOLDER = "savedatafolder";
+	DOUBLE_PRECISION_VAL = "precision";
+	CSV_NULL_VAL = "csvnullval";
 }
 
 hash_map<string,string> ConfigurationReader::m_map;
@@ -93,6 +95,14 @@ string ConfigurationReader::getMapping(ConfigurationReader::configutation &_conf
 		{
 			return SAVE_XML_FILE_FOLDER;
 		}
+	case DOUBLE_PRECISION:
+		{
+			return DOUBLE_PRECISION_VAL;
+		}
+	case CSV_NULL:
+		{
+			return CSV_NULL_VAL;
+		}
 		break;
 	}	
 }
@@ -116,6 +126,10 @@ string ConfigurationReader::LOAD_TYPE_SINGLE_VAL = "single";
 string ConfigurationReader::LOAD_TYPE_CSV_VAL = "csv";
 
 string ConfigurationReader::SAVE_XML_FILE_FOLDER = "savedatafolder";
+
+string ConfigurationReader::DOUBLE_PRECISION_VAL = "precision";
+
+string ConfigurationReader::CSV_NULL_VAL = "csvnullval";
 
 void ConfigurationReader::BuildFile( string & _path )
 {
