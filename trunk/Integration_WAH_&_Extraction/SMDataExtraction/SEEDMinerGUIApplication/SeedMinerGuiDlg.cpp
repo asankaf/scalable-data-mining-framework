@@ -216,12 +216,6 @@ void CIntelliCheckersUIDlg::OnFlexInit(int flashIndex)
 	{
 		//Your initializations here.
 		flash = new CFlexObject(this, id_flash1);
-		//flash->AddEventListener("btn1", "mouseDown");
-		//flash->CallFunction("Grrr", "Modaya");
-		//flash->root.Call("Grrr", "Modayaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		//flash->root.Call()
-
-
 	}
 
 	//Create one for each player
@@ -282,11 +276,19 @@ void CIntelliCheckersUIDlg::SavedDataLoader(string _meta_file_name,string _data_
 	//delete dsLoaded;
 }
 
+/*
+*Bayesian algorithm
+*/
+
 void CIntelliCheckersUIDlg::Bayesian( int _class )
 {
 	m_bayesian = new NaiveBayes();
 	m_bayesian->buildClassifier(m_source,_class);
 }
+
+/*
+*CSV data source
+*/
 
 void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
 {
@@ -296,6 +298,9 @@ void CIntelliCheckersUIDlg::CSV(string path,int noOfRows)
 	m_source->encodeAtrributes();
 }
 
+/*
+*MYSQL data source
+*/
 void CIntelliCheckersUIDlg::MYSQL(string source_name,string mysql_query)
 {
 	char * writable = new char[source_name.size() + 1];
@@ -309,6 +314,10 @@ void CIntelliCheckersUIDlg::MYSQL(string source_name,string mysql_query)
 	ds->encodeAtrributes();
 	m_source = ds;
 }
+
+/*
+*MSSQL data source
+*/
 
 void CIntelliCheckersUIDlg::MSSQL(string source_name,string mssql_query)
 {
@@ -324,6 +333,10 @@ void CIntelliCheckersUIDlg::MSSQL(string source_name,string mssql_query)
 	m_source = ds;
 }
 
+/*
+*Aprior algorithm
+*/
+
 void CIntelliCheckersUIDlg::Aprior( double _confidence,double _min_suport,int _rules )
 {
 	//Setting confidence, minimum support  
@@ -336,23 +349,40 @@ void CIntelliCheckersUIDlg::Aprior( double _confidence,double _min_suport,int _r
 	m_apriori->BuildAssociations(m_source);
 }
 
+/*
+*NullEliminator filter
+*/
+
 void CIntelliCheckersUIDlg::NullEliminator()
 {
 	NullPreProcessor eliminator(m_source);
 	eliminator.elimiateNullValues();
 	m_source = eliminator.NullEliminatedDatasource();
 }
+
+/*
+*DiscretizeDataSource filter
+*/
+
 void CIntelliCheckersUIDlg::DiscretizeDataSource()
 {
-	DiscretizeData discreter(m_source);
-	discreter.DiscretizeAllCtsAttributes();
+	DiscretizeData *discreter = new DiscretizeData(m_source);
+	discreter->DiscretizeAllCtsAttributes();
 }
+
+/*
+*SplitteRanges filter
+*/
 
 void CIntelliCheckersUIDlg::SplitteRanges(int no_of_ranges)
 {
-	RangeSplitter splitter(m_source);
-	splitter.SplitAllNumericalAttsIntoEualRanges(no_of_ranges);
+	RangeSplitter *splitter = new RangeSplitter(m_source);
+	splitter->SplitAllNumericalAttsIntoEualRanges(no_of_ranges);
 }
+
+/*
+*Convert
+*/
 
 void CIntelliCheckersUIDlg::Convert(BitStreamInfo::vertical_bit_type _type)
 {
@@ -365,11 +395,20 @@ string CIntelliCheckersUIDlg::MeasureSpace()
 	return Utils::toStringVal((int)m_source->SpaceUtilsation());
 }
 
+/*
+*Classifier algorithm
+*/
+
 void CIntelliCheckersUIDlg::Classifier()
 {
 	m_classifier = new C45TreeNominal();
 	m_classifier->buildClassifier(m_source);
 }
+
+/*
+*Text out
+*/
+
 string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 {
 	string output = "";
@@ -436,6 +475,10 @@ string CIntelliCheckersUIDlg::Text(source_type type,int noOfRows)
 	return output;
 }
 
+/*
+*data_to_filter_to_apriory_to_textview_procedures
+*/
+
 bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vector<string>& procedureTokens)
 {
 	bool result=false;
@@ -466,6 +509,10 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_apriory_to_textview_procedures(vec
 	result = m==4&result;
 	return result;
 }
+
+/*
+*data_to_filter_to_classification_to_textview_procedures
+*/
 
 bool CIntelliCheckersUIDlg::data_to_filter_to_classification_to_textview_procedures(vector<string>& procedureTokens)
 {
@@ -700,6 +747,10 @@ bool CIntelliCheckersUIDlg::data_to_filter_to_compression_to_classification_to_t
 	return result;
 }
 
+/*
+*message handler- GUI events hadling is done here
+*/
+
 void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controller)
 {
 	try
@@ -707,7 +758,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		static int flowSequenceNumber;
 		string procedure=evt->procedure;
 
-		//genaric procedures
+		/*
+		*genaric procedures
+		*/
 		string const DATA_FILTER=data+combine+filter;
 		string const DATA_ALGORITHM=data+combine+algorithm;	
 		string const DATA_COMPRESSION=data+combine+compression;		
@@ -853,7 +906,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		bool data_to_compression_to_classification_to_treeview_procedures = procedure==csv_wah_classification_tree || procedure==csv_ewah_classification_tree || procedure==csv_ewah_classification_tree || procedure==xml_ewah_classification_tree || procedure==mysql_ewah_classification_tree || procedure==mysql_wah_classification_tree || procedure==mssql_ewah_classification_tree || procedure==mssql_wah_classification_tree;
 		bool data_to_compression_to_algorithm_to_view_procedures = data_to_compression_to_apriory_to_textview_procedures || data_to_compression_to_classification_to_textview_procedures || data_to_compression_to_classification_to_treeview_procedures;
 
-			if (procedure=="getMySqlDataSourceList")
+		/*
+		*data source lists returned
+		*/
+
+		if (procedure=="getMySqlDataSourceList")
 		{
 			DBConnectionInfo::DBConnection nrw_con("");
 			vector<string> source_names = nrw_con.getDataSourceNames(DSNInfo::DSNDriverInfo::DATASOURCE_TYPE::MySQL);
@@ -883,6 +940,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 		}
 		else
 		{	
+			/*
+			*get procedureTokens and identify the procedure
+			*/
 			vector<string> procedureTokens;
 			Tokenize(procedure, procedureTokens, "->");
 			string genericProcedure="";
@@ -990,7 +1050,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 					}
 				}
 			}
-
+			/*
+			*valide procedure filter
+			*/
 			bool validProcedure=genericProcedure==DATA_FILTER||genericProcedure==DATA_ALGORITHM||genericProcedure==DATA_COMPRESSION||genericProcedure==DATA_TEXT||genericProcedure==DATA_FILTER_ALGORITHM
 				||genericProcedure==DATA_FILTER_COMPRESSION||genericProcedure==DATA_FILTER_TEXT||genericProcedure==DATA_APRIORY_TEXT||genericProcedure==DATA_CLASSIFICATION_TEXT||genericProcedure==DATA_CLASSIFICATION_TREE||genericProcedure==DATA_COMPRESSION_ALGORITHM
 				||genericProcedure==DATA_BAYESIAN_TEXT||genericProcedure==DATA_COMPRESSION_BAYESIAN_TEXT||genericProcedure==DATA_FILTER_BAYESIAN_TEXT||genericProcedure==DATA_FILTER_COMPRESSION_BAYESIAN_TEXT
@@ -1030,6 +1092,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 				//time_t start,end;
 				//time_t startGraphTime,endGraphTime;
+				/*
+				*valide procedure iteration
+				*/
 				clock_t start,end;
 				clock_t startGraphTime,endGraphTime;
 				string timeUnit=" s";
@@ -1042,6 +1107,9 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 				vector<string> algoParaTokens;
 				Tokenize(algoPara, algoParaTokens, "@@");
 
+				/*
+				*declare the auxiliary parameters
+				*/
 				string csv_data_location;
 				int csv_data_size;
 				string xml_metadata_location;
@@ -1060,6 +1128,11 @@ void CIntelliCheckersUIDlg::OnFlexButtonClick(CFlexEvent *evt, CString controlle
 
 				string formattedOutPut="";
 				string graphData="";
+
+				/*
+				*output identification is done here
+				*/
+
 				if(runInALoop=="false")
 				{
 					if(viewer=="text")
