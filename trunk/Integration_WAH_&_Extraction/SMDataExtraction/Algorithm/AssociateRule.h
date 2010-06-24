@@ -7,7 +7,9 @@
 #include "smalgorithmexceptions.h"
 using namespace std;
 
-	/* Association Rules */
+	/*
+	 * Association Rules 
+	 */
 	class AssociateRule
 	{
 	public:
