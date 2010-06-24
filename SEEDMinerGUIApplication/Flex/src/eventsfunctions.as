@@ -1169,17 +1169,20 @@ private function drawArrow(source:String,destination:String):void
 
 private function addToActionObjectSequence(drawingEvent:DrawingEvent):void 
 {
-    if(actionObjectSequence.length==0)
-    {
-    	actionObjectSequence.push(drawingEvent.startId);
-    	actionObjectSequence.push(drawingEvent.destinationId);
-    }
-    else if(drawingEvent.startId==actionObjectSequence[actionObjectSequence.length-1])
-    {
-    	actionObjectSequence.push(drawingEvent.destinationId);
-    }
-    else if(drawingEvent.destinationId==actionObjectSequence[0])
-    {
-    	actionObjectSequence.unshift(drawingEvent.destinationId);
-    }
+	if(drawingEvent.startId!=drawingEvent.destinationId)
+	{
+		if(actionObjectSequence.length==0)
+	    {
+	    	actionObjectSequence.push(drawingEvent.startId);
+	    	actionObjectSequence.push(drawingEvent.destinationId);
+	    }
+	    else if(drawingEvent.startId==actionObjectSequence[actionObjectSequence.length-1])
+	    {
+	    	actionObjectSequence.push(drawingEvent.destinationId);
+	    }
+	    else if(drawingEvent.destinationId==actionObjectSequence[0])
+	    {
+	    	actionObjectSequence.unshift(drawingEvent.destinationId);
+	    }
+	}  
 }
