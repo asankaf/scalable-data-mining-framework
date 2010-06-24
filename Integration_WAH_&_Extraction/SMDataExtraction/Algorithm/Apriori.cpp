@@ -6,7 +6,9 @@
 
 using namespace std;
 
-	/* Functions for genetaring Association Rules */
+	/*
+	 * Functions for generating Association Rules 
+	 */
 
 	Apriori::Apriori(void)
 	{
@@ -41,7 +43,6 @@ using namespace std;
 
 	void Apriori::GenerateRulesForHolder(BitStreamHolder * _holder)
 	{
-		/* Handle exceptions(division by zero is a must) */
 		int support_for_holder = m_bitmap_count_holder[_holder->Hash()];
 		if (support_for_holder > 0)
 		{
@@ -74,8 +75,11 @@ using namespace std;
 
 			}
 		}
+		/* Handled exceptions(division by zero is a must) */
 
 	}
+
+	/* Start of the algorithm */
 
 	void Apriori::RunAlgorithm(WrapDataSource * source)
 	{
@@ -200,6 +204,8 @@ using namespace std;
 		vector<BitStreamHolder *> candidate_set_copy = m_candidate_set;
 		m_candidate_set.clear();
 		typedef vector<BitStreamHolder *>::const_iterator holder_iter;
+
+		/* Loop that initiates the bitmap operations to generate candidate sets */
 		for (size_t index = 0; index < candidate_set_copy.size(); index++)
 		{
 			for (size_t inner_index = 0 ; inner_index < candidate_set_copy.size(); inner_index++ )
@@ -227,7 +233,7 @@ using namespace std;
 				}
 			}
 		}
-		//Inefficient memory handling. Need to delete BitStreamInfoObjects, when no longer used.		
+		/* Memory handling to be efficient need to delete BitStreamInfoObjects, when no longer used. */
 		_utils.CopyFirstToSecond(m_candidate_set,m_frequent_item_set);
 	}
 
@@ -244,6 +250,7 @@ using namespace std;
 	}
 
 
+	/* Generating initial candidate sets */
 	void Apriori::CreateInitialCandidateSet(AlgoUtils & _utils)
 	{		
 		for (size_t index = 0; (index < m_unique_bitmap_holders.size() && m_candidate_set.size() < m_no_of_items); index++)
@@ -267,6 +274,6 @@ using namespace std;
 				}
 			}
 		}
-		//Inefficient memory handling. Need to delete BitStreamInfoObjects, when no longer used.		
+		/* Memory handling to be efficient need to delete BitStreamInfoObjects, when no longer used. */
 		_utils.CopyFirstToSecond(m_candidate_set,m_frequent_item_set);
 	}	
