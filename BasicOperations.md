@@ -1,0 +1,3 @@
+![http://scalable-data-mining-framework.googlecode.com/files/datafeed.png](http://scalable-data-mining-framework.googlecode.com/files/datafeed.png)
+![http://scalable-data-mining-framework.googlecode.com/files/operations.png](http://scalable-data-mining-framework.googlecode.com/files/operations.png)
+![http://scalable-data-mining-framework.googlecode.com/files/patternfinding.png](http://scalable-data-mining-framework.googlecode.com/files/patternfinding.png)
